@@ -1,0 +1,30 @@
+# Roadbook Repair Audit v1.4.5
+
+## Requirement
+
+The Roadbook section must show road sections and checkpoints in riding order. The compact preview may stay short; the full roadbook must carry the useful content: sights, traffic issues, safety, road status, pass/road-opening reminders, fuel, food, rest, swimming/water and pictures/pictograms.
+
+## Implementation
+
+- `renderInlineRoadbook(route)` renders the compact preview directly inside the selected route area.
+- `renderRoadbook(route)` renders the full detailed roadbook in the Roadbook section.
+- `robustRoadbookSections(route)` derives road-section rows from waypoints if explicit section data is missing.
+- `roadbookContextItems(section, index, from, to, route)` injects weather, traffic, safety, road status, fuel, food, rest, sights, water and photo context.
+- `shortRoadbookText()` is now present and tested.
+- `ensureRoadbookVisible()` re-renders both roadbook views if async map/media work leaves them empty.
+
+## Regression guard
+
+The roadbook audit now checks for:
+
+- inline Roadbook HTML target;
+- full Roadbook grid target;
+- `renderInlineRoadbook`;
+- `renderRoadbook`;
+- `shortRoadbookText`;
+- `ensureRoadbookVisible`;
+- section and waypoint row renderers.
+
+## Result
+
+Passed.

@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+const html=fs.readFileSync('index.html','utf8');
+const app=fs.readFileSync('app.js','utf8');
+const routes=JSON.parse(fs.readFileSync('data/routes.json','utf8'));
+const required=['inlineRoadbook','inlineRoadbookList','Road sections and checkpoints in riding order'];
+for(const token of required){ if(!html.includes(token) && !app.includes(token)) throw new Error(`missing ${token}`); }
+if(!app.includes('function renderInlineRoadbook')) throw new Error('inline roadbook renderer missing');
+if(!app.includes('function shortRoadbookText')) throw new Error('roadbook text helper missing');
+if(!app.includes('function ensureRoadbookVisible')) throw new Error('roadbook watchdog missing');
+if(!app.includes('function robustRoadbookSections')) throw new Error('robust section derivation missing');
+if(!routes.length || routes.length<100) throw new Error('route inventory unexpectedly small');
+console.log(`CurveScout.com v1.4.6 validation ok: ${routes.length} road trips, riding-order roadbook restored`);

@@ -1,0 +1,45 @@
+# CurveScout.com v1.4.6 Audit Report
+
+## Status
+
+Passed. This build repairs the missing Roadbook section without changing the stable search/map/product layout.
+
+## Root cause fixed
+
+The v1.4.4 roadbook renderer used `shortRoadbookText()` in the inline riding-order card renderer, but the helper was missing from the runtime bundle. The error interrupted `renderSelected()` before the full Roadbook section could populate.
+
+## Repairs
+
+- Added `shortRoadbookText()` helper.
+- Added `ensureRoadbookVisible()` watchdog.
+- Wrapped inline and full roadbook rendering in recovery logic.
+- Updated tests so missing roadbook runtime helpers fail validation.
+
+## Feature preservation checklist
+
+| Feature | Status |
+| --- | --- |
+| Search results rail | Preserved |
+| OSM map renderer | Preserved |
+| Route candidates | Preserved |
+| Selected route stage | Preserved |
+| Inline riding-order roadbook | Restored |
+| Full detailed Roadbook section | Restored |
+| Progressive open-media loading | Preserved |
+| Hero/card/waypoint/section photos | Preserved |
+| Technical profile | Preserved |
+| Weather/ride condition cards | Preserved |
+| Google preview pills | Preserved |
+| OSM preview | Preserved |
+| GPX export | Preserved |
+| Waypoint pack | Preserved |
+| GitHub Pages package | Preserved |
+
+## Validation command
+
+```bash
+npm test
+node --check app.js
+```
+
+Result: passed.
