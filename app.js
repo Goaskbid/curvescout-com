@@ -5731,7 +5731,7 @@ async function initHero() {
   ];
   async function ridingPhotos(width) {
     const q = RIDE_QUERIES[Math.floor(Math.random() * RIDE_QUERIES.length)];
-    const u = 'https://disabled.invalid/w/api.php?action=query&format=json&origin=*' +
+    const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*' +
       '&generator=search&gsrnamespace=6&gsrlimit=30&gsrsearch=' + encodeURIComponent(q) +
       '&prop=imageinfo|categories&cllimit=40&iiprop=url|size|extmetadata&iiurlwidth=' + width;
     const js = await jget(u, 9000);
@@ -6540,7 +6540,7 @@ function initHome() {
     } else fire();
   });
   /* ---- THE HERO PHOTOGRAPHS ARE NOT WORTH A BROKEN PROMISE ----
-     initHero asks Wikimedia for pictures during boot: four requests to disabled.invalid
+     initHero asks Wikimedia for pictures during boot: four requests to commons.wikimedia.org
      on a page the visitor has not touched, measured in a clean browser. The footer says
      nothing is loaded before he acts, so this waits for the first thing he does - a scroll,
      a key, a tap - and then loads exactly as before. */
@@ -6652,10 +6652,10 @@ function csBasemap(map, kind, attach = true) {
   if (typeof L !== 'undefined' && L.tileLayer) {
     try {
       const url = kind === 'terrain'
-        ? 'https://{s}.disabled.invalid/{z}/{x}/{y}.png'
+        ? 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
         : 'https://disabled.invalid/hot/{z}/{x}/{y}.png';
       const credit = kind === 'terrain'
-        ? '\u00a9 <a href="https://disabled.invalid">OpenTopoMap</a> (CC-BY-SA) \u00b7 ' +
+        ? '\u00a9 <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA) \u00b7 ' +
           '\u00a9 <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         : '\u00a9 <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> ' +
           'contributors \u00b7 tiles by <a href="https://www.openstreetmap.fr/">OpenStreetMap France</a>';
@@ -8636,7 +8636,7 @@ function placesBlock(svc, line) {
                               visitor through it is the clearest breach in the list.
      disabled.invalid   the OSMF tile policy forbids heavy use and tells anything with
                               real traffic to use a commercial provider or self-host.
-     disabled.invalid          community tiles, same class, plus CC BY-SA on the rendering.
+     opentopomap.org          community tiles, same class, plus CC BY-SA on the rendering.
      nominatim                one request per second, a real User-Agent, no autocomplete.
                               Already honoured: the town box searches an inlined list and only
                               calls Nominatim when the rider presses Go.
@@ -10106,7 +10106,7 @@ function lazyPhotos(root, sel) {
         if (!img && appr.source_page) {
           try {
             const title = decodeURIComponent(String(appr.source_page).split('/wiki/')[1] || '');
-            const api = 'https://disabled.invalid/w/api.php?action=query&format=json&origin=*' +
+            const api = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*' +
               '&prop=imageinfo&iiprop=url&iiurlwidth=1280&titles=' + encodeURIComponent(title);
             const j = await jget(api, 8000);
             if (!current()) return;
@@ -11176,7 +11176,7 @@ async function commonsPhotos(lat, lon, limit, width) {
   const w = width || 560;
   const key = lat.toFixed(3) + ',' + lon.toFixed(3) + '@' + w;
   if (S.picCache.has(key)) return S.picCache.get(key);
-  const js = await jget('https://disabled.invalid/w/api.php?action=query&format=json&origin=*' +
+  const js = await jget('https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*' +
     '&generator=geosearch&ggsnamespace=6&ggscoord=' + lat + '%7C' + lon +
     '&ggsradius=8000&ggslimit=' + (limit || 6) +
     /* categories too: a photo's subject lives there far more reliably than in its filename
@@ -11220,7 +11220,7 @@ async function commonsByName(name, lat, lon, width) {
   if (S.picCache.has(key)) return S.picCache.get(key);
   let out = [];
   try {
-    const js = await jget('https://disabled.invalid/w/api.php?action=query&format=json&origin=*' +
+    const js = await jget('https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*' +
       '&generator=search&gsrnamespace=6&gsrlimit=20&gsrsearch=' + encodeURIComponent(q) +
       '&prop=imageinfo%7Ccategories%7Ccoordinates&cllimit=30&colimit=1' +
       '&iiprop=url%7Csize%7Cextmetadata&iiurlwidth=' + (width || 560), 12000);
@@ -12419,7 +12419,7 @@ const PHOTO_HOSTS = /^(upload\.wikimedia\.org|commons\.wikimedia\.org|[a-z0-9-]+
 function safePhotoUrl(u) {
   try {
     /* ---- A PROTOCOL-RELATIVE URL IS NOT A LOCAL FILE ----
-       "//disabled.invalid/..." resolved against location.href, which on the portable
+       "//upload.wikimedia.org/..." resolved against location.href, which on the portable
        build downloaded to a Downloads folder is file: - so the guard rejected genuine
        Wikimedia pictures and the checkpoint photos vanished from the roadbook. Resolve
        those against https, which is what the browser does with them on a served page. */
@@ -12455,7 +12455,7 @@ const SERVICE_REGISTRY = [
     mode: 'browser', retention: 'their tile usage policy applies' },
   { id: 'wikimedia', name: 'Wikimedia Commons', purpose: 'photographs and their credits',
     sends: 'the name of a place', trigger: 'when a route page shows a picture',
-    licence: 'per file', licenceUrl: 'https://disabled.invalid/wiki/Commons:Licensing',
+    licence: 'per file', licenceUrl: 'https://commons.wikimedia.org/wiki/Commons:Licensing',
     mode: 'browser', retention: 'unknown' },
   { id: 'nominatim', name: 'Nominatim (OpenStreetMap)', purpose: 'turning a typed place into coordinates',
     sends: 'THE TEXT YOU TYPE in the start box, when it is not in the local place index',
@@ -12476,7 +12476,7 @@ const SERVICE_REGISTRY = [
     mode: 'build', retention: 'not applicable' },
   { id: 'opentopomap', name: 'OpenTopoMap', purpose: 'terrain map tiles when the vector map is unavailable',
     sends: 'the map area you are looking at', trigger: 'when you switch to the terrain map',
-    licence: 'CC BY-SA', licenceUrl: 'https://disabled.invalid/about',
+    licence: 'CC BY-SA', licenceUrl: 'https://opentopomap.org/about',
     mode: 'browser', retention: 'their tile usage policy applies' },
   { id: 'osm-france', name: 'OpenStreetMap France', purpose: 'street map tiles when the vector map is unavailable',
     sends: 'the map area you are looking at', trigger: 'when a map opens',

@@ -1,10 +1,13 @@
 {
- "build_id": "8256b46",
- "build_date": "2026-10-06T14:05:49.454Z",
+ "build_id": "8d753f4",
+ "build_date": "2026-10-06T20:18:29.755Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
-  "tiles.openfreemap.org"
+  "tiles.openfreemap.org",
+  "commons.wikimedia.org (photo search)",
+  "upload.wikimedia.org (photos)",
+  "tile.opentopomap.org (Topo)"
  ],
  "prohibited_network_hosts": [
   "router.project-osrm.org",
@@ -19,10 +22,6 @@
   "tile-b.openstreetmap.fr",
   "tile-c.openstreetmap.fr",
   "a.tile.openstreetmap.fr",
-  "tile.opentopomap.org",
-  "opentopomap.org",
-  "commons.wikimedia.org",
-  "upload.wikimedia.org",
   "api.open-elevation.com",
   "api.opentopodata.org",
   "pagead2.googlesyndication.com",
@@ -54,7 +53,6 @@
   "geocoding search (manual start)",
   "live weather",
   "live elevation",
-  "runtime Wikimedia photos",
   "advertising",
   "analytics"
  ],
@@ -62,7 +60,7 @@
   "basemap": "OpenFreeMap / OpenMapTiles / OpenStreetMap contributors (ODbL), attribution visible",
   "code": "see LICENSE"
  },
- "neutralised_host_references": 1378,
+ "neutralised_host_references": 1358,
  "files": [
   {
    "path": ".nojekyll",
@@ -71,8 +69,8 @@
   },
   {
    "path": "404.html",
-   "bytes": 2666,
-   "sha256": "67cf762eb3d2da1a549f312cfb0e49c0fba1bf89f1c0ab175c59d28b1f979012"
+   "bytes": 2785,
+   "sha256": "3e3c2db6edb43a13038502336a678b0b73d2a10bf6c08f342528bf85e11fcee0"
   },
   {
    "path": "README.md",
@@ -81,8 +79,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 1594692,
-   "sha256": "0159267dd4295a1c311a5dcbaf77083aebb3382220061e95480c186085dbf1ab"
+   "bytes": 1594727,
+   "sha256": "3e2c10c5be586ce25cf41dda60c00507fb794dacc945ef4bdfd1666a29590ccd"
   },
   {
    "path": "archive.js",
@@ -986,8 +984,8 @@
   },
   {
    "path": "config.js",
-   "bytes": 8340967,
-   "sha256": "52c6843c36e9df0b845b66506dbcb0085d584075b4266caf2730ab453b16be24"
+   "bytes": 8340985,
+   "sha256": "5c50dcb70f1edf9a1a9fc6fbc8eab5fd17b80015c4edbea1098f23ea727d72db"
   },
   {
    "path": "data__cities.txt",
@@ -1391,8 +1389,8 @@
   },
   {
    "path": "data__media__approved-media.json",
-   "bytes": 3130,
-   "sha256": "c8592e88a55bfb0c8d50af19e0629b7b0553f1c05871366ea1132d7d31fb1174"
+   "bytes": 3150,
+   "sha256": "8766541ba86fbbec1f8f3519d5ed06e7e312c8149f593d4cd0b5b687a60a98b1"
   },
   {
    "path": "data__passes.json",
@@ -2556,8 +2554,8 @@
   },
   {
    "path": "index.html",
-   "bytes": 27605,
-   "sha256": "cf2be29f9890c322e9751a678762fbc70334d6ba3ee319c1bbcc323bc06a8db5"
+   "bytes": 27729,
+   "sha256": "421bc14a2b8940feca7a0bc518e3f12f81ccfe65b0fbca654038b9638ee04eb3"
   },
   {
    "path": "manifest.webmanifest",
