@@ -95,892 +95,892 @@
    "sha256": "9acbe5fe9cca12a48cf194c9d60847f22166da858afd9a81b88facd1fa3f04af"
   },
   {
-   "path": "assets/cerebral-local.svg",
+   "path": "assets__cerebral-local.svg",
    "bytes": 751,
    "sha256": "df507afa4be233b61aefde8fa9317857ddc4d851b4f23f55126b76b833c35503"
   },
   {
-   "path": "assets/curvescout-brand-board.png",
+   "path": "assets__curvescout-brand-board.png",
    "bytes": 212132,
    "sha256": "6dd8bbcb1e7347fea07815f20b9c13718fc2a1e9037c13996faa3d13dc350a95"
   },
   {
-   "path": "assets/curvescout-mark-192.png",
+   "path": "assets__curvescout-mark-192.png",
    "bytes": 32637,
    "sha256": "10d09d2259e50520a20522ebf8f7d61a4654d01cd9ed19f9fed402625f9ee115"
   },
   {
-   "path": "assets/curvescout-mark-512.png",
+   "path": "assets__curvescout-mark-512.png",
    "bytes": 155068,
    "sha256": "8bd4c27b5e7b274bb2c4e14be4f6541eb9d9f05811920746af33ab5dda87c244"
   },
   {
-   "path": "assets/curvescout-mark-transparent.png",
+   "path": "assets__curvescout-mark-transparent.png",
    "bytes": 53926,
    "sha256": "c0ea9050d0827b8e0170eeed49d881cd661f6b50338607769e0437024e1bd1a3"
   },
   {
-   "path": "assets/guides/manifest.json",
+   "path": "assets__guides__manifest.json",
    "bytes": 29265,
    "sha256": "e37c22f61e7e56e3282d7ea7941829faf55c329af42486777e72dec17660c015"
   },
   {
-   "path": "assets/hero-road.svg",
+   "path": "assets__hero-road.svg",
    "bytes": 2709,
    "sha256": "13025c54bd7eb38b1f677c1489ce6de18ba7941e7325e78059d3907eea8984a8"
   },
   {
-   "path": "assets/og-default.png",
+   "path": "assets__og-default.png",
    "bytes": 53786,
    "sha256": "3269db967577d2f882de403fc8ab7f50a96fe5dba817b41c0fa2ce49c942389f"
   },
   {
-   "path": "assets/scouts/elise/elise_approve.webp",
+   "path": "assets__scouts__elise__elise_approve.webp",
    "bytes": 85934,
    "sha256": "ebeab0940b1b24ccc034956df26c6845518d788ac577a37a7f461bb49299b57d"
   },
   {
-   "path": "assets/scouts/elise/elise_caution.webp",
+   "path": "assets__scouts__elise__elise_caution.webp",
    "bytes": 84790,
    "sha256": "35148143809c545756f897d27d4087ec7fc44c58c437c4a927c6d512429c41d3"
   },
   {
-   "path": "assets/scouts/elise/elise_coffee_break.webp",
+   "path": "assets__scouts__elise__elise_coffee_break.webp",
    "bytes": 65816,
    "sha256": "52537a49aa7928b245c6e9c60519502d0af5913d6f59dc382d73fefd5de1bef2"
   },
   {
-   "path": "assets/scouts/elise/elise_explain.webp",
+   "path": "assets__scouts__elise__elise_explain.webp",
    "bytes": 91506,
    "sha256": "271323ff1041c5169da16131567ed99eb7402545fffd97f11662a3f3559447ef"
   },
   {
-   "path": "assets/scouts/elise/elise_fuel_check.webp",
+   "path": "assets__scouts__elise__elise_fuel_check.webp",
    "bytes": 79620,
    "sha256": "c9b2107e1fd79504bdaf06c649e5bdc279953a6ea8eb339bba0045c3fb672727"
   },
   {
-   "path": "assets/scouts/elise/elise_helmet_off.webp",
+   "path": "assets__scouts__elise__elise_helmet_off.webp",
    "bytes": 66704,
    "sha256": "6030a98e1306e3b0efabb22558dc0fa5f01d07b1da7f5b36422ddad56470f0cd"
   },
   {
-   "path": "assets/scouts/elise/elise_lunch_stop.webp",
+   "path": "assets__scouts__elise__elise_lunch_stop.webp",
    "bytes": 85394,
    "sha256": "288e96d8449f534c5bce6a28c18733c1416a9e7fe35eb31513110a166e2c3a2e"
   },
   {
-   "path": "assets/scouts/elise/elise_neutral.webp",
+   "path": "assets__scouts__elise__elise_neutral.webp",
    "bytes": 95478,
    "sha256": "27a5f0bcabbff776b47eebdff50c657fad5701b75885174da7535341525d6ee6"
   },
   {
-   "path": "assets/scouts/elise/elise_point.webp",
+   "path": "assets__scouts__elise__elise_point.webp",
    "bytes": 99232,
    "sha256": "d2b9409439a47cfbfe1c9d65ec7969b67dc9ed07d9123fb03b4fb33c818c32e3"
   },
   {
-   "path": "assets/scouts/elise/elise_provisions.webp",
+   "path": "assets__scouts__elise__elise_provisions.webp",
    "bytes": 72976,
    "sha256": "74729d503a32e74cbcc7bd477d31c8e948fc74ecc60ff0338487acb90949a00b"
   },
   {
-   "path": "assets/scouts/elise/elise_queue_warning.webp",
+   "path": "assets__scouts__elise__elise_queue_warning.webp",
    "bytes": 67542,
    "sha256": "3a693444db4ffc48baccc5c201de8a000bec3c98c698d43d3ce3eb9314ffd3d8"
   },
   {
-   "path": "assets/scouts/elise/elise_rest_reminder.webp",
+   "path": "assets__scouts__elise__elise_rest_reminder.webp",
    "bytes": 77416,
    "sha256": "9946adae46f0cdb87ae4af324562f6d75b183d47e523235456beb6db483affbb"
   },
   {
-   "path": "assets/scouts/elise/elise_sign_off.webp",
+   "path": "assets__scouts__elise__elise_sign_off.webp",
    "bytes": 75816,
    "sha256": "8d5c09cde8db448a434fcaed9905b2873a991e6b729810f5e5e55eb7e9453d59"
   },
   {
-   "path": "assets/scouts/elise/elise_timing_note.webp",
+   "path": "assets__scouts__elise__elise_timing_note.webp",
    "bytes": 72568,
    "sha256": "07753db7c8ee8b7ea11894ca248b5b2bdc892326b31bb65ad6e51f755c32bff5"
   },
   {
-   "path": "assets/scouts/elise/elise_water_top_up.webp",
+   "path": "assets__scouts__elise__elise_water_top_up.webp",
    "bytes": 79368,
    "sha256": "9d978467e6288d6017a182b612f98aae60be92be4d02af8e3663a597c275ebab"
   },
   {
-   "path": "assets/scouts/kenji/kenji_approve.webp",
+   "path": "assets__scouts__kenji__kenji_approve.webp",
    "bytes": 77626,
    "sha256": "15f55666366b7758fe43119ed8836b571d2a2a301f6bcfd804e70cdcf14ac30f"
   },
   {
-   "path": "assets/scouts/kenji/kenji_caution.webp",
+   "path": "assets__scouts__kenji__kenji_caution.webp",
    "bytes": 76896,
    "sha256": "c873f02a85924e5da963fc26b116ab9c030ff167f9147526898254f5646ced54"
   },
   {
-   "path": "assets/scouts/kenji/kenji_colour_hour.webp",
+   "path": "assets__scouts__kenji__kenji_colour_hour.webp",
    "bytes": 84830,
    "sha256": "c1cc1093dcfd94077bfe2417ffe29bbda5de09eff7df2380f6a0294e94438b6d"
   },
   {
-   "path": "assets/scouts/kenji/kenji_explain.webp",
+   "path": "assets__scouts__kenji__kenji_explain.webp",
    "bytes": 80368,
    "sha256": "86ca94d5d70368c560e4f7609ab5e2a802e78733a4c3eb8f9b27f61f3eac87b0"
   },
   {
-   "path": "assets/scouts/kenji/kenji_framing_the_view.webp",
+   "path": "assets__scouts__kenji__kenji_framing_the_view.webp",
    "bytes": 80982,
    "sha256": "32f473389d75abbb330af84967425342dc75e76044b4f3b550d44771801139b3"
   },
   {
-   "path": "assets/scouts/kenji/kenji_horizon.webp",
+   "path": "assets__scouts__kenji__kenji_horizon.webp",
    "bytes": 78510,
    "sha256": "e4bad5ca136d167a8e864a21b480f4efa6ca30f7c7a339538ce659ca2d81b31b"
   },
   {
-   "path": "assets/scouts/kenji/kenji_lens_down.webp",
+   "path": "assets__scouts__kenji__kenji_lens_down.webp",
    "bytes": 73678,
    "sha256": "01c95190ee4b4c1588f63810e0d0bb2be84923cf3a8eedafe991179fa806ae26"
   },
   {
-   "path": "assets/scouts/kenji/kenji_light_window.webp",
+   "path": "assets__scouts__kenji__kenji_light_window.webp",
    "bytes": 83898,
    "sha256": "46573ae84dcf9ba319984f1d32b2763ab9c1b0a1a3e051d3581ff4a38d78c3ae"
   },
   {
-   "path": "assets/scouts/kenji/kenji_neutral.webp",
+   "path": "assets__scouts__kenji__kenji_neutral.webp",
    "bytes": 77474,
    "sha256": "c8002edd32561a53aa91a7f65f362168063fe10fbcb60a4d2084c68b951f5b8f"
   },
   {
-   "path": "assets/scouts/kenji/kenji_photo_stop.webp",
+   "path": "assets__scouts__kenji__kenji_photo_stop.webp",
    "bytes": 70004,
    "sha256": "2244904d588c88e178f9a57fd3bff85d2cd29b4f25f53406e2d07f0d8563964e"
   },
   {
-   "path": "assets/scouts/kenji/kenji_point.webp",
+   "path": "assets__scouts__kenji__kenji_point.webp",
    "bytes": 80508,
    "sha256": "4c3d6d7ca6328c748d3e9f5be0372a72bbb818ea97a48f4969598232dcd9cd7a"
   },
   {
-   "path": "assets/scouts/kenji/kenji_ridge_line.webp",
+   "path": "assets__scouts__kenji__kenji_ridge_line.webp",
    "bytes": 89912,
    "sha256": "a29168d24ad3785c46d694be7bb529b98157956cc9edf351d15055b91d2d427c"
   },
   {
-   "path": "assets/scouts/kenji/kenji_sign_off.webp",
+   "path": "assets__scouts__kenji__kenji_sign_off.webp",
    "bytes": 85906,
    "sha256": "0aa14d23cc79ba7f0127a9589b237b6475e5ea6232562698300a063d5e1e045a"
   },
   {
-   "path": "assets/scouts/kenji/kenji_stop_here.webp",
+   "path": "assets__scouts__kenji__kenji_stop_here.webp",
    "bytes": 83770,
    "sha256": "330ed4f18f285a349531fd870c3ef188aabb7081a3a3544248c2fa685c8de9b8"
   },
   {
-   "path": "assets/scouts/kenji/kenji_summit_look.webp",
+   "path": "assets__scouts__kenji__kenji_summit_look.webp",
    "bytes": 87136,
    "sha256": "632dbe0aa6af8b64684ae4df18b84a9804551f444ad488168b5be1fe1feb4783"
   },
   {
-   "path": "assets/scouts/leon/leon_approve.webp",
+   "path": "assets__scouts__leon__leon_approve.webp",
    "bytes": 91956,
    "sha256": "62fb74e622c3bf7f72455486211a36c8e4c3fdf25f44601c275295655dd463bf"
   },
   {
-   "path": "assets/scouts/leon/leon_archive_page.webp",
+   "path": "assets__scouts__leon__leon_archive_page.webp",
    "bytes": 66434,
    "sha256": "de643b9e77b2bf441a2a6e238e918c0a4c8990e3756f6fae2e4819a3ed6d463e"
   },
   {
-   "path": "assets/scouts/leon/leon_bridge_note.webp",
+   "path": "assets__scouts__leon__leon_bridge_note.webp",
    "bytes": 84220,
    "sha256": "1a1e24f0681e92ff4b28f27c575fe21193a401fe62a997b43f73147fa56f0336"
   },
   {
-   "path": "assets/scouts/leon/leon_caution.webp",
+   "path": "assets__scouts__leon__leon_caution.webp",
    "bytes": 83442,
    "sha256": "1bd2b9606cf8aa8d7a632fad52b184b01ee33fd8245905c4f36c2c55971a2665"
   },
   {
-   "path": "assets/scouts/leon/leon_context.webp",
+   "path": "assets__scouts__leon__leon_context.webp",
    "bytes": 79620,
    "sha256": "8aa3b8a4d7345c6abe28b8dc4f18aabd4be7c932af1f51a45517a22f5ff496d2"
   },
   {
-   "path": "assets/scouts/leon/leon_explain.webp",
+   "path": "assets__scouts__leon__leon_explain.webp",
    "bytes": 94994,
    "sha256": "4ad6bc069a6ed9d287f9d37162b048147a90194e49270046a747d21b48980f78"
   },
   {
-   "path": "assets/scouts/leon/leon_map_in_hand.webp",
+   "path": "assets__scouts__leon__leon_map_in_hand.webp",
    "bytes": 97334,
    "sha256": "6d2d1b1276f86ef0df4fc5d9a1176f4258e29210732370e5be4099407c3743f9"
   },
   {
-   "path": "assets/scouts/leon/leon_named_road.webp",
+   "path": "assets__scouts__leon__leon_named_road.webp",
    "bytes": 80392,
    "sha256": "0b605d7ecfa78afd5bc3248b75fdf3054dd68fc27b210641bfdb3166e78ab0d0"
   },
   {
-   "path": "assets/scouts/leon/leon_neutral.webp",
+   "path": "assets__scouts__leon__leon_neutral.webp",
    "bytes": 92156,
    "sha256": "f63bfe6b066e41b3434ca756816405d188cbbd103ad00a5ff7f4bb138c71705a"
   },
   {
-   "path": "assets/scouts/leon/leon_old_road.webp",
+   "path": "assets__scouts__leon__leon_old_road.webp",
    "bytes": 79084,
    "sha256": "36a88cb1a6d86bd6d655b5ea232232863b41d905e7a69c2a1c4785e361fcb405"
   },
   {
-   "path": "assets/scouts/leon/leon_pass_history.webp",
+   "path": "assets__scouts__leon__leon_pass_history.webp",
    "bytes": 78420,
    "sha256": "5a2b9684bcfefb45bf4419c4f83ec7c4c81b298bbb5abd3aa898259e21e3ebc5"
   },
   {
-   "path": "assets/scouts/leon/leon_point.webp",
+   "path": "assets__scouts__leon__leon_point.webp",
    "bytes": 94896,
    "sha256": "54d54459c6c838d15ab5bd4cfc014d47118c8fffdbca0ea8bf0013e5eed658fa"
   },
   {
-   "path": "assets/scouts/leon/leon_provenance.webp",
+   "path": "assets__scouts__leon__leon_provenance.webp",
    "bytes": 87856,
    "sha256": "e9da13fc80649cb4f487839cdbe35e410f4617c0dc2d2c378118647945cc0f21"
   },
   {
-   "path": "assets/scouts/leon/leon_sign_off.webp",
+   "path": "assets__scouts__leon__leon_sign_off.webp",
    "bytes": 87738,
    "sha256": "707dff8bca090734f50fc98b7fa5bd6b65f50cf3ef3d5e10b68c49cb47a17e9d"
   },
   {
-   "path": "assets/scouts/leon/leon_stone_marker.webp",
+   "path": "assets__scouts__leon__leon_stone_marker.webp",
    "bytes": 87060,
    "sha256": "0a75cad97a97d508e168b6c3d19a8f5c1d6f3210b0c20a48474dac1680f2de47"
   },
   {
-   "path": "assets/scouts/mara/mara_approve.webp",
+   "path": "assets__scouts__mara__mara_approve.webp",
    "bytes": 85662,
    "sha256": "3b1cb3e63a191c2bf2a65fc3ad8a097dd72d5dfd9d83f387fa40c3e839b3d78c"
   },
   {
-   "path": "assets/scouts/mara/mara_caution.webp",
+   "path": "assets__scouts__mara__mara_caution.webp",
    "bytes": 87192,
    "sha256": "a62007fa385c09fe97672a8a12119aaeebf7a99d9ea42866bf62bc39b9f7fb4e"
   },
   {
-   "path": "assets/scouts/mara/mara_corner_entry.webp",
+   "path": "assets__scouts__mara__mara_corner_entry.webp",
    "bytes": 77078,
    "sha256": "8cd4354ce24d18d950717deae6057fe08583740dac6b6677a882f44c2f382316"
   },
   {
-   "path": "assets/scouts/mara/mara_direction_choice.webp",
+   "path": "assets__scouts__mara__mara_direction_choice.webp",
    "bytes": 75234,
    "sha256": "80659a8384807bc063554b31d110ef822658107186d1365245814bee08b02a94"
   },
   {
-   "path": "assets/scouts/mara/mara_explain.webp",
+   "path": "assets__scouts__mara__mara_explain.webp",
    "bytes": 91364,
    "sha256": "62f4898a9e52305fdd32163d86ec346eae97100050df5bb0e1fd45a8348f4220"
   },
   {
-   "path": "assets/scouts/mara/mara_gear_check.webp",
+   "path": "assets__scouts__mara__mara_gear_check.webp",
    "bytes": 77292,
    "sha256": "93acb746079825b559287e2098dabc2b9473a1d2d0bf48a88a0bc1e249e0aad7"
   },
   {
-   "path": "assets/scouts/mara/mara_hairpin_call.webp",
+   "path": "assets__scouts__mara__mara_hairpin_call.webp",
    "bytes": 66156,
    "sha256": "94afaff76184d4c2e88bf964597ca4e4d97db1aea6d863ca8b2f522db24dce06"
   },
   {
-   "path": "assets/scouts/mara/mara_neutral.webp",
+   "path": "assets__scouts__mara__mara_neutral.webp",
    "bytes": 88300,
    "sha256": "e0f39a270ddee5d34d734d8f5009b7d0d9b21328c04e726643ef5b9dbd30b6ea"
   },
   {
-   "path": "assets/scouts/mara/mara_pace_note.webp",
+   "path": "assets__scouts__mara__mara_pace_note.webp",
    "bytes": 68492,
    "sha256": "814c36bf95a07c02615fd332e72eb9d2929ad628d9c2ccc9fb4353338fd15084"
   },
   {
-   "path": "assets/scouts/mara/mara_point.webp",
+   "path": "assets__scouts__mara__mara_point.webp",
    "bytes": 94340,
    "sha256": "9bb8f03db619d0953a976fbbf0bcb9dd43ae32c05d03860258c3d0935234ecc2"
   },
   {
-   "path": "assets/scouts/mara/mara_reading_the_line.webp",
+   "path": "assets__scouts__mara__mara_reading_the_line.webp",
    "bytes": 80464,
    "sha256": "cf4a21db7fb7c7c9d526b023c098a4e3edf741db17601b491bdb22c4dcea029a"
   },
   {
-   "path": "assets/scouts/mara/mara_rhythm.webp",
+   "path": "assets__scouts__mara__mara_rhythm.webp",
    "bytes": 79092,
    "sha256": "975307bc79bf4927ea632839fbde833e772c7670a06c85e4b787b052c9a4c45f"
   },
   {
-   "path": "assets/scouts/mara/mara_road_shape.webp",
+   "path": "assets__scouts__mara__mara_road_shape.webp",
    "bytes": 85402,
    "sha256": "5b48dfcf55731d245339593514ad7b4f77e23647d80a15f46218688e7387ce70"
   },
   {
-   "path": "assets/scouts/mara/mara_sign_off.webp",
+   "path": "assets__scouts__mara__mara_sign_off.webp",
    "bytes": 80940,
    "sha256": "efd4c97c66eed2036d6d8a11217ed246812d49ea0fd01ed58e09399ab3eea99d"
   },
   {
-   "path": "assets/scouts/mara/mara_technical_load.webp",
+   "path": "assets__scouts__mara__mara_technical_load.webp",
    "bytes": 61048,
    "sha256": "11faec4f227b26096cd44d4758c3ade7dc3e880b2c80d4fd4c8b328c10edb150"
   },
   {
-   "path": "assets/scouts/noor/noor_altitude_warning.webp",
+   "path": "assets__scouts__noor__noor_altitude_warning.webp",
    "bytes": 78482,
    "sha256": "338f232c2a8d2b4bcb704907c7abcadd54914e98edae10ad226f8b5f164e7f39"
   },
   {
-   "path": "assets/scouts/noor/noor_approve.webp",
+   "path": "assets__scouts__noor__noor_approve.webp",
    "bytes": 83506,
    "sha256": "29edfe1b5e478511bb84ffdd77f3f947d930200107ac520438006fef159119d8"
   },
   {
-   "path": "assets/scouts/noor/noor_caution.webp",
+   "path": "assets__scouts__noor__noor_caution.webp",
    "bytes": 72662,
    "sha256": "21d9e45c5c21fa742086df00e4d2e4ff4fc3ac6f09c23a5f9106c8c5af0a6d25"
   },
   {
-   "path": "assets/scouts/noor/noor_daylight_check.webp",
+   "path": "assets__scouts__noor__noor_daylight_check.webp",
    "bytes": 85330,
    "sha256": "da1635be67fb75eb8e542f859cabd43ac81d0720ed87b050f249b74bcc9e3e67"
   },
   {
-   "path": "assets/scouts/noor/noor_explain.webp",
+   "path": "assets__scouts__noor__noor_explain.webp",
    "bytes": 84058,
    "sha256": "7af50a3cc8f922055f116e76ff7c4b416055de4d219a8c28bda7b258d0880b46"
   },
   {
-   "path": "assets/scouts/noor/noor_forecast_read.webp",
+   "path": "assets__scouts__noor__noor_forecast_read.webp",
    "bytes": 77018,
    "sha256": "c369f2c322c498ae805fa96b5ecbc6006488b0a5e863fdd85c4e3dfb2ba688ca"
   },
   {
-   "path": "assets/scouts/noor/noor_freezing_level.webp",
+   "path": "assets__scouts__noor__noor_freezing_level.webp",
    "bytes": 67096,
    "sha256": "cc68f91ac2a74d62854bbcc0b512a7f329ae45051b7d73aa969db60fce517f64"
   },
   {
-   "path": "assets/scouts/noor/noor_go_decision.webp",
+   "path": "assets__scouts__noor__noor_go_decision.webp",
    "bytes": 99002,
    "sha256": "7a63bd1aeca734808c8053369d0e7f0c6507921d3972c64baa5b428effc79a59"
   },
   {
-   "path": "assets/scouts/noor/noor_layer_up.webp",
+   "path": "assets__scouts__noor__noor_layer_up.webp",
    "bytes": 75594,
    "sha256": "b1b6e3f62ebf61e7094db7dc56497f0770d0db2ea8f932e9c77ac751076ed8f7"
   },
   {
-   "path": "assets/scouts/noor/noor_neutral.webp",
+   "path": "assets__scouts__noor__noor_neutral.webp",
    "bytes": 87470,
    "sha256": "ea9ec51dee79cbf9aa80bc5218060358b3032f53b67fd587c9d1599ee343212d"
   },
   {
-   "path": "assets/scouts/noor/noor_official_status.webp",
+   "path": "assets__scouts__noor__noor_official_status.webp",
    "bytes": 76256,
    "sha256": "8ee67183d5108d5458d692222b227da06c9ecffd1ab85f1303d73226214b3112"
   },
   {
-   "path": "assets/scouts/noor/noor_point.webp",
+   "path": "assets__scouts__noor__noor_point.webp",
    "bytes": 84628,
    "sha256": "7b0026b8439e7f42817126d809d328a6b26bdeae80ae757cc906ad4e0310b05f"
   },
   {
-   "path": "assets/scouts/noor/noor_return_time.webp",
+   "path": "assets__scouts__noor__noor_return_time.webp",
    "bytes": 83238,
    "sha256": "e711084c3f3a8e942a68d192490327badba03acbdd8215f8a29d82eecf963245"
   },
   {
-   "path": "assets/scouts/noor/noor_sign_off.webp",
+   "path": "assets__scouts__noor__noor_sign_off.webp",
    "bytes": 91010,
    "sha256": "be74ec6cf4872b196011926301c6c9c9795a5fa2532ba9f3998160a4d0950b3b"
   },
   {
-   "path": "assets/scouts/noor/noor_window_closing.webp",
+   "path": "assets__scouts__noor__noor_window_closing.webp",
    "bytes": 94984,
    "sha256": "021ae1485a44d5933bccad4297284e4048444f0f34a5faf9eee387ce3a92db87"
   },
   {
-   "path": "assets/type-floor-app.css",
+   "path": "assets__type-floor-app.css",
    "bytes": 2331,
    "sha256": "f7ddb447be5f1e609e980fa12e15c563326281142cb84558f4c3b3dd328eb64c"
   },
   {
-   "path": "assets/type-floor-leads.css",
+   "path": "assets__type-floor-leads.css",
    "bytes": 1184,
    "sha256": "49be8e214240b1d00a8755c2eea5418a033e086c39500f5dcd4b0b9e7e5633db"
   },
   {
-   "path": "assets/vendor/barlow-condensed-latin-500-normal.woff2",
+   "path": "assets__vendor__barlow-condensed-latin-500-normal.woff2",
    "bytes": 21424,
    "sha256": "460f141ec8f6c9a1516bfd2bd9fe71656246d7a9d04a0955faf53158d8970c4c"
   },
   {
-   "path": "assets/vendor/barlow-condensed-latin-600-normal.woff2",
+   "path": "assets__vendor__barlow-condensed-latin-600-normal.woff2",
    "bytes": 22308,
    "sha256": "215a93c696f442034a46fbb382958f753fda60e30490683aeea6b235fcbb2b66"
   },
   {
-   "path": "assets/vendor/barlow-condensed-latin-700-italic.woff2",
+   "path": "assets__vendor__barlow-condensed-latin-700-italic.woff2",
    "bytes": 23796,
    "sha256": "3e91132781a58039c31d419b741d75de86107897428f95680323ff5ce279fee6"
   },
   {
-   "path": "assets/vendor/barlow-condensed-latin-700-normal.woff2",
+   "path": "assets__vendor__barlow-condensed-latin-700-normal.woff2",
    "bytes": 22444,
    "sha256": "3787a5a419171630e6890cfa47c4da067474d005cd0ff8dc11ec090fdc3ee2b8"
   },
   {
-   "path": "assets/vendor/flags/COPYING",
+   "path": "assets__vendor__flags__COPYING",
    "bytes": 165,
    "sha256": "dcd688ab87a37ba3c41d8245249fdf94a7e1a433da452b7501c58560edaa0cc3"
   },
   {
-   "path": "assets/vendor/flags/ae.svg",
+   "path": "assets__vendor__flags__ae.svg",
    "bytes": 252,
    "sha256": "2174893401ee560a1b6330f20088ff6a1115efe28b28a2d2ef1db2ace5bd3b7d"
   },
   {
-   "path": "assets/vendor/flags/am.svg",
+   "path": "assets__vendor__flags__am.svg",
    "bytes": 217,
    "sha256": "7668f3e2f8500fe9be15ab42b57a367b75c69139c4a547549e081c1c6355502b"
   },
   {
-   "path": "assets/vendor/flags/az.svg",
+   "path": "assets__vendor__flags__az.svg",
    "bytes": 481,
    "sha256": "09d79e5ab2cc9258b1e8f45e39e7929d08bfdedbba5e015a1f6c880a35c00e96"
   },
   {
-   "path": "assets/vendor/flags/ba.svg",
+   "path": "assets__vendor__flags__ba.svg",
    "bytes": 1194,
    "sha256": "18dfe9579fff1c5dca67a691c44208db32a564ad0277ca7fe3e7fdd7c1f59724"
   },
   {
-   "path": "assets/vendor/flags/bg.svg",
+   "path": "assets__vendor__flags__bg.svg",
    "bytes": 214,
    "sha256": "0d0969087bfa71e8001ae7267c6a39728ce9ba127e2b7d2c5707d9227577d32c"
   },
   {
-   "path": "assets/vendor/flags/bo.svg",
+   "path": "assets__vendor__flags__bo.svg",
    "bytes": 304,
    "sha256": "3331be1c77f9bbbd94961a8e65b11177a9f1d82f83f6daa76380df3421b649bc"
   },
   {
-   "path": "assets/vendor/flags/bt.svg",
+   "path": "assets__vendor__flags__bt.svg",
    "bytes": 24199,
    "sha256": "f39c1e17ff27aec92217439f79e20294a3bf5ffcf670f51a64707b9cfcbcf4d3"
   },
   {
-   "path": "assets/vendor/flags/cn.svg",
+   "path": "assets__vendor__flags__cn.svg",
    "bytes": 782,
    "sha256": "b22deefb0580a0499a2f6f8f6202c672cd757ddc1936e98ac0d79aa6afe8b051"
   },
   {
-   "path": "assets/vendor/flags/co.svg",
+   "path": "assets__vendor__flags__co.svg",
    "bytes": 263,
    "sha256": "8d56c1761623715abe9300ede1a75f017e7ac21d5fec94fb7056eeda9c5c5cd5"
   },
   {
-   "path": "assets/vendor/flags/et.svg",
+   "path": "assets__vendor__flags__et.svg",
    "bytes": 1089,
    "sha256": "ee18dff0d53fab8bf3d5aa7d29c6703f906777292b7e16c6d822283575337b5e"
   },
   {
-   "path": "assets/vendor/flags/fj.svg",
+   "path": "assets__vendor__flags__fj.svg",
    "bytes": 23328,
    "sha256": "2b920c0a1be7db7169f8ff7598f23b716b9bbbe75f4724f0175fa537638ea871"
   },
   {
-   "path": "assets/vendor/flags/hu.svg",
+   "path": "assets__vendor__flags__hu.svg",
    "bytes": 248,
    "sha256": "0541657ad20ad0101351a0b93e6442b19fdcd45f4b20a0e26eb6932651a2a9b4"
   },
   {
-   "path": "assets/vendor/flags/ir.svg",
+   "path": "assets__vendor__flags__ir.svg",
    "bytes": 13998,
    "sha256": "8fc6ee86e8eb52fc9dcdf48a58931360ae769653629fda941240fe7a828853dc"
   },
   {
-   "path": "assets/vendor/flags/ke.svg",
+   "path": "assets__vendor__flags__ke.svg",
    "bytes": 1340,
    "sha256": "6a32b14111861376886f438bc94d67edd4ba5811408c519be32e287f0b21f39d"
   },
   {
-   "path": "assets/vendor/flags/kg.svg",
+   "path": "assets__vendor__flags__kg.svg",
    "bytes": 4735,
    "sha256": "2127193df8d0c48c33f9b88e8e0a4d1024c535548d8c817f8955ec271db518fd"
   },
   {
-   "path": "assets/vendor/flags/kz.svg",
+   "path": "assets__vendor__flags__kz.svg",
    "bytes": 6834,
    "sha256": "5d1bd1758fcf0fe1caae266663709fcc4ed46e3793f2a2dc734808a61741b23a"
   },
   {
-   "path": "assets/vendor/flags/lk.svg",
+   "path": "assets__vendor__flags__lk.svg",
    "bytes": 10628,
    "sha256": "e26b1fcea0bdfac6dbca32097f3f1bd05229f6a09de90667ce39607eaeda07b5"
   },
   {
-   "path": "assets/vendor/flags/lu.svg",
+   "path": "assets__vendor__flags__lu.svg",
    "bytes": 214,
    "sha256": "e2166e7ad524aac6904ab155dc02d188aedcdf5da34d89e595d06a95e382669b"
   },
   {
-   "path": "assets/vendor/flags/mg.svg",
+   "path": "assets__vendor__flags__mg.svg",
    "bytes": 276,
    "sha256": "4626307f723e60de2811328eea868eb0c7eb78b71c818e25da8fb860f11f0fba"
   },
   {
-   "path": "assets/vendor/flags/mk.svg",
+   "path": "assets__vendor__flags__mk.svg",
    "bytes": 368,
    "sha256": "025df767b1cdd2f2c16ca0915f8751c6ef361ce259d34deaaf75d743a5536774"
   },
   {
-   "path": "assets/vendor/flags/mu.svg",
+   "path": "assets__vendor__flags__mu.svg",
    "bytes": 288,
    "sha256": "140c93a2c000aa7d39e1bf9b7c8cc24248fc2d4049710c4420b057252dbad55a"
   },
   {
-   "path": "assets/vendor/flags/mx.svg",
+   "path": "assets__vendor__flags__mx.svg",
    "bytes": 311,
    "sha256": "847912bdbecf30a1430b8a11a80c30048f12c674dc5eff229d0adaa5eeec0343"
   },
   {
-   "path": "assets/vendor/flags/nc.svg",
+   "path": "assets__vendor__flags__nc.svg",
    "bytes": 1293,
    "sha256": "013ba2e75c5f9ed651a8775d58bc22e09d3257284dd1ab6083699320a8ac08e0"
   },
   {
-   "path": "assets/vendor/flags/np.svg",
+   "path": "assets__vendor__flags__np.svg",
    "bytes": 950,
    "sha256": "37f28bc1f36b9777fd735bba14b5d80b7ba993895d9706aa41bb34ff856c20a2"
   },
   {
-   "path": "assets/vendor/flags/om.svg",
+   "path": "assets__vendor__flags__om.svg",
    "bytes": 21322,
    "sha256": "e617c313106f1459e13258435c0c1dec0ce68bf2ae46d104d1394a69bf560108"
   },
   {
-   "path": "assets/vendor/flags/pe.svg",
+   "path": "assets__vendor__flags__pe.svg",
    "bytes": 178,
    "sha256": "1bf65a793895a21493679587d5ebfb50dbac1fae7160c113bd1a3a653e812b0d"
   },
   {
-   "path": "assets/vendor/flags/pf.svg",
+   "path": "assets__vendor__flags__pf.svg",
    "bytes": 3949,
    "sha256": "783cdfd89c4b3b4cc5e1f69f77ba201895a56788bc11b82ddab70f1bc369dfa9"
   },
   {
-   "path": "assets/vendor/flags/ph.svg",
+   "path": "assets__vendor__flags__ph.svg",
    "bytes": 1368,
    "sha256": "3aa95a89a30f826bb6ba9bf9e914e003a1cbae422be36b4e753d6613ffc7b373"
   },
   {
-   "path": "assets/vendor/flags/pk.svg",
+   "path": "assets__vendor__flags__pk.svg",
    "bytes": 660,
    "sha256": "13a70a25ba38e396e0b7512dee35de01e110aa3176a64f922036947f5cf8d548"
   },
   {
-   "path": "assets/vendor/flags/re.svg",
+   "path": "assets__vendor__flags__re.svg",
    "bytes": 220,
    "sha256": "5796ba05d99988796a0544beaa1a72c5c478216cb8bcbf863705c448da7d5118"
   },
   {
-   "path": "assets/vendor/flags/rs.svg",
+   "path": "assets__vendor__flags__rs.svg",
    "bytes": 301,
    "sha256": "ec7cba80728e99c0aa55d109c8dfff1f8449a51f14a443934f89b6b18913e077"
   },
   {
-   "path": "assets/vendor/flags/rw.svg",
+   "path": "assets__vendor__flags__rw.svg",
    "bytes": 704,
    "sha256": "8b0ca0da970cc92e37ead4d58b971c0d9899dfb15f208615a135a4d98857ceb5"
   },
   {
-   "path": "assets/vendor/flags/sa.svg",
+   "path": "assets__vendor__flags__sa.svg",
    "bytes": 9857,
    "sha256": "6e74070969b5c530ef97ad7144f36f17f67bdafc5f5f9a34a5e11c51d40572d7"
   },
   {
-   "path": "assets/vendor/flags/si.svg",
+   "path": "assets__vendor__flags__si.svg",
    "bytes": 1917,
    "sha256": "9679d02ffb47cea2cf403a9a9c1a1c5fbea064acb6da5dd5cdf0134a4085888f"
   },
   {
-   "path": "assets/vendor/flags/sk.svg",
+   "path": "assets__vendor__flags__sk.svg",
    "bytes": 1159,
    "sha256": "6bfd91f1d4d76de24864a50990452848be4ee0fe343b928e7ed5b9f14da20f9a"
   },
   {
-   "path": "assets/vendor/flags/tn.svg",
+   "path": "assets__vendor__flags__tn.svg",
    "bytes": 335,
    "sha256": "f128d09f7e97af8c132b39ef92f9722d3faab718e4e5854c6c4a15e997b48fc2"
   },
   {
-   "path": "assets/vendor/flags/tz.svg",
+   "path": "assets__vendor__flags__tz.svg",
    "bytes": 497,
    "sha256": "6f5eb11818d47648b7fd33074b714053113be1696ea25a31627d0d4a4fa85491"
   },
   {
-   "path": "assets/vendor/flags/ug.svg",
+   "path": "assets__vendor__flags__ug.svg",
    "bytes": 3793,
    "sha256": "0420e8f625459ce07595d16c54f64571a1cdcc41d9afbccfb7ebbd5ae1b322d4"
   },
   {
-   "path": "assets/vendor/flags/uy.svg",
+   "path": "assets__vendor__flags__uy.svg",
    "bytes": 1562,
    "sha256": "ef7fe8c2622886cc67ef99a33a2d8afc764c47dc1a9390c112fac9223df8292f"
   },
   {
-   "path": "assets/vendor/flags/uz.svg",
+   "path": "assets__vendor__flags__uz.svg",
    "bytes": 1314,
    "sha256": "6a663fe0af6ef6b970a6a469a2c5da5dbb2c124d14dc9797deb14f616077329f"
   },
   {
-   "path": "assets/vendor/flags/ve.svg",
+   "path": "assets__vendor__flags__ve.svg",
    "bytes": 1064,
    "sha256": "7798b1a73345bf9df1649fc900dd593d27a43590c5ee23c67040004ecea9ebc7"
   },
   {
-   "path": "assets/vendor/fonts.css",
+   "path": "assets__vendor__fonts.css",
    "bytes": 853,
    "sha256": "6aa153530180d5d79b3551f3233d59db115557368447f2b2171cae2da1eda53d"
   },
   {
-   "path": "assets/vendor/images/layers-2x.png",
+   "path": "assets__vendor__images__layers-2x.png",
    "bytes": 1259,
    "sha256": "066daca850d8ffbef007af00b06eac0015728dee279c51f3cb6c716df7c42edf"
   },
   {
-   "path": "assets/vendor/images/layers.png",
+   "path": "assets__vendor__images__layers.png",
    "bytes": 696,
    "sha256": "1dbbe9d028e292f36fcba8f8b3a28d5e8932754fc2215b9ac69e4cdecf5107c6"
   },
   {
-   "path": "assets/vendor/images/marker-icon-2x.png",
+   "path": "assets__vendor__images__marker-icon-2x.png",
    "bytes": 2464,
    "sha256": "00179c4c1ee830d3a108412ae0d294f55776cfeb085c60129a39aa6fc4ae2528"
   },
   {
-   "path": "assets/vendor/images/marker-icon.png",
+   "path": "assets__vendor__images__marker-icon.png",
    "bytes": 1466,
    "sha256": "574c3a5cca85f4114085b6841596d62f00d7c892c7b03f28cbfa301deb1dc437"
   },
   {
-   "path": "assets/vendor/images/marker-shadow.png",
+   "path": "assets__vendor__images__marker-shadow.png",
    "bytes": 618,
    "sha256": "264f5c640339f042dd729062cfc04c17f8ea0f29882b538e3848ed8f10edb4da"
   },
   {
-   "path": "assets/vendor/leaflet-maplibre-gl.js",
+   "path": "assets__vendor__leaflet-maplibre-gl.js",
    "bytes": 10451,
    "sha256": "59ecd8d2b32779d24f1bd26b87c8890f27e4a6e7858d993bd17e4d878e6d2677"
   },
   {
-   "path": "assets/vendor/leaflet.css",
+   "path": "assets__vendor__leaflet.css",
    "bytes": 14806,
    "sha256": "a7837102824184820dfa198d1ebcd109ff6d0ff9a2672a074b9a1b4d147d04c6"
   },
   {
-   "path": "assets/vendor/leaflet.js",
+   "path": "assets__vendor__leaflet.js",
    "bytes": 147516,
    "sha256": "c973489bbc5ac530af0ffd1016a88122d3fa02b7b0c8de375ed906e04a46d10f"
   },
   {
-   "path": "assets/vendor/maplibre-gl.css",
+   "path": "assets__vendor__maplibre-gl.css",
    "bytes": 65534,
    "sha256": "576b085fdd9487a65a19215328c1e086c07ce5bf6da09b666b3806d3d008dae9"
   },
   {
-   "path": "assets/vendor/maplibre-gl.js",
+   "path": "assets__vendor__maplibre-gl.js",
    "bytes": 803086,
    "sha256": "be9633c4d870e26fb37f1cfe5c5a77181667114003ea16207ac7850d8da8add1"
   },
   {
-   "path": "assets/vendor/regions/CA-AB.svg",
+   "path": "assets__vendor__regions__CA-AB.svg",
    "bytes": 34047,
    "sha256": "b0b28131a589c750b22f09e3cb32aea3471e899cee2ecc6696911c5e0fc06413"
   },
   {
-   "path": "assets/vendor/regions/CA-BC.svg",
+   "path": "assets__vendor__regions__CA-BC.svg",
    "bytes": 22519,
    "sha256": "3eda3cbcb772cf93ad080cd39e6b75e3332b515f8d7818ab9d06707d6cf3b199"
   },
   {
-   "path": "assets/vendor/regions/CA-NB.svg",
+   "path": "assets__vendor__regions__CA-NB.svg",
    "bytes": 81245,
    "sha256": "63ad3aa68a62312b17c520aee4c0020d74b19002e83a573ba5993f1c3b5731ec"
   },
   {
-   "path": "assets/vendor/regions/CA-NL.svg",
+   "path": "assets__vendor__regions__CA-NL.svg",
    "bytes": 3202,
    "sha256": "b0f8abed325c6797d13d26f62c5ab60955455388a06ee9163a4c9fd003427106"
   },
   {
-   "path": "assets/vendor/regions/CA-NS.svg",
+   "path": "assets__vendor__regions__CA-NS.svg",
    "bytes": 37801,
    "sha256": "039532d5fcb1ed3bc272200b3c2523c3e6471fb29c9e8ccee88e8dd24eb96a30"
   },
   {
-   "path": "assets/vendor/regions/CA-NT.svg",
+   "path": "assets__vendor__regions__CA-NT.svg",
    "bytes": 32034,
    "sha256": "761fb0b4e75eada3b387353293564a97f9eb53a8a9cd7651e73bc5c3b3633f18"
   },
   {
-   "path": "assets/vendor/regions/CA-NU.svg",
+   "path": "assets__vendor__regions__CA-NU.svg",
    "bytes": 2232,
    "sha256": "8e9c2ffa34bf1cd78eaa2ff2f12de6a3d583df831583f9d2c08258bf430ccaa9"
   },
   {
-   "path": "assets/vendor/regions/CA-ON.svg",
+   "path": "assets__vendor__regions__CA-ON.svg",
    "bytes": 12380,
    "sha256": "75dc1fbb4c4de23677c0c695a135fb46bfea1d52ab769700d4b0ac48cd93a7fa"
   },
   {
-   "path": "assets/vendor/regions/CA-QC.svg",
+   "path": "assets__vendor__regions__CA-QC.svg",
    "bytes": 1019,
    "sha256": "41f9ce343ebe92da244758ac7093a355740df7bccde724c3753bb2fa4511d36e"
   },
   {
-   "path": "assets/vendor/regions/CA-YT.svg",
+   "path": "assets__vendor__regions__CA-YT.svg",
    "bytes": 83696,
    "sha256": "ea2193518bc52a4c4d53806d081b4325fe19096bd2273ba99077cdaa12a6136a"
   },
   {
-   "path": "assets/vendor/regions/COPYING",
+   "path": "assets__vendor__regions__COPYING",
    "bytes": 1232,
    "sha256": "82ddaa9abe730bba02f205455f2218e85f506e795ebdfd9fbded48bb225b7e53"
   },
   {
-   "path": "assets/vendor/regions/GB-ENG.svg",
+   "path": "assets__vendor__regions__GB-ENG.svg",
    "bytes": 248,
    "sha256": "b73b22f1788e8da03e6bcf1d7efbc291c19cb816fa262af6024475444fa6ce9a"
   },
   {
-   "path": "assets/vendor/regions/GB-NIR.svg",
+   "path": "assets__vendor__regions__GB-NIR.svg",
    "bytes": 83044,
    "sha256": "01ac3e8207fd025a4e6fd1987e2b863e265c6f51806f1dc7a15b5c381d1091f0"
   },
   {
-   "path": "assets/vendor/regions/GB-SCT.svg",
+   "path": "assets__vendor__regions__GB-SCT.svg",
    "bytes": 390,
    "sha256": "df81dd3b82d61fed5a81ddd3d3c00a711b58dd4f2cc18f6c77837ec5ec6dafe5"
   },
   {
-   "path": "assets/vendor/regions/GB-WLS.svg",
+   "path": "assets__vendor__regions__GB-WLS.svg",
    "bytes": 60790,
    "sha256": "1a6a7807f114a02d9f8f6ab83848ce6cbfbf4e05b301d27cc82224da5ed97836"
   },
   {
-   "path": "assets/vendor/regions/SOURCES",
+   "path": "assets__vendor__regions__SOURCES",
    "bytes": 21957,
    "sha256": "e5a93ccba2ae798e007bf753e04cbe36aa3bfaa76c8587d616329f2f24cf5cf1"
   },
   {
-   "path": "assets/vendor/regions/US-AK.svg",
+   "path": "assets__vendor__regions__US-AK.svg",
    "bytes": 1024,
    "sha256": "09322ac71627f80b7e5ffa8f257f97ec9927237bc1bdb6029677aaad36b2af80"
   },
   {
-   "path": "assets/vendor/regions/US-AL.svg",
+   "path": "assets__vendor__regions__US-AL.svg",
    "bytes": 230,
    "sha256": "b84dea309209047c15adbcb5ee2c7a837cd752e2ab2217d242a28c85ebeab7ed"
   },
   {
-   "path": "assets/vendor/regions/US-AR.svg",
+   "path": "assets__vendor__regions__US-AR.svg",
    "bytes": 12667,
    "sha256": "22e3f7e3f5bbd01b27f10d1c6c011c3b2ead2a96c5725c4bece9a7b5bd9758b9"
   },
   {
-   "path": "assets/vendor/regions/US-AZ.svg",
+   "path": "assets__vendor__regions__US-AZ.svg",
    "bytes": 2196,
    "sha256": "82c769bbf77da501e50f7a3d7567c8c81dfa4e8852956d5b23375fb070f29e7c"
   },
   {
-   "path": "assets/vendor/regions/US-CO.svg",
+   "path": "assets__vendor__regions__US-CO.svg",
    "bytes": 503,
    "sha256": "aa31d8fa6595ec80008563b5d6b075b7f5f323f73404e1f148e6b7ec5f7f9b13"
   },
   {
-   "path": "assets/vendor/regions/US-DC.svg",
+   "path": "assets__vendor__regions__US-DC.svg",
    "bytes": 758,
    "sha256": "81973e43f517f6e06d9fed5d3542c6ff620506ae11b6c69dad64dafa53379897"
   },
   {
-   "path": "assets/vendor/regions/US-GA.svg",
+   "path": "assets__vendor__regions__US-GA.svg",
    "bytes": 52875,
    "sha256": "2d5c21495ff04b8735c455be3780efc1dcfa84a515c6b02cd30dc3436419dfee"
   },
   {
-   "path": "assets/vendor/regions/US-HI.svg",
+   "path": "assets__vendor__regions__US-HI.svg",
    "bytes": 738,
    "sha256": "62cf503101e951624c16e59aebd977fecbbf49e36390efdd97df0fdf0fe51d2b"
   },
   {
-   "path": "assets/vendor/regions/US-IN.svg",
+   "path": "assets__vendor__regions__US-IN.svg",
    "bytes": 7766,
    "sha256": "dec41974142d930d3b17c228bf724e0850d09081f8a6e0598bc019da748659d7"
   },
   {
-   "path": "assets/vendor/regions/US-MD.svg",
+   "path": "assets__vendor__regions__US-MD.svg",
    "bytes": 1043,
    "sha256": "823eb0019ff31d8951042f6cf2bda282d393459c6a467f589960c09dd8ab712b"
   },
   {
-   "path": "assets/vendor/regions/US-MS.svg",
+   "path": "assets__vendor__regions__US-MS.svg",
    "bytes": 1084,
    "sha256": "336691d38e3a428e76a2353028d0306956c2f62f8c30de8b7cf28d19f1af8e9e"
   },
   {
-   "path": "assets/vendor/regions/US-NC.svg",
+   "path": "assets__vendor__regions__US-NC.svg",
    "bytes": 22200,
    "sha256": "faeab20a2138d9c45383bb948a2431013a917a0ba2d1ba4562853fa42f5b083b"
   },
   {
-   "path": "assets/vendor/regions/US-NM.svg",
+   "path": "assets__vendor__regions__US-NM.svg",
    "bytes": 487,
    "sha256": "00271bf40f7289aef644a1383af32caaef271c117a4dd8d157df90de94ac4931"
   },
   {
-   "path": "assets/vendor/regions/US-OH.svg",
+   "path": "assets__vendor__regions__US-OH.svg",
    "bytes": 1755,
    "sha256": "8151f9fd5bf02fc3a9a2f79e464d552b9fa07fa9dd42edd0a59fd1ffdbca9bd7"
   },
   {
-   "path": "assets/vendor/regions/US-RI.svg",
+   "path": "assets__vendor__regions__US-RI.svg",
    "bytes": 5052,
    "sha256": "bc4ae6d2dcf4224ca8bc19a7224d4e29fdbcccdf27c98c8eee3349894cd71a02"
   },
   {
-   "path": "assets/vendor/regions/US-SC.svg",
+   "path": "assets__vendor__regions__US-SC.svg",
    "bytes": 42502,
    "sha256": "3f80f24affc27b18e14145a3c5c40010c90070df3b4aba25e9a9ddf891fced76"
   },
   {
-   "path": "assets/vendor/regions/US-TN.svg",
+   "path": "assets__vendor__regions__US-TN.svg",
    "bytes": 1019,
    "sha256": "b950d5f38832d08bcc7a881ad70d3386e625b8bcf12d9e63c1bea9fb594967b9"
   },
   {
-   "path": "assets/vendor/regions/US-TX.svg",
+   "path": "assets__vendor__regions__US-TX.svg",
    "bytes": 717,
    "sha256": "cbe3449b3ecea6066fa840ddae6cc39df91fb8a823bda9dacec31c2e2f8f7688"
   },
   {
-   "path": "assets/vendor/regions/US-WY.svg",
+   "path": "assets__vendor__regions__US-WY.svg",
    "bytes": 70129,
    "sha256": "49860dd481188b392a7f424180147b8b92671ebc93400a45cea37242c9b4ea7b"
   },
   {
-   "path": "assets/vendor/regions/index.json",
+   "path": "assets__vendor__regions__index.json",
    "bytes": 625,
    "sha256": "60c005927f5bd73a5c9d1408cc2d1bceb595b8496eacb629de769121494eb573"
   },
@@ -990,1562 +990,1562 @@
    "sha256": "52c6843c36e9df0b845b66506dbcb0085d584075b4266caf2730ab453b16be24"
   },
   {
-   "path": "data/cities.txt",
+   "path": "data__cities.txt",
    "bytes": 33377,
    "sha256": "94dc4b969e0ffc42e763059e0bb0e6b03b456ce78ea4436cab0deb5ac06ba463"
   },
   {
-   "path": "data/derived-index.json",
+   "path": "data__derived-index.json",
    "bytes": 3375,
    "sha256": "fa95f4541d8f138eb30c04e39311ca40d677ae2907caf5b65d1098fcbd9e1260"
   },
   {
-   "path": "data/derived/b00.json",
+   "path": "data__derived__b00.json",
    "bytes": 543158,
    "sha256": "b1b1205420e376e6b01b02e54e0c178cecba3279e53340eec0aee2663f45ca5e"
   },
   {
-   "path": "data/derived/b01.json",
+   "path": "data__derived__b01.json",
    "bytes": 536774,
    "sha256": "28065f751d65816a7a1fa1f184339a1da6bf37bcd7aa1c73a257a16f279cd759"
   },
   {
-   "path": "data/derived/b02.json",
+   "path": "data__derived__b02.json",
    "bytes": 516188,
    "sha256": "02d827dee4c5dc1ea8f30755315aef0acad20762474c50c80bec47f046d6cdff"
   },
   {
-   "path": "data/derived/b03.json",
+   "path": "data__derived__b03.json",
    "bytes": 601985,
    "sha256": "d19b590a5c5f83806071fc3b0a192a10daf4e7e776d022fc923590aef17ea11a"
   },
   {
-   "path": "data/derived/b04.json",
+   "path": "data__derived__b04.json",
    "bytes": 562835,
    "sha256": "95cf770bb7441cf12f5e1c64d4c2535839302eaddc653da390a178f3db9acd67"
   },
   {
-   "path": "data/derived/b05.json",
+   "path": "data__derived__b05.json",
    "bytes": 543234,
    "sha256": "47fc6b257ce825e9d1b8b38febaecac464bc3d00dec1544b96eb4b2538eae094"
   },
   {
-   "path": "data/derived/b06.json",
+   "path": "data__derived__b06.json",
    "bytes": 570013,
    "sha256": "86ca16281bb18ea94b060687fb48b5b0e6174a3210ecbe90264aa53f182eada8"
   },
   {
-   "path": "data/derived/b07.json",
+   "path": "data__derived__b07.json",
    "bytes": 579417,
    "sha256": "5cf9c0acc80dba69c3c1377519fd700ed1e05041d238560460d3c995967cbe74"
   },
   {
-   "path": "data/derived/b08.json",
+   "path": "data__derived__b08.json",
    "bytes": 570371,
    "sha256": "18e9ecdc54b22b993d58bd4116e9f7f294d50173c5d8f7868e14c94f7796c26c"
   },
   {
-   "path": "data/derived/b09.json",
+   "path": "data__derived__b09.json",
    "bytes": 534487,
    "sha256": "c06de2024fb2e19e5a27d4ec0a48e865bdadd98efdff977bd8cf01cbd2946815"
   },
   {
-   "path": "data/derived/b10.json",
+   "path": "data__derived__b10.json",
    "bytes": 506290,
    "sha256": "1a2ef18a44971dad8075841f72d11192bc8698b33a2d1c509fc95265b44a87d8"
   },
   {
-   "path": "data/derived/b11.json",
+   "path": "data__derived__b11.json",
    "bytes": 561253,
    "sha256": "d0cd33973e7600b20711e83ca484469a252623e2efca53d337b92c1099dde049"
   },
   {
-   "path": "data/derived/b12.json",
+   "path": "data__derived__b12.json",
    "bytes": 596605,
    "sha256": "f83104a4d8e8499cde45d208ef2da5c0486399536ab66099364e99676f069855"
   },
   {
-   "path": "data/derived/b13.json",
+   "path": "data__derived__b13.json",
    "bytes": 594195,
    "sha256": "39ba1d910adf99768121f99bcda5f015d8a74146fc72828ef360ea62446a7c62"
   },
   {
-   "path": "data/derived/b14.json",
+   "path": "data__derived__b14.json",
    "bytes": 507946,
    "sha256": "ae9713abf83c56929d4e84dcadb8324421d850243fd07bac7c1ac5c0e6490d0e"
   },
   {
-   "path": "data/derived/b15.json",
+   "path": "data__derived__b15.json",
    "bytes": 569498,
    "sha256": "cb0b56299c7d345ea05d358b8b7af77f626c55def18f6b75e009aef3782042fb"
   },
   {
-   "path": "data/derived/b16.json",
+   "path": "data__derived__b16.json",
    "bytes": 539466,
    "sha256": "e109c3cefc261116d8331ed1468edceeeabf078fae813ab91b04207ae3f76eef"
   },
   {
-   "path": "data/derived/b17.json",
+   "path": "data__derived__b17.json",
    "bytes": 590709,
    "sha256": "b203b78da45ff437d995b39a98bfd47eb88b48e1b60d4ef852fe8384d708b4f0"
   },
   {
-   "path": "data/derived/b18.json",
+   "path": "data__derived__b18.json",
    "bytes": 562515,
    "sha256": "7ea74a264b1e9a3e46fc4014162e1b8480d1d6ad6aab041364b474fa5e19463e"
   },
   {
-   "path": "data/derived/b19.json",
+   "path": "data__derived__b19.json",
    "bytes": 530876,
    "sha256": "6d22e6a1d037b71b5343086545b5870e4f3845f905527aca211342bc274fa724"
   },
   {
-   "path": "data/derived/b20.json",
+   "path": "data__derived__b20.json",
    "bytes": 514752,
    "sha256": "28780cdb13dd50f991b9c6e66a5877bcd6000fb85619acd8140542b204f56256"
   },
   {
-   "path": "data/derived/b21.json",
+   "path": "data__derived__b21.json",
    "bytes": 548541,
    "sha256": "30878dc4b38f63681115738bd0042597717ca7e4787068d2d162f926fd913c72"
   },
   {
-   "path": "data/derived/b22.json",
+   "path": "data__derived__b22.json",
    "bytes": 606077,
    "sha256": "6841dd0420a9af4fbe54eea74ccd141222e9a72f41dbb2b2ca3df322bdca095f"
   },
   {
-   "path": "data/derived/b23.json",
+   "path": "data__derived__b23.json",
    "bytes": 550474,
    "sha256": "69d520b1d266709386f5f6187e9aa62f42650bcdb3622ca7d36ff3c294e5b8dc"
   },
   {
-   "path": "data/derived/b24.json",
+   "path": "data__derived__b24.json",
    "bytes": 574045,
    "sha256": "ae1c58aefe4f06cb9f5ea8239f4029f5f067ea8d5749ba8b31ba7446a39ed0f6"
   },
   {
-   "path": "data/derived/b25.json",
+   "path": "data__derived__b25.json",
    "bytes": 537193,
    "sha256": "d914c3a874def1113f35917a7606c1b29eade0df2b426f92e66760267666bbfe"
   },
   {
-   "path": "data/derived/b26.json",
+   "path": "data__derived__b26.json",
    "bytes": 542015,
    "sha256": "3d51bcedef33062de1c4e1ce5daeb8257d945821d3b9c8d7eac15d20fb85a395"
   },
   {
-   "path": "data/derived/b27.json",
+   "path": "data__derived__b27.json",
    "bytes": 509354,
    "sha256": "7c8d07f7dcd0c4659a0bc1f2e3c24d63db5bad0dd726be95bc9f6c6ad1a789d9"
   },
   {
-   "path": "data/derived/b28.json",
+   "path": "data__derived__b28.json",
    "bytes": 571374,
    "sha256": "027174de168d29c51067a0be19435cb3ec4c83bc7c2bfdd4e830e59f6003c5e4"
   },
   {
-   "path": "data/derived/b29.json",
+   "path": "data__derived__b29.json",
    "bytes": 551244,
    "sha256": "f8ab4611e212aced0cd80b5d1e6d479700f1d5608c40d74eda6864a848a5b218"
   },
   {
-   "path": "data/derived/b30.json",
+   "path": "data__derived__b30.json",
    "bytes": 539493,
    "sha256": "1a249a266d0d04250869afef63f69a7c129c5c9f55ce91ab7ca7fa1ceecc68ca"
   },
   {
-   "path": "data/derived/b31.json",
+   "path": "data__derived__b31.json",
    "bytes": 577899,
    "sha256": "5b508508a9b3871491f2125f9ab8b2ac084114a5a0e1f1ca9d0a08fcbe0677de"
   },
   {
-   "path": "data/derived/b32.json",
+   "path": "data__derived__b32.json",
    "bytes": 567274,
    "sha256": "235e596049421d8331b6d91e9f709532640b7eb98202f4495d2dbf2766e5e22d"
   },
   {
-   "path": "data/derived/b33.json",
+   "path": "data__derived__b33.json",
    "bytes": 558628,
    "sha256": "8b40e79f71b549469e83124580b0608052a8988f581e5cfc0d36edf0fedd2b18"
   },
   {
-   "path": "data/derived/b34.json",
+   "path": "data__derived__b34.json",
    "bytes": 540873,
    "sha256": "59fe9480da15c644affbdd53dcd459110ff2fa1ab266ff6d5162d5c3e90215b7"
   },
   {
-   "path": "data/derived/b35.json",
+   "path": "data__derived__b35.json",
    "bytes": 562104,
    "sha256": "76c27b4c9ad4fbaae35b55d9694af391420c2bb69709334bc9c7c97b2e7dfd04"
   },
   {
-   "path": "data/derived/b36.json",
+   "path": "data__derived__b36.json",
    "bytes": 563832,
    "sha256": "006878fe4dcf97524031a104fcaf2259986fb46bd92115ba5d51241bc638c556"
   },
   {
-   "path": "data/derived/b37.json",
+   "path": "data__derived__b37.json",
    "bytes": 530434,
    "sha256": "30dd9d7c45e27a278398c31bbb63c44e7e95dfadd2de7a74458416010368bf5d"
   },
   {
-   "path": "data/derived/b38.json",
+   "path": "data__derived__b38.json",
    "bytes": 535898,
    "sha256": "944b7a6dbb6b2f7bd9f5e679c49e925237efb5784112c49e818a4c62b9d12cda"
   },
   {
-   "path": "data/derived/b39.json",
+   "path": "data__derived__b39.json",
    "bytes": 573230,
    "sha256": "2ee071c119d561a6680ee314706adee95a88f686d68a62db24d0447f4d581fd8"
   },
   {
-   "path": "data/derived/b40.json",
+   "path": "data__derived__b40.json",
    "bytes": 560220,
    "sha256": "b76255e2b938add00ffde749a5c81f51fd52d68e74b2a008d6ddcab6d84a2c85"
   },
   {
-   "path": "data/derived/b41.json",
+   "path": "data__derived__b41.json",
    "bytes": 596201,
    "sha256": "e4d2342b995f942febe060d064c3caace240137135956cce6a5bec4e07174c1d"
   },
   {
-   "path": "data/derived/b42.json",
+   "path": "data__derived__b42.json",
    "bytes": 490103,
    "sha256": "5b0c93a60b550f2ed4f28e5179e84ae49496671e55c83928061f573726e74ccb"
   },
   {
-   "path": "data/derived/b43.json",
+   "path": "data__derived__b43.json",
    "bytes": 501132,
    "sha256": "1d9c462e72afd83fe71fd1021546c04654fa63c64822880a501aed96eb7435a5"
   },
   {
-   "path": "data/derived/b44.json",
+   "path": "data__derived__b44.json",
    "bytes": 576690,
    "sha256": "d8d52caeb59522bee6d28bc4806a6c72641ada8770a0be1e0bf03cf52d8b9b93"
   },
   {
-   "path": "data/derived/b45.json",
+   "path": "data__derived__b45.json",
    "bytes": 591346,
    "sha256": "9cba72b592519956c12cc3e57e9ffc5b1f6660e712c01d7868ceef56e41efefe"
   },
   {
-   "path": "data/derived/b46.json",
+   "path": "data__derived__b46.json",
    "bytes": 527757,
    "sha256": "a773b3593fdc3ab9c5cfdf2cb6c7bba00a40b099dedc27c190b669ca47787df8"
   },
   {
-   "path": "data/derived/b47.json",
+   "path": "data__derived__b47.json",
    "bytes": 558980,
    "sha256": "456fce8d9bb75668e6385b17ca68314d226cda7996842a465abeefe4e138c8de"
   },
   {
-   "path": "data/derived/b48.json",
+   "path": "data__derived__b48.json",
    "bytes": 619026,
    "sha256": "4eb39241f494416c918ee781ab924cb22a2eddddc506a1c7f7aa25c3f9373f6f"
   },
   {
-   "path": "data/derived/b49.json",
+   "path": "data__derived__b49.json",
    "bytes": 508672,
    "sha256": "a238d34642c075021cb1cb48653ca2ad44b0bd56d29ee41eca2112cfc98ce331"
   },
   {
-   "path": "data/derived/b50.json",
+   "path": "data__derived__b50.json",
    "bytes": 526922,
    "sha256": "7c37ee0e812b89dfb169d91f85cd6c82d9d8ed4a9a760c0ce3a86933bed558ea"
   },
   {
-   "path": "data/derived/b51.json",
+   "path": "data__derived__b51.json",
    "bytes": 581469,
    "sha256": "a4c4661854e62e7eb187b782de28948158957e658458bafbfd4eff6efe5539c5"
   },
   {
-   "path": "data/derived/b52.json",
+   "path": "data__derived__b52.json",
    "bytes": 552954,
    "sha256": "8e70e7506430f0693bc47557285dfce7f1d54d7ce2a95c8b583bd9fd4523205e"
   },
   {
-   "path": "data/derived/b53.json",
+   "path": "data__derived__b53.json",
    "bytes": 528896,
    "sha256": "0a188c03e4af9232f75b579d232d755d3d2b42f6d13d0602e12cf44f059504d4"
   },
   {
-   "path": "data/derived/b54.json",
+   "path": "data__derived__b54.json",
    "bytes": 595568,
    "sha256": "c1413e7bb71ce89b9ef6d6288108106c37f2d7eaa624f3a2cdf378f35a6629a1"
   },
   {
-   "path": "data/derived/b55.json",
+   "path": "data__derived__b55.json",
    "bytes": 591893,
    "sha256": "2ee8ac227e327936dcfcb08a72166195fc2a0eabfcf69323c3e76be12a534676"
   },
   {
-   "path": "data/derived/b56.json",
+   "path": "data__derived__b56.json",
    "bytes": 548723,
    "sha256": "a0f39436cfe19cd354108aae5122aa827c6b33d8c6bd317dfbb3f2b487c45fb5"
   },
   {
-   "path": "data/derived/b57.json",
+   "path": "data__derived__b57.json",
    "bytes": 612555,
    "sha256": "0b9b62413effeefe35c27bab228c17241f23f6e90eaf91a0583e990c0762a5d4"
   },
   {
-   "path": "data/derived/b58.json",
+   "path": "data__derived__b58.json",
    "bytes": 546335,
    "sha256": "f8107c91cfad03d12264b5daddf265a69f6391d50c867a41af7dba5aa908fd53"
   },
   {
-   "path": "data/derived/b59.json",
+   "path": "data__derived__b59.json",
    "bytes": 553264,
    "sha256": "14f5f2c217efec95b68c743c23cad833aea01a061fbd6e921fdffc6adede3d10"
   },
   {
-   "path": "data/derived/b60.json",
+   "path": "data__derived__b60.json",
    "bytes": 563971,
    "sha256": "58e026ebec97a0afd2884ab3caf41ace2a93cc8f717c247f967548f67b528ba5"
   },
   {
-   "path": "data/derived/b61.json",
+   "path": "data__derived__b61.json",
    "bytes": 572611,
    "sha256": "3954e5506bbcac36346301cc98a6b02438f107a1ebfbb5af961607fbd9bc354b"
   },
   {
-   "path": "data/derived/b62.json",
+   "path": "data__derived__b62.json",
    "bytes": 578277,
    "sha256": "f5cff71e849590fbeb344fb67490d0a66d5f4b01462139d9cc471ba471b4056c"
   },
   {
-   "path": "data/derived/b63.json",
+   "path": "data__derived__b63.json",
    "bytes": 536777,
    "sha256": "6f2dabd17a3d4445a1fe0b1aa55c3fdbdee5c9f37ec58f98181852ec513d9f71"
   },
   {
-   "path": "data/editorial.json",
+   "path": "data__editorial.json",
    "bytes": 105118,
    "sha256": "5af43d6c33c722ab77620b045fbb7066300bb56d45ce43fc2850328495f757fe"
   },
   {
-   "path": "data/events.json",
+   "path": "data__events.json",
    "bytes": 59203,
    "sha256": "0e94ae5b13661fb75ca97d32f542318ba874f7a2e4e53e7354f5b4e5cfb9ecda"
   },
   {
-   "path": "data/heritage.json",
+   "path": "data__heritage.json",
    "bytes": 1222734,
    "sha256": "7f3b1e8c5e6664dd0a351ab349dd4f55ab741017bf465d6b69c5c899dc137f39"
   },
   {
-   "path": "data/index/cardpacks/p0.json",
+   "path": "data__index__cardpacks__p0.json",
    "bytes": 892984,
    "sha256": "fb9ed83bf1514e297d2d806b1c830d8a9355d935820cfd0933a4b8b090a5e8e3"
   },
   {
-   "path": "data/index/cardpacks/p1.json",
+   "path": "data__index__cardpacks__p1.json",
    "bytes": 758864,
    "sha256": "3b2a86dc93aafd612885de92e2b148b2b94861f51058da084a8ebd53fad4e47d"
   },
   {
-   "path": "data/index/cardpacks/p2.json",
+   "path": "data__index__cardpacks__p2.json",
    "bytes": 998311,
    "sha256": "ad7305cf600519ae5eb18039265e26cadd551a87854b54a97d0851c7ada46bbf"
   },
   {
-   "path": "data/index/cardpacks/p3.json",
+   "path": "data__index__cardpacks__p3.json",
    "bytes": 785709,
    "sha256": "a88238be3386e208040c68c9d20ef80cb6f1ccac35e3748c672ad9759021711f"
   },
   {
-   "path": "data/index/cardpacks/p4.json",
+   "path": "data__index__cardpacks__p4.json",
    "bytes": 1000696,
    "sha256": "2e4bf99011438d5485d0df38ae5c586f77411204212c3f6f793a93916909e6fb"
   },
   {
-   "path": "data/index/cardpacks/p5.json",
+   "path": "data__index__cardpacks__p5.json",
    "bytes": 1169971,
    "sha256": "b26be286e3459002be65e11f90069dd724d5afb4f3c8cc185fdfc6ad9163a509"
   },
   {
-   "path": "data/index/cardpacks/p6.json",
+   "path": "data__index__cardpacks__p6.json",
    "bytes": 996918,
    "sha256": "001d365ecf3792a2971db0f399ae7bd5ab7368fcaed6b5f74a056886d8beb105"
   },
   {
-   "path": "data/index/cardpacks/p7.json",
+   "path": "data__index__cardpacks__p7.json",
    "bytes": 1092523,
    "sha256": "d5aa35e3879cf7f45651f77b77a2081f9d26e71fedf302e4590145a9009b6514"
   },
   {
-   "path": "data/index/core.json",
+   "path": "data__index__core.json",
    "bytes": 4574925,
    "sha256": "aa2f1922251e9d02b30b0ed79ee8b9d2be8869f4268a7b381b447c928462547b"
   },
   {
-   "path": "data/legends-geom.json",
+   "path": "data__legends-geom.json",
    "bytes": 32,
    "sha256": "5846cea21c5d5ce4d536be080ef14b90edfdaf9cfb51f8fc5c24dab2ec39e8fd"
   },
   {
-   "path": "data/legends.json",
+   "path": "data__legends.json",
    "bytes": 711565,
    "sha256": "91cff513212392a5d6689f2411372ae0e046cfb799dbef8fd6b7bd03f28a7c67"
   },
   {
-   "path": "data/media/approved-media.json",
+   "path": "data__media__approved-media.json",
    "bytes": 3130,
    "sha256": "c8592e88a55bfb0c8d50af19e0629b7b0553f1c05871366ea1132d7d31fb1174"
   },
   {
-   "path": "data/passes.json",
+   "path": "data__passes.json",
    "bytes": 44007,
    "sha256": "d3b8a1755368467469124019ac7e6a51ed6cff69a9e11113960afe2955941963"
   },
   {
-   "path": "data/places-index.json",
+   "path": "data__places-index.json",
    "bytes": 597243,
    "sha256": "98e91c3b884e7a1440f4d6cd5a0a2b66b9af28f187907881a6729a32634f9ed9"
   },
   {
-   "path": "data/places.json",
+   "path": "data__places.json",
    "bytes": 65103,
    "sha256": "d8dd56789102f393f8d9d3eea622370edb24fb202e84d642c94f07458c28f45e"
   },
   {
-   "path": "data/route-flags.json",
+   "path": "data__route-flags.json",
    "bytes": 134628,
    "sha256": "fedb532f08e4ceadd7104630247ba972de5d324843ba6eabdee3738020d0441f"
   },
   {
-   "path": "data/routes/amsterdam.json",
+   "path": "data__routes__amsterdam.json",
    "bytes": 7559,
    "sha256": "bb4b5be17ac153cc96640547b0ce6243bb103817e7dd1c74891656820084c235"
   },
   {
-   "path": "data/routes/athens.json",
+   "path": "data__routes__athens.json",
    "bytes": 7383,
    "sha256": "99b87712784b6f4d48c6dcee5557978941ff66c39fbe04ff3c4639013a6d3cb2"
   },
   {
-   "path": "data/routes/auckland-new-zealand.json",
+   "path": "data__routes__auckland-new-zealand.json",
    "bytes": 106904,
    "sha256": "db3c25400c7912272036a303be7d0b3a5486ffe70800dc9c3d69e68ded3173d4"
   },
   {
-   "path": "data/routes/auckland.json",
+   "path": "data__routes__auckland.json",
    "bytes": 7853,
    "sha256": "801cb2875c03c46c890454ec70f1ca579e3f87eff94e6f8f30a7101ee702859b"
   },
   {
-   "path": "data/routes/australia-touring-roads.json",
+   "path": "data__routes__australia-touring-roads.json",
    "bytes": 31284,
    "sha256": "207fbb154217760b9012b6d25f2c08c6052fb14dbc778e9239f244bba865e1a6"
   },
   {
-   "path": "data/routes/bangkok-thailand.json",
+   "path": "data__routes__bangkok-thailand.json",
    "bytes": 105831,
    "sha256": "77b5dc53b7b3f3dc870156015963784aa898afd732cea9b91cf1676790cc42a9"
   },
   {
-   "path": "data/routes/bangkok.json",
+   "path": "data__routes__bangkok.json",
    "bytes": 7534,
    "sha256": "a7fb1cf03a88db703c1dc1e36f0276022e3019a110793fd4832a8a18a84e0182"
   },
   {
-   "path": "data/routes/barcelona-catalonia.json",
+   "path": "data__routes__barcelona-catalonia.json",
    "bytes": 105284,
    "sha256": "2cdad86df9495ddd63a98576cfee71483fda65229d1485967a71f5f28386377b"
   },
   {
-   "path": "data/routes/barcelona.json",
+   "path": "data__routes__barcelona.json",
    "bytes": 15986,
    "sha256": "6810b946a1a67fe19b10d4d7a1ba423779eda9d667d1bfe88c49adfc3dc35c7f"
   },
   {
-   "path": "data/routes/berlin-motorcycle-escapes.json",
+   "path": "data__routes__berlin-motorcycle-escapes.json",
    "bytes": 261641,
    "sha256": "de2df8d93114fc5af6ff7da2692dec7ac310c8b790e1c5f8f09df0db90b87dbb"
   },
   {
-   "path": "data/routes/berlin.json",
+   "path": "data__routes__berlin.json",
    "bytes": 68650,
    "sha256": "d9671be3b2857099a4fb7a2a6f95dce2ce7f201dc367fb2d102015214f9a28bd"
   },
   {
-   "path": "data/routes/blue-ridge-and-appalachians.json",
+   "path": "data__routes__blue-ridge-and-appalachians.json",
    "bytes": 35201,
    "sha256": "8fa59197b72573a853c77e60fe450c1b4fc77e26ff453fba0f35dada7d971721"
   },
   {
-   "path": "data/routes/bregenz-vorarlberg.json",
+   "path": "data__routes__bregenz-vorarlberg.json",
    "bytes": 12144,
    "sha256": "290d6c80a0b79322fdb4bbc05ae82a353cbcf5dc00b3e0744f2518bd93dabb47"
   },
   {
-   "path": "data/routes/brussels.json",
+   "path": "data__routes__brussels.json",
    "bytes": 16700,
    "sha256": "d24791a1abcb82cf4552361ce909caa9e8146c211d4a5df09358a516a41de569"
   },
   {
-   "path": "data/routes/buenos-aires.json",
+   "path": "data__routes__buenos-aires.json",
    "bytes": 7641,
    "sha256": "1a76a776d9c12816f1a86ed21883d411d6f89fd7f201f269623e2112f29aa446"
   },
   {
-   "path": "data/routes/california-road-trips.json",
+   "path": "data__routes__california-road-trips.json",
    "bytes": 28086,
    "sha256": "cdbca7d2ee49b91f346f209a1125ec8b7bdc7df7d8384701e328998c60c6aede"
   },
   {
-   "path": "data/routes/cape-town-and-south-africa.json",
+   "path": "data__routes__cape-town-and-south-africa.json",
    "bytes": 26157,
    "sha256": "c8ee002c702bb6e7d7f84a46c76717085c12a59984fec367e2df0ab0ae832fc2"
   },
   {
-   "path": "data/routes/cape-town-western-cape.json",
+   "path": "data__routes__cape-town-western-cape.json",
    "bytes": 112078,
    "sha256": "8e6641739ddd85e4540b8a5bff992f954405f0391281083130a1736c2289b439"
   },
   {
-   "path": "data/routes/chiang-mai.json",
+   "path": "data__routes__chiang-mai.json",
    "bytes": 7330,
    "sha256": "6f92611ba2d06cbbb300fee65cf7c6b49e4ce6acfa7fa73cbaa95064119bb367"
   },
   {
-   "path": "data/routes/curated-ae.json",
+   "path": "data__routes__curated-ae.json",
    "bytes": 144412,
    "sha256": "67127fff3c020f23d37ec30753652c3832273ec6488cde208f94437277b91881"
   },
   {
-   "path": "data/routes/curated-af.json",
+   "path": "data__routes__curated-af.json",
    "bytes": 4522,
    "sha256": "d5a14eeac604f2b3ccc972b845d2d5a8a510d760ca519c96e4fefbca41e85c95"
   },
   {
-   "path": "data/routes/curated-al.json",
+   "path": "data__routes__curated-al.json",
    "bytes": 219213,
    "sha256": "1c90cf5309fc4da830d69330b2ac8e7a1317d16999e94fae205d6e17c7407739"
   },
   {
-   "path": "data/routes/curated-am.json",
+   "path": "data__routes__curated-am.json",
    "bytes": 70977,
    "sha256": "bbef88d3cc8e3f6db17065f920282fa0235f069b7cdf728276f3223223742f5b"
   },
   {
-   "path": "data/routes/curated-ar.json",
+   "path": "data__routes__curated-ar.json",
    "bytes": 273905,
    "sha256": "1222293df55c34f3fa19a7fdb1254f74a481f8c26294f73bffc9b376f844d37b"
   },
   {
-   "path": "data/routes/curated-at.json",
+   "path": "data__routes__curated-at.json",
    "bytes": 2119592,
    "sha256": "2445f5f0724ceac89279e33bd2d9ca8c5ae4c78ff53a41e594273c824f68521d"
   },
   {
-   "path": "data/routes/curated-au.json",
+   "path": "data__routes__curated-au.json",
    "bytes": 1475720,
    "sha256": "e5b634b762e072bf7cb99f84916b77626ac19fea94cc6dc18539f9601b2113ae"
   },
   {
-   "path": "data/routes/curated-az.json",
+   "path": "data__routes__curated-az.json",
    "bytes": 73227,
    "sha256": "e1d11cc1f3b500e747673148fbe74bf979322bd312afbbc4e9f238b0fc27cc94"
   },
   {
-   "path": "data/routes/curated-ba.json",
+   "path": "data__routes__curated-ba.json",
    "bytes": 41997,
    "sha256": "425703011b4e46f7f721aecf5e1b32dc903d443d86b203ce122baf4fafee2ee0"
   },
   {
-   "path": "data/routes/curated-bd.json",
+   "path": "data__routes__curated-bd.json",
    "bytes": 2038,
    "sha256": "341f4d697408d59868c6887ca733f549c0c9dbee490710301fd70e8bd830db5a"
   },
   {
-   "path": "data/routes/curated-be.json",
+   "path": "data__routes__curated-be.json",
    "bytes": 1040469,
    "sha256": "9c1156bdb4bc6f253362c17d32e75779e8e4e4cf8c8c12ab8e1bbaeb26f86b7e"
   },
   {
-   "path": "data/routes/curated-bg.json",
+   "path": "data__routes__curated-bg.json",
    "bytes": 432700,
    "sha256": "303dfa9a6db661b9aa93617d607abef80f721d1564f38b5bfb847a7b348a8877"
   },
   {
-   "path": "data/routes/curated-bh.json",
+   "path": "data__routes__curated-bh.json",
    "bytes": 402767,
    "sha256": "6c0f81ae9c71fe194715641183488afee889fa1895a7a10e51c0523b947f0e19"
   },
   {
-   "path": "data/routes/curated-bo.json",
+   "path": "data__routes__curated-bo.json",
    "bytes": 215534,
    "sha256": "18c768a229f798fdf88a759a23e0a99a9ad8194ad0fa149083dc84800f6a165e"
   },
   {
-   "path": "data/routes/curated-br.json",
+   "path": "data__routes__curated-br.json",
    "bytes": 931861,
    "sha256": "e2717e9937cddbbb3327bf9f1447cedb5e881d76445c2821f995173289edad48"
   },
   {
-   "path": "data/routes/curated-bt.json",
+   "path": "data__routes__curated-bt.json",
    "bytes": 10117,
    "sha256": "186c596553ca76de9fa4cc2d33360b703ce724592bed8f6cbbe758fafc710f55"
   },
   {
-   "path": "data/routes/curated-by.json",
+   "path": "data__routes__curated-by.json",
    "bytes": 111278,
    "sha256": "43078b7c019c1aa2065e6118d09d695f3ce07167d998b31c983887c1514ea6bb"
   },
   {
-   "path": "data/routes/curated-ca.json",
+   "path": "data__routes__curated-ca.json",
    "bytes": 386481,
    "sha256": "1620ba3cfdd5d4b120b2bccb941ddb6bc11e0bd9d10295c436a0fb5e1e8d2d34"
   },
   {
-   "path": "data/routes/curated-ch.json",
+   "path": "data__routes__curated-ch.json",
    "bytes": 3346178,
    "sha256": "b9064e9e48f07c006c25db2552be08b3c49fd32bc32bbc58617cf889cbac2469"
   },
   {
-   "path": "data/routes/curated-cl.json",
+   "path": "data__routes__curated-cl.json",
    "bytes": 406957,
    "sha256": "f69be17d1329eed9a397a0d9770c42213c8132080d646252fe8c7f2ebf2fcd17"
   },
   {
-   "path": "data/routes/curated-cn.json",
+   "path": "data__routes__curated-cn.json",
    "bytes": 1765168,
    "sha256": "3691492d18ef381bad3883c3c976f4bcfbec311e21f26ee0b6eb0937f2fa3b69"
   },
   {
-   "path": "data/routes/curated-co.json",
+   "path": "data__routes__curated-co.json",
    "bytes": 118605,
    "sha256": "55d351cbb0ce3b0ae05f67f1110b9426f717ec7f5e353215f24112be73aefb62"
   },
   {
-   "path": "data/routes/curated-cr.json",
+   "path": "data__routes__curated-cr.json",
    "bytes": 4401,
    "sha256": "75c3ebfd3063466de6f08bb083ba7afc860e7dd14951e17e7a0852e6ff7d97d2"
   },
   {
-   "path": "data/routes/curated-cu.json",
+   "path": "data__routes__curated-cu.json",
    "bytes": 1819,
    "sha256": "3179c9f46cc63aa0007c898042811bf3f3657b75a69a916a1065e7454a5b7f54"
   },
   {
-   "path": "data/routes/curated-cy.json",
+   "path": "data__routes__curated-cy.json",
    "bytes": 12237,
    "sha256": "371517f53385c03c89fbec5c60a27f6ae0c929ed37714e1e32cfdb7e9b424ae4"
   },
   {
-   "path": "data/routes/curated-cz.json",
+   "path": "data__routes__curated-cz.json",
    "bytes": 598453,
    "sha256": "38f9609c7a7a932edbefadce0ed86cb1e788e5d02997a484bd693475530ed933"
   },
   {
-   "path": "data/routes/curated-de-1.json",
+   "path": "data__routes__curated-de-1.json",
    "bytes": 7861798,
    "sha256": "54ca7d9e475eb79d91279f2b7b43a1d594d08121a3738ca4d05f1055e5e7ba73"
   },
   {
-   "path": "data/routes/curated-de-2.json",
+   "path": "data__routes__curated-de-2.json",
    "bytes": 4284149,
    "sha256": "3cf19b46a257e9ac6554200369ad503606264fbd5fe9b0461e76c439cefa695e"
   },
   {
-   "path": "data/routes/curated-dk.json",
+   "path": "data__routes__curated-dk.json",
    "bytes": 31888,
    "sha256": "207705daca1ecfcd242961932608505da5e81ef6ec9dc4153e17d6c097ed13a4"
   },
   {
-   "path": "data/routes/curated-dz.json",
+   "path": "data__routes__curated-dz.json",
    "bytes": 10231,
    "sha256": "b9fd456074109b89c5714438a23304606e1ad2fa5b541137e318cc2e629472cc"
   },
   {
-   "path": "data/routes/curated-ec.json",
+   "path": "data__routes__curated-ec.json",
    "bytes": 763324,
    "sha256": "9c826413452be0d20e507d931fc065038598d77588674a371a8134d8a04d757d"
   },
   {
-   "path": "data/routes/curated-ee.json",
+   "path": "data__routes__curated-ee.json",
    "bytes": 38833,
    "sha256": "103a458477afcce94be0d9c5c51bc0dd800b348a235dd7508e5c6a0b8292e666"
   },
   {
-   "path": "data/routes/curated-eg.json",
+   "path": "data__routes__curated-eg.json",
    "bytes": 55579,
    "sha256": "92ca2b0ca5ee131b1f1a18ce3d905b1320223560bff4a594058d60b2beecdde1"
   },
   {
-   "path": "data/routes/curated-es-1.json",
+   "path": "data__routes__curated-es-1.json",
    "bytes": 7864277,
    "sha256": "9227309b563dc432c0d702971188769a3f78a618a9373cb73a880f0fb1c07b3b"
   },
   {
-   "path": "data/routes/curated-es-2.json",
+   "path": "data__routes__curated-es-2.json",
    "bytes": 7863960,
    "sha256": "84fee97bc6d35df382e4919168ea4e522beb6fc96ea6b6bb56ff724293ffc24c"
   },
   {
-   "path": "data/routes/curated-es-3.json",
+   "path": "data__routes__curated-es-3.json",
    "bytes": 2408671,
    "sha256": "64c6e8683b1ae00d046568376d88e6e199c5d00025c38328532922b08abe5513"
   },
   {
-   "path": "data/routes/curated-et.json",
+   "path": "data__routes__curated-et.json",
    "bytes": 15452,
    "sha256": "42de661eccd8b7c177b982e3aec5955a810e271bdce8b20d408b0d5707b514c8"
   },
   {
-   "path": "data/routes/curated-fi.json",
+   "path": "data__routes__curated-fi.json",
    "bytes": 1728087,
    "sha256": "50907d511e2fc08225c063109804ee29bf1bf60fb2fc38c4421a104f9648490a"
   },
   {
-   "path": "data/routes/curated-fj.json",
+   "path": "data__routes__curated-fj.json",
    "bytes": 2684,
    "sha256": "2ec68587810437fa5bca4c1a3ed5fc543abd05dae8ef3e5bd17dee20ab50cc54"
   },
   {
-   "path": "data/routes/curated-fr.json",
+   "path": "data__routes__curated-fr.json",
    "bytes": 5632581,
    "sha256": "849a33c16c9020e14af4bf4463f0b0a350b81143eed8e52c3dae0b234d5e13ef"
   },
   {
-   "path": "data/routes/curated-gb.json",
+   "path": "data__routes__curated-gb.json",
    "bytes": 6561789,
    "sha256": "3c4b74bde6a1adeb14fbd25a034cf3bea99a6f87b4d7b7fe85c075a1841638fa"
   },
   {
-   "path": "data/routes/curated-ge.json",
+   "path": "data__routes__curated-ge.json",
    "bytes": 139008,
    "sha256": "580cdcd827497ac480c32bf8a265846b8d4a6c8a1778d8c767509d6d0a6ed9b2"
   },
   {
-   "path": "data/routes/curated-gh.json",
+   "path": "data__routes__curated-gh.json",
    "bytes": 4561,
    "sha256": "a3cda6bbeee10fa06062e7b955290814fd8be5efe3e55e2fa7fb4d706f26efbe"
   },
   {
-   "path": "data/routes/curated-gr.json",
+   "path": "data__routes__curated-gr.json",
    "bytes": 691539,
    "sha256": "c4317cb5cc4d37f47d7d4f1b26641898ae681ff9a4d6ea8d90ba9eaf2577f5a8"
   },
   {
-   "path": "data/routes/curated-gt.json",
+   "path": "data__routes__curated-gt.json",
    "bytes": 3937,
    "sha256": "4a6738eb7b2d09d6f8ac96c4b27427575a14794af1a009e255ef19cf13abaf32"
   },
   {
-   "path": "data/routes/curated-hk.json",
+   "path": "data__routes__curated-hk.json",
    "bytes": 5120,
    "sha256": "51cc5110458050cf598a3cb05e50dcbf44d5eaff33aba604cafd6bc5e5b8cb82"
   },
   {
-   "path": "data/routes/curated-hr.json",
+   "path": "data__routes__curated-hr.json",
    "bytes": 1036103,
    "sha256": "41f00702a59d06d4e1f29d541e51121c26d5035a0e2f64a86edf4bd4dabc5380"
   },
   {
-   "path": "data/routes/curated-hu.json",
+   "path": "data__routes__curated-hu.json",
    "bytes": 452860,
    "sha256": "7525602a92882627f9ced305b657d9bd22ceb1b65635633fef5cccc43fd5149b"
   },
   {
-   "path": "data/routes/curated-id.json",
+   "path": "data__routes__curated-id.json",
    "bytes": 299814,
    "sha256": "2e6414420baf421b5f689cd776a2b8dea15ab80c15d040599ce9d1f402c57238"
   },
   {
-   "path": "data/routes/curated-ie.json",
+   "path": "data__routes__curated-ie.json",
    "bytes": 52779,
    "sha256": "9908424bd895db4ac4222e1dcc1e5a806acef5e394e521bc884cb6134f0c46c0"
   },
   {
-   "path": "data/routes/curated-il.json",
+   "path": "data__routes__curated-il.json",
    "bytes": 23924,
    "sha256": "f38026434619a5824d5359980c67a2c08309b278402d86042d9ba0db849b2018"
   },
   {
-   "path": "data/routes/curated-in.json",
+   "path": "data__routes__curated-in.json",
    "bytes": 543157,
    "sha256": "288c0b9bbda476f5f2e25a33cd269b0df09a3914c6a510c72c4bce694235ba08"
   },
   {
-   "path": "data/routes/curated-iq.json",
+   "path": "data__routes__curated-iq.json",
    "bytes": 40892,
    "sha256": "2a618f7cb4e6e4d50f17558b07370a0e6df50cac17a2a33758d03e95f81ce44c"
   },
   {
-   "path": "data/routes/curated-ir.json",
+   "path": "data__routes__curated-ir.json",
    "bytes": 1467330,
    "sha256": "420a072f92ce71b3cc4c377095f1ce36f6bb553d7914e58b47a641e503403a50"
   },
   {
-   "path": "data/routes/curated-is.json",
+   "path": "data__routes__curated-is.json",
    "bytes": 74593,
    "sha256": "fcea9b38c7ce58136d410d5f13827ebb370ae1412e74bca089e5ccfe3ccb3701"
   },
   {
-   "path": "data/routes/curated-it.json",
+   "path": "data__routes__curated-it.json",
    "bytes": 7723003,
    "sha256": "3852bb1bdab119beefc2734ce7d18ffe9104d75e810b5b0a0b590203cb3d9642"
   },
   {
-   "path": "data/routes/curated-jm.json",
+   "path": "data__routes__curated-jm.json",
    "bytes": 310619,
    "sha256": "67beebc5b593bca91ad927e6420a4a573d467fa53e9a7117035af5a959197372"
   },
   {
-   "path": "data/routes/curated-jo.json",
+   "path": "data__routes__curated-jo.json",
    "bytes": 1556082,
    "sha256": "ce8bc85920a649c72516f7d8c4448a30bb44ce7b8729075c619a8a1fdf8e1444"
   },
   {
-   "path": "data/routes/curated-jp.json",
+   "path": "data__routes__curated-jp.json",
    "bytes": 5072726,
    "sha256": "e90d7091e7a6ab7e3e9faf59f34ce997c8bd159d5b70302f84c4c41afce95f56"
   },
   {
-   "path": "data/routes/curated-ke.json",
+   "path": "data__routes__curated-ke.json",
    "bytes": 75946,
    "sha256": "5270625a8c8a4b7370ba23c642a847ed03d07259b8062c5274c737bffc24bad9"
   },
   {
-   "path": "data/routes/curated-kg.json",
+   "path": "data__routes__curated-kg.json",
    "bytes": 60509,
    "sha256": "1ba3c448eeed1c24368866aadd71b4ee48763c155429df0aef82e2f78935e8b7"
   },
   {
-   "path": "data/routes/curated-kh.json",
+   "path": "data__routes__curated-kh.json",
    "bytes": 2168,
    "sha256": "3284b7939d23afa5c2b33ce78b45f7dac6fa790fdc8a4f26484ef3588f5d15f6"
   },
   {
-   "path": "data/routes/curated-kr.json",
+   "path": "data__routes__curated-kr.json",
    "bytes": 1997476,
    "sha256": "5b5901143d3a71c953388ccef2e43ce976ab55cfb9e6d24e91dcd8d29c325412"
   },
   {
-   "path": "data/routes/curated-kw.json",
+   "path": "data__routes__curated-kw.json",
    "bytes": 72910,
    "sha256": "319d3b9d435f2c0ebc68889cf0d3d954c28a28f22411a2a9d568f258cb6affef"
   },
   {
-   "path": "data/routes/curated-kz.json",
+   "path": "data__routes__curated-kz.json",
    "bytes": 33648,
    "sha256": "b6238d347dd884114f56d93363e824450291565331bae10414622fc4e5465c79"
   },
   {
-   "path": "data/routes/curated-la.json",
+   "path": "data__routes__curated-la.json",
    "bytes": 178276,
    "sha256": "066e50e230d93407aff481a655b6ca575d3a59a451277cc9e77de520b1e03fd8"
   },
   {
-   "path": "data/routes/curated-lb.json",
+   "path": "data__routes__curated-lb.json",
    "bytes": 2728,
    "sha256": "c255d9e25434da0c4f4cba74f6c184d9a178c607d2b98816b3e5d949ce0180dc"
   },
   {
-   "path": "data/routes/curated-lk.json",
+   "path": "data__routes__curated-lk.json",
    "bytes": 241896,
    "sha256": "d24e6cc8874ae4da723defc811bae46470a72d825ab53b8c5b5bcd6bc15fa047"
   },
   {
-   "path": "data/routes/curated-lt.json",
+   "path": "data__routes__curated-lt.json",
    "bytes": 11985,
    "sha256": "e2ccd6c86e0fea88cad7a2296bbe33346a633076242168ace14f4f724db39276"
   },
   {
-   "path": "data/routes/curated-lu.json",
+   "path": "data__routes__curated-lu.json",
    "bytes": 283472,
    "sha256": "3c35648ac85591beb973400a58ebafb4345fd80e29ccc5c6dac18684a06f39fd"
   },
   {
-   "path": "data/routes/curated-lv.json",
+   "path": "data__routes__curated-lv.json",
    "bytes": 46559,
    "sha256": "c58cf7d143140b37df0ca07cf69408d2379ab7a852add9a93e49f5b663ea5a72"
   },
   {
-   "path": "data/routes/curated-ma.json",
+   "path": "data__routes__curated-ma.json",
    "bytes": 97757,
    "sha256": "1e16f674b07d906db3a3b3ef2840dfc6a0630936c676a23a61feacba8b740a7f"
   },
   {
-   "path": "data/routes/curated-me.json",
+   "path": "data__routes__curated-me.json",
    "bytes": 354293,
    "sha256": "b82dd1d3ca7e6c09156e721d6c86aab4674e47c9ef1715dd05cf44b6509a6a84"
   },
   {
-   "path": "data/routes/curated-mg.json",
+   "path": "data__routes__curated-mg.json",
    "bytes": 7093,
    "sha256": "ca6b853ec309498ada6aace53e902b388cdfc760c4355d8c072ecbfb7a11ba4d"
   },
   {
-   "path": "data/routes/curated-mk.json",
+   "path": "data__routes__curated-mk.json",
    "bytes": 68585,
    "sha256": "8c6b58afadea8cb6c16211cb4f2bf82577793a46abaed94151f21097a82b47a6"
   },
   {
-   "path": "data/routes/curated-mn.json",
+   "path": "data__routes__curated-mn.json",
    "bytes": 68381,
    "sha256": "2ad6f79fd303de2913fcf927e35c30dba865fa9a184276982589f6583d035c64"
   },
   {
-   "path": "data/routes/curated-mt.json",
+   "path": "data__routes__curated-mt.json",
    "bytes": 8051,
    "sha256": "abf4e3e3e2a09c2202059608fbcd59ea73c36f8a7e6e37c032c5d33d1301117f"
   },
   {
-   "path": "data/routes/curated-mu.json",
+   "path": "data__routes__curated-mu.json",
    "bytes": 3510,
    "sha256": "8a1cc36f056f2932e5154a2a7a8efd457f011cb2a584c77b0b050d998b190912"
   },
   {
-   "path": "data/routes/curated-mx.json",
+   "path": "data__routes__curated-mx.json",
    "bytes": 3342009,
    "sha256": "4df236b9897882d0df31f8506139e51c20ed93831a1354977ba0502943731aac"
   },
   {
-   "path": "data/routes/curated-my.json",
+   "path": "data__routes__curated-my.json",
    "bytes": 16624,
    "sha256": "776149149b30eda860bf337969142abf0c23c2a80193d55bcc4747e559866ce3"
   },
   {
-   "path": "data/routes/curated-na.json",
+   "path": "data__routes__curated-na.json",
    "bytes": 31628,
    "sha256": "cd79143d8401d21207309e97314a97b5499c70a236f768626d4f8d109b6b8fa5"
   },
   {
-   "path": "data/routes/curated-nc.json",
+   "path": "data__routes__curated-nc.json",
    "bytes": 6394,
    "sha256": "89c916f0e254ccecff5dc6fc577d1260ce4bdb66403eb42ec8c8f0dae3c7d3a0"
   },
   {
-   "path": "data/routes/curated-ni.json",
+   "path": "data__routes__curated-ni.json",
    "bytes": 5602,
    "sha256": "78b435c73ec351608b97c237e1b3e436c475a974094ae422f7b0579b378c56e3"
   },
   {
-   "path": "data/routes/curated-nl.json",
+   "path": "data__routes__curated-nl.json",
    "bytes": 3293611,
    "sha256": "f84f4dc805ead5fb20dd4638dc8d3abc9a9e0ce33b2d202ad0a5cccbdbd868b8"
   },
   {
-   "path": "data/routes/curated-no.json",
+   "path": "data__routes__curated-no.json",
    "bytes": 446086,
    "sha256": "7496e60c0a7b628154bef5e50ff01ad1848841318b93cdf355340f67e3357c68"
   },
   {
-   "path": "data/routes/curated-np.json",
+   "path": "data__routes__curated-np.json",
    "bytes": 6730,
    "sha256": "27783d55d206afd59e69b51869a3bfaea53f993bbdb173e74e91e60f8888782e"
   },
   {
-   "path": "data/routes/curated-nz.json",
+   "path": "data__routes__curated-nz.json",
    "bytes": 282081,
    "sha256": "b1c9c0965bae003f8903b0d05c9845a455975a652bbeb3729af2c9757c5b7f1b"
   },
   {
-   "path": "data/routes/curated-om.json",
+   "path": "data__routes__curated-om.json",
    "bytes": 187437,
    "sha256": "72c07780b391ff9dd0d2a6163d47b20a1c2b9eb5be2146473ce39d671c1a4a14"
   },
   {
-   "path": "data/routes/curated-pa.json",
+   "path": "data__routes__curated-pa.json",
    "bytes": 74282,
    "sha256": "dd006055b7ab455b767ba1679094eac0e9b505083f9a1ea735211c25b5bb1bf9"
   },
   {
-   "path": "data/routes/curated-pe.json",
+   "path": "data__routes__curated-pe.json",
    "bytes": 1410500,
    "sha256": "2588c369b4a47057432d13cfe91a00a5dd85551d449afdc97076a38ec8aeec40"
   },
   {
-   "path": "data/routes/curated-pf.json",
+   "path": "data__routes__curated-pf.json",
    "bytes": 3054,
    "sha256": "e34b774ca7315817c63dab39c088ae8ca830ddf5b4824bd4d9e6af570d11443d"
   },
   {
-   "path": "data/routes/curated-ph.json",
+   "path": "data__routes__curated-ph.json",
    "bytes": 93915,
    "sha256": "76feca42176180bc78b8b13fcaa5fe0b071176f23bc1236fa64e491c2db3c25f"
   },
   {
-   "path": "data/routes/curated-pk.json",
+   "path": "data__routes__curated-pk.json",
    "bytes": 50541,
    "sha256": "013a435a2bb339ecfbda211e3677796ddc5d636b9969b8f968a8073c6bdc5736"
   },
   {
-   "path": "data/routes/curated-pl.json",
+   "path": "data__routes__curated-pl.json",
    "bytes": 1560164,
    "sha256": "a5ea4e5132de702d37960e9df5f026a27692b261a0b3de8abf4897d6c38b128b"
   },
   {
-   "path": "data/routes/curated-pt.json",
+   "path": "data__routes__curated-pt.json",
    "bytes": 755835,
    "sha256": "61e106f22ce159120a771e21f9d27fcd0f7dfe7017d0d9cc98f3b9bf833b9d7c"
   },
   {
-   "path": "data/routes/curated-py.json",
+   "path": "data__routes__curated-py.json",
    "bytes": 85745,
    "sha256": "cc2db364a7cef416481ab01b49e9bf95c964f167ba3ad783fd66d0537ad85690"
   },
   {
-   "path": "data/routes/curated-qa.json",
+   "path": "data__routes__curated-qa.json",
    "bytes": 6385,
    "sha256": "6e2e201539c4b08f691b8bc8eeb3fce9f9f4b775d827d1b7a2be9995e0a25873"
   },
   {
-   "path": "data/routes/curated-re.json",
+   "path": "data__routes__curated-re.json",
    "bytes": 2391,
    "sha256": "8b68b89605d4e596fb6344060381da2b4bc864daa9f4fe2314112a03178cee7b"
   },
   {
-   "path": "data/routes/curated-ro.json",
+   "path": "data__routes__curated-ro.json",
    "bytes": 7963464,
    "sha256": "3d086d4563d397e67abda5254118752d4fead7ef30fdfdc14d4e1e150f888c9e"
   },
   {
-   "path": "data/routes/curated-rs.json",
+   "path": "data__routes__curated-rs.json",
    "bytes": 60041,
    "sha256": "9fb207289dba280ba2304ddc6f3bde081a04ccae15a716c7584072ecc46f1354"
   },
   {
-   "path": "data/routes/curated-ru.json",
+   "path": "data__routes__curated-ru.json",
    "bytes": 795524,
    "sha256": "49d1267298f8df6a6476f19e5f639890d5befc978d1d4c6909fb8b4ea1c81884"
   },
   {
-   "path": "data/routes/curated-rw.json",
+   "path": "data__routes__curated-rw.json",
    "bytes": 179206,
    "sha256": "968d3c1b00b0b9591273751028e213b10f673932db947ce9284d4d5f42f36108"
   },
   {
-   "path": "data/routes/curated-sa.json",
+   "path": "data__routes__curated-sa.json",
    "bytes": 4742,
    "sha256": "5ffee951ccdc25588dd31af038bd05f3f740ffc876a7f6b66a644319679375e7"
   },
   {
-   "path": "data/routes/curated-sd.json",
+   "path": "data__routes__curated-sd.json",
    "bytes": 17477,
    "sha256": "f628f760928984f7061fa2a9b55531acb445714bdad25c83840854c979ba969f"
   },
   {
-   "path": "data/routes/curated-se.json",
+   "path": "data__routes__curated-se.json",
    "bytes": 91554,
    "sha256": "f0ddd5e8ab9043ef80849dd6606849d1d358db0bd37e56f2086eaf02d1323670"
   },
   {
-   "path": "data/routes/curated-si.json",
+   "path": "data__routes__curated-si.json",
    "bytes": 389491,
    "sha256": "964a1e04d34509f1932465c54f68a02ea801b7f1fa01561eb90f3d6e553e600d"
   },
   {
-   "path": "data/routes/curated-sk.json",
+   "path": "data__routes__curated-sk.json",
    "bytes": 326496,
    "sha256": "60243061ae17a3fe5ed5a6f087829914da3448686c2e30c1d9644bdffe01d80c"
   },
   {
-   "path": "data/routes/curated-sn.json",
+   "path": "data__routes__curated-sn.json",
    "bytes": 176549,
    "sha256": "f75e8603288a375bea7c4c6cde091bdcf674a36168ebe3b6da29d2b44c38a23b"
   },
   {
-   "path": "data/routes/curated-th.json",
+   "path": "data__routes__curated-th.json",
    "bytes": 370597,
    "sha256": "28bdde741d0e335ec78debf627c837c23cc34cbfae7b419cd22e829ddbeac3c0"
   },
   {
-   "path": "data/routes/curated-tj.json",
+   "path": "data__routes__curated-tj.json",
    "bytes": 925836,
    "sha256": "874b1dfd3b4af8bd6dc7266e90181081096d388791e826f6d73a8ca2a14b0d3a"
   },
   {
-   "path": "data/routes/curated-tn.json",
+   "path": "data__routes__curated-tn.json",
    "bytes": 193555,
    "sha256": "d48b851b235ce7d56ed19c92376d41ed27009ebc080ab45eb87463eb87313294"
   },
   {
-   "path": "data/routes/curated-tr.json",
+   "path": "data__routes__curated-tr.json",
    "bytes": 687318,
    "sha256": "66dd2acfc143f61f7b298bf7cb9109be0e769ac36349d2edf1ce94c9f0c87e0b"
   },
   {
-   "path": "data/routes/curated-tw.json",
+   "path": "data__routes__curated-tw.json",
    "bytes": 412949,
    "sha256": "02d3dd269a695f1c6ddd90293c84d6c2140b8e506f4d5992a90d5bb499890bf0"
   },
   {
-   "path": "data/routes/curated-tz.json",
+   "path": "data__routes__curated-tz.json",
    "bytes": 205887,
    "sha256": "f5febc6f5e62f551e5ae0608c6c5d3bc5f542965119b9e3c7fedf07f2b2bab30"
   },
   {
-   "path": "data/routes/curated-ua.json",
+   "path": "data__routes__curated-ua.json",
    "bytes": 4948,
    "sha256": "cee976fa15b0baaa3953e87ce4e5b3c5e2bc8c1f4b6697388f3d613347703a85"
   },
   {
-   "path": "data/routes/curated-ug.json",
+   "path": "data__routes__curated-ug.json",
    "bytes": 2898,
    "sha256": "4e41ea925b0204615f88277ce5d8f06b4afbc776f734914b8cd7e51de329d06d"
   },
   {
-   "path": "data/routes/curated-us.json",
+   "path": "data__routes__curated-us.json",
    "bytes": 1835273,
    "sha256": "3c2022f11148de74d63e06e6a1473a994ce1e61aac81a228f0d6facee0007229"
   },
   {
-   "path": "data/routes/curated-uy.json",
+   "path": "data__routes__curated-uy.json",
    "bytes": 14293,
    "sha256": "407d8a555037aafb3268b64a5f8a2f2d4c680830dc4d7773769f921062a7c433"
   },
   {
-   "path": "data/routes/curated-uz.json",
+   "path": "data__routes__curated-uz.json",
    "bytes": 1431214,
    "sha256": "4fe4f6eba7b0950db7c88c2cb9e352715d3c784599c0e804ec98937f7d41e12b"
   },
   {
-   "path": "data/routes/curated-ve.json",
+   "path": "data__routes__curated-ve.json",
    "bytes": 3583,
    "sha256": "75a3f2c184e51b377163d975039bcc895cb5b88a25438687c425e9161a962775"
   },
   {
-   "path": "data/routes/curated-vn.json",
+   "path": "data__routes__curated-vn.json",
    "bytes": 478203,
    "sha256": "efd75eb630b02f9cb0d5c60bf0f8436d8d9908a7197c762641a0fc00af0247c9"
   },
   {
-   "path": "data/routes/curated-xx.json",
+   "path": "data__routes__curated-xx.json",
    "bytes": 1650878,
    "sha256": "741af8ba5bd5e940197aa625ca26566f3a53bccee8ac536ddf56826f26cdb3f3"
   },
   {
-   "path": "data/routes/curated-ye.json",
+   "path": "data__routes__curated-ye.json",
    "bytes": 33932,
    "sha256": "1e2406c955d4af08c3bccab4cbf675340a392b268cea6e8d1a9d5c34ca3a3c15"
   },
   {
-   "path": "data/routes/curated-za.json",
+   "path": "data__routes__curated-za.json",
    "bytes": 511041,
    "sha256": "9f693c0c52f6667aaaf7266f05781bf1237120155c7897b79fbfa7e46e114493"
   },
   {
-   "path": "data/routes/denver-colorado-rockies.json",
+   "path": "data__routes__denver-colorado-rockies.json",
    "bytes": 111676,
    "sha256": "8098d548790f06478c1cc6156863162fd58f53e337ab90e1517c5cb3e0cfd8a6"
   },
   {
-   "path": "data/routes/dolomites.json",
+   "path": "data__routes__dolomites.json",
    "bytes": 16605,
    "sha256": "4061a207aa225815f3987801d5a8f542423ff1394b1c191be2c6572f76f48ea2"
   },
   {
-   "path": "data/routes/dublin.json",
+   "path": "data__routes__dublin.json",
    "bytes": 16000,
    "sha256": "4263dfd8922709aa4624bcf42f20f0358dc30e66b12bbe4e7b4c7c38af4efe19"
   },
   {
-   "path": "data/routes/expansion.json",
+   "path": "data__routes__expansion.json",
    "bytes": 616974,
    "sha256": "33be93fafe6cc27061d4796f081b7dbfbdf965946d44dba2d3edad3924efbc0e"
   },
   {
-   "path": "data/routes/famous-roads.json",
+   "path": "data__routes__famous-roads.json",
    "bytes": 112479,
    "sha256": "fa548b52c2e54ae33d5d826423e2a89132666e21a351fc19604e9c133af26cfc"
   },
   {
-   "path": "data/routes/geneva.json",
+   "path": "data__routes__geneva.json",
    "bytes": 17383,
    "sha256": "504bf0a43a9f344b043a31fe17137b335d96acd11e222b5d1f3e2138a5b1cb2d"
   },
   {
-   "path": "data/routes/global-pack-1.json",
+   "path": "data__routes__global-pack-1.json",
    "bytes": 57907,
    "sha256": "f3be630ac0e6aae8e9ba9f4cab9ea0817a2709da2c24d17d599c8022aab05db1"
   },
   {
-   "path": "data/routes/hamburg-and-north-germany.json",
+   "path": "data__routes__hamburg-and-north-germany.json",
    "bytes": 32297,
    "sha256": "8e3b10a4e0acfe1136d5d860c89205ccc5e878fb550b59bedf79c93e97f40f60"
   },
   {
-   "path": "data/routes/hamburg-north-german-escapes.json",
+   "path": "data__routes__hamburg-north-german-escapes.json",
    "bytes": 172376,
    "sha256": "4f4e9763bb6120e5eb7ac56c882d71f5a5894092f85c8e538cd4e3680b15738d"
   },
   {
-   "path": "data/routes/hamburg.json",
+   "path": "data__routes__hamburg.json",
    "bytes": 67445,
    "sha256": "36708428dcfe364d14ea57f2bf70a9602fcbc15b997ef151e80305269c16d0e4"
   },
   {
-   "path": "data/routes/hannover-lower-saxony-escapes.json",
+   "path": "data__routes__hannover-lower-saxony-escapes.json",
    "bytes": 208894,
    "sha256": "c333b561d9e9789607fbc1d571a26ea80666e4fa8df8a6728460cc2ef54cf5c4"
   },
   {
-   "path": "data/routes/hanoi.json",
+   "path": "data__routes__hanoi.json",
    "bytes": 8247,
    "sha256": "c35504b496e73deb08681239328763dc22629b881b5455d614ccb309004e3bc0"
   },
   {
-   "path": "data/routes/istanbul.json",
+   "path": "data__routes__istanbul.json",
    "bytes": 7766,
    "sha256": "00618a0ca4212708be1d08dcd0052e316b40290448292def64b627f7e249661e"
   },
   {
-   "path": "data/routes/japan-beyond-tokyo.json",
+   "path": "data__routes__japan-beyond-tokyo.json",
    "bytes": 23032,
    "sha256": "533b40ad984e74ef463132e33b229f6f11490d9831c21586db8b3fb99a924f90"
   },
   {
-   "path": "data/routes/kiel-schleswig-holstein.json",
+   "path": "data__routes__kiel-schleswig-holstein.json",
    "bytes": 163027,
    "sha256": "5d1cdf187f37d520853f1666f5500334a9418f42b31be079186d5fd0a1dd3cad"
   },
   {
-   "path": "data/routes/krakow.json",
+   "path": "data__routes__krakow.json",
    "bytes": 8050,
    "sha256": "9fdc90ec7910a7548d9a75c464db022845cc0b1e5014736c7c29d8fdc18fb856"
   },
   {
-   "path": "data/routes/kuala-lumpur.json",
+   "path": "data__routes__kuala-lumpur.json",
    "bytes": 7192,
    "sha256": "d5b0d993528b03adbe57c242f5d8b21a3ab058a5ddda513a8c83a71919381a7f"
   },
   {
-   "path": "data/routes/lakeside-alpine.json",
+   "path": "data__routes__lakeside-alpine.json",
    "bytes": 284599,
    "sha256": "ca11b156e7f0229520e9efa3fd62812d88f5fe982e3817c431d8436be4b4774e"
   },
   {
-   "path": "data/routes/legend-fill.json",
+   "path": "data__routes__legend-fill.json",
    "bytes": 1045416,
    "sha256": "77bb7d2af86158b9088c6475cdf2453ca0fe8c94841ee613d4f2180160726908"
   },
   {
-   "path": "data/routes/lisbon-portugal.json",
+   "path": "data__routes__lisbon-portugal.json",
    "bytes": 107771,
    "sha256": "579b0bd6751fb3ca1eb4667954eceab75ab9563543d6cc868f57d0d9fc1d020f"
   },
   {
-   "path": "data/routes/lisbon.json",
+   "path": "data__routes__lisbon.json",
    "bytes": 7719,
    "sha256": "459e291818cb0ce0e7f87e443c75e4f6b3d22bee5c0d1b08e957d598981aeb70"
   },
   {
-   "path": "data/routes/london-motorcycle-escapes.json",
+   "path": "data__routes__london-motorcycle-escapes.json",
    "bytes": 308802,
    "sha256": "f3484982c03a0ec3ecad2408e6621299cb88176b424e622be4d27ab85e76b2cc"
   },
   {
-   "path": "data/routes/los-angeles-southern-california.json",
+   "path": "data__routes__los-angeles-southern-california.json",
    "bytes": 112089,
    "sha256": "59f45d175e1055be80b5c63b279584dcbb2eec5e7c77cb5e3d65be861769a18b"
   },
   {
-   "path": "data/routes/lyon-rhone-alpes-rides.json",
+   "path": "data__routes__lyon-rhone-alpes-rides.json",
    "bytes": 264601,
    "sha256": "a87b66e1330802185f24b5d3fc22c100eb52c77a8a1490aa4708a3cedd01aab4"
   },
   {
-   "path": "data/routes/lyon.json",
+   "path": "data__routes__lyon.json",
    "bytes": 44814,
    "sha256": "a82a54171f4e25702e198827cdfb4f2081b461a87bb62f899c7719e73f82fd96"
   },
   {
-   "path": "data/routes/madrid-central-spain.json",
+   "path": "data__routes__madrid-central-spain.json",
    "bytes": 106017,
    "sha256": "d09edcc47466126170d51578616576c173e3ec7b567d0867f15c932e48648832"
   },
   {
-   "path": "data/routes/madrid.json",
+   "path": "data__routes__madrid.json",
    "bytes": 8411,
    "sha256": "91b8b4c8394892745d0be9951ecdc1341503fcb549a30a8bdbe0e09ef0c32ae7"
   },
   {
-   "path": "data/routes/marrakech.json",
+   "path": "data__routes__marrakech.json",
    "bytes": 8124,
    "sha256": "871a09d5b10bca85eb33e3be05b157a13c498fd31cc39a9aada0bb074cc457d5"
   },
   {
-   "path": "data/routes/melbourne-victoria.json",
+   "path": "data__routes__melbourne-victoria.json",
    "bytes": 107460,
    "sha256": "d2854f807d0579cf059b56ca7ead8da477b2c2beea5bee0bed7a9c458c154d2e"
   },
   {
-   "path": "data/routes/milan-and-northern-italy.json",
+   "path": "data__routes__milan-and-northern-italy.json",
    "bytes": 34399,
    "sha256": "d4f3d042c4c0c0e1d579a7da87811cae03dbd06a2053b454fbfff4026d7ab512"
   },
   {
-   "path": "data/routes/milan-northern-italy.json",
+   "path": "data__routes__milan-northern-italy.json",
    "bytes": 107583,
    "sha256": "3208e3169943d904fe5141eb327fe77205ace8e5fb98a8a8127720a4d4e02553"
   },
   {
-   "path": "data/routes/moscow-region-rides.json",
+   "path": "data__routes__moscow-region-rides.json",
    "bytes": 2,
    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
   },
   {
-   "path": "data/routes/moscow.json",
+   "path": "data__routes__moscow.json",
    "bytes": 2,
    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
   },
   {
-   "path": "data/routes/munich-bavarian-alps.json",
+   "path": "data__routes__munich-bavarian-alps.json",
    "bytes": 110794,
    "sha256": "7cf245c1484ceebff02febe15dfa60ac6e4e4d255e564b8d5ce018475f0e72ea"
   },
   {
-   "path": "data/routes/munich.json",
+   "path": "data__routes__munich.json",
    "bytes": 23774,
    "sha256": "6160ab7992b66c281561e382c7b1947eaa2b51228187b83ddca5b976283d5bee"
   },
   {
-   "path": "data/routes/new-york-hudson-valley-rides.json",
+   "path": "data__routes__new-york-hudson-valley-rides.json",
    "bytes": 276320,
    "sha256": "98333e117d3a07f032976f88d1a28bba38dae9e62acd7399ff9c4a7724229db7"
   },
   {
-   "path": "data/routes/new-york.json",
+   "path": "data__routes__new-york.json",
    "bytes": 48603,
    "sha256": "7974c248efa97a89a51e3128efb32a408755dc0cdc0897f5a9014d6ac65e67f7"
   },
   {
-   "path": "data/routes/nice-cote-d-azur.json",
+   "path": "data__routes__nice-cote-d-azur.json",
    "bytes": 109168,
    "sha256": "5b92348949a900c64ae1a3707b1a86ef1685671429d26223450b21d49bb79580"
   },
   {
-   "path": "data/routes/nice.json",
+   "path": "data__routes__nice.json",
    "bytes": 15794,
    "sha256": "e19de7dd3047cbb0527ecb1b11616143ea50aaa0cc21d6a34a15901d5957f873"
   },
   {
-   "path": "data/routes/norway-scenic-roads.json",
+   "path": "data__routes__norway-scenic-roads.json",
    "bytes": 32562,
    "sha256": "792d4eebfc0cbee3104776177947e1b6dbb299becdb01b97365adb05c24bf804"
   },
   {
-   "path": "data/routes/oslo-norway-scenic-roads.json",
+   "path": "data__routes__oslo-norway-scenic-roads.json",
    "bytes": 108750,
    "sha256": "6962092e3afeaaa9ca1def20b168cda710de15b61def213883ef99a13a2e0758"
   },
   {
-   "path": "data/routes/paris-ile-de-france-escapes.json",
+   "path": "data__routes__paris-ile-de-france-escapes.json",
    "bytes": 345022,
    "sha256": "cc00593f3e174725528ecde94a5004a7e5d3490c95c8faa834a2f02171105339"
   },
   {
-   "path": "data/routes/paris-road-trip-escapes.json",
+   "path": "data__routes__paris-road-trip-escapes.json",
    "bytes": 22785,
    "sha256": "09583950cb38f63559c49721673c0cc161c7f944bca28884890505edfadddb86"
   },
   {
-   "path": "data/routes/phoenix.json",
+   "path": "data__routes__phoenix.json",
    "bytes": 8438,
    "sha256": "25dfd345f51f72a43bf9c61bab239da06f9e148a442128d061b5f0e4da97ce33"
   },
   {
-   "path": "data/routes/portland.json",
+   "path": "data__routes__portland.json",
    "bytes": 7891,
    "sha256": "e5b300166b76e28522f46eb70ab630d357c8bf50f5962eaf3474de9f6945d9c0"
   },
   {
-   "path": "data/routes/porto.json",
+   "path": "data__routes__porto.json",
    "bytes": 7935,
    "sha256": "8ca28225bb9fc537016259fbd8907dc784591a4f61983969412f5a84667fc8bd"
   },
   {
-   "path": "data/routes/prague-bohemia.json",
+   "path": "data__routes__prague-bohemia.json",
    "bytes": 104450,
    "sha256": "460dd3dc74fb2822ba988f62819aa263748177a76e7df532ea1bc447ab4cb675"
   },
   {
-   "path": "data/routes/prague.json",
+   "path": "data__routes__prague.json",
    "bytes": 7430,
    "sha256": "833de0066d7f00b26ec2af0687a5200b77b1541cf0562602fd29d0a8be9b0de9"
   },
   {
-   "path": "data/routes/puerto-montt.json",
+   "path": "data__routes__puerto-montt.json",
    "bytes": 8609,
    "sha256": "156d9ac3952248f3e2f56bee81d5b83fa75853e2ff901c4990f8965c498cb2aa"
   },
   {
-   "path": "data/routes/queenstown-south-island.json",
+   "path": "data__routes__queenstown-south-island.json",
    "bytes": 109472,
    "sha256": "86e0e2909746d001254fe66ca2d63a521c9ebdd2f46b996aabe2565d77231631"
   },
   {
-   "path": "data/routes/queenstown.json",
+   "path": "data__routes__queenstown.json",
    "bytes": 8409,
    "sha256": "44e148703b298d58327e26a726d67ee5fa97fe82d1ece1e943da1ae5a3447d28"
   },
   {
-   "path": "data/routes/reykjavik.json",
+   "path": "data__routes__reykjavik.json",
    "bytes": 7520,
    "sha256": "5142085e749709e5b2d13c9f217e0bf85abd26919915b5f016422f42d5fb3437"
   },
   {
-   "path": "data/routes/rocky-mountain-road-trips.json",
+   "path": "data__routes__rocky-mountain-road-trips.json",
    "bytes": 24744,
    "sha256": "4f60fd23279e14c6fb28a3f43c962d9240d72fc72315c5bc9ba76ed91e7c1f01"
   },
   {
-   "path": "data/routes/rome-central-italy.json",
+   "path": "data__routes__rome-central-italy.json",
    "bytes": 105788,
    "sha256": "d9c30f4128e09ab57b88d999b8c1eef447ec46b59128730548c02f2d3bcd2260"
   },
   {
-   "path": "data/routes/rome.json",
+   "path": "data__routes__rome.json",
    "bytes": 15673,
    "sha256": "b1112e0e2adf00e9a2f099a7d1a053e664f4343c63d5a20f2ac7a3128394fde7"
   },
   {
-   "path": "data/routes/rostock.json",
+   "path": "data__routes__rostock.json",
    "bytes": 24167,
    "sha256": "859e6de036e73eea8122a85f1382e91de42f55cbab07d4b36ce091c54213131f"
   },
   {
-   "path": "data/routes/san-francisco-bay-area.json",
+   "path": "data__routes__san-francisco-bay-area.json",
    "bytes": 110033,
    "sha256": "bc5d5319fe1b4e2429ca2fe4e75119760f0103b749edd64dac42c702b9ddd423"
   },
   {
-   "path": "data/routes/san-francisco.json",
+   "path": "data__routes__san-francisco.json",
    "bytes": 48951,
    "sha256": "c142289fad11047e6b1f8dced62d88fc58be57e579587e63bcb13e9542fda89e"
   },
   {
-   "path": "data/routes/santiago.json",
+   "path": "data__routes__santiago.json",
    "bytes": 7680,
    "sha256": "2acf14e33f42299d422a4703d33a7e1dd02b53447c09170308cf7df8710e183b"
   },
   {
-   "path": "data/routes/sao-paulo.json",
+   "path": "data__routes__sao-paulo.json",
    "bytes": 8413,
    "sha256": "148fcf8205e2e296505b813a408b937d76a72a815a2042a82ccaba15d55cdbfc"
   },
   {
-   "path": "data/routes/scotland.json",
+   "path": "data__routes__scotland.json",
    "bytes": 16781,
    "sha256": "078e0ced5cbbd06d21dfd7decdef1cc89f9297ccfd592e31aa8a971254ca8d37"
   },
   {
-   "path": "data/routes/seattle-pacific-northwest.json",
+   "path": "data__routes__seattle-pacific-northwest.json",
    "bytes": 109918,
    "sha256": "ab7e866e6b8846022b5dbf4ce2058054f64a2f2f16c4ecb73e19be2c3e87824b"
   },
   {
-   "path": "data/routes/seattle.json",
+   "path": "data__routes__seattle.json",
    "bytes": 7357,
    "sha256": "3dc2ad96a9f24b168eccb56103a61ddfc97d6d32e27ac122c5a18e37a2e8dfd1"
   },
   {
-   "path": "data/routes/seed-br-manual.json",
+   "path": "data__routes__seed-br-manual.json",
    "bytes": 9633,
    "sha256": "2d29746217e7b45883242bfd6c31412858e698bad240f430d3899cc473f1fd02"
   },
   {
-   "path": "data/routes/seed-ca-manual.json",
+   "path": "data__routes__seed-ca-manual.json",
    "bytes": 9803,
    "sha256": "33f53dd7d5f80ea9f5ec92dd4a3ca87510db3a1cdfbf2b69898907fca0b13113"
   },
   {
-   "path": "data/routes/seed-cl-manual.json",
+   "path": "data__routes__seed-cl-manual.json",
    "bytes": 10280,
    "sha256": "99fe8f921312c6d31d8beb8918dca728e6eb546ef7cdb657c8200bd3f11349b7"
   },
   {
-   "path": "data/routes/seed-co-manual.json",
+   "path": "data__routes__seed-co-manual.json",
    "bytes": 5645,
    "sha256": "b50f32240201f0d6b841eeb056187ae70e1799a4810fcf952f08a2f087f77b50"
   },
   {
-   "path": "data/routes/seed-pl-manual.json",
+   "path": "data__routes__seed-pl-manual.json",
    "bytes": 8587,
    "sha256": "fce7a1d0ea33187c61bb426c069a45fd2d59a87f6d38cb072df7438a6b02b522"
   },
   {
-   "path": "data/routes/seed-ru-manual.json",
+   "path": "data__routes__seed-ru-manual.json",
    "bytes": 27581,
    "sha256": "a58a82827be4b884cb139002a01eb2ad5b58d44e40ffd44fbdbe74d835c2d131"
   },
   {
-   "path": "data/routes/seed-tr-manual.json",
+   "path": "data__routes__seed-tr-manual.json",
    "bytes": 7672,
    "sha256": "404c0dee106008ed4fa00ed5e29f05322645fdfd39bb5c673a57f2e8304ff513"
   },
   {
-   "path": "data/routes/seed-us-manual.json",
+   "path": "data__routes__seed-us-manual.json",
    "bytes": 46573,
    "sha256": "a4ec0319d3459b0e5e935d679f83de3b114340c30cb796da45deb4b3eefc9dc6"
   },
   {
-   "path": "data/routes/seed-us-newengland.json",
+   "path": "data__routes__seed-us-newengland.json",
    "bytes": 31974,
    "sha256": "6968e2b37fe7eedd2936fc5e5d0d217ffb77640a83ca98fd619d5eeff9f635a5"
   },
   {
-   "path": "data/routes/seeded.json",
+   "path": "data__routes__seeded.json",
    "bytes": 580242,
    "sha256": "ebafee6aeb44b01a7f1739484ad7109a18b45f7283a5716e11316753215860ff"
   },
   {
-   "path": "data/routes/seoul-south-korea.json",
+   "path": "data__routes__seoul-south-korea.json",
    "bytes": 100937,
    "sha256": "744747e5f8ea3401c1523f5816bfc2403336dec69f2a87f38dd8f62b9ca7481c"
   },
   {
-   "path": "data/routes/seoul.json",
+   "path": "data__routes__seoul.json",
    "bytes": 15169,
    "sha256": "aec5920aeba42a7bde21d76f44f63b99c251cd45b56af8615cbc4530777a9607"
   },
   {
-   "path": "data/routes/taipei.json",
+   "path": "data__routes__taipei.json",
    "bytes": 15432,
    "sha256": "8b668221e7e200a52468c8611788a1b6da0091b61310174a93c304998b3c3f54"
   },
   {
-   "path": "data/routes/tokyo-kanto-rides.json",
+   "path": "data__routes__tokyo-kanto-rides.json",
    "bytes": 310498,
    "sha256": "2409f3972bf1f573f7a3160f762c254c2bda8c6387e7d735120873d402db7280"
   },
   {
-   "path": "data/routes/tokyo.json",
+   "path": "data__routes__tokyo.json",
    "bytes": 61541,
    "sha256": "3f59ed021b6027a7b58fc82dc0cd0e41b9872129379bf96a8f525e5bd316c42d"
   },
   {
-   "path": "data/routes/vancouver-british-columbia.json",
+   "path": "data__routes__vancouver-british-columbia.json",
    "bytes": 109679,
    "sha256": "2bd48b8c470d6bcbd7fee3be656effb5e40dae83351f5019ae8f92f0f4389876"
   },
   {
-   "path": "data/routes/vancouver.json",
+   "path": "data__routes__vancouver.json",
    "bytes": 8604,
    "sha256": "db5c508617c428c7b048098d5329569c73274f6fa3cf42e4b1573c060049e876"
   },
   {
-   "path": "data/routes/vienna-eastern-alps.json",
+   "path": "data__routes__vienna-eastern-alps.json",
    "bytes": 106657,
    "sha256": "8be837e09f801c896c584c2d6d7f083ffe0d41688dbe60bfded8bf384a2d95f5"
   },
   {
-   "path": "data/routes/vienna.json",
+   "path": "data__routes__vienna.json",
    "bytes": 7986,
    "sha256": "ea84c6958f476dbc5f645b93590cdf601f886dffabde96b0e0ec67c87f8530ad"
   },
   {
-   "path": "data/routes/warsaw.json",
+   "path": "data__routes__warsaw.json",
    "bytes": 8235,
    "sha256": "0d801d0c2ebd4441f8db5ca8a50fc15a18f37644850bd534059d6ba03190c26c"
   },
   {
-   "path": "data/routes/wismar.json",
+   "path": "data__routes__wismar.json",
    "bytes": 26515,
    "sha256": "a4d5f9c340b5a80596bfc81959c54d8d65c16771bbf5bf42559699916363d61e"
   },

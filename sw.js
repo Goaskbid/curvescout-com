@@ -20,8 +20,8 @@ const ROUTES = 'curvescout-routes';
    works and nobody pays for it twice. */
 const SHELL = [
   './', './index.html', './styles.css', './app.js', './manifest.webmanifest',
-  './data/places.json',
-  './assets/curvescout-mark-transparent.png', './assets/cerebral-local.svg',
+  './data__places.json',
+  './assets__curvescout-mark-transparent.png', './assets__cerebral-local.svg',
 ];
 
 /* ---- THE WORKER HOLDS COPIES TOO ----

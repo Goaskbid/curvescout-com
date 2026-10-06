@@ -710,7 +710,7 @@ footer{max-width:var(--maxw);margin:0 auto;padding:26px 18px 40px;color:var(--di
      is why he still said there was none. This is a drawn road climbing through mountains at
      dawn: original work, no licence to clear, a few kilobytes, and it looks like the thing
      the product is about. */
-  background-image:linear-gradient(180deg,rgba(11,12,14,.10),rgba(11,12,14,.55)),url('assets/hero-road.svg');
+  background-image:linear-gradient(180deg,rgba(11,12,14,.10),rgba(11,12,14,.55)),url('assets__hero-road.svg');
   background-size:cover;background-position:center}.heroLayer{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.6s ease, transform 8s cubic-bezier(.2,.5,.3,1);transform:scale(1.02)}.heroLayer.on{opacity:1;transform:scale(1.13)}.hero:before{content:"";position:absolute;inset:0;z-index:1;background:
   linear-gradient(180deg,rgba(8,9,11,.72) 0%,rgba(8,9,11,.22) 26%,rgba(8,9,11,.30) 52%,rgba(10,11,13,.88) 86%,var(--bg) 100%)}
 .heroBg.noPic ~ .heroIn .heroSub{opacity:.9}.heroIn{position:relative;z-index:3;max-width:660px;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100svh}
