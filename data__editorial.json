@@ -1,0 +1,1656 @@
+{
+ "status": "CANDIDATE_NOT_INTEGRATED_NOT_OWNER_APPROVED",
+ "source_access_date": "2026-10-01",
+ "scope": "Place-level editorial assistance, not motorcycle-route geometry, current access, fuel or weather evidence. Cycling/walking source tracks must not be copied as motorcycle navigation.",
+ "sources": {
+  "CH-IBER": "https://www.myswitzerland.com/en/experiences/route/ibergereggsattelegg-linth-76_01/",
+  "ZG-RATEN": "https://www.zug-tourismus.ch/de/poi/poi-und-infrastruktur/winterwanderungen-raten/",
+  "AS-RATEN": "https://www.aegerital-sattel.ch/erleben/erlebnisraum-aegerital-sattel/raten-gottschalkenberg",
+  "AS-PATH": "https://www.aegerital-sattel.ch/touren/ratenpfad-c4e224f150",
+  "austria-info-grossglockner": "https://www.austria.info/nl-nl/bestemmingen/grossglockner-high-alpine-road/",
+  "homeoftravel-grossglockner": "https://homeoftravel.de/grossglockner-hochalpenstrasse-oesterreich/",
+  "nassfeld-grossglockner-tour": "https://www.nassfeld.at/cz/Tour/Gro-glockner-High-Alpine-Road_t_35033",
+  "tcs-pass-openings-2026": "https://www.bluewin.ch/en/news/switzerland/more-alpine-passes-in-switzerland-open-again-3254906.html",
+  "myswitzerland-three-passes": "https://www.myswitzerland.com/cs/zazitky/route/three-classic-passes/",
+  "interlaken-grimsel-furka-susten": "https://www.interlaken.swiss/en/experiences/tour/motorbike-tip-grimsel-furka-susten-classic-tour",
+  "luzern-susten-grimsel-furka": "https://www.luzern.com/de/tour/radarena/stgotthard-susten-grimsel-furka",
+  "hls-oberalppass": "https://hls-dhs-dss.ch/de/articles/008814/",
+  "luzern-lukmanier": "https://www.luzern.com/en/tour/lukmanier-pass-disentis-biasca-1",
+  "suedtirol-stelvio": "https://www.suedtirol.info/it/it/informazioni/mobilita/passi-in-alto-adige/passo-dello-stelvio",
+  "visitnorway-trollstigen": "https://www.visitnorway.com/listings/norwegian-scenic-route-geiranger-trollstigen/234240/",
+  "fjordnorway-trollstigen": "https://fjordnorway.com/en/see-and-do/national-tourist-route-trollstigen",
+  "gora-living-memorial": "https://www.greatoceanroadauthority.vic.gov.au/Latest-News/The-Great-Ocean-Road-a-living-memorial",
+  "usfs-beartooth": "https://fs.usda.gov/r01/custergallatin/recreation/explore-forest/beartooth-scenic-byway-all-american-road",
+  "nbcmontana-beartooth-80": "https://nbcmontana.com/news/local/gallery/beartooth-highway-celebrates-80-years?photo=1",
+  "myswitzerland-hulftegg": "https://www.myswitzerland.com/de-ch/erlebnisse/route/toggenburger-hoehenweg-48_05/",
+  "postauto-hulftegg": "https://www.postauto.ch/de/freizeitangebote/ausflugstipps/hulftegg",
+  "cpr-million-dollar": "https://www.cpr.org/show-episode/million-dollar-highway/",
+  "rvlife-million-dollar": "https://rvlife.com/the-million-dollar-highway/",
+  "bitesized-bealach": "https://bitesizedbritain.co.uk/bealach-na-ba---a-rollercoaster-of-a-road-in-the-scottish",
+  "edinburgh-bealach": "https://everythingedinburgh.com/north-coast-500/bealach-na-ba/",
+  "dolomiti-giau": "https://www.dolomiti.org/en/alleghe/experiences/bike/road-bike-timed-uphill-cycle-race-passo-giau",
+  "bc-sea-to-sky": "https://britishcolumbia.com/things-to-do-and-see/recreation/vancouver-coast-mountains/whistler-sea-to-sky/cycling-biking/",
+  "mojo-duffey-loop": "https://motorcyclemojo.com/?p=47725",
+  "wiki-ring-of-kerry": "https://disabled.invalid/wiki/Ring_of_Kerry",
+  "roamright-ring-of-kerry": "https://roamright.com/travel-insurance-blog/top-sites-along-the-ring-of-kerry-in-ireland",
+  "fhwa-blue-ridge": "https://www.fhwa.dot.gov/candc/factsheets/blueridgeparkway.pdf",
+  "outdoorproject-linn-cove": "https://www.outdoorproject.com/node/10410",
+  "jnto-irohazaka": "https://www.japan.travel/en/japans-local-treasures/nikkos-irohazaka-sightseeing-road",
+  "mlit-irohazaka": "https://www.mlit.go.jp/tagengo-db/common/001563573.pdf",
+  "visitnorway-lysevegen": "https://www.visitnorway.it/listings/lysevegen-road-in-lysebotn/235453/",
+  "pjamm-lysebotn": "https://pjammcycling.com/climb/490.Lysebotn",
+  "nz-crown-range": "https://www.newzealand.com/au/feature/the-crown-range",
+  "wanaka-crown-range": "https://wanakaapp.nz/Road/crown-range/62a41f8e1b7896002cde8812",
+  "wiki-clarence-drive": "https://disabled.invalid/wiki/Clarence_Drive",
+  "fodors-clarence-drive": "https://cdn.fodors.com/world/africa-and-middle-east/south-africa/the-western-cape/gordons-bay/things-to-do/sights",
+  "hls-hurden": "https://hls-dhs-dss.ch/de/articles/007441/2008-01-16/",
+  "zuerich-holzsteg": "https://www.zuerich.com/de/besuchen/sehenswuerdigkeiten/holzsteg-rapperswil-hurden-zu-fuss-den-zuerichsee-ueberqueren",
+  "wiki-holzbruecke-hurden": "https://disabled.invalid/wiki/Holzbr%C3%BCcke_Rapperswil-Hurden",
+  "wiki-robenhausen": "https://disabled.invalid/wiki/Robenhausen",
+  "wiki-taroko": "https://disabled.invalid/wiki/Taroko_National_Park",
+  "nps-tw-highway8": "https://www.nps.gov.tw/en/titlelist/news/3835",
+  "chile-travel-austral": "https://chile.travel/en/?p=78013",
+  "passporter-austral": "https://passporterapp.com/en/blog/chile/carretera-austral/",
+  "lp-tizi-n-tichka": "https://www.lonelyplanet.com/points-of-interest/tizi-n-tichka/1632118",
+  "aaa-tizi-n-tichka": "https://www.aaa.com/tripcanvas/attraction/tizi-ntichka-pass-VA18556",
+  "goto-ireland-military-road": "https://www.go-to-ireland.com/what-to-see/old-military-road/",
+  "irishroadtrip-sally-gap": "https://www.theirishroadtrip.com/sally-gap/",
+  "dartriver-glenorchy": "https://www.dartriver.co.nz/all-you-need-to-know/getting-here/",
+  "tripideas-glenorchy": "https://tripideas.nz/glenorchy-queenstown-road",
+  "visitmelbourne-black-spur": "https://visitmelbourne.com/regions/yarra-valley-and-dandenong-ranges/see-and-do/road-trips-and-itineraries/black-spur-drive",
+  "timeout-black-spur": "https://www.timeout.com/melbourne/travel/you-can-visit-this-magical-forest-just-an-hour-outside-melbourne",
+  "wiki-black-spur": "https://disabled.invalid/wiki/Black_Spur",
+  "oxalis-ma-pi-leng": "https://oxalisadventure.com/ma-pi-leng-pass/",
+  "localvietnam-ha-giang": "https://localvietnam.com/ha-giang/ha-giang-loop-by-motorbike-self-driving/",
+  "frontier-ha-giang-permit": "https://frontiertravelvietnam.com/blog/ha-giang-loop-permit-foreigner-motorbike---complete-travel-guide-b697.html",
+  "visitwales-black-mountain": "https://visitwales.com/node/3582",
+  "wiki-a4069": "https://disabled.invalid/wiki/List_of_mountain_passes_of_Wales",
+  "fjordnorway-rv550": "https://www.fjordnorway.com/no/se-og-gjore/sykkel-nasjonal-turistveg-hardanger-utne-herand",
+  "hardangerfjord-blossom": "https://hardangerfjord.com/en/articles/blossoming-in-hardanger",
+  "wiki-hakone-turnpike": "https://disabled.invalid/wiki/Hakone_Turnpike",
+  "mazda-hakone-turnpike": "https://www.mazda.com.au/mazda-news/zoom-zoom-magazine/hakone-turnpike-drive/",
+  "wiki-atlantic-road": "https://disabled.invalid/wiki/Atlantic_Ocean_Road",
+  "erih-atlantic-road": "https://www.erih.net/i-want-to-go-there/site/atlantic-ocean-road",
+  "beyond-route-napoleon": "https://www.beyond.fr/sites/rtnapol.html",
+  "traveller-route-napoleon": "https://www.traveller.com.au/france-roadtrip-in-footsteps-of-napoleon-gsi298",
+  "sahris-bainskloof": "https://www.sahris.org.za/node/40225",
+  "paarlpost-bainskloof": "https://novanews.co.za/paarlpost/?p=55722",
+  "wiki-furkajoch": "https://disabled.invalid/wiki/Furkajoch",
+  "komoot-furkajoch": "https://blog.komoot.fr/highlight/462264",
+  "moho-walser-tour": "https://www.moho.info/en/motorbike-tours/detail/walser-tour-furkajoch",
+  "gardatrentino-forra": "https://www.gardatrentino.it/en/activity/tremosine-s-forra-road_8513",
+  "insella-forra": "https://www.insella.it/da-sapere/strade-percorsi/strada-della-forra-piu-bella-del-mondo-45951",
+  "lnm-skyline": "https://localnewsmatters.org/?p=126932",
+  "wiki-sr35": "https://www.wikipedia.com/wiki/SR_35_(CA)",
+  "wiki-ganghwa-county": "https://disabled.invalid/wiki/Ganghwa_County",
+  "roughguides-ganghwado": "https://www.roughguides.com/south-korea/gyeonggi-gangwon/west-sea-islands/",
+  "ozoutback-ganghwa": "https://ozoutback.com.au/Korea/ganghwa/index.html",
+  "austria-info-wachau": "https://www.austria.info/en-gb/regions/wachau-valley/",
+  "univie-wachau": "https://elim.univie.ac.at/en/schedule/wachau/index.htm",
+  "decanter-wachau": "https://www.decanter.com/wine-travel/europe/wachau-travel-guide-22756/",
+  "nonni-golden-circle": "https://nonnitravel.is/?p=12137",
+  "hertz-is-golden-circle": "https://www.hertz.is/local-activities-recommendation/top-scenic-stops-and-must-see-viewpoints-on-icelands-ring-road/",
+  "visitcentralnsw-bells": "https://www.visitcentralnsw.com.au/bells-line-of-road/",
+  "hawkesbury-bells": "https://www.discoverthehawkesbury.com.au/trending/villages,-gardens-and-natural-wonders",
+  "sydneyuncovered-bells": "https://sydneyuncovered.com/bells-line-of-road/",
+  "tyremap-sintra": "https://tyremap.com/city/sintra/",
+  "for91days-cabo-da-roca": "https://lisbon.for91days.com/?p=3974",
+  "wiki-izu-skyline": "https://disabled.invalid/wiki/Izu_Skyline",
+  "motorcycleroads-izu": "https://motorcycleroads.com/motorcycle-roads/japan/izu-skyline-toll-road",
+  "verdontourisme-cretes": "https://www.verdontourisme.com/en/?p=64813",
+  "paca-route-des-cretes": "https://provence-alpes-cotedazur.com/en/things-to-do/routes-and-walks/la-route-des-cretes-la-palud-sur-verdon-en-4002237",
+  "bbr-gi614": "https://www.bestbikingroads.com/motorcycle-roads/spain/catalunya/ride/gi614-roses-cadaques",
+  "reportage-cap-de-creus": "https://medium.com/p/cc05b89485cd",
+  "anglophone-cap-de-creus": "https://anglophone-direct.com/?p=1177",
+  "wiki-309-road": "https://disabled.invalid/wiki/309_Road",
+  "doc-waiau-kauri": "https://dxcprod.doc.govt.nz/parks-and-recreation/places-to-go/coromandel/places/coromandel-town-area/tracks/waiau-falls-and-kauri-grove-lookout",
+  "bbr-a82": "https://www.bestbikingroads.com/motorcycle-roads/united-kingdom/highland-scotland/ride/a82-inverness-fort-william",
+  "bbr-b862": "https://bestbikingroads.com/motorcycle-roads/united-kingdom/highland-scotland/ride/b862-b852-fort-augustus-inverness",
+  "bikeuk-ardennes": "https://www.pressreader.com/uk/bike-uk/20180101/284558768280871",
+  "visitardenne-semois": "https://www.visitardenne.com/en/adventures-ardennes/motorhome-adventures/semois-valley-camper-van",
+  "wikiexplora-el-yeso": "https://wikiexplora.com/El_Yeso_-_Termas_del_Plomo_(english)",
+  "chiletravel-el-yeso": "https://chile.travel/en/attractions/embalse-el-yeso/",
+  "cmgenova-sp227": "https://www.cittametropolitana.genova.it/it/node/18140",
+  "locauto-portofino": "https://www.locautorent.com/en/blog/how-to-get-to-portofino-roads-ztl-and-parking/",
+  "detour-sp227": "https://detour-roadtrips.com/home/detour-148-the-most-glamorous-road-in-italy",
+  "montserratvisita-road": "https://www.montserratvisita.com/en/how-to-get-there/by-road",
+  "travesia-montserrat": "https://travesiapirenaica.com/en/wp-json/wp/v2/posts/34901",
+  "pousadas-obidos": "https://www.pousadas.pt/uk/portugal/obidos",
+  "eurovelo-obidos": "https://euroveloportugal.com/en/route/eurovelo1/section-18",
+  "lueneburger-heide-bloom": "https://lueneburger-heide.de/en/heidebluete",
+  "niedersachsen-heath": "https://www.niedersachsen-tourism.com/experiences/nature/natural-landscapes/lueneburg-heath-and-suedheide-nature-park",
+  "adac-harz": "https://www.adac.de/reise-freizeit/reisen-mit-motorrad/motorradtouren/harz/",
+  "motorradonline-harz": "https://www.motorradonline.de/reise/motorrad-tourentipp-harz-von-nordwest-nach-suedost",
+  "wiki-holstein-switzerland": "https://disabled.invalid/wiki/Holstein_Switzerland",
+  "shtourismus-holstein": "https://www.sh-tourismus.de/en/activities/cycling/long-distance-cycle-routes/holsteinische-schweiz-cycle-tour",
+  "wiki-schermuetzelsee": "https://disabled.invalid/wiki/Scherm%C3%BCtzelsee",
+  "reiseland-maerkische-schweiz": "https://www.reiseland-brandenburg.de/orte-regionen/nationale-naturlandschaften/naturpark-maerkische-schweiz/",
+  "japanexp-okutama": "https://www.japan-experience.com/all-about-japan/tokyo/attractions-excursions/okutama-lake",
+  "yokota-okutama": "https://yokotatravel.com/okutama/",
+  "bbr-collada-toses": "https://bestbikingroads.nl/motorcycle-roads/spain/catalunya/ride/n152-la-collada-de-toses-queixans-sant-cristofol",
+  "quaeldich-toses": "https://www.quaeldich.de/paesse/collada-de-toses/",
+  "expedia-buddha-mountain": "https://www.expedia.com/es/Montana-De-Buda-Na-Chom-Thian.d6276768.Guia-Turistica",
+  "scuba-silverlake": "https://www.private-scuba.com/diving/thailand/east/pattaya/attractions/silver-lake.html",
+  "byklo-thai-safety": "https://www.byklo.rent/en/blog/motorbike-safety-thailand-tips/",
+  "matador-korea-moto": "https://matadornetwork.com/read/seoul-motorcycle-camping-to-sokcho/",
+  "joongang-hangye": "https://www.koreajoongangdaily.com/korea/a-picturesque-pass/11472850",
+  "komoot-17-tournants": "https://www.komoot.com/highlight/292299",
+  "motonet-chevreuse": "https://www.moto-net.com/article/chevreuse.html"
+ },
+ "drafts": [
+  {
+   "route_id": "ibergeregg-sihlsee-muotathal-short-alpine",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "reading_the_line",
+   "source_ids": [
+    "CH-IBER"
+   ],
+   "text": "This option combines two different reasons to stop: the Ibergeregg pass road and the Sihlsee lakeshore. Switzerland Tourism describes the climb above Schwyz as a series of bends with views toward Lake Lucerne, followed by the moorland landscape around Ybrig. Keep time for the scenery beyond the summit rather than treating the pass as the only destination. Choose this over Raten when the mountain-road section matters more than a brief local outing.",
+   "inference": "The comparison and allocation of stopping time are editorial suggestions, not quoted tourism claims. Verify exact itinerary before integration.",
+   "body_word_count": 72
+  },
+  {
+   "route_id": "raten-gerisee-albis-afterwork-special",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "source_ids": [
+    "ZG-RATEN",
+    "AS-RATEN"
+   ],
+   "text": "Raten offers a view across the Aegerital without another high Alpine pass. The local tourism office places the summit at 1,077 metres; Zug Tourism describes views toward the Schwyz Alps. Gottschalkenberg and the Bellevue viewpoint are a separate possible visit, not scenery you should assume lies directly on this route. Allow time to leave the bike and look around rather than filling the entire outing with riding. Confirm any addition in the route preview before committing it.",
+   "inference": "Time allocation is editorial advice. The actual motorcycle access, stop position and route inclusion still require validation.",
+   "body_word_count": 77
+  },
+  {
+   "route_id": "raten-gerisee-albis-afterwork-special",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "source_ids": [
+    "AS-PATH"
+   ],
+   "text": "At Raten, the local story has more to do with how people used the hills than with dramatic Alpine engineering. The official Ratenpfad description covers forest and wildlife, hunting traditions, pilgrims and timber rafting. It is a walking route, not a motorcycle detour. A visit therefore needs separate time on foot, and the current ride should not claim to include it simply because a checkpoint sits nearby.",
+   "inference": "The opening is an editorial framing of documented trail themes. This is not an assertion of rider testimony or current route inclusion.",
+   "body_word_count": 67
+  },
+  {
+   "route_id": "grossglockner-hochalpenstrasse",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "reading_the_line",
+   "text": "The Grossglockner High Alpine Road runs 48 km from Fusch to Heiligenblut and climbs through 36 hairpins to the Hochtor at 2,504 m, where Salzburg meets Carinthia. It is a toll road, normally open from early May to early November. Ride the hairpins as a rhythm rather than a race: the bends are counted, the walls stay close, and the views wait for the pull-outs.",
+   "source_ids": [
+    "austria-info-grossglockner"
+   ]
+  },
+  {
+   "route_id": "grossglockner-hochalpenstrasse",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "text": "People crossed at the Hochtor long before any road: the pass carried trade over the Alps in Celtic and Roman times. The road came much later and opened in 1935. It now crosses Hohe Tauern National Park, the largest protected area in the Alps, and a spur climbs to the Kaiser-Franz-Josefs-Hoehe, where the Grossglockner, Austria's highest mountain at 3,798 m, stands above the Pasterze, the longest glacier in the Eastern Alps.",
+   "source_ids": [
+    "austria-info-grossglockner",
+    "homeoftravel-grossglockner",
+    "nassfeld-grossglockner-tour"
+   ]
+  },
+  {
+   "route_id": "furka-grimsel-susten-big-three-dawn",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "official_status",
+   "text": "Three passes, three winter closures. The Grimsel at 2,164 m and the Furka at 2,429 m reopened on 29 May 2026, while the Susten stayed closed for longer that day. The loop only works when all three are open, so check the Touring Club's pass status before you leave rather than finding a barrier at the foot of the last climb.",
+   "source_ids": [
+    "tcs-pass-openings-2026"
+   ]
+  },
+  {
+   "route_id": "furka-grimsel-susten-big-three-dawn",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "text": "The Grimsel Hospiz stands where the earliest documented inn in Switzerland was recorded, in 1142. On the way down from the Grimsel the Furka hairpins appear above Gletsch, the mountain station of the Furka steam railway, with the Rhone glacier above the road. Further on, the Furka descent towards Andermatt passes the spot remembered for the car chase in the 1964 James Bond film Goldfinger.",
+   "source_ids": [
+    "interlaken-grimsel-furka-susten",
+    "myswitzerland-three-passes",
+    "luzern-susten-grimsel-furka"
+   ]
+  },
+  {
+   "route_id": "lukmanier-oberalp-vorderrhein-high-roads",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "official_status",
+   "text": "Two passes with two different calendars. The Oberalp, at 2,044 m between Andermatt and the Surselva, closes for the winter like its neighbours. The Lukmanier, at about 1,914 m from Disentis down to Biasca, is the only one of the eight passes around Andermatt kept open in winter. Plan the Oberalp half around its season, and treat the Lukmanier as the way that is usually there.",
+   "source_ids": [
+    "hls-oberalppass",
+    "luzern-lukmanier"
+   ]
+  },
+  {
+   "route_id": "lukmanier-oberalp-vorderrhein-high-roads",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "text": "The Oberalp was a crossing long before it was a road. The monastery of Disentis used it in the Middle Ages to settle the Urseren valley, and Walser settlers came the other way into the Surselva. The carriage road you ride was laid out in 1862 and 1863 on the lower line through Tschamut, and the rack railway beside it reached Disentis in 1915 but carried no traffic until 1926 because of the war.",
+   "source_ids": [
+    "hls-oberalppass"
+   ]
+  },
+  {
+   "route_id": "milan-stelvio-and-gavia-serious-pass-day",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "reading_the_line",
+   "text": "From Prato allo Stelvio the road climbs 1,838 m in about 25 km through 48 hairpins to 2,757 m, the highest road pass in Italy. The bends are numbered, so you always know how many are left: use that to set a rhythm rather than chase the next one, and save something for the top, where the air is thin and the last turns come close together.",
+   "source_ids": [
+    "suedtirol-stelvio"
+   ]
+  },
+  {
+   "route_id": "norway-trollstigen-and-geiranger-switchbacks",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Trollstigen climbs through 11 hairpin bends to Stigrøra at 858 m, crossing the Stigfossen waterfall on a stone bridge. At the top, viewing platforms and steel walkways hang over the bends: stop there for the picture, not on the road. It is normally open from mid-May until the first snow, with no fee, and the Valldal side can be open while the bends are still closed.",
+   "source_ids": [
+    "visitnorway-trollstigen",
+    "fjordnorway-trollstigen"
+   ]
+  },
+  {
+   "route_id": "melbourne-great-ocean-road-and-otway-rainforest",
+   "surface": "board",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "text": "The Great Ocean Road is a memorial you ride. About 3,000 servicemen home from the First World War cut its 243 km from Torquay to Allansford into one of Australia's most rugged coastlines, and it opened in 1932 as the largest war memorial in the world. The cliffs and bends are the reason to come; the people who built them are the reason to slow down.",
+   "source_ids": [
+    "gora-living-memorial"
+   ]
+  },
+  {
+   "route_id": "beartooth-red-lodge-to-cooke-city",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "forecast_read",
+   "text": "The Beartooth Highway tops out at 10,947 ft, about 3,337 m, and is usually open only from Memorial Day to 15 October, weather permitting. Even in season, May, June and late September can bring winter temperatures and snow at the pass, and Montana closes the road every winter. Check the conditions on the morning you ride, and pack for the top rather than for Red Lodge.",
+   "source_ids": [
+    "usfs-beartooth"
+   ]
+  },
+  {
+   "route_id": "z-rcher-oberland-t-sstal-hulftegg",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "coffee_break",
+   "text": "The Hulftegg is a small pass at 953 m between the upper Tösstal and the Toggenburg, and its summit inn is the natural stop of this ride. From the Toggenburg side it is reachable all year; from the Tösstal side the PostAuto only runs on summer weekends, which tells you how quiet that side is. Take the break at the top rather than in the valley.",
+   "source_ids": [
+    "postauto-hulftegg",
+    "myswitzerland-hulftegg"
+   ]
+  },
+  {
+   "route_id": "z-rcher-oberland-t-sstal-hulftegg",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "text": "A road has crossed the Hulftegg since 1866, but the pass is older than that: pilgrims on the Way of St James walked over it long before it carried wheels. Today it is where the Toggenburger Höhenweg ends one stage and begins the next, and walkers set out from the inn for the Hörnli, the Schnebelhorn and the Chrüzegg while riders stop for the terrace.",
+   "source_ids": [
+    "myswitzerland-hulftegg",
+    "postauto-hulftegg"
+   ]
+  },
+  {
+   "route_id": "colorado-million-dollar-highway",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "Between Silverton and Ouray, US 550 crosses Red Mountain Pass at about 11,000 ft, and its narrowest sections have no guardrails above long drops. Riding north from Silverton keeps you on the mountain side through the Uncompahgre Gorge; riding south puts you on the edge. Pick the direction that suits your nerves, and stop only at the pull-outs, never on the shelf road itself.",
+   "source_ids": [
+    "cpr-million-dollar",
+    "rvlife-million-dollar"
+   ]
+  },
+  {
+   "route_id": "scotland-applecross-torridon-and-west-coast",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "technical_load",
+   "text": "The Bealach na Bà climbs from sea level to 626 m over the Applecross peninsula on a single-track road built in 1822, with tight hairpins and gradients near 20 per cent. Use the passing places early, keep the speed low into the bends, and give uphill traffic room. It is not advised for learners or large vehicles and is often impassable in winter.",
+   "source_ids": [
+    "bitesized-bealach",
+    "edinburgh-bealach"
+   ]
+  },
+  {
+   "route_id": "dolomites-giau-falzarego-and-cortina-high-road",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "From Selva di Cadore the Passo Giau climbs 10.1 km to 2,236 m through 29 hairpins, averaging over 9 per cent with sections near 16. The steep part comes first, in the forest; above the Rifugio Fedare the bends open out. At the top the Nuvolau and Averau stand to the north and the Marmolada to the south, so leave time there before the descent to Cortina.",
+   "source_ids": [
+    "dolomiti-giau"
+   ]
+  },
+  {
+   "route_id": "vancouver-sea-to-sky-and-duffey-lake",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "forecast_read",
+   "text": "This is two rides in one day. The Sea to Sky from Horseshoe Bay to Whistler was rebuilt for the 2010 Winter Olympics and flows; beyond Whistler and Pemberton, the Duffey Lake Road narrows, and the run into Lillooet is winding with steep drop-offs. Lillooet is also much drier and hotter than the coast, so carry water and plan fuel at Whistler.",
+   "source_ids": [
+    "mojo-duffey-loop",
+    "bc-sea-to-sky"
+   ]
+  },
+  {
+   "route_id": "ireland-ring-of-kerry-touring-day",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "The Ring of Kerry is a 179 km loop from Killarney around the Iveragh Peninsula, and its narrow roads make tour coaches run anti-clockwise, through Killorglin first. Ride it the other way, towards Kenmare first, and you meet them head on rather than stuck behind them. Stop at Ladies View and Moll's Gap early, before the day's traffic reaches the viewpoints.",
+   "source_ids": [
+    "wiki-ring-of-kerry",
+    "roamright-ring-of-kerry"
+   ]
+  },
+  {
+   "route_id": "blue-ridge-asheville-to-linn-cove-viaduct",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "photo_stop",
+   "text": "The Linn Cove Viaduct was the last piece of the Blue Ridge Parkway, finished in 1987 after the 7.7-mile section around Grandfather Mountain held the road up for two decades. Stopping or walking on the viaduct is not allowed, so take the picture from the pull-outs before it, or from the paved trail at the visitor centre that runs underneath it.",
+   "source_ids": [
+    "fhwa-blue-ridge",
+    "outdoorproject-linn-cove"
+   ]
+  },
+  {
+   "route_id": "tokyo-nikko-irohazaka-and-lake-chuzenji",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "named_road",
+   "text": "Irohazaka is two one-way roads between Nikko and Lake Chuzenji, climbing about 440 m through 48 bends, each signed with one character of the old Iroha poem. You ride up on the second road, built in 1965, and down on the first, from 1954, so there is never oncoming traffic in the bends. Expect queues in October and early November, when the autumn colour peaks.",
+   "source_ids": [
+    "jnto-irohazaka",
+    "mlit-irohazaka"
+   ]
+  },
+  {
+   "route_id": "norway-lysevegen-and-sirdal-high-road",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "corner_entry",
+   "text": "From Lysebotn the road enters a 1,100 m tunnel that turns a hairpin inside the mountain, then climbs 27 hairpin bends to Øygardstøl at 640 m and on to 950 m at Andersvatn. It was built for a hydro plant and opened in 1984; before that, Lysebotn was reached only by boat. Lights on in the tunnel, and expect it to open only from May.",
+   "source_ids": [
+    "visitnorway-lysevegen",
+    "pjamm-lysebotn"
+   ]
+  },
+  {
+   "route_id": "queenstown-crown-range-and-milford-approach",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "The Crown Range Road is the highest main road in New Zealand, climbing steeply from near Lake Hayes before dropping through the Cardrona Valley. From May to October it is often under snow or ice and chains must be carried. There is one passing bay, south of Cardrona. If conditions look marginal, the Kawarau Gorge route through Cromwell is longer but safer.",
+   "source_ids": [
+    "nz-crown-range",
+    "wanaka-crown-range"
+   ]
+  },
+  {
+   "route_id": "cape-town-western-cape-clarence-drive-coastal-sweep",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "Clarence Drive runs about 22 km between Gordon's Bay and Rooi-Els, more than 70 bends squeezed between the mountains and False Bay, with views across to Cape Point on a clear day. It was started in 1940 and finished by Italian prisoners of war. Use the pull-outs for photos, watch for baboons on the road, and expect the occasional rockfall.",
+   "source_ids": [
+    "wiki-clarence-drive",
+    "fodors-clarence-drive"
+   ]
+  },
+  {
+   "route_id": "places-riedmatt-hurden-rosshorn",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "This ride goes out to Hurden and comes back the same way, so the point is the destination. Hurden sits on a tongue of land where Lake Zurich narrows to its shallowest. Park there and walk: the 841 m oak footbridge to Rapperswil, opened in 2001, is the longest modern wooden bridge in Switzerland, and it is for walkers only.",
+   "source_ids": [
+    "zuerich-holzsteg",
+    "hls-hurden"
+   ]
+  },
+  {
+   "route_id": "places-riedmatt-hurden-rosshorn",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "provenance",
+   "text": "People have crossed the water at Hurden since prehistory: divers found Neolithic and Bronze Age lake settlements here, and Hurden Rosshorn is one of the pile-dwelling sites in the UNESCO World Heritage listing. Duke Rudolf IV of Habsburg built a wooden bridge to Rapperswil in 1358 to 1360; the stone causeway replaced it in 1878, and a ship canal cut in 1943 made Hurden an island.",
+   "source_ids": [
+    "hls-hurden",
+    "wiki-holzbruecke-hurden"
+   ]
+  },
+  {
+   "route_id": "city-zurich-afternoon",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "photo_stop",
+   "text": "This afternoon ride runs out to Robenhausen on the Pfäffikersee and returns the same way. The reason to go is the Robenhauser Ried, a protected reed and marsh belt about a kilometre wide, and a prehistoric pile-dwelling site that is part of a UNESCO World Heritage listing. Leave the bike at the edge of the reserve and see it on foot.",
+   "source_ids": [
+    "wiki-robenhausen"
+   ]
+  },
+  {
+   "route_id": "taiwan-taroko-gorge-and-east-coast",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "official_status",
+   "text": "Since the April 2024 earthquake, Highway 8 through Taroko Gorge has suffered landslides and rockfalls, and sections have opened only at set times while repairs continue. Treat the gorge as conditional: check the Taroko National Park and Highway Bureau notices on the morning you ride, expect traffic control between fixed kilometre markers, and have the coast road as your plan if it is shut.",
+   "source_ids": [
+    "wiki-taroko",
+    "nps-tw-highway8"
+   ]
+  },
+  {
+   "route_id": "chile-carretera-austral-northern-stage",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "timing_note",
+   "text": "The Carretera Austral runs more than 1,200 km from Puerto Montt into Patagonia, mixing tarmac with gravel, and parts are only joined by ferry. On this northern stage you take a short ferry before Hornopirén, and the onward ferry from Hornopirén must be booked in advance. Services are thin, so carry provisions; December to March gives the longest days and kindest weather.",
+   "source_ids": [
+    "chile-travel-austral",
+    "passporter-austral"
+   ]
+  },
+  {
+   "route_id": "morocco-tizi-n-tichka-atlas-crossing",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "The Tizi n'Tichka carries the N9 over the High Atlas at 2,260 m, roughly halfway between Marrakesh and Ouarzazate. Past Taddert the road steepens and the hairpins begin. From late November to early March heavy snow can block it, and the gendarmerie close the pass when it is unsafe. About 20 km beyond the top, a side road leads to the Glaoui kasbah at Telouet.",
+   "source_ids": [
+    "lp-tizi-n-tichka",
+    "aaa-tizi-n-tichka"
+   ]
+  },
+  {
+   "route_id": "dublin-wicklow-mountains-and-glendalough",
+   "surface": "board",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "text": "The Old Military Road, today largely the R115, was built by the British Army between 1801 and 1809 to reach rebels who had retreated into the Wicklow Mountains after 1798. It crosses open bog to the Sally Gap crossroads, then drops past the Glenmacnass Valley to Laragh at the mouth of Glendalough. Expect sheep on the road and fast-changing visibility up on the plateau.",
+   "source_ids": [
+    "goto-ireland-military-road",
+    "irishroadtrip-sally-gap"
+   ]
+  },
+  {
+   "route_id": "queenstown-south-island-glenorchy-lake-road",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "The road to Glenorchy follows Lake Wakatipu for about 46 km and is the only road into the town. Beyond Bobs Cove it climbs to around 100 m above the water, with steep drops, and Bennetts Bluff, about halfway, is the lookout to stop at. Allow an hour rather than 45 minutes, and if you take the Moke Lake detour, part of it is gravel.",
+   "source_ids": [
+    "dartriver-glenorchy",
+    "tripideas-glenorchy"
+   ]
+  },
+  {
+   "route_id": "melbourne-victoria-yarra-valley-and-black-spur",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "The Black Spur is the stretch of the Maroondah Highway that winds from Healesville up the Great Dividing Range to Narbethong, under mountain ash and tree ferns. Parking bays are mostly on the westbound side, so ride it out first and stop for photos on the way back. In strong wind, think twice: falling trees have killed people on this road.",
+   "source_ids": [
+    "visitmelbourne-black-spur",
+    "timeout-black-spur",
+    "wiki-black-spur"
+   ]
+  },
+  {
+   "route_id": "hanoi-ha-giang-limestone-loop-stage",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "official_status",
+   "text": "The Ma Pi Leng Pass is about 20 km of road through the UNESCO Dong Van Karst Plateau Geopark, above the Nho Que River, usually ridden as part of a three- to four-day loop from Ha Giang. Foreign riders need a regional travel permit, a home motorcycle licence and the matching International Driving Permit; without them, most travel insurance will not cover a crash.",
+   "source_ids": [
+    "oxalis-ma-pi-leng",
+    "localvietnam-ha-giang",
+    "frontier-ha-giang-permit"
+   ]
+  },
+  {
+   "route_id": "london-black-mountain-wales-long-day",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "corner_entry",
+   "text": "The A4069 over the Black Mountain, nicknamed the Top Gear road, climbs to about 493 m between Brynamman and Llangadog. Visit Wales advises riding it north to south for the tight hairpin locals call Tro Gwcw, the cuckoo turn, but the Tywi Valley views are better the other way. It is popular, so it is also watched by the police; sheep and ponies roam the open moor.",
+   "source_ids": [
+    "visitwales-black-mountain",
+    "wiki-a4069"
+   ]
+  },
+  {
+   "route_id": "norway-hardangerfjord-fruit-roads",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "Road 550 between Utne and Jondal is part of the National Tourist Route Hardanger: 42 km along the fjord past fruit farms, partly steep with about 300 m of climbing, and usually quieter than the rest of Hardanger. Come between mid-May and mid-June for the blossom, cherries and plums first, then apples, and stop at a farm for cider or juice.",
+   "source_ids": [
+    "fjordnorway-rv550",
+    "hardangerfjord-blossom"
+   ]
+  },
+  {
+   "route_id": "tokyo-hakone-turnpike-and-fuji-lakes",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "The Hakone Turnpike, now officially the Anest Iwata Turnpike Hakone, is a privately owned toll road of about 15.8 km climbing from Odawara along a ridge above Sagami Bay. Its limit is 50 km/h, and its reward is at the top: the Daikanzan observation deck, with Mount Fuji ahead on a clear day. Ride up early, before the haze and the weekend car meets.",
+   "source_ids": [
+    "wiki-hakone-turnpike",
+    "mazda-hakone-turnpike"
+   ]
+  },
+  {
+   "route_id": "norway-atlantic-road-and-troll-church-coast",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "photo_stop",
+   "text": "The Atlantic Road is 8.3 km of County Road 64 hopping across skerries on causeways and eight bridges, the tallest the 260 m Storseisundet Bridge. It opened in 1989 after six years of building, during which twelve hurricanes hit the site. Use the rest stops, such as Eldhusøya, for pictures; in an autumn storm, waves break over the barriers, so ride it calmly or not at all.",
+   "source_ids": [
+    "wiki-atlantic-road",
+    "erih-atlantic-road"
+   ]
+  },
+  {
+   "route_id": "nice-c-te-d-azur-route-napol-on-northbound",
+   "surface": "board",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "text": "The Route Napoléon, opened in 1932, follows the march Napoleon made from Golfe-Juan in March 1815 after escaping Elba. From Grasse, where he left his carriage for mule tracks, the N85 climbs to the Col de Valferrière at 1,169 m and the Col des Leques at 1,146 m, then threads the Clue de Taulanne towards Digne. Brown signs topped with an eagle mark the way.",
+   "source_ids": [
+    "beyond-route-napoleon",
+    "traveller-route-napoleon"
+   ]
+  },
+  {
+   "route_id": "cape-town-western-cape-bainskloof-and-du-toitskloof",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "technical_load",
+   "text": "Bainskloof Pass was built by Andrew Geddes Bain from 1849 and opened in September 1853; it is a national monument. Some sections are very narrow, with the mountain on one side and a steep drop to the river on the other, and chains at both ends keep large vehicles out. Ride it slowly and expect patchy surface in places; it was closed for repairs from 2020 to 2022.",
+   "source_ids": [
+    "sahris-bainskloof",
+    "paarlpost-bainskloof"
+   ]
+  },
+  {
+   "route_id": "bregenzerwald-furkajoch-faschina-day",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "timing_note",
+   "text": "The Furkajoch climbs to 1,761 m between Damüls in the Bregenzerwald and the Laternsertal, with gradients up to 14 per cent. It closes for winter and usually reopens around Pentecost, so check before an early-season day. The Faschinajoch at 1,486 m is the coffee stop, and the descent through the Laternsertal is narrow with bends that are hard to see into.",
+   "source_ids": [
+    "wiki-furkajoch",
+    "komoot-furkajoch",
+    "moho-walser-tour"
+   ]
+  },
+  {
+   "route_id": "milan-northern-italy-lake-garda-western-shore",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "The Gardesana Occidentale, SS45bis, runs along Lake Garda's western shore through a long series of tunnels, so ride with lights on and expect the light to change sharply at every exit. The famous side road up to Tremosine, the Strada della Forra built in 1913, is currently closed after a landslide; check before planning around it, and use the Tremosine plateau roads instead.",
+   "source_ids": [
+    "gardatrentino-forra",
+    "insella-forra"
+   ]
+  },
+  {
+   "route_id": "san-francisco-skyline-alice-s-and-pacific-return",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "coffee_break",
+   "text": "Skyline Boulevard, State Route 35, follows the crest of the Santa Cruz Mountains; the 12 miles between Highway 92 and Highway 84 are the favourite stretch, with a turnout at Skeggs Point. At Sky Londa, 1,520 ft, there is fuel and Alice's Restaurant, the riders' stop. Heading further south, turn off at Highway 9 rather than continue onto the one-lane section.",
+   "source_ids": [
+    "lnm-skyline",
+    "wiki-sr35"
+   ]
+  },
+  {
+   "route_id": "seoul-south-korea-ganghwa-island-coastal-ride",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "Ganghwa is South Korea's fifth-largest island, joined to the mainland by two bridges and edged by wide tidal mud flats. Stop at the east-coast fortresses of Chojijin, Deokjinjin and Gwangseongbo, at Jeondeungsa in the south, one of the oldest temples in the country, and at the Peace Observatory in the north, which looks across the Han estuary into North Korea.",
+   "source_ids": [
+    "roughguides-ganghwado",
+    "ozoutback-ganghwa"
+   ]
+  },
+  {
+   "route_id": "seoul-south-korea-ganghwa-island-coastal-ride",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "archive_page",
+   "text": "Ganghwa has been lived on since prehistory: about 150 dolmens stand on the island, part of a UNESCO World Heritage listing since 2000. It was also Korea's front door. French forces were turned back at Jeondeungsa in 1866, the United States Navy attacked in 1871, and the treaty that first opened Korea to Japanese trade in 1876 was concluded here.",
+   "source_ids": [
+    "wiki-ganghwa-county",
+    "ozoutback-ganghwa"
+   ]
+  },
+  {
+   "route_id": "vienna-wachau-and-mariazell-roads",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "The Wachau is the narrow Danube valley between Melk and Krems, a UNESCO cultural landscape since 2000, with terraced vineyards and apricot orchards on both banks. Melk Abbey marks one end; in Dürnstein, Richard the Lionheart was held in the castle in 1193. Come in early to mid April for the apricot blossom, and expect cyclists on the riverside road.",
+   "source_ids": [
+    "austria-info-wachau",
+    "univie-wachau",
+    "decanter-wachau"
+   ]
+  },
+  {
+   "route_id": "iceland-golden-circle-and-thingvellir",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "forecast_read",
+   "text": "The Golden Circle runs from Reykjavik by Route 36 to Thingvellir, where the Viking-age parliament met for centuries and the American and Eurasian plates pull apart, then on to Geysir and the two-step Gullfoss falls. The main roads, 36, 35 and 37, are paved and cleared even in winter, but weather changes fast: check road.is before you leave.",
+   "source_ids": [
+    "nonni-golden-circle",
+    "hertz-is-golden-circle"
+   ]
+  },
+  {
+   "route_id": "sydney-blue-mountains-and-bells-line",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "coffee_break",
+   "text": "Bells Line of Road crosses the Blue Mountains the scenic way: up the tight bends of Bellbird Hill to the lookout at Kurrajong Heights, through the orchards of Bilpin, known for apples and cider, then to the Blue Mountains Botanic Garden at Mount Tomah, about 1,000 m up, free to enter and inside the World Heritage area. Stop there for the views over the Grose Valley.",
+   "source_ids": [
+    "visitcentralnsw-bells",
+    "hawkesbury-bells",
+    "sydneyuncovered-bells"
+   ]
+  },
+  {
+   "route_id": "lisbon-sintra-ridge-and-atlantic-coast",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "The roads up to the Sintra palaces are narrow and steep, and the access roads to Pena Palace are often closed to private vehicles at busy times, so park lower down rather than ride to the gate. The N247 then runs about 18 km west through the Sintra-Cascais Natural Park to Cabo da Roca, the westernmost point of mainland Europe; ride it early, before the crowds.",
+   "source_ids": [
+    "tyremap-sintra",
+    "for91days-cabo-da-roca"
+   ]
+  },
+  {
+   "route_id": "tokyo-izu-skyline-and-ocean-return",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "The Izu Skyline is a 40.6 km toll road along the mountain spine of the Izu Peninsula, from Atami-toge to Amagi-kogen. It mixes long sweepers with tight twisty sections, and the toll gates along it have fuel and food. Pull in at the observation points for Mount Fuji and Sagami Bay rather than riding the whole ridge without stopping.",
+   "source_ids": [
+    "wiki-izu-skyline",
+    "motorcycleroads-izu"
+   ]
+  },
+  {
+   "route_id": "nice-c-te-d-azur-lac-de-sainte-croix-swim-ride",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "official_status",
+   "text": "The Route des Crêtes, the D23 from La Palud-sur-Verdon, is a 24 km loop above the Grand Canyon du Verdon with 14 belvederes, some over cliffs more than 700 m high. Part of it is one-way, so ride it clockwise as signed, and that one-way middle section, from Jas d'Aire to the Chalet de la Maline, is closed from late November to late March.",
+   "source_ids": [
+    "verdontourisme-cretes",
+    "paca-route-des-cretes"
+   ]
+  },
+  {
+   "route_id": "barcelona-catalonia-cap-de-creus-coastal-ride",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "The GI-614 from Roses to Cadaqués climbs over the Cap de Creus Natural Park, protected since 1998, with tight corners and views back over Roses; watch for the abrupt right-hander early on. Beyond Cadaqués, Portlligat has Dalí's house. The road on to the Cap de Creus lighthouse has been closed to motor vehicles in summer, so check the park's rules before you go.",
+   "source_ids": [
+    "bbr-gi614",
+    "reportage-cap-de-creus",
+    "anglophone-cap-de-creus"
+   ]
+  },
+  {
+   "route_id": "auckland-coromandel-peninsula-loop",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "technical_load",
+   "text": "The 309 Road is a 22 km gravel road over the Coromandel Range from Coromandel town to Whitianga, narrow and twisting, with blind corners. Ride it on a bike that suits gravel, or skip it. Seven kilometres in, Waiau Falls is visible from the road; a kilometre further, a short walk leads to the most accessible stand of mature kauri on the peninsula.",
+   "source_ids": [
+    "wiki-309-road",
+    "doc-waiau-kauri"
+   ]
+  },
+  {
+   "route_id": "scotland-loch-ness-and-glen-affric",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "timing_note",
+   "text": "The A82 along Loch Ness is a fast main road with long sweeping bends, but as soon as the sun comes out the loch section fills with traffic and passing gets hard. The B862 and B852 on the other shore, via Foyers, are quieter and more scenic, with single-track stretches and tight blind corners between Fort Augustus and Foyers. Choose by the day and the traffic.",
+   "source_ids": [
+    "bbr-a82",
+    "bbr-b862"
+   ]
+  },
+  {
+   "route_id": "brussels-ardennes-semois-sweep",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Between Vresse-sur-Semois and Bouillon the roads follow the Semois in bend after bend on smooth, centre-lined tarmac. Stop on the N819 just before Rochehaut: the viewpoint looks down on Frahan, a village wrapped in a loop of the river. Then ride on to Bouillon, where the castle of Godfrey of Bouillon stands above the town.",
+   "source_ids": [
+    "bikeuk-ardennes",
+    "visitardenne-semois"
+   ]
+  },
+  {
+   "route_id": "chile-andes-and-caj-n-del-maipo",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "official_status",
+   "text": "Route G-25 follows the Maipo River up from Santiago through San José de Maipo; from Las Vizcachas it is about 47 km of good tarmac to the Carabineros post at San Gabriel, where you can ask about the road. Beyond, about 18 km of gravel climbs to the El Yeso reservoir at around 2,500 m. In winter that road can close for snow; check before you go.",
+   "source_ids": [
+    "wikiexplora-el-yeso",
+    "chiletravel-el-yeso"
+   ]
+  },
+  {
+   "route_id": "milan-ligurian-apennines-and-portofino",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "The SP227 from Rapallo and Santa Margherita Ligure to Portofino is a narrow road built in the 1950s on the cliffs just above the sea, about six miles of it. In the tourist season Portofino's local police can hold private traffic at a filter near Cervara to stop jams, and parking in Portofino is very limited; the road can also close for landslides or storms.",
+   "source_ids": [
+    "cmgenova-sp227",
+    "locauto-portofino",
+    "detour-sp227"
+   ]
+  },
+  {
+   "route_id": "barcelona-montserrat-and-priorat-long-sweep",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "Two roads climb to the Montserrat monastery: about 9 km from Monistrol on the BP-1121, or 14 km from El Bruc. The car park at the top is attended, paid and limited, and it fills easily on public holidays, so arrive early. Summer is the least advisable season: crowds, heat and a high fire risk that sometimes limits access.",
+   "source_ids": [
+    "montserratvisita-road",
+    "travesia-montserrat"
+   ]
+  },
+  {
+   "route_id": "lisbon-portugal-bidos-lagoon-easy-ride",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "Óbidos is one of Portugal's best-preserved medieval walled towns, about 85 km from Lisbon by the A8. You enter on foot through the Portal da Vila gate, so park outside the walls. A few minutes west, the Lagoa de Óbidos is Portugal's longest coastal lagoon, rich in birds, and meets the sea at Foz do Arelho.",
+   "source_ids": [
+    "pousadas-obidos",
+    "eurovelo-obidos"
+   ]
+  },
+  {
+   "route_id": "hamburg-l-neburg-heath-flow",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "The Lüneburg Heath is the largest heathland in Central Europe, kept open by grazing Heidschnucke sheep. It turns purple when the heather blooms, from early August to mid-September. The heart of it, around the Wilseder Berg at 169 m and the village of Wilsede, is car-free, so park at the edge in Undeloh or Niederhaverbeck and walk the last part.",
+   "source_ids": [
+    "lueneburger-heide-bloom",
+    "niedersachsen-heath"
+   ]
+  },
+  {
+   "route_id": "hamburg-harz-long-day-doorway",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "The western Harz is made for this: the B4 to Torfhaus, a riders' meeting point at about 800 m with a view of the Brocken, the B242 Harzhochstrasse, and the Okertalsperre on the B498. That valley road down to Goslar is twisty and extremely busy at weekends, so ride it with real caution. The Brocken itself cannot be reached by bike.",
+   "source_ids": [
+    "adac-harz",
+    "motorradonline-harz"
+   ]
+  },
+  {
+   "route_id": "berlin-m-rkische-schweiz-and-buckow-lakes",
+   "surface": "board",
+   "guide": "leon_story",
+   "pose_candidate": "context",
+   "text": "The Märkische Schweiz, about 45 km east of Berlin, is Brandenburg's smallest and oldest nature park: end-moraine hills, deep gullies and lakes. Buckow, its centre and Brandenburg's only Kneipp spa town, sits on the Schermützelsee, where Bertolt Brecht and Helene Weigel kept their summer house from 1952; it is now a memorial you can visit.",
+   "source_ids": [
+    "wiki-schermuetzelsee",
+    "reiseland-maerkische-schweiz"
+   ]
+  },
+  {
+   "route_id": "hamburg-holstein-switzerland-lakes-sweep",
+   "surface": "board",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Holstein Switzerland is a nature park of more than 200 lakes and gentle moraine hills between Kiel and Lübeck. The Großer Plöner See is Schleswig-Holstein's largest lake, and the Bungsberg, at 168 m, its highest point, with a viewing tower. Plön and Eutin both have castles on the water; expect gentle bends rather than climbs.",
+   "source_ids": [
+    "wiki-holstein-switzerland",
+    "shtourismus-holstein"
+   ]
+  },
+  {
+   "route_id": "tokyo-okutama-and-chichibu-mountain-loop",
+   "surface": "board",
+   "guide": "elise_stop",
+   "pose_candidate": "stop_here",
+   "text": "From Ome, Route 411 runs up the Tama valley into the Chichibu-Tama-Kai National Park and along the shore of Lake Okutama, the reservoir behind the Ogouchi Dam, finished in 1957 and still a major source of Tokyo's water. There is free parking by the dam, next to the Water and Green Museum; come in autumn for the colour.",
+   "source_ids": [
+    "japanexp-okutama",
+    "yokota-okutama"
+   ]
+  },
+  {
+   "route_id": "barcelona-collada-de-toses-pyrenean-doorway",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "technical_load",
+   "text": "After Ribes de Freser the N-260 narrows, and signs warn of bends for the next 45 km up to the Collada de Toses at about 1,800 m, followed by another 22 km down to Puigcerdà. There is no respite, so take a break at the top. Riders have reported police patrols near Ribes stopping bikes that make too much progress.",
+   "source_ids": [
+    "bbr-collada-toses",
+    "quaeldich-toses"
+   ]
+  },
+  {
+   "route_id": "bangkok-thailand-pattaya-coast-and-silverlake",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "official_status",
+   "text": "About 6 km south of Pattaya off Sukhumvit Road, the Buddha image carved into Khao Chi Chan, 109 m high and unveiled in 1996, faces the Silverlake Vineyard; entry to the Buddha mountain is free. Thailand drives on the left, helmets are compulsory for rider and pillion, and Pattaya's Beach Road has regular helmet checks.",
+   "source_ids": [
+    "expedia-buddha-mountain",
+    "scuba-silverlake",
+    "byklo-thai-safety"
+   ]
+  },
+  {
+   "route_id": "seoul-gangwon-mountain-run",
+   "surface": "board",
+   "guide": "noor_brief",
+   "pose_candidate": "official_status",
+   "text": "Motorcycles are not allowed on Korean expressways, so riders cross to the east coast over the mountains: Hangyeryeong on Route 44, at 1,004 m between Seoraksan and Jeombongsan and the key link from Seoraksan to the East Sea coast, or the old Misiryeong road, now bypassed by a tunnel. Both run through Seoraksan National Park; Hangyeryeong is known for snow in winter.",
+   "source_ids": [
+    "matador-korea-moto",
+    "joongang-hangye"
+   ]
+  },
+  {
+   "route_id": "paris-rambouillet-chevreuse-forest-double",
+   "surface": "board",
+   "guide": "mara_line",
+   "pose_candidate": "corner_entry",
+   "text": "From the Château de Dampierre the D91 climbs the Côte des 17 Tournants, the classic bend sequence of the Haute Vallée de Chevreuse park. Cyclists, riders and drivers all share it, so ride it with that in mind. The D24 down to the Abbaye des Vaux de Cernay is about 4 km of beautiful, demanding road.",
+   "source_ids": [
+    "komoot-17-tournants",
+    "motonet-chevreuse"
+   ]
+  },
+  {
+   "route_id": "ibergeregg-sihlsee-muotathal-short-alpine",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "Keep this one if you want a proper pass on a short day. Switzerland Tourism describes the climb above Schwyz as a series of bends with views back toward Lake Lucerne, and beyond the summit the road opens onto the moorland around Ybrig. The Sihlsee lakeshore then gives the ride a second, calmer half, so a mountain road and a lake fit into one outing. Pass on it if all you want is a quick evening loop; Raten is the lighter choice for that. Before you commit, check the distances in the route preview: the stored leg figures for this ride are still being corrected.",
+   "source_ids": [
+    "CH-IBER"
+   ]
+  },
+  {
+   "route_id": "raten-gerisee-albis-afterwork-special",
+   "surface": "swipe",
+   "guide": "noor_brief",
+   "pose_candidate": "timing_note",
+   "text": "Keep this one for an after-work ride that ends at a view rather than on a pass. The local tourism office puts Raten at 1,077 metres above the Aegerital, and Zug Tourism describes the outlook toward the Schwyz Alps. It asks less of you than an Alpine climb, which is exactly why it suits a weekday evening. Pass on it if you want hairpins; Ibergeregg is the stronger mountain road. Two things to know before keeping it: the Ratenpfad is a walking trail, not part of the ride, and the Gottschalkenberg viewpoint is a separate visit. The stored leg distances are still being corrected, so trust the route preview.",
+   "source_ids": [
+    "ZG-RATEN",
+    "AS-RATEN",
+    "AS-PATH"
+   ]
+  },
+  {
+   "route_id": "grossglockner-hochalpenstrasse",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "Keep this if you want Austria's showpiece pass in a single day. The road runs 48 km from Fusch to Heiligenblut and climbs through 36 hairpins to the Hochtor at 2,504 m, where Salzburg meets Carinthia, so it is a full mountain day rather than a short loop. It is a toll road and normally open only from early May to early November, which makes it a plan for the season, not a spontaneous outing in spring or late autumn. Pass on it if you want quiet roads without crowds of other visitors; keep it if the high Alpine scenery is the point of the trip.",
+   "source_ids": [
+    "austria-info-grossglockner"
+   ]
+  },
+  {
+   "route_id": "furka-grimsel-susten-big-three-dawn",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want three classic Swiss passes in one loop: the Grimsel at 2,164 m, the Furka at 2,429 m and the Susten. It is a long, demanding day of climbs and descents, and the rhythm of three different passes is the reason to ride it. The catch is the calendar. All three close in winter and do not reopen together: in 2026 the Grimsel and Furka opened on 29 May while the Susten stayed closed longer. Pass on it early in the season, and check the Touring Club's pass status before you set off.",
+   "source_ids": [
+    "tcs-pass-openings-2026"
+   ]
+  },
+  {
+   "route_id": "milan-stelvio-and-gavia-serious-pass-day",
+   "surface": "swipe",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "Keep this if you want the highest road pass in Italy and are ready for a serious day. From Prato allo Stelvio the road climbs 1,838 m in about 25 km through 48 numbered hairpins to 2,757 m, where the air is thin and the final bends come close together. It rewards a steady rhythm rather than speed, and it asks for fitness and patience from rider and bike. Pass on it if you want an easy scenic outing or are new to tight hairpins; choose a lower pass first and come back to the Stelvio when the bends feel routine.",
+   "source_ids": [
+    "suedtirol-stelvio"
+   ]
+  },
+  {
+   "route_id": "norway-trollstigen-and-geiranger-switchbacks",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "corner_entry",
+   "text": "Keep this if you want one of Norway's best-known mountain roads on a fjord trip. Trollstigen climbs through 11 hairpin bends to Stigrøra at 858 m and crosses the Stigfossen waterfall on a stone bridge, so it is short and intense rather than a long ride. At the top, viewing platforms hang over the bends: stop there for photographs, never on the road itself. It is normally open from mid-May until the first snow, without a fee. Pass on it outside that season, and check the status before you travel, as the bends can stay closed while the Valldal side is open.",
+   "source_ids": [
+    "visitnorway-trollstigen",
+    "fjordnorway-trollstigen"
+   ]
+  },
+  {
+   "route_id": "melbourne-great-ocean-road-and-otway-rainforest",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want a coastal ride with a story behind it. About 3,000 servicemen returning from the First World War cut the Great Ocean Road's 243 km from Torquay to Allansford into a rugged coastline, and it opened in 1932 as the largest war memorial in the world. The cliffs and bends are what you see from the saddle; the history is why it is worth slowing down and stopping. Pass on it if you want an empty road or a fast run, because this is a coast to take slowly, one viewpoint at a time.",
+   "source_ids": [
+    "gora-living-memorial"
+   ]
+  },
+  {
+   "route_id": "colorado-million-dollar-highway",
+   "surface": "swipe",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "Keep this if you are comfortable on exposed mountain roads. Between Silverton and Ouray, US 550 crosses Red Mountain Pass at about 11,000 ft, and its narrowest sections have no guardrails above long drops. The direction matters: riding north from Silverton keeps you on the mountain side through the Uncompahgre Gorge, while riding south puts you on the edge. Pass on it if heights unsettle you, or ride it northbound so the drop stays across the road. Either way, stop only at the pull-outs and never on the shelf road itself.",
+   "source_ids": [
+    "cpr-million-dollar",
+    "rvlife-million-dollar"
+   ]
+  },
+  {
+   "route_id": "tokyo-nikko-irohazaka-and-lake-chuzenji",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "Keep this if you want 48 bends without oncoming traffic. Irohazaka is two one-way roads between Nikko and Lake Chuzenji, climbing about 440 m; you ride up on the second road, built in 1965, and down on the first, from 1954, and each bend is signed with one character of the old Iroha poem. It is a short, focused climb rather than a full day, so pair it with time at the lake. Pass on it in October and early November if you dislike queues, because that is when the autumn colour peaks and traffic builds.",
+   "source_ids": [
+    "jnto-irohazaka",
+    "mlit-irohazaka"
+   ]
+  },
+  {
+   "route_id": "lukmanier-oberalp-vorderrhein-high-roads",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want two high passes with very different seasons in one ride. The Oberalp, at 2,044 m between Andermatt and the Surselva, closes for winter like its neighbours, while the Lukmanier, at about 1,914 m from Disentis down to Biasca, is the only one of the eight passes around Andermatt kept open in winter. That makes the Lukmanier half the dependable part of the day. Pass on the full ride outside the Oberalp's season, or keep it and plan to use the Lukmanier on its own until the Oberalp reopens.",
+   "source_ids": [
+    "hls-oberalppass",
+    "luzern-lukmanier"
+   ]
+  },
+  {
+   "route_id": "beartooth-red-lodge-to-cooke-city",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "Keep this if you want one of the highest roads in the United States on a summer trip. The Beartooth Highway tops out at 10,947 ft, about 3,337 m, and is usually open only from Memorial Day to 15 October, weather permitting. Even in season, May, June and late September can bring winter temperatures and snow at the pass, and Montana closes the road every winter. Pass on it if your dates fall outside that window or your gear is not ready for cold at the top; keep it if you can check conditions on the morning you ride.",
+   "source_ids": [
+    "usfs-beartooth"
+   ]
+  },
+  {
+   "route_id": "z-rcher-oberland-t-sstal-hulftegg",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want a quiet half-day near Zurich rather than a big Alpine pass. The Hulftegg is a small pass at 953 m between the upper Tösstal and the Toggenburg, and its summit inn is the natural stop. From the Toggenburg side it is reachable all year; from the Tösstal side the PostAuto only runs on summer weekends, which tells you how little traffic that side sees. Pass on it if you are after hairpins and high altitude; keep it for an easy, relaxed outing with a proper break at the top.",
+   "source_ids": [
+    "postauto-hulftegg",
+    "myswitzerland-hulftegg"
+   ]
+  },
+  {
+   "route_id": "scotland-applecross-torridon-and-west-coast",
+   "surface": "swipe",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "Keep this if you are confident on steep, narrow roads. The Bealach na Bà climbs from sea level to 626 m over the Applecross peninsula on a single-track road built in 1822, with tight hairpins and gradients near 20 per cent. It is not advised for learners or large vehicles and is often impassable in winter. Pass on it if you are still learning hill starts and tight turns, or if the weather has turned. Keep it if you can use passing places early, keep the speed low and give uphill traffic room.",
+   "source_ids": [
+    "bitesized-bealach",
+    "edinburgh-bealach"
+   ]
+  },
+  {
+   "route_id": "dolomites-giau-falzarego-and-cortina-high-road",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "Keep this if you want a steep, classic Dolomite pass with a big view at the top. From Selva di Cadore the Passo Giau climbs 10.1 km to 2,236 m through 29 hairpins, averaging over 9 per cent with sections near 16. The steepest part comes first, in the forest, and above the Rifugio Fedare the bends open out. At the top the Nuvolau and Averau stand to the north and the Marmolada to the south. Pass on it if steep hairpins tire you quickly; keep it and leave time at the top before the descent to Cortina.",
+   "source_ids": [
+    "dolomiti-giau"
+   ]
+  },
+  {
+   "route_id": "vancouver-sea-to-sky-and-duffey-lake",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want two different rides in one day. The Sea to Sky from Horseshoe Bay to Whistler was rebuilt for the 2010 Winter Olympics and flows; beyond Whistler and Pemberton, the Duffey Lake Road narrows, and the run into Lillooet is winding with steep drop-offs. Lillooet is also much drier and hotter than the coast. Pass on the full loop if you only want an easy coastal ride, and stop at Whistler instead. Keep it if you plan fuel at Whistler and carry water for the hot interior.",
+   "source_ids": [
+    "mojo-duffey-loop",
+    "bc-sea-to-sky"
+   ]
+  },
+  {
+   "route_id": "ireland-ring-of-kerry-touring-day",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you want Ireland's best-known coastal loop and can choose your direction. The Ring of Kerry is a 179 km loop from Killarney around the Iveragh Peninsula, and its narrow roads make tour coaches run anti-clockwise, through Killorglin first. Ride it the other way, towards Kenmare first, so you meet them head on rather than sitting behind them. Pass on it in high summer if crowds spoil a ride for you; keep it and reach Ladies View and Moll's Gap early, before the day's traffic.",
+   "source_ids": [
+    "wiki-ring-of-kerry",
+    "roamright-ring-of-kerry"
+   ]
+  },
+  {
+   "route_id": "blue-ridge-asheville-to-linn-cove-viaduct",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "photo_stop",
+   "text": "Keep this if you want an engineering landmark on one of America's great scenic roads. The Linn Cove Viaduct was the last piece of the Blue Ridge Parkway, finished in 1987 after the 7.7-mile section around Grandfather Mountain held the road up for two decades. It is a ride to savour rather than hurry. Stopping or walking on the viaduct is not allowed, so pass on it if you hoped to park on the bridge; keep it and take your picture from the pull-outs before it, or from the trail underneath.",
+   "source_ids": [
+    "fhwa-blue-ridge",
+    "outdoorproject-linn-cove"
+   ]
+  },
+  {
+   "route_id": "norway-lysevegen-and-sirdal-high-road",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want one of Norway's most unusual climbs. From Lysebotn the road enters a 1,100 m tunnel that turns a hairpin inside the mountain, then climbs 27 hairpin bends to Øygardstøl at 640 m and on to 950 m at Andersvatn. It was built for a hydro plant and opened in 1984; before that, Lysebotn could only be reached by boat. Pass on it before May, when it is usually still closed. Keep it if you ride the tunnel with lights on and leave time at the top for the view back down the bends.",
+   "source_ids": [
+    "visitnorway-lysevegen",
+    "pjamm-lysebotn"
+   ]
+  },
+  {
+   "route_id": "queenstown-crown-range-and-milford-approach",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "technical_load",
+   "text": "Keep this if you want the highest main road in New Zealand on a clear, dry day. The Crown Range Road climbs steeply from near Lake Hayes before dropping through the Cardrona Valley, and there is only one passing bay, south of Cardrona. From May to October it is often under snow or ice and chains must be carried. Pass on it when the conditions look marginal: the Kawarau Gorge route through Cromwell is longer but safer. Keep it in the warmer months, when the climb and the valley descent can be ridden as they deserve.",
+   "source_ids": [
+    "nz-crown-range",
+    "wanaka-crown-range"
+   ]
+  },
+  {
+   "route_id": "cape-town-western-cape-clarence-drive-coastal-sweep",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want a short, intense coastal road near Cape Town. Clarence Drive runs about 22 km between Gordon's Bay and Rooi-Els, with more than 70 bends squeezed between the mountains and False Bay. It was started in 1940 and finished by Italian prisoners of war. On a clear day you can see across to Cape Point. Pass on it if you want a long day in the saddle; it is a road to ride slowly and enjoy. Keep it, use the pull-outs for photos, and watch for baboons and occasional rockfall.",
+   "source_ids": [
+    "wiki-clarence-drive",
+    "fodors-clarence-drive"
+   ]
+  },
+  {
+   "route_id": "places-riedmatt-hurden-rosshorn",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you want a short ride with a walk at the end rather than a road that is the point in itself. The route goes out to Hurden and back the same way. Hurden sits on a tongue of land where Lake Zurich narrows to its shallowest, and from there an 841 m oak footbridge, opened in 2001, leads to Rapperswil; it is the longest modern wooden bridge in Switzerland and is for walkers only. Pass on it if you want bends and climbs. Keep it for an easy outing: park in Hurden and walk across the lake.",
+   "source_ids": [
+    "zuerich-holzsteg",
+    "hls-hurden"
+   ]
+  },
+  {
+   "route_id": "city-zurich-afternoon",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you want a calm afternoon ride with a nature stop rather than a riding challenge. The route runs out to Robenhausen on the Pfäffikersee and returns the same way. The reason to go is the Robenhauser Ried, a protected reed and marsh belt about a kilometre wide and a prehistoric pile-dwelling site that is part of a UNESCO World Heritage listing. Pass on it if you want passes and hairpins. Keep it for a short, easy outing, and leave the bike at the edge of the reserve to see it on foot.",
+   "source_ids": [
+    "wiki-robenhausen"
+   ]
+  },
+  {
+   "route_id": "taiwan-taroko-gorge-and-east-coast",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want a world-famous gorge and can accept that it may not open on your day. Since the April 2024 earthquake, Highway 8 through Taroko Gorge has suffered landslides and rockfalls, and sections open only at set times while repairs continue, with traffic control between fixed kilometre markers. Pass on it if you need a guaranteed plan. Keep it if you check the Taroko National Park and Highway Bureau notices on the morning you ride, and keep the coast road ready as your alternative when the gorge is shut.",
+   "source_ids": [
+    "wiki-taroko",
+    "nps-tw-highway8"
+   ]
+  },
+  {
+   "route_id": "chile-carretera-austral-northern-stage",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "technical_load",
+   "text": "Keep this if you want a remote adventure stage rather than a polished touring road. The Carretera Austral runs more than 1,200 km from Puerto Montt into Patagonia, mixing tarmac with gravel, and parts are joined only by ferry. On this northern stage you take a short ferry before Hornopirén, and the onward ferry from there must be booked in advance. Services are thin, so carry provisions. Pass on it if you need daily fuel and food on tap. Keep it for December to March, which gives the longest days and kindest weather.",
+   "source_ids": [
+    "chile-travel-austral",
+    "passporter-austral"
+   ]
+  },
+  {
+   "route_id": "morocco-tizi-n-tichka-atlas-crossing",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "corner_entry",
+   "text": "Keep this if you want to cross the High Atlas on a proper mountain road. The Tizi n'Tichka carries the N9 over the range at 2,260 m, roughly halfway between Marrakesh and Ouarzazate, and past Taddert the road steepens and the hairpins begin. From late November to early March heavy snow can block it, and the gendarmerie close the pass when it is unsafe. Pass on it in that winter window unless you can wait for it to clear. Keep it, and consider the side road beyond the top to the Glaoui kasbah at Telouet.",
+   "source_ids": [
+    "lp-tizi-n-tichka",
+    "aaa-tizi-n-tichka"
+   ]
+  },
+  {
+   "route_id": "dublin-wicklow-mountains-and-glendalough",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want open moorland and history within reach of Dublin. The Old Military Road, today largely the R115, was built by the British Army between 1801 and 1809 to reach rebels who had retreated into the Wicklow Mountains after 1798. It crosses open bog to the Sally Gap crossroads, then drops past the Glenmacnass Valley to Laragh at the mouth of Glendalough. Pass on it in poor visibility, because the plateau clouds over fast. Keep it on a clear day, and expect sheep on the road.",
+   "source_ids": [
+    "goto-ireland-military-road",
+    "irishroadtrip-sally-gap"
+   ]
+  },
+  {
+   "route_id": "queenstown-south-island-glenorchy-lake-road",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you want a lake road with one great lookout rather than a long day. The road to Glenorchy follows Lake Wakatipu for about 46 km and is the only road into the town. Beyond Bobs Cove it climbs to around 100 m above the water, with steep drops, and Bennetts Bluff, about halfway, is the place to stop. Allow an hour rather than 45 minutes. Pass on the Moke Lake detour if your bike dislikes gravel, because part of it is unsealed.",
+   "source_ids": [
+    "dartriver-glenorchy",
+    "tripideas-glenorchy"
+   ]
+  },
+  {
+   "route_id": "melbourne-victoria-yarra-valley-and-black-spur",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want a forest road close to Melbourne. The Black Spur is the stretch of the Maroondah Highway that winds from Healesville up the Great Dividing Range to Narbethong, under mountain ash and tree ferns. Parking bays are mostly on the westbound side, so ride it out first and stop for photographs on the way back. Pass on it in strong wind: falling trees have killed people on this road. Keep it for a calm day, take the forest slowly, and use the Fernshaw picnic area at the foot of the climb as your first stop.",
+   "source_ids": [
+    "visitmelbourne-black-spur",
+    "timeout-black-spur",
+    "wiki-black-spur"
+   ]
+  },
+  {
+   "route_id": "hanoi-ha-giang-limestone-loop-stage",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "Keep this if you want a multi-day adventure through limestone mountains and can sort the paperwork first. The Ma Pi Leng Pass is about 20 km of road through the UNESCO Dong Van Karst Plateau Geopark, above the Nho Que River, usually ridden as part of a three- to four-day loop from Ha Giang. Pass on it if you lack the right documents. Foreign riders need a regional travel permit, a home motorcycle licence and the matching International Driving Permit; without them most travel insurance will not cover a crash.",
+   "source_ids": [
+    "oxalis-ma-pi-leng",
+    "localvietnam-ha-giang",
+    "frontier-ha-giang-permit"
+   ]
+  },
+  {
+   "route_id": "london-black-mountain-wales-long-day",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want a famous moorland pass in Wales on a long day out. The A4069 over the Black Mountain, nicknamed the Top Gear road, climbs to about 493 m between Brynamman and Llangadog. Visit Wales advises riding it north to south for the tight hairpin locals call Tro Gwcw, the cuckoo turn, though the Tywi Valley views are better the other way. Pass on it if you want a quiet, unwatched road: it is popular and patrolled by the police. Keep it, and watch for sheep and ponies on the open moor.",
+   "source_ids": [
+    "visitwales-black-mountain",
+    "wiki-a4069"
+   ]
+  },
+  {
+   "route_id": "norway-hardangerfjord-fruit-roads",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want a gentle fjord road with a season to plan around. Road 550 between Utne and Jondal is part of the National Tourist Route Hardanger: 42 km along the fjord past fruit farms, partly steep with about 300 m of climbing, and usually quieter than the rest of Hardanger. Pass on it if you want hairpins and high passes. Keep it for mid-May to mid-June, when the blossom comes, cherries and plums first and then apples, and stop at a farm for cider or juice.",
+   "source_ids": [
+    "fjordnorway-rv550",
+    "hardangerfjord-blossom"
+   ]
+  },
+  {
+   "route_id": "tokyo-hakone-turnpike-and-fuji-lakes",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "Keep this if you want a short ridge road with a famous view at the top. The Hakone Turnpike, now officially the Anest Iwata Turnpike Hakone, is a privately owned toll road of about 15.8 km climbing from Odawara along a ridge above Sagami Bay. Its limit is 50 km/h, so it is a ride for the view, not for speed. At the top, the Daikanzan observation deck faces Mount Fuji on a clear day. Pass on it at weekend midday; keep it for an early start, before the haze and the car meets.",
+   "source_ids": [
+    "wiki-hakone-turnpike",
+    "mazda-hakone-turnpike"
+   ]
+  },
+  {
+   "route_id": "norway-atlantic-road-and-troll-church-coast",
+   "surface": "swipe",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "Keep this if you want one of Europe's most photographed short roads. The Atlantic Road is 8.3 km of County Road 64 hopping across skerries on causeways and eight bridges, the tallest the 260 m Storseisundet Bridge. It opened in 1989 after six years of building, during which twelve hurricanes hit the site. It is short, so combine it with the rest of the coast. Pass on it during an autumn storm, when waves break over the barriers. Keep it on a calm day and use the rest stops, such as Eldhusøya, for pictures.",
+   "source_ids": [
+    "wiki-atlantic-road",
+    "erih-atlantic-road"
+   ]
+  },
+  {
+   "route_id": "nice-c-te-d-azur-route-napol-on-northbound",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want a long historic road from the coast into the mountains. The Route Napoléon, opened in 1932, follows the march Napoleon made from Golfe-Juan in March 1815 after escaping Elba. From Grasse the N85 climbs to the Col de Valferrière at 1,169 m and the Col des Leques at 1,146 m, then threads the Clue de Taulanne towards Digne, and brown signs topped with an eagle mark the way. Pass on it if you want a short loop. Keep it for a full day with a steady, flowing rhythm.",
+   "source_ids": [
+    "beyond-route-napoleon",
+    "traveller-route-napoleon"
+   ]
+  },
+  {
+   "route_id": "cape-town-western-cape-bainskloof-and-du-toitskloof",
+   "surface": "swipe",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "Keep this if you enjoy a narrow, historic mountain pass and can take it slowly. Bainskloof Pass was built by Andrew Geddes Bain from 1849, opened in September 1853 and is a national monument. Some sections are very narrow, with the mountain on one side and a steep drop to the river on the other, and chains at both ends keep large vehicles out. Pass on it if you want a fast, smooth road. Keep it with a relaxed pace, and expect a patchy surface in places; it was closed for repairs from 2020 to 2022.",
+   "source_ids": [
+    "sahris-bainskloof",
+    "paarlpost-bainskloof"
+   ]
+  },
+  {
+   "route_id": "bregenzerwald-furkajoch-faschina-day",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "technical_load",
+   "text": "Keep this if you want steep Alpine climbs without the crowds of the big passes. The Furkajoch climbs to 1,761 m between Damüls in the Bregenzerwald and the Laternsertal, with gradients up to 14 per cent, and the Faschinajoch at 1,486 m is the natural coffee stop. The descent through the Laternsertal is narrow, with bends that are hard to see into. Pass on it early in the season: the Furkajoch closes for winter and usually reopens around Pentecost. Keep it once it is open, and ride the descent with care.",
+   "source_ids": [
+    "wiki-furkajoch",
+    "komoot-furkajoch",
+    "moho-walser-tour"
+   ]
+  },
+  {
+   "route_id": "milan-northern-italy-lake-garda-western-shore",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want a lakeside road with dramatic tunnels and views. The Gardesana Occidentale, SS45bis, runs along Lake Garda's western shore through a long series of tunnels, so ride with your lights on and expect the light to change sharply at every exit. The famous side road up to Tremosine, the Strada della Forra built in 1913, is currently closed after a landslide. Pass on this ride if the Forra was the only reason to come. Keep it and explore the Tremosine plateau roads instead.",
+   "source_ids": [
+    "gardatrentino-forra",
+    "insella-forra"
+   ]
+  },
+  {
+   "route_id": "san-francisco-skyline-alice-s-and-pacific-return",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want a classic ridge road with a famous riders' stop. Skyline Boulevard, State Route 35, follows the crest of the Santa Cruz Mountains, and the 12 miles between Highway 92 and Highway 84 are the favourite stretch, with a turnout at Skeggs Point. At Sky Londa, 1,520 ft, there is fuel and Alice's Restaurant, where riders meet. Pass on the one-lane section further south, and turn off at Highway 9 instead. Keep it for a weekend morning, with a stop at Alice's.",
+   "source_ids": [
+    "lnm-skyline",
+    "wiki-sr35"
+   ]
+  },
+  {
+   "route_id": "seoul-south-korea-ganghwa-island-coastal-ride",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you want a coastal ride built around history rather than hairpins. Ganghwa is South Korea's fifth-largest island, joined to the mainland by two bridges and edged by wide tidal mud flats. The stops are the reason to go: the east-coast fortresses of Chojijin, Deokjinjin and Gwangseongbo, Jeondeungsa in the south, one of the oldest temples in the country, and the Peace Observatory in the north, which looks across the Han estuary into North Korea. Pass on it if you want fast riding. Keep it for a day of stops.",
+   "source_ids": [
+    "roughguides-ganghwado",
+    "ozoutback-ganghwa"
+   ]
+  },
+  {
+   "route_id": "vienna-wachau-and-mariazell-roads",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want a gentle river valley with vineyards and history rather than mountain passes. The Wachau is the narrow Danube valley between Melk and Krems, a UNESCO cultural landscape since 2000, with terraced vineyards and apricot orchards on both banks. Melk Abbey marks one end, and in Dürnstein Richard the Lionheart was held in the castle in 1193. Pass on it if you want hairpins. Keep it for early to mid April, when the apricots blossom, and expect cyclists on the riverside road.",
+   "source_ids": [
+    "austria-info-wachau",
+    "univie-wachau",
+    "decanter-wachau"
+   ]
+  },
+  {
+   "route_id": "iceland-golden-circle-and-thingvellir",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "Keep this if you want Iceland's best-known sights on good roads. The Golden Circle runs from Reykjavik by Route 36 to Thingvellir, where the Viking-age parliament met for centuries and the American and Eurasian plates pull apart, then on to Geysir and the two-step Gullfoss falls. The main roads, 36, 35 and 37, are paved and cleared even in winter. Pass on it in bad weather, which changes fast here. Keep it after checking road.is before you leave, and plan time to walk at each stop.",
+   "source_ids": [
+    "nonni-golden-circle",
+    "hertz-is-golden-circle"
+   ]
+  },
+  {
+   "route_id": "sydney-blue-mountains-and-bells-line",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want the scenic way across the Blue Mountains rather than the main highway. Bells Line of Road climbs the tight bends of Bellbird Hill to the lookout at Kurrajong Heights, passes the orchards of Bilpin, known for apples and cider, and reaches the Blue Mountains Botanic Garden at Mount Tomah, about 1,000 m up, free to enter and inside the World Heritage area. Pass on it if you want an empty road on a sunny weekend. Keep it, and stop at the garden for the views over the Grose Valley.",
+   "source_ids": [
+    "visitcentralnsw-bells",
+    "hawkesbury-bells",
+    "sydneyuncovered-bells"
+   ]
+  },
+  {
+   "route_id": "lisbon-sintra-ridge-and-atlantic-coast",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want palaces and the edge of Europe in one short ride from Lisbon. The roads up to the Sintra palaces are narrow and steep, and access to Pena Palace is often closed to private vehicles at busy times, so park lower down rather than riding to the gate. The N247 then runs about 18 km west through the Sintra-Cascais Natural Park to Cabo da Roca, the westernmost point of mainland Europe. Pass on it at midday in high season. Keep it for an early start, before the crowds.",
+   "source_ids": [
+    "tyremap-sintra",
+    "for91days-cabo-da-roca"
+   ]
+  },
+  {
+   "route_id": "tokyo-izu-skyline-and-ocean-return",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "Keep this if you want a mountain ridge road with views of Mount Fuji and the sea. The Izu Skyline is a 40.6 km toll road along the spine of the Izu Peninsula, from Atami-toge to Amagi-kogen, mixing long sweepers with tight twisty sections. The toll gates along it have fuel and food, so the day is easy to plan. Pass on it in low cloud, when the views disappear. Keep it on a clear day, and pull in at the observation points for Mount Fuji and Sagami Bay rather than riding straight through.",
+   "source_ids": [
+    "wiki-izu-skyline",
+    "motorcycleroads-izu"
+   ]
+  },
+  {
+   "route_id": "nice-c-te-d-azur-lac-de-sainte-croix-swim-ride",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "Keep this if you want one of Europe's great canyon views from the saddle. The Route des Crêtes, the D23 from La Palud-sur-Verdon, is a 24 km loop above the Grand Canyon du Verdon with 14 belvederes, some over cliffs more than 700 m high. Part of it is one-way, so ride it clockwise as signed. Pass on it between late November and late March, when the one-way middle section from Jas d'Aire to the Chalet de la Maline is closed. Keep it for the rest of the year, and stop at every belvedere.",
+   "source_ids": [
+    "verdontourisme-cretes",
+    "paca-route-des-cretes"
+   ]
+  },
+  {
+   "route_id": "barcelona-catalonia-cap-de-creus-coastal-ride",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "corner_entry",
+   "text": "Keep this if you want a twisty coastal climb with a famous village at the end. The GI-614 from Roses to Cadaqués crosses the Cap de Creus Natural Park, protected since 1998, with tight corners and views back over Roses; watch for the abrupt right-hander early on. Beyond Cadaqués, Portlligat has Dalí's house. Pass on the final stretch to the Cap de Creus lighthouse in summer, when it has been closed to motor vehicles; check the park's rules first. Keep the rest for a relaxed day on the coast.",
+   "source_ids": [
+    "bbr-gi614",
+    "reportage-cap-de-creus",
+    "anglophone-cap-de-creus"
+   ]
+  },
+  {
+   "route_id": "auckland-coromandel-peninsula-loop",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you are comfortable on gravel and want forest and waterfalls on a coastal loop. The 309 Road is a 22 km gravel road over the Coromandel Range from Coromandel town to Whitianga, narrow and twisting, with blind corners. Seven kilometres in, Waiau Falls is visible from the road, and a kilometre further a short walk leads to the most accessible stand of mature kauri on the peninsula. Pass on the 309 if your bike does not suit gravel. Keep it, ride it slowly, and stop for the falls and the kauri.",
+   "source_ids": [
+    "wiki-309-road",
+    "doc-waiau-kauri"
+   ]
+  },
+  {
+   "route_id": "scotland-loch-ness-and-glen-affric",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want to see Loch Ness and can choose the quieter shore. The A82 along the loch is a fast main road with long sweeping bends, but as soon as the sun comes out it fills with traffic and passing gets hard. The B862 and B852 on the other shore, via Foyers, are quieter and more scenic, with single-track stretches and tight blind corners between Fort Augustus and Foyers. Pass on the A82 on sunny summer afternoons. Keep the ride, and choose your shore by the day and the traffic.",
+   "source_ids": [
+    "bbr-a82",
+    "bbr-b862"
+   ]
+  },
+  {
+   "route_id": "brussels-ardennes-semois-sweep",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want a flowing river valley ride within reach of Brussels. Between Vresse-sur-Semois and Bouillon the roads follow the Semois in bend after bend on smooth, centre-lined tarmac. Stop on the N819 just before Rochehaut, where the viewpoint looks down on Frahan, a village wrapped in a loop of the river, then ride on to Bouillon, where the castle of Godfrey of Bouillon stands above the town. Pass on it if you want high mountains. Keep it for a relaxed, rhythmic day of bends and views.",
+   "source_ids": [
+    "bikeuk-ardennes",
+    "visitardenne-semois"
+   ]
+  },
+  {
+   "route_id": "chile-andes-and-caj-n-del-maipo",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "technical_load",
+   "text": "Keep this if you want an Andean valley ride from Santiago with a high reservoir at the end. Route G-25 follows the Maipo River up through San José de Maipo; from Las Vizcachas it is about 47 km of good tarmac to the Carabineros post at San Gabriel, where you can ask about the road ahead. Beyond, about 18 km of gravel climbs to the El Yeso reservoir at around 2,500 m. Pass on the gravel if your bike does not suit it, or in winter when snow can close it. Keep it, and check conditions before you go.",
+   "source_ids": [
+    "wikiexplora-el-yeso",
+    "chiletravel-el-yeso"
+   ]
+  },
+  {
+   "route_id": "milan-ligurian-apennines-and-portofino",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want one of the Riviera's most famous short coastal roads and can ride it outside the busiest hours. The SP227 from Rapallo and Santa Margherita Ligure to Portofino is a narrow road built in the 1950s on the cliffs just above the sea, about six miles of it. In the tourist season Portofino's local police can hold private traffic at a filter near Cervara, and parking in Portofino is very limited. Pass on it on summer weekends. Keep it for a quiet morning, and check for landslide closures.",
+   "source_ids": [
+    "cmgenova-sp227",
+    "locauto-portofino",
+    "detour-sp227"
+   ]
+  },
+  {
+   "route_id": "barcelona-montserrat-and-priorat-long-sweep",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "Keep this if you want a mountain monastery above Barcelona as the high point of the day. Two roads climb to Montserrat: about 9 km from Monistrol on the BP-1121, or 14 km from El Bruc. The car park at the top is attended, paid and limited, and it fills easily on public holidays, so arrive early. Pass on it in summer, the least advisable season, when crowds, heat and a high fire risk sometimes limit access. Keep it for spring or autumn, with an early start and time to walk around the monastery.",
+   "source_ids": [
+    "montserratvisita-road",
+    "travesia-montserrat"
+   ]
+  },
+  {
+   "route_id": "lisbon-portugal-bidos-lagoon-easy-ride",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you want an easy day out from Lisbon with a medieval town and a lagoon. Óbidos is one of Portugal's best-preserved walled towns, about 85 km from Lisbon by the A8. You enter on foot through the Portal da Vila gate, so park outside the walls and walk in. A few minutes west, the Lagoa de Óbidos is Portugal's longest coastal lagoon, rich in birds, and it meets the sea at Foz do Arelho. Pass on it if you want twisty mountain roads. Keep it for a relaxed ride with long stops.",
+   "source_ids": [
+    "pousadas-obidos",
+    "eurovelo-obidos"
+   ]
+  },
+  {
+   "route_id": "hamburg-l-neburg-heath-flow",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "framing_the_view",
+   "text": "Keep this if you want an easy ride from Hamburg through a landscape that changes colour with the season. The Lüneburg Heath is the largest heathland in Central Europe, kept open by grazing Heidschnucke sheep, and it turns purple when the heather blooms from early August to mid-September. The heart of it, around the Wilseder Berg at 169 m and the village of Wilsede, is car-free. Pass on it if you want bends and climbs. Keep it for the bloom, park at the edge in Undeloh or Niederhaverbeck, and walk the last part.",
+   "source_ids": [
+    "lueneburger-heide-bloom",
+    "niedersachsen-heath"
+   ]
+  },
+  {
+   "route_id": "hamburg-harz-long-day-doorway",
+   "surface": "swipe",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "Keep this if you want the nearest real riding hills to Hamburg and can make a long day of it. The western Harz offers the B4 to Torfhaus, a riders' meeting point at about 800 m with a view of the Brocken, the B242 Harzhochstrasse, and the Okertalsperre on the B498. The valley road down to Goslar is twisty and extremely busy at weekends, so ride it with real caution. The Brocken itself cannot be reached by bike. Pass on the B498 at weekend peaks; keep the rest for a full day of bends.",
+   "source_ids": [
+    "adac-harz",
+    "motorradonline-harz"
+   ]
+  },
+  {
+   "route_id": "berlin-m-rkische-schweiz-and-buckow-lakes",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you want a short, gentle escape from Berlin with lakes and a literary stop. The Märkische Schweiz, about 45 km east of the city, is Brandenburg's smallest and oldest nature park, with end-moraine hills, deep gullies and lakes. Buckow, its centre and Brandenburg's only Kneipp spa town, sits on the Schermützelsee, where Bertolt Brecht and Helene Weigel kept their summer house from 1952; it is now a memorial you can visit. Pass on it if you want mountains. Keep it for a relaxed half-day with time in Buckow.",
+   "source_ids": [
+    "wiki-schermuetzelsee",
+    "reiseland-maerkische-schweiz"
+   ]
+  },
+  {
+   "route_id": "hamburg-holstein-switzerland-lakes-sweep",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want a relaxed lakeland ride north of Hamburg. Holstein Switzerland is a nature park of more than 200 lakes and gentle moraine hills between Kiel and Lübeck. The Großer Plöner See is Schleswig-Holstein's largest lake, and the Bungsberg, at 168 m, its highest point, with a viewing tower. Plön and Eutin both have castles on the water, so there are good stops along the way. Pass on it if you want steep climbs; expect gentle bends instead. Keep it for an easy, unhurried day by the water.",
+   "source_ids": [
+    "wiki-holstein-switzerland",
+    "shtourismus-holstein"
+   ]
+  },
+  {
+   "route_id": "tokyo-okutama-and-chichibu-mountain-loop",
+   "surface": "swipe",
+   "guide": "mara_line",
+   "pose_candidate": "rhythm",
+   "text": "Keep this if you want a mountain valley and a lake within a day's ride of Tokyo. From Ome, Route 411 runs up the Tama valley into the Chichibu-Tama-Kai National Park and along the shore of Lake Okutama, the reservoir behind the Ogouchi Dam, finished in 1957 and still a major source of Tokyo's water. There is free parking by the dam, next to the Water and Green Museum. Pass on it at the height of a summer weekend if you dislike traffic. Keep it for autumn, when the colour is at its best.",
+   "source_ids": [
+    "japanexp-okutama",
+    "yokota-okutama"
+   ]
+  },
+  {
+   "route_id": "barcelona-collada-de-toses-pyrenean-doorway",
+   "surface": "swipe",
+   "guide": "noor_brief",
+   "pose_candidate": "caution",
+   "text": "Keep this if you want a long, continuous Pyrenean climb and enjoy sustained bends. After Ribes de Freser the N-260 narrows, and signs warn of bends for the next 45 km up to the Collada de Toses at about 1,800 m, followed by another 22 km down to Puigcerdà. There is no respite, so plan a break at the top. Pass on it if you are not in the mood for a long, demanding stretch. Keep it at a sensible pace: riders have reported police patrols near Ribes stopping bikes that make too much progress.",
+   "source_ids": [
+    "bbr-collada-toses",
+    "quaeldich-toses"
+   ]
+  },
+  {
+   "route_id": "bangkok-thailand-pattaya-coast-and-silverlake",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "stop_here",
+   "text": "Keep this if you want a short coastal outing from Pattaya with a striking landmark to stop at. About 6 km south of Pattaya off Sukhumvit Road, the Buddha image carved into Khao Chi Chan, 109 m high and unveiled in 1996, faces the Silverlake Vineyard, and entry to the Buddha mountain is free. Pass on it if you are not used to riding on the left. Keep it if you are: Thailand drives on the left, helmets are compulsory for rider and pillion, and Pattaya's Beach Road has regular helmet checks.",
+   "source_ids": [
+    "expedia-buddha-mountain",
+    "scuba-silverlake",
+    "byklo-thai-safety"
+   ]
+  },
+  {
+   "route_id": "seoul-gangwon-mountain-run",
+   "surface": "swipe",
+   "guide": "kenji_view",
+   "pose_candidate": "summit_look",
+   "text": "Keep this if you want to cross Korea's eastern mountains to the sea on a bike-legal route. Motorcycles are not allowed on Korean expressways, so riders cross over the mountains: Hangyeryeong on Route 44, at 1,004 m between Seoraksan and Jeombongsan and the key link from Seoraksan to the East Sea coast, or the old Misiryeong road, now bypassed by a tunnel. Both run through Seoraksan National Park. Pass on Hangyeryeong in winter, when it is known for snow. Keep it for the rest of the year and stop for the mountain views.",
+   "source_ids": [
+    "matador-korea-moto",
+    "joongang-hangye"
+   ]
+  },
+  {
+   "route_id": "paris-rambouillet-chevreuse-forest-double",
+   "surface": "swipe",
+   "guide": "elise_stop",
+   "pose_candidate": "timing_note",
+   "text": "Keep this if you want the best-known bends near Paris for a short outing. From the Château de Dampierre the D91 climbs the Côte des 17 Tournants, the classic bend sequence of the Haute Vallée de Chevreuse park. Cyclists, riders and drivers all share it, so ride it with that in mind. The D24 down to the Abbaye des Vaux de Cernay is about 4 km of beautiful, demanding road. Pass on it on sunny Sunday mornings, when it is busiest. Keep it for a weekday or early start, and take a break at the abbey.",
+   "source_ids": [
+    "komoot-17-tournants",
+    "motonet-chevreuse"
+   ]
+  },
+  {
+   "route_id": "cape-town-western-cape-clarence-drive-coastal-sweep",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "explain",
+   "text": "Clarence Drive carries more history than its 22 km suggest. Work on the road between Gordon's Bay and Rooi-Els began in 1940, and it was completed by Italian prisoners of war held in South Africa during the Second World War. The more than 70 bends you ride today were cut between the mountains and False Bay by men who never chose to be here. Ride it slowly enough to notice that.",
+   "source_ids": [
+    "wiki-clarence-drive",
+    "fodors-clarence-drive"
+   ]
+  },
+  {
+   "route_id": "tokyo-nikko-irohazaka-and-lake-chuzenji",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "explain",
+   "text": "Irohazaka is named after a poem. The Iroha uses each kana of the old Japanese syllabary once, and the road's 48 bends carry one character each on their signs. There are two roads, both one-way: the first, built in 1954, now takes traffic down, and the second, from 1965, takes it up to Lake Chuzenji. Count the signs on the way up and you are reading the old poem, one bend at a time.",
+   "source_ids": [
+    "jnto-irohazaka",
+    "mlit-irohazaka"
+   ]
+  },
+  {
+   "route_id": "norway-atlantic-road-and-troll-church-coast",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "explain",
+   "text": "The Atlantic Road was built where the weather makes building hard. Its 8.3 km hop across skerries on causeways and eight bridges, and during the six years of construction twelve hurricanes struck the site. It opened in 1989, after six years of work in the open sea. The tallest span, the Storseisundet Bridge at 260 m, looks as if it drops into the sea, which is part of why the road is now so often photographed.",
+   "source_ids": [
+    "wiki-atlantic-road",
+    "erih-atlantic-road"
+   ]
+  },
+  {
+   "route_id": "blue-ridge-asheville-to-linn-cove-viaduct",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "explain",
+   "text": "The Blue Ridge Parkway took more than half a century to finish, and the Linn Cove Viaduct is the reason. For two decades the 7.7-mile section around Grandfather Mountain stayed incomplete, because a conventional road would have scarred the slope. The answer was a curved concrete viaduct, built out from the hillside in sections, and it opened in 1987 as the last piece of the parkway. You ride across the solution to a problem that held the road up for twenty years.",
+   "source_ids": [
+    "fhwa-blue-ridge",
+    "outdoorproject-linn-cove"
+   ]
+  },
+  {
+   "route_id": "scotland-applecross-torridon-and-west-coast",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "explain",
+   "text": "The Bealach na Bà, the pass of the cattle, was built in 1822. It climbs from sea level to 626 m over the Applecross peninsula on a single-track road, with tight hairpins and gradients near 20 per cent. Two centuries on it is still not a road for learners or large vehicles, and in winter it is often impassable. Ride it knowing it was laid out long before engines, and take the hairpins at the pace that implies.",
+   "source_ids": [
+    "bitesized-bealach",
+    "edinburgh-bealach"
+   ]
+  },
+  {
+   "route_id": "norway-lysevegen-and-sirdal-high-road",
+   "surface": "route_story_contribution",
+   "guide": "leon_story",
+   "pose_candidate": "explain",
+   "text": "Lysevegen exists because of electricity. The road from Lysebotn up to Sirdal was built for a hydroelectric project and opened in 1984; before that, Lysebotn at the end of the Lysefjord could be reached only by boat. Its 27 hairpins and the tunnel that turns a hairpin inside the mountain were built for that project. Today the same road carries riders, and the village at the bottom is no longer an island in all but name.",
+   "source_ids": [
+    "visitnorway-lysevegen",
+    "pjamm-lysebotn"
+   ]
+  }
+ ]
+}

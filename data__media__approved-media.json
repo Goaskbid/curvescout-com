@@ -1,0 +1,59 @@
+{
+ "_readme": "Approved route photographs. Torsten supplied these: four specific Commons files already chosen and checked by a person, with creator, licence and expected SHA256. This is not a search and not a filter - the fetch job takes these exact files by name and verifies the hash. A photo that does not match its recorded hash is refused, so nothing else can arrive in its place. Grossglockner has no approved photograph yet; it is recorded as pending rather than filled with a substitute.",
+ "approved": {
+  "z-rcher-oberland-t-sstal-hulftegg": {
+   "file": "assets/routes/z-rcher-oberland-t-sstal-hulftegg/hero.webp",
+   "source_page": "https://disabled.invalid/wiki/File:Hulftegg-H%C3%B6rnli_251.jpg",
+   "creator": "DidiWeidmann",
+   "licence": "CC BY-SA 3.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+   "attribution": "CC BY-SA 3.0 · DidiWeidmann · cropped/resized by CurveScout",
+   "sha256": "82c1979cdb02135fd2c353e83102cad64bdaa8b5a2541bf78963271b783942cf",
+   "modifications": "cropped and resized for the CurveScout card",
+   "approved_by": "Torsten",
+   "media_type": "photograph"
+  },
+  "lukmanier-oberalp-vorderrhein-high-roads": {
+   "file": "assets/routes/lukmanier-oberalp-vorderrhein-high-roads/hero.webp",
+   "source_page": "https://disabled.invalid/wiki/File:Lukmanierpass,_Passo_del_Lucomagno._20-09-2022._(actm.)_04.jpg",
+   "creator": "Agnes Monkelbaan",
+   "licence": "CC BY-SA 4.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+   "attribution": "CC BY-SA 4.0 · Agnes Monkelbaan · cropped/resized by CurveScout",
+   "sha256": "1a4537479c2dfddb88a0193e12d966179b7c29e1d4af580095c1c848b4cb52b1",
+   "modifications": "cropped and resized for the CurveScout card",
+   "approved_by": "Torsten",
+   "media_type": "photograph"
+  },
+  "furka-grimsel-susten-big-three-dawn": {
+   "file": "assets/routes/furka-grimsel-susten-big-three-dawn/hero.webp",
+   "source_page": "https://disabled.invalid/wiki/File:Furkapass_westside.jpg",
+   "creator": "Cooper.ch",
+   "licence": "CC BY-SA 3.0",
+   "licence_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+   "attribution": "CC BY-SA 3.0 · Cooper.ch · cropped/resized by CurveScout",
+   "sha256": "3dcc5e6a9f6f1e2adb2121a2279c5f7498825f23263699fa39da687fc6c56bd9",
+   "modifications": "cropped and resized for the CurveScout card",
+   "approved_by": "Torsten",
+   "media_type": "photograph"
+  },
+  "city-zurich-afternoon": {
+   "file": "assets/routes/city-zurich-afternoon/hero.webp",
+   "source_page": "https://disabled.invalid/wiki/File:Pf%C3%A4ffikersee.JPG",
+   "creator": "Peter Berger",
+   "licence": "Public domain",
+   "licence_url": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "attribution": "Public domain · Peter Berger",
+   "sha256": "aa36938abba1fe73a33561ff855417de6cc0081f290b666f02f964e9516cc7c3",
+   "modifications": "cropped and resized for the CurveScout card",
+   "approved_by": "Torsten",
+   "media_type": "photograph"
+  }
+ },
+ "pending": [
+  {
+   "route_id": "grossglockner-hochalpenstrasse",
+   "reason": "no approved photograph supplied (illustration)"
+  }
+ ]
+}
