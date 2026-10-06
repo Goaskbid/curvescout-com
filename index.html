@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <script>/* folderless site: map assets/... and data/... to their flat names */(function(){var B=location.pathname.replace(/[^/]*$/,'');function m(u){try{if(typeof u!=='string')return u;var x=u;if(x.indexOf(location.origin)===0)x=x.slice(location.origin.length);else if(/^[a-z][a-z0-9+.-]*:/i.test(x))return u;if(x.indexOf(B)===0)x=x.slice(B.length);x=x.replace(/^\.\//,'');if(!/^(assets|data)\//.test(x))return u;var q=x.search(/[?#]/),p=q<0?x:x.slice(0,q),r=q<0?'':x.slice(q);return p.replace(/\//g,'__')+r}catch(e){return u}}window.CS_FLAT_URL=m;var F=window.fetch;window.fetch=function(i,o){try{if(typeof i==='string')i=m(i);else if(i&&i.url){var n=m(i.url);if(n!==i.url)i=new Request(n,i)}}catch(e){}return F.call(this,i,o)};var XO=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(){arguments[1]=m(arguments[1]);return XO.apply(this,arguments)};var D=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,'src');Object.defineProperty(HTMLImageElement.prototype,'src',{set:function(v){D.set.call(this,m(v))},get:D.get,configurable:true});var SA=Element.prototype.setAttribute;Element.prototype.setAttribute=function(k,v){if(k==='src'||k==='href'||k==='data-src')v=m(String(v));return SA.call(this,k,v)}})();</script>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://tiles.openfreemap.org https://commons.wikimedia.org; img-src 'self' data: blob: https://tiles.openfreemap.org https://upload.wikimedia.org https://*.tile.opentopomap.org https://tile.opentopomap.org; font-src 'self' data: https://tiles.openfreemap.org; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; worker-src 'self' blob:; child-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta charset="utf-8">
   <!-- AdSense site verification. A meta tag, deliberately: it proves ownership without
      fetching Google's script, which would otherwise run before the reader has agreed to
@@ -55,7 +55,7 @@
        request whose mode matches, and an anonymous-CORS preload of a same-origin file
        the app fetches plainly would make the browser download the 1.4 MB index twice.
        I added exactly that duplicate today and caught it here. Do not add another. -->
-  <script id="csDeploy">window.CS_MODE="static";</script>
+  <script id="csDeploy">window.CS_MODE="live";</script>
 <meta name="robots" content="noindex,nofollow">
 </head>
 <body>
@@ -427,12 +427,12 @@
   <!-- social:start -->
  <div class="footSocial"></div>
  <!-- social:end -->
-  <p class="legalRow"><a href="#/legal">Terms, privacy, cookies and licences</a> · <span>No account. No advertising. Nothing third-party is loaded before you use the feature that needs it. No cookies set by CurveScout. Saved rides stay in your browser; maps, weather and photographs are fetched from named services as you use them.</span></p>
+  <p class="legalRow"><a href="#/legal">Impressum</a> · <a href="#/legal">Terms, privacy, cookies and licences</a> · <a href="#" id="csPrivacyChoices" hidden>Privacy choices</a> · <span id="csFootNote">No account. No advertising. Nothing third-party is loaded before you use the feature that needs it. No cookies set by CurveScout. Saved rides stay in your browser; maps, weather and photographs are fetched from named services as you use them.</span></p>
   <div class="srcRow" style="margin-bottom:14px">
     <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>
     <a href="https://project-osrm.org/" target="_blank" rel="noopener">OSRM</a>
     <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>
-    <a href="https://disabled.invalid/" target="_blank" rel="noopener">Wikidata, CC0</a>
+    <a href="https://www.wikidata.org/" target="_blank" rel="noopener">Wikidata, CC0</a>
     <a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons</a>
   </div>
   <!-- Google Maps and Wikipedia are links a rider clicks, not sources CurveScout reads. They
@@ -457,7 +457,7 @@
 <script src="assets__vendor__maplibre-gl.js"></script>
 <script src="assets__vendor__leaflet-maplibre-gl.js"></script>
 <script src="route-flags.js"></script>
-<script>window.CS_MODE="static"</script>
+<script>window.CS_MODE="live"</script>
 <script src="config.js"></script>
 <script src="archive.js"></script>
 <script src="app.js"></script>

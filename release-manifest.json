@@ -1,41 +1,17 @@
 {
- "build_id": "8d753f4",
- "build_date": "2026-10-06T20:18:29.755Z",
+ "build_id": "15c80bf",
+ "build_date": "2026-10-06T20:42:43.489Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
-  "tiles.openfreemap.org",
-  "commons.wikimedia.org (photo search)",
-  "upload.wikimedia.org (photos)",
-  "tile.opentopomap.org (Topo)"
+  "https services the app uses (maps, photos, routing, search, weather, elevation)"
  ],
  "prohibited_network_hosts": [
-  "router.project-osrm.org",
-  "routing.openstreetmap.de",
-  "nominatim.openstreetmap.org",
-  "overpass-api.de",
-  "overpass.kumi.systems",
-  "api.met.no",
-  "api.open-meteo.com",
-  "tile.openstreetmap.org",
-  "tile-a.openstreetmap.fr",
-  "tile-b.openstreetmap.fr",
-  "tile-c.openstreetmap.fr",
-  "a.tile.openstreetmap.fr",
-  "api.open-elevation.com",
-  "api.opentopodata.org",
   "pagead2.googlesyndication.com",
   "fundingchoicesmessages.google.com",
   "www.googletagmanager.com",
   "www.google-analytics.com",
-  "query.wikidata.org",
-  "www.wikidata.org",
-  "en.wikipedia.org",
-  "whc.unesco.org",
-  "de.wikipedia.org",
-  "fr.wikipedia.org",
-  "it.wikipedia.org",
-  "es.wikipedia.org"
+  "googleads.g.doubleclick.net"
  ],
  "active_features": [
   "board",
@@ -49,18 +25,14 @@
   "offline app shell"
  ],
  "disabled_features": [
-  "live routing (unavailable state shown)",
-  "geocoding search (manual start)",
-  "live weather",
-  "live elevation",
-  "advertising",
-  "analytics"
+  "advertising (GitHub build)",
+  "analytics (GitHub build)"
  ],
  "licences": {
   "basemap": "OpenFreeMap / OpenMapTiles / OpenStreetMap contributors (ODbL), attribution visible",
   "code": "see LICENSE"
  },
- "neutralised_host_references": 1358,
+ "neutralised_host_references": 2,
  "files": [
   {
    "path": ".nojekyll",
@@ -69,8 +41,8 @@
   },
   {
    "path": "404.html",
-   "bytes": 2785,
-   "sha256": "3e3c2db6edb43a13038502336a678b0b73d2a10bf6c08f342528bf85e11fcee0"
+   "bytes": 2597,
+   "sha256": "c741e3b023fe5af9a35e482950d8e83e9cad19ff5f611aebd20043270d604547"
   },
   {
    "path": "README.md",
@@ -79,8 +51,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 1594727,
-   "sha256": "3e2c10c5be586ce25cf41dda60c00507fb794dacc945ef4bdfd1666a29590ccd"
+   "bytes": 1597542,
+   "sha256": "df3ae4a7e216bc3e2fbcaa08a72cd55536672c5669ac912d526ea91a810cd42f"
   },
   {
    "path": "archive.js",
@@ -984,8 +956,8 @@
   },
   {
    "path": "config.js",
-   "bytes": 8340985,
-   "sha256": "5c50dcb70f1edf9a1a9fc6fbc8eab5fd17b80015c4edbea1098f23ea727d72db"
+   "bytes": 8340981,
+   "sha256": "3772c37da405792095212457ad02acda418722d8486cf31c9e405691f4ab0bb5"
   },
   {
    "path": "data__cities.txt",
@@ -1320,7 +1292,7 @@
   {
    "path": "data__editorial.json",
    "bytes": 105118,
-   "sha256": "5af43d6c33c722ab77620b045fbb7066300bb56d45ce43fc2850328495f757fe"
+   "sha256": "db58cabb663be2cfb32bf410cdd88db35fafe5a8c55571d777d690c937c47f08"
   },
   {
    "path": "data__events.json",
@@ -1329,8 +1301,8 @@
   },
   {
    "path": "data__heritage.json",
-   "bytes": 1222734,
-   "sha256": "7f3b1e8c5e6664dd0a351ab349dd4f55ab741017bf465d6b69c5c899dc137f39"
+   "bytes": 1220212,
+   "sha256": "eb3a11d3f6c7e2e3d13db91a3545e348167269224b006506f110570a3739736d"
   },
   {
    "path": "data__index__cardpacks__p0.json",
@@ -1384,8 +1356,8 @@
   },
   {
    "path": "data__legends.json",
-   "bytes": 711565,
-   "sha256": "91cff513212392a5d6689f2411372ae0e046cfb799dbef8fd6b7bd03f28a7c67"
+   "bytes": 711513,
+   "sha256": "6e0fdd45af6d1b108e37d7969760b0a22201bb40013db668a6f8bab006ff936d"
   },
   {
    "path": "data__media__approved-media.json",
@@ -2144,8 +2116,8 @@
   },
   {
    "path": "data__routes__expansion.json",
-   "bytes": 616974,
-   "sha256": "33be93fafe6cc27061d4796f081b7dbfbdf965946d44dba2d3edad3924efbc0e"
+   "bytes": 616926,
+   "sha256": "d73f05487fa5df6e4554f6e2c1a068385efefeeab29128297aa68baeb6eb35a8"
   },
   {
    "path": "data__routes__famous-roads.json",
@@ -2554,8 +2526,8 @@
   },
   {
    "path": "index.html",
-   "bytes": 27729,
-   "sha256": "421bc14a2b8940feca7a0bc518e3f12f81ccfe65b0fbca654038b9638ee04eb3"
+   "bytes": 27652,
+   "sha256": "e2dbe4aa135540ceec35ff653693781b80d6e15cbeff01843da40bd04e89aff3"
   },
   {
    "path": "manifest.webmanifest",
@@ -2574,13 +2546,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 258174,
-   "sha256": "baca37401c78c63f67cdffdeea7ff45d7dc623c271cef8621892225e09cfd862"
+   "bytes": 259441,
+   "sha256": "68ae42229ceb53818dca762f51bfa6b37ff76795813bdea66dd729601c52452c"
   },
   {
    "path": "sw.js",
    "bytes": 5090,
-   "sha256": "3a0ebb2651630b671f968b19769b5e87fd28c2c395b8dfabd9ff80ee53d6c72e"
+   "sha256": "c1fd333d69e659fbc0d774bb1ab2692c5fd05f5c0f92912208b68df3b3bd8038"
   }
  ]
 }

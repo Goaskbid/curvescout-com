@@ -3922,3 +3922,18 @@ svg.cs-map .cs-lbl-m{display:none}@media (max-width:600px){svg.cs-map .cs-lbl-d{
 .rbHowTo{margin:8px 0 14px;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:0 14px}
 .rbHowTo summary{font-size:16px;min-height:44px;display:flex;align-items:center;cursor:pointer;color:inherit}
 .rbHowTo p{font-size:16px;line-height:1.55;margin:0 0 12px}
+
+/* ---- MOBILE MAP: COMPACT CONTROLS (owner 2026-10-07: "much smaller buttons, it is so convoluted you cannot
+   use it") - on phones the overlay controls shrink to one compact line so the road stays visible.
+   Text stays 16 px (owner type rule R21); height, padding and layout shrink. ---- */
+@media (max-width: 600px) {
+  #lineMode, .lineMode { display: flex !important; flex-wrap: nowrap !important; gap: 4px !important; overflow-x: auto !important;
+    max-width: calc(100% - 16px) !important; padding: 2px !important; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  #lineMode::-webkit-scrollbar { display: none; }
+  #lineMode button, .lineMode button { flex: 0 0 auto !important; width: auto !important; min-width: 0 !important; height: auto !important;
+    min-height: 32px !important; padding: 2px 10px !important; line-height: 1.1 !important; white-space: nowrap !important; border-radius: 999px !important; }
+  .mapBarRight { gap: 6px !important; }
+  .mapBarRight button, #pinStart, #rideBtn, #baseBtn { height: auto !important; min-height: 32px !important; padding: 2px 10px !important;
+    line-height: 1.1 !important; white-space: nowrap !important; width: auto !important; min-width: 0 !important; }
+  .mapBase { gap: 4px !important; }
+}

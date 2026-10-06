@@ -128,26 +128,26 @@ const viaService = (url) => {
   }
   const u = raw;
   try {
-    if (u.includes('disabled.invalid/route/v1/driving/'))
+    if (u.includes('router.project-osrm.org/route/v1/driving/'))
       return CS_API + '/route/' + u.split('/route/v1/driving/')[1];
     /* ---- THE TABLE ENDPOINT WENT STRAIGHT PAST THE GATEWAY ----
        Approach times call OSRM's /table, and this rewrote /route only - so with a gateway
        configured, every route request was routed through it and every matrix request went
        to the public demo server regardless. A gateway that covers most of the traffic is
        not a gateway. /match is here for the same reason before something starts using it. */
-    if (u.includes('disabled.invalid/table/v1/driving/'))
+    if (u.includes('router.project-osrm.org/table/v1/driving/'))
       return CS_API + '/table/' + u.split('/table/v1/driving/')[1];
-    if (u.includes('disabled.invalid/match/v1/driving/'))
+    if (u.includes('router.project-osrm.org/match/v1/driving/'))
       return CS_API + '/match/' + u.split('/match/v1/driving/')[1];
-    if (u.includes('disabled.invalid/search'))
+    if (u.includes('nominatim.openstreetmap.org/search'))
       return CS_API + '/geocode' + (u.includes('?') ? u.slice(u.indexOf('?')) : '');
-    if (u.includes('disabled.invalid/reverse'))
+    if (u.includes('nominatim.openstreetmap.org/reverse'))
       return CS_API + '/reverse' + (u.includes('?') ? u.slice(u.indexOf('?')) : '');
     if (/overpass[-.]/.test(u))
       return CS_API + '/overpass' + (u.includes('?') ? u.slice(u.indexOf('?')) : '');
-    if (u.includes('disabled.invalid/v1/elevation'))
+    if (u.includes('api.open-meteo.com/v1/elevation'))
       return CS_API + '/elevation' + (u.includes('?') ? u.slice(u.indexOf('?')) : '');
-    if (u.includes('disabled.invalid/v1/forecast'))
+    if (u.includes('api.open-meteo.com/v1/forecast'))
       return CS_API + '/forecast' + (u.includes('?') ? u.slice(u.indexOf('?')) : '');
   } catch (e) {}
   return u;
@@ -3099,14 +3099,14 @@ function routeLine(r, n) {
 }
 /* ---- ELEVATION DOES NOT FOLLOW THE WEATHER HOST ----
    Both elevation calls were built on WX.host. When the forecast moved to MET Norway, which has no
-   elevation endpoint, every request went to disabled.invalid/v1/elevation and failed silently: board
+   elevation endpoint, every request went to api.met.no/v1/elevation and failed silently: board
    cards fell back to a route outline instead of the climb, and route pages lost the measured
    profile. Elevation is Open-Meteo's, as registered in the acquisition allowlist (purpose:
    forecast AND elevation, browser allowed, BETA ONLY). A paid or self-hosted Open-Meteo endpoint
    configured for WX still wins, as commercial mode requires. */
 function ELEV_HOST() {
   const h = WX.cfg && WX.cfg.host;
-  return (h && !/met\.no/.test(h)) ? h.replace(/\/$/, '') : 'https://disabled.invalid';
+  return (h && !/met\.no/.test(h)) ? h.replace(/\/$/, '') : 'https://api.open-meteo.com';
 }
 async function elevationFor(r, n) {
   const N = n || 60;
@@ -4921,8 +4921,8 @@ async function wxForRide(wps) {
     const chunk = pts.slice(i, i + BATCH);
     /* ---- I BROKE THE CHECKPOINT WEATHER AND DID NOT NOTICE ----
        This is the BATCH call: Open-Meteo accepts latitude=a,b,c and returns an array, so six
-       checkpoints cost one request. Changing WX.host to disabled.invalid left this line building
-       https://disabled.invalid/v1/forecast?latitude=46.6,46.5,... which is a 404 - so the weather
+       checkpoints cost one request. Changing WX.host to api.met.no left this line building
+       https://api.met.no/v1/forecast?latitude=46.6,46.5,... which is a 404 - so the weather
        strip on every checkpoint went blank. A working feature, broken by a provider switch I
        reported as finished, exactly as he said.
        MET has no batch endpoint. One request per checkpoint, spaced, through the adapter that
@@ -5185,24 +5185,44 @@ const THIRD_PARTIES = [
   ['Overpass / OpenStreetMap', 'fuel, food, viewpoints, speed cameras', 'https://osmfoundation.org/wiki/Privacy_Policy',
    'Receives a bounding box around the road, not your position.'],
 ];
+/* footer follows the active settings (owner 2026-10-07): with AdSense on it must not say "No advertising",
+   and "Privacy choices" reopens the Google consent dialog so a reader can change or withdraw consent */
+(function csFooterTruth() { try {
+  const adsOn = !!(window.CS_ADS && window.CS_ADS.publisher && /^ca-pub-\d{10,}$/.test(String(window.CS_ADS.publisher)));
+  const note = document.getElementById('csFootNote'), pc = document.getElementById('csPrivacyChoices');
+  if (adsOn && note) note.textContent = 'No account. Ads by Google AdSense load only after your choice in the consent dialog. Saved rides stay in your browser; maps, weather and photographs are fetched from named services as you use them.';
+  if (adsOn && pc) { pc.hidden = false; pc.addEventListener('click', ev => { ev.preventDefault();
+    try { window.googlefc = window.googlefc || {}; window.googlefc.callbackQueue = window.googlefc.callbackQueue || []; window.googlefc.callbackQueue.push({ CONSENT_API_READY: () => window.googlefc.showRevocationMessage() }); } catch (e) {} }); }
+} catch (e) {} })();
 function renderLegal() {
   show('legal');
   const host = $('legalBody');
   if (!host) return;
+  /* owner 2026-10-07: an explicit Impressum, and a privacy text generated from the ACTIVE settings -
+     analytics and advertising are stated as they actually run in this build, never as a fixed sentence. */
+  const adsOn = !!(window.CS_ADS && window.CS_ADS.publisher && /^ca-pub-\d{10,}$/.test(String(window.CS_ADS.publisher)));
+  const countsOn = window.CS_ANALYTICS !== false;
+  const esc2 = v => String(v || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const impressum = '<section id="impressum" class="lgImpressum"><h2>Impressum</h2>' +
+    '<p><b>Betreiber / Operator</b><br>' + esc2(OPERATOR.name) + '<br>' + esc2(OPERATOR.address) + '<br>' +
+    'E-Mail: <a href="mailto:' + esc2(OPERATOR.email) + '">' + esc2(OPERATOR.email) + '</a></p>' +
+    '<p><b>Verantwortlich f\u00fcr den Inhalt / Responsible for content</b><br>' + esc2(OPERATOR.responsible || OPERATOR.name) + '</p>' +
+    (OPERATOR.vat ? '<p><b>UID / VAT</b><br>' + esc2(OPERATOR.vat) + '</p>' : '') + '</section>';
+  const adsText = adsOn
+    ? 'This site shows advertising from Google AdSense. Ads load only after you have made a choice in the consent dialog (Google Privacy & Messaging, a certified consent platform); with your consent Google and its partners may set cookies and process data to show and measure ads. You can change or withdraw your choice at any time with "Privacy choices" at the foot of every page. Google\u2019s policy: https://policies.google.com/technologies/ads. '
+    : 'It carries no advertising. ';
+  const countText = countsOn
+    ? 'It counts arrivals - which channel a visit came from, which kind of page, which day - and nothing else: no cookie, no identifier, no stored address, no referrer, no device details. Nothing distinguishes one visit from another, so there are no visitor profiles and no way to tell whether you have been here before. Counts are kept for about a year and then dropped. If your browser says Do Not Track, nothing is counted at all. '
+    : 'No analytics runs on this site: nothing is counted. ';
   host.innerHTML =
-    '<h1>Terms, privacy and licences</h1>' +
+    '<h1>Terms, privacy and licences</h1>' + impressum +
     '<p class="lgLead">The short version: this is a route-planning tool, not a safety system. ' +
     /* ---- THE PROMISE HAD TO CHANGE, SO IT SAYS SO ----
        "Runs no analytics" was true and is no longer exactly true: a counter now records that
        somebody arrived from a given channel on a given day. Quietly leaving the old sentence
        up would be the worst version of this - a privacy claim that the code contradicts. It is
        replaced with what the counter actually does and, more usefully, what it cannot do. */
-    'It sets no cookies, has no accounts and carries no advertising. ' +
-    'It counts arrivals - which channel a visit came from, which kind of page, which day - and ' +
-    'nothing else: no cookie, no identifier, no stored address, no referrer, no device details. ' +
-    'Nothing distinguishes one visit from another, so there are no visitor profiles and no way ' +
-    'to tell whether you have been here before. Counts are kept for about a year and then ' +
-    'dropped. If your browser says Do Not Track, nothing is counted at all. ' +
+    (adsOn ? 'It has no accounts. ' : 'It sets no cookies and has no accounts. ') + adsText + countText +
     /* ---- SAY WHAT ACTUALLY HAPPENS ----
        This claimed nothing typed ever leaves the browser except coordinates. A start search
        that misses the local place index is sent to a geocoder as the text you typed, which
@@ -6559,7 +6579,7 @@ function initHome() {
 /* One lazy photo loader for every card surface, so the Commons cache is shared. */
 const CARD_PIC_W = 800;
 /* ---- SIX RASTER BASEMAPS, THREE PROVIDERS, NONE OF THEM OURS TO USE ----
- * disabled.invalid is best-effort with no SLA and forbids bulk use. OpenTopoMap is a
+ * tile.openstreetmap.org is best-effort with no SLA and forbids bulk use. OpenTopoMap is a
  * volunteer service. The OSM France standby exists because the Foundation refused this IP.
  * A commercial product leaning on any of them is leaning on somebody's goodwill.
  *
@@ -6635,7 +6655,7 @@ function csBasemap(map, kind, attach = true) {
      and not what production should lean on, which is why the modular build uses OpenFreeMap
      vector. But a rider opening the offline file gets a map that works. */
   /* ---- AND THE RASTER FALLBACK IS BLOCKED ----
-     I put disabled.invalid back because a blank map is not a map. OSM answered with
+     I put tile.openstreetmap.org back because a blank map is not a map. OSM answered with
      "Access blocked - App is not following the tile usage policy of OpenStreetMap's
      volunteer-run servers", tiled across the whole map. That block is WHY the standby and then
      OpenFreeMap happened in the first place; I had gone round the loop and forgotten the
@@ -6653,7 +6673,7 @@ function csBasemap(map, kind, attach = true) {
     try {
       const url = kind === 'terrain'
         ? 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
-        : 'https://disabled.invalid/hot/{z}/{x}/{y}.png';
+        : 'https://tile-a.openstreetmap.fr/hot/{z}/{x}/{y}.png';
       const credit = kind === 'terrain'
         ? '\u00a9 <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA) \u00b7 ' +
           '\u00a9 <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -8631,10 +8651,10 @@ function placesBlock(svc, line) {
    honoured the rate limits from the start. The exposure is narrower and more specific than
    "scraping", and it is worth naming exactly:
 
-     disabled.invalid  the OSRM DEMO server. Its own policy says development and
+     router.project-osrm.org  the OSRM DEMO server. Its own policy says development and
                               demonstration, not production. A public site routing every
                               visitor through it is the clearest breach in the list.
-     disabled.invalid   the OSMF tile policy forbids heavy use and tells anything with
+     tile.openstreetmap.org   the OSMF tile policy forbids heavy use and tells anything with
                               real traffic to use a commercial provider or self-host.
      opentopomap.org          community tiles, same class, plus CC BY-SA on the rendering.
      nominatim                one request per second, a real User-Agent, no autocomplete.
@@ -8715,7 +8735,7 @@ const TILE_STATE = { refused: 0, blocked: false, probed: false, handled: false, 
    A primary that refused this address, a volunteer standby carrying the load, and a note about
    flipping back when the block cleared. None of it is needed: every basemap is OpenFreeMap
    vector now, through csBasemap(). The URLs are gone rather than commented out, because a
-   string like disabled.invalid in this file reads as a live dependency to anyone
+   string like tile.openstreetmap.org in this file reads as a live dependency to anyone
    auditing it - and it did, three audits running.
    NET.tiles survives only as an override hook for a self-hosted raster style; it is empty by
    default and no basemap reads it. */
@@ -8735,7 +8755,7 @@ async function probeTiles(url) {
 
 async function tilesPermitted() {
   /* ---- THE WHOLE RASTER PERMISSION DANCE IS OVER ----
-     This probed disabled.invalid, fell back to the OSM France standby, counted refusals
+     This probed tile.openstreetmap.org, fell back to the OSM France standby, counted refusals
      and took the backdrop away when both said no. All of it existed because we were using
      services that could refuse us - and one of them did.
      OpenFreeMap permits commercial use, so there is nothing to ask permission for. The style
@@ -8867,7 +8887,7 @@ function tileRefused(layer, map) {
 const NET = {
   cfg: (typeof window !== 'undefined' && window.CS_NET) || null,
   get(k, fallback) { return (this.cfg && this.cfg[k]) || fallback; },
-  get router() { return this.get('router', 'https://disabled.invalid'); },
+  get router() { return this.get('router', 'https://router.project-osrm.org'); },
   /* ---- A BLOCKED ADDRESS NEEDS A DIFFERENT DOOR, NOT A BETTER APOLOGY ----
      OpenStreetMap's volunteer servers are the default and the right default: free, no key, no
      account. They also block, and when they do there is nothing the app can say that puts a
@@ -8916,7 +8936,7 @@ const NET = {
   /* NET.topo held the OpenTopoMap URL and nothing reads it any more - terrain is OpenFreeMap
      Fiord. A dead config entry is worse than none: it reads as a live raster dependency to
      anyone auditing the file, which is exactly what happened. */
-  get geocoder() { return this.get('geocoder', 'https://disabled.invalid'); },
+  get geocoder() { return this.get('geocoder', 'https://nominatim.openstreetmap.org'); },
   /* OFF by default. One switch turns the whole public-Nominatim dependency off for the entire
      application, which is what a policy applying to the whole application requires. */
   get geocoderEnabled() { return this.cfg ? this.cfg.geocoderEnabled === true : false; },
@@ -8949,7 +8969,7 @@ const NET = {
 const WX = {
   cfg: (typeof window !== 'undefined' && window.CS_WX) || null,
   /* explicit config wins - a paid Open-Meteo customer endpoint, or a self-host */
-  get host() { return (this.cfg && this.cfg.host) || 'https://disabled.invalid'; },
+  get host() { return (this.cfg && this.cfg.host) || 'https://api.met.no'; },
   get key() { return (this.cfg && this.cfg.key) || ''; },
   get vendor() {
     if (this.cfg && this.cfg.host) return /met\.no/.test(this.cfg.host) ? 'metno' : 'openmeteo';
@@ -8963,9 +8983,9 @@ const WX = {
     return this.host + path + '?' + qs + (this.key ? '&apikey=' + encodeURIComponent(this.key) : '');
   },
   /* ---- A HOSTNAME IS NOT AN ADAPTER ----
-     I changed WX.host to disabled.invalid and reported the provider switched. Two call sites still
+     I changed WX.host to api.met.no and reported the provider switched. Two call sites still
      built Open-Meteo /v1/forecast URLs straight off WX.host, and the build injected
-     CS_WX.host = disabled.invalid on top - so nothing changed except a string in a comment.
+     CS_WX.host = api.open-meteo.com on top - so nothing changed except a string in a comment.
      That is the exact failure the reviewer named, and they were right.
      One function now fetches, whoever the vendor is, and returns ONE schema. MET Norway's
      Locationforecast is a timeseries of instant + next_1_hours; Open-Meteo is parallel arrays.
@@ -9512,7 +9532,7 @@ function heritageBlock(line, avgKmh) {
         'decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.remove()">' +
         (h.pic[1] ? '<em>' + esc(h.pic[1]) + '</em>' : '') + '</span>' : '') +
       (h.why ? '<span class="whWhy">' + esc(h.why) + '</span>' : '') +
-      (h.id ? '<a class="whLink" href="https://disabled.invalid/en/list/' + encodeURIComponent(h.id) +
+      (h.id ? '<a class="whLink" href="https://whc.unesco.org/en/list/' + encodeURIComponent(h.id) +
         '" target="_blank" rel="noopener noreferrer">The UNESCO record for this site \u2197</a>' : '') +
       '<span class="whCost"><b>Getting there</b> ' + esc(d.txt) +
         ' \u00b7 <b>Worth</b> ' + esc(stay.txt) +
@@ -12226,7 +12246,7 @@ async function scanAttractionsOnce(r) {
         ' bd:serviceParam wikibase:cornerWest "Point(' + (p.lon - deg).toFixed(4) + ' ' + (p.lat - deg).toFixed(4) + ')"^^geo:wktLiteral .' +
         ' bd:serviceParam wikibase:cornerEast "Point(' + (p.lon + deg).toFixed(4) + ' ' + (p.lat + deg).toFixed(4) + ')"^^geo:wktLiteral . }' +
         ' ?item wdt:P31 ?inst . OPTIONAL { ?item wdt:P2044 ?elev . }' +
-        ' OPTIONAL { ?article schema:about ?item ; schema:isPartOf <https://disabled.invalid/> . }' +
+        ' OPTIONAL { ?article schema:about ?item ; schema:isPartOf <https://en.wikipedia.org/> . }' +
         ' SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }' +
         ' BIND(geof:latitude(?loc) AS ?lat) BIND(geof:longitude(?loc) AS ?lon) } LIMIT 50';
       /* ---- THIS QUERIED WIKIDATA FROM THE RIDER'S BROWSER ----
@@ -12276,7 +12296,7 @@ async function scanAttractionsOnce(r) {
           qid,
           source: 'Wikidata, CC0',
           /* an outbound reading link where one exists - a rider clicking is not ingestion */
-          url: (b.article && b.article.value) || ('https://disabled.invalid/wiki/' + qid),
+          url: (b.article && b.article.value) || ('https://www.wikidata.org/wiki/' + qid),
         });
       }
     } catch (e) { /* one sample may fail */ }
@@ -12305,8 +12325,8 @@ async function scanAttractionsOnce(r) {
    both busy at once left the whole page empty. Ordered by how reliable they have been,
    with the Swiss instance high because most of the archive is Alpine. */
 const OVERPASS = [
-  'https://disabled.invalid/api/interpreter',
-  'https://disabled.invalid/api/interpreter',
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
   'https://overpass.osm.ch/api/interpreter',
   'https://overpass.private.coffee/api/interpreter',
   'https://overpass.osm.jp/api/interpreter',
@@ -20616,7 +20636,7 @@ function hardBorder(a, b) {
                query is cleaned first - numbering, our own suffixes and the country tail come
                off - and it goes to the search page, which at least offers near matches rather
                than a red link. The label says "look it up", because that is what it does. */
-            '<a href="https://disabled.invalid/w/index.php?search=' +
+            '<a href="https://en.wikipedia.org/w/index.php?search=' +
             encodeURIComponent(wikiQuery(g.name)) + '&ns0=1" target="_blank" rel="noopener noreferrer" ' +
             'title="Read about this road on Wikipedia">read about it \u2197</a>' +
             '</span>' +
