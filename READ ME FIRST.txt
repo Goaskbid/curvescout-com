@@ -1,7 +1,4 @@
-CurveScout update: 11 files, no folders.
-All features back (routing curves, photos, place search, weather, Topo), compact map buttons on phones, Impressum.
-
+AdSense update: 6 files, no folders.
 1. Open https://github.com/Goaskbid/curvescout-com/upload/main
-2. Select ALL files in this folder except this text file (Ctrl+A / Cmd+A), drag them in.
-3. Commit changes.
-4. Wait 2-5 minutes, then reload the site with Ctrl+Shift+R (Mac: Cmd+Shift+R).
+2. Select ALL files in this folder except this text file, drag them in.
+3. Commit changes. Wait 2-5 minutes.

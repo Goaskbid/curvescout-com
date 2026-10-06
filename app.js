@@ -9103,7 +9103,7 @@ const ADS = {
     if (!this.certified || this._cmp) return; this._cmp = true;
     const pub = String(this.cfg.publisher).replace(/^ca-/, '');
     const f = document.createElement('script'); f.async = true;
-    f.src = 'https://disabled.invalid/i/' + encodeURIComponent(pub) + '?ers=1';
+    f.src = 'https://fundingchoicesmessages.google.com/i/' + encodeURIComponent(pub) + '?ers=1';
     document.head.appendChild(f);
     const poll = (n) => {
       if (typeof window.__tcfapi === 'function') {
@@ -9153,7 +9153,7 @@ const ADS = {
     const sc = document.createElement('script');
     sc.async = true;
     sc.crossOrigin = 'anonymous';
-    sc.src = 'https://disabled.invalid/pagead/js/adsbygoogle.js?client=' +
+    sc.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' +
       encodeURIComponent(this.cfg.publisher);
     document.head.appendChild(sc);
     document.querySelectorAll('.adSlot[data-slot]').forEach(el => {

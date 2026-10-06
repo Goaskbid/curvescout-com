@@ -1,17 +1,14 @@
 {
- "build_id": "15c80bf",
- "build_date": "2026-10-06T20:42:43.489Z",
+ "build_id": "054322c",
+ "build_date": "2026-10-06T21:00:51.358Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
   "https services the app uses (maps, photos, routing, search, weather, elevation)"
  ],
  "prohibited_network_hosts": [
-  "pagead2.googlesyndication.com",
-  "fundingchoicesmessages.google.com",
   "www.googletagmanager.com",
-  "www.google-analytics.com",
-  "googleads.g.doubleclick.net"
+  "www.google-analytics.com"
  ],
  "active_features": [
   "board",
@@ -32,7 +29,7 @@
   "basemap": "OpenFreeMap / OpenMapTiles / OpenStreetMap contributors (ODbL), attribution visible",
   "code": "see LICENSE"
  },
- "neutralised_host_references": 2,
+ "neutralised_host_references": 0,
  "files": [
   {
    "path": ".nojekyll",
@@ -41,8 +38,8 @@
   },
   {
    "path": "404.html",
-   "bytes": 2597,
-   "sha256": "c741e3b023fe5af9a35e482950d8e83e9cad19ff5f611aebd20043270d604547"
+   "bytes": 3028,
+   "sha256": "83643aa089cc916eea8070dbaa16fea5b8eb638a624c11385cfd33ae34465866"
   },
   {
    "path": "README.md",
@@ -50,9 +47,14 @@
    "sha256": "b414e6e5d368744256cea1b98adc5903292a489b7545d5bbd464e465902d173c"
   },
   {
+   "path": "ads.txt",
+   "bytes": 59,
+   "sha256": "b2408dfa47a4e5aeac21114a941c20f4334d9b69efbdb7c388a54dff14dcac0a"
+  },
+  {
    "path": "app.js",
-   "bytes": 1597542,
-   "sha256": "df3ae4a7e216bc3e2fbcaa08a72cd55536672c5669ac912d526ea91a810cd42f"
+   "bytes": 1597572,
+   "sha256": "f5f5b33c8eecc885e49eea12a08eceef0b5916ae4b1d8a2283258319fc66b84c"
   },
   {
    "path": "archive.js",
@@ -956,8 +958,8 @@
   },
   {
    "path": "config.js",
-   "bytes": 8340981,
-   "sha256": "3772c37da405792095212457ad02acda418722d8486cf31c9e405691f4ab0bb5"
+   "bytes": 8341027,
+   "sha256": "f83ae31531185b8a510cad6601e778cdbe356ea1ed05ee6472f440899b16afa9"
   },
   {
    "path": "data__cities.txt",
@@ -2526,8 +2528,8 @@
   },
   {
    "path": "index.html",
-   "bytes": 27652,
-   "sha256": "e2dbe4aa135540ceec35ff653693781b80d6e15cbeff01843da40bd04e89aff3"
+   "bytes": 28083,
+   "sha256": "789cee95a1a45f308011ec35d80c615fef6a610efb354f89895aa66f7e731cfc"
   },
   {
    "path": "manifest.webmanifest",
