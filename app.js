@@ -1,5 +1,5 @@
 /* CurveScout v2 - reinvented app. Vanilla JS, no build step.
-   Data: data/summary.json (index) + data/places.json (geocode) + data/routes/<region>.json (lazy). */
+   Data: data/summary.json (index) + data__places.json (geocode) + data/routes/<region>.json (lazy). */
 (function () {
 'use strict';
 
@@ -1037,7 +1037,7 @@ let TEASER_RANGE = [55, 90];
    pose and its source links - and fall back to the template only where nothing better exists. */
 function editorialFor(routeId, surface) {
   try {
-    /* the standalone carries it in its payload; the hosted site fetches data/editorial.json */
+    /* the standalone carries it in its payload; the hosted site fetches data__editorial.json */
     const ed = (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.editorial) || (window.S && S.editorial) || null;
     if (!ed || !Array.isArray(ed.drafts)) return null;
     /* EDITORIAL-STATE-01 (audit 4312f23): a REJECTED collection or draft is never selected */
@@ -1054,7 +1054,7 @@ window.csEditorial = editorialFor;
    arrives the writers use the template, and a later paint picks the sourced text up */
 try {
   if (!window.CURVESCOUT_INLINE && typeof fetch === 'function')
-    window.__csEditorialReady = fetch('data/editorial.json').then(r => r.ok ? r.json() : null).then(j => {
+    window.__csEditorialReady = fetch('data__editorial.json').then(r => r.ok ? r.json() : null).then(j => {
       if (j && window.S) S.editorial = j;
       /* a route page drawn before the file arrived showed the fallback; if the page on screen has a
          sourced contribution, draw it again once, now that the text is here */
@@ -2471,9 +2471,9 @@ async function loadCore(onStep) {
   /* the sourced editorial file is small and the first screens read it, so it arrives with the
      index rather than racing the first paint */
   const [core, pl] = await Promise.all([
-    wantSplit ? jget('data/index/core.json', 20000).then(v => { onStep(1, 2); return v; }).catch(() => null)
+    wantSplit ? jget('data__index__core.json', 20000).then(v => { onStep(1, 2); return v; }).catch(() => null)
               : Promise.resolve(null),
-    jget('data/places.json', 20000),
+    jget('data__places.json', 20000),
   ]);
   let sum = null;
   if (core && Array.isArray(core.rows) && Array.isArray(core.fields)) {
@@ -2689,10 +2689,10 @@ async function derivedRecipes() {
   if (DERIVED.tried) return DERIVED.map;
   DERIVED.tried = true;
   try {
-    /* a hosted build ships the recipes as buckets + data/derived-index.json (the whole file is over
+    /* a hosted build ships the recipes as buckets + data__derived-index.json (the whole file is over
        the 10 MiB file budget and is not deployed): never request derived.json when the index exists */
     let viaIndex = false;
-    if (location.protocol !== 'file:') { try { viaIndex = !!(await jget('data/derived-index.json', 8000)); } catch (e) { viaIndex = false; } }
+    if (location.protocol !== 'file:') { try { viaIndex = !!(await jget('data__derived-index.json', 8000)); } catch (e) { viaIndex = false; } }
     const j = viaIndex ? null : await jget('data/derived.json', 20000);
     for (const x of (j && j.recipes) || []) DERIVED.map.set(x.i, x);
   } catch (e) { /* no recipes reachable: the scouted archive still works */ }
@@ -2736,7 +2736,7 @@ async function derivedBucketFor(id) {
   if (!DERIVED_SHARDS.tried) {
     DERIVED_SHARDS.tried = true;
     try { DERIVED_SHARDS.idx = (location.protocol === 'file:' || window.CURVESCOUT_INLINE) ? null
-      : await Promise.resolve(jget('data/derived-index.json', 8000)); }
+      : await Promise.resolve(jget('data__derived-index.json', 8000)); }
     catch (e) { DERIVED_SHARDS.idx = null; }
   }
   const meta = DERIVED_SHARDS.idx;
@@ -3044,7 +3044,7 @@ async function geocode(q) {
   if (co) return { lat: +co[1], lon: +co[2], label: (+co[1]).toFixed(3) + ', ' + (+co[2]).toFixed(3) };
   const loc = localPlace(q); if (loc) return loc;
   /* ---- THE LOCAL GAZETTEER ANSWERS FIRST, AND USUALLY ANSWERS ----
-     data/cities.txt carries several hundred towns worldwide with coordinates and ships inside
+     data__cities.txt carries several hundred towns worldwide with coordinates and ships inside
      the build, so the common case never touches anybody's server. Public Nominatim is a
      LAST resort, it is off unless NET.geocoderEnabled is true, every answer is cached so a
      query is never repeated, and nothing the product needs depends on it: the rider can
@@ -7195,7 +7195,7 @@ function depNow() {
 let PLACE_GRID = null;
 async function placesNear(lat, lon, radiusM) {
   if (!PLACE_GRID) {
-    try { PLACE_GRID = await jget('data/places-index.json', 12000); }
+    try { PLACE_GRID = await jget('data__places-index.json', 12000); }
     catch (e) { PLACE_GRID = { cell: 0.25, grid: {} }; }
   }
   const c = PLACE_GRID.cell || 0.25;
@@ -7225,7 +7225,7 @@ const APPROVED_UNAVAILABLE = new Set();
     if (window.CS_APPROVED_MEDIA && typeof window.CS_APPROVED_MEDIA === 'object') {
       APPROVED_MEDIA = window.CS_APPROVED_MEDIA.approved || {}; return;
     }
-    const j = await jget('data/media/approved-media.json', 8000);
+    const j = await jget('data__media__approved-media.json', 8000);
     APPROVED_MEDIA = j && j.approved ? j.approved : {};
   } catch (e) { APPROVED_MEDIA = {}; }
 })();
@@ -9179,7 +9179,7 @@ window.csAds = ADS;
 
 /* ---------------- the named roads of the world ----------------
    Matching legends by NAME only caught rides whose title happened to mention one. This
-   matches on GEOGRAPHY: data/legends.json holds 61 named roads across 26 countries with an
+   matches on GEOGRAPHY: data__legends.json holds 61 named roads across 26 countries with an
    approximate corridor, and a ride counts if it runs within 12 km of one.
    The corridors are anchor points, not surveyed centrelines: accurate enough to say "you
    are on the Stelvio", nowhere near accurate enough to navigate by, and the page says so. */
@@ -9191,18 +9191,18 @@ async function loadLegends() {
   const inl = window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.legends;
   if (inl && inl.roads) { LEGENDS.roads = inl.roads; return LEGENDS.roads; }
   try {
-    const j = await jget('data/legends.json', 8000);
+    const j = await jget('data__legends.json', 8000);
     LEGENDS.roads = (j && j.roads) || [];
   } catch (e) { LEGENDS.roads = []; }
   /* THE TRUE SHAPE, WHEN THE NIGHTLY HAS FETCHED IT.
      The corridors in legends.json are traced by hand from settlements and summits, so they
      draw as a chain of straight segments - no hairpins, and one of them cut across a lake.
      OpenStreetMap holds these routes as relations with every way in order. When the nightly
-     has pulled them, data/legends-geom.json carries the real line, hairpin for hairpin, and
+     has pulled them, data__legends-geom.json carries the real line, hairpin for hairpin, and
      it replaces the approximation. Until then the corridor is what we have, and it is
      labelled as approximate on the page. */
   try {
-    const geom = await jget('data/legends-geom.json', 9000);
+    const geom = await jget('data__legends-geom.json', 9000);
     if (geom && geom.roads) {
       let swapped = 0;
       for (const r of LEGENDS.roads) {
@@ -16239,7 +16239,7 @@ function drawSpeedLine(map, line, speeds) {
    transparent to the pointer, so hovering works on whatever basemap is showing. */
 
 /* ---- 7,622 CATALOGUED PLACES, NEVER ONCE PUT ON A MAP ----
-   data/heritage.json has been in the repository the whole time: World Heritage sites and
+   data__heritage.json has been in the repository the whole time: World Heritage sites and
    catalogued landmarks with coordinates, 1.16 MB, and nothing had ever fetched it. A rider
    looking at a route wants to know what is beside it - a monastery, a gorge, a palace two
    kilometres off the line is the difference between a ride and a day out.
@@ -16285,7 +16285,7 @@ async function nearbyAdditions(r, howMany) {
   if (line.length < 2) return [];
   if (!S._heritage) {
     /* ---- THE CATALOGUE IS ALREADY IN THE FILE. ASK FOR IT BEFORE ASKING THE NETWORK ----
-       "Add a stop" and "Worth adding" fetched data/heritage.json. The single-file build he
+       "Add a stop" and "Worth adding" fetched data__heritage.json. The single-file build he
        downloads has no server, so the fetch always failed, S._heritage came back with zero
        rows and BOTH panels rendered with nothing to offer - a feature that exists in code
        and gives the rider nothing, which is the definition of lost. release.mjs has been
@@ -16298,7 +16298,7 @@ async function nearbyAdditions(r, howMany) {
        row read the same. */
     S._heritage = (inl && inl.rows && inl.rows.length)
       ? Promise.resolve({ rows: inl.rows, grid: inl.grid || null, prose: inl.prose || null })
-      : jget('data/heritage.json', 20000)
+      : jget('data__heritage.json', 20000)
           .then(j => (j && j.rows) ? { rows: j.rows, grid: j.grid || null, prose: j.prose || null }
                                    : { rows: [], grid: null, prose: null })
           .catch(() => ({ rows: [], grid: null, prose: null }));
@@ -16785,13 +16785,13 @@ function drawHeritageNear(map) {
   if (!map || !window.L || !L.circleMarker || !L.layerGroup || !line || line.length < 2) return;
   /* ---- READ THE FILE THE WAY IT IS ACTUALLY BUILT ----
      I guessed at `places` or a bare array and got neither, so this quietly resolved to an
-     empty list and drew nothing for three sessions. data/heritage.json is `rows` - 7,622
+     empty list and drew nothing for three sessions. data__heritage.json is `rows` - 7,622
      places as [lat, lon, name, ...] - plus `grid`, which already indexes them into one-degree
      cells. That grid is exactly the lookup this needs, so the whole catalogue never has to be
      scanned: take the cells the route passes through and look only at those. */
   if (!S._heritage) {
     /* ---- THE CATALOGUE IS ALREADY IN THE FILE. ASK FOR IT BEFORE ASKING THE NETWORK ----
-       "Add a stop" and "Worth adding" fetched data/heritage.json. The single-file build he
+       "Add a stop" and "Worth adding" fetched data__heritage.json. The single-file build he
        downloads has no server, so the fetch always failed, S._heritage came back with zero
        rows and BOTH panels rendered with nothing to offer - a feature that exists in code
        and gives the rider nothing, which is the definition of lost. release.mjs has been
@@ -16804,7 +16804,7 @@ function drawHeritageNear(map) {
        row read the same. */
     S._heritage = (inl && inl.rows && inl.rows.length)
       ? Promise.resolve({ rows: inl.rows, grid: inl.grid || null, prose: inl.prose || null })
-      : jget('data/heritage.json', 20000)
+      : jget('data__heritage.json', 20000)
           .then(j => (j && j.rows) ? { rows: j.rows, grid: j.grid || null, prose: j.prose || null }
                                    : { rows: [], grid: null, prose: null })
           .catch(() => ({ rows: [], grid: null, prose: null }));
@@ -21171,7 +21171,7 @@ const clock = m => String(Math.floor((m / 60) % 24)).padStart(2, '0') + ':' + St
    after the box was resized. Rebuilding the path against the measured width removes the
    distortion completely instead of reducing it. */
 /* ---------------- rider gatherings near the road ----------------
-   Reads data/events.json, which ships EMPTY. There is no open dataset of motorcycle
+   Reads data__events.json, which ships EMPTY. There is no open dataset of motorcycle
    events, and a wrong date sends someone a long way to an empty car park - so the app
    claims nothing until a list exists. When one does, an event within 30 km of the route
    and within a fortnight of the ride shows up, always with the organiser's own link so a
@@ -21179,7 +21179,7 @@ const clock = m => String(Math.floor((m / 60) % 24)).padStart(2, '0') + ':' + St
 const EVENTS = { data: null, tried: false };
 /* THE FEED FINALLY HAS SOMETHING IN IT: 429 recurring series with coordinates, 51 countries.
    It arrives inline like everything else, because the download has no server to fetch from -
-   this mechanism has been reading `data/events.json` over the network since it was written,
+   this mechanism has been reading `data__events.json` over the network since it was written,
    which in the single file is a 404 every time and an empty list for ever.
    Rows are positional to keep the payload small; expanded once, here, into the shape the
    rest of the code already expects. */
