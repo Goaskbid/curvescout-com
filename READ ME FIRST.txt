@@ -1,14 +1,17 @@
-CurveScout update c09def9 (2026-10-07) - start page slideshow
+CurveScout update 2c33471 (2026-10-07): welcome screen + phone text fixes
+Replaces the earlier update ZIP from today. Use only this one.
 
-Upload these 6 files to github.com/Goaskbid/curvescout-com (main branch, top level):
-  app.js, styles.css, sw.js, config.js, 404.html, release-manifest.json
-"Add file" > "Upload files" > drag all 6 > "Commit changes". They replace the old ones.
-Do NOT upload this READ ME file.
+1. Open github.com/Goaskbid/curvescout-com
+2. "Add file" > "Upload files"
+3. Drag these 5 files in: app.js, config.js, release-manifest.json, styles.css, sw.js
+   (not this READ ME)
+4. "Commit changes"
+5. Wait 2 minutes, then open curvescout.com and reload twice
+   (the app updates itself on the second load).
 
-What changes: the start page now shows ONE full-screen photograph at a time,
-cross-fading to the next every 4.5 seconds. Every app start opens on a different
-photo than last time. No mosaic. Find still shows the search.
+What you should see:
+- The opening plays once per browser session (tap to skip it), then the full-screen welcome with motorbike photos.
+- "Find a ride" opens the search.
+- On the phone: no cut or overlapping text.
 
-All other 499 files in the repository are already correct (checked byte for byte
-against the live repository; 3 files differ only in line endings and need nothing).
-After upload: reload curvescout.com twice (the app updates itself on the 2nd load).
+The other 501 files in your repository are already correct (checked byte for byte today).

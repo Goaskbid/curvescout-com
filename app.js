@@ -5194,16 +5194,6 @@ const THIRD_PARTIES = [
   if (adsOn && pc) { pc.hidden = false; pc.addEventListener('click', ev => { ev.preventDefault();
     try { window.googlefc = window.googlefc || {}; window.googlefc.callbackQueue = window.googlefc.callbackQueue || []; window.googlefc.callbackQueue.push({ CONSENT_API_READY: () => window.googlefc.showRevocationMessage() }); } catch (e) {} }); }
 } catch (e) {} })();
-/* owner 2026-10-07: a startup sequence when the app is opened anew (about 2 s, tap to skip, once per session) */
-(function csIntro() { try {
-  if (sessionStorage.getItem('csIntroSeen')) return; sessionStorage.setItem('csIntroSeen', '1');
-  const quick = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const d = document.createElement('div'); d.id = 'csIntro'; d.setAttribute('aria-hidden', 'true');
-  d.innerHTML = '<svg viewBox="0 0 400 240" class="csIntroRoad"><path d="M-10 200 C 60 200, 70 120, 130 120 S 200 210, 250 150 S 330 40, 410 70"/></svg>' +
-    '<img class="csIntroMark" src="assets__curvescout-mark-transparent.png" alt=""><div class="csIntroWord">Curve<b>Scout</b></div><div class="csIntroTag">We scout the curves</div>';
-  const done = () => { d.classList.add('out'); setTimeout(() => d.remove(), 420); };
-  d.addEventListener('click', done); document.body.appendChild(d); setTimeout(done, quick ? 600 : 2000);
-} catch (e) {} })();
 /* owner 2026-10-07: the rider briefing sits below "Change this ride" and above fuel */
 /* owner 2026-10-07: on phones the ride map comes first (right under the title) and nothing sits on it -
    controls, note and the map credits go below; only route, numbered stops and the bike stay on the map */
@@ -5229,30 +5219,70 @@ window.csPlaceBriefing = csPlaceBriefing;
 setInterval(() => { if (location.hash.indexOf('#/ride/') === 0) csPlaceBriefing(); }, 800);
 /* owner 2026-10-07: the logo takes you back to the start page */
 document.addEventListener('click', ev => { const m = ev.target && ev.target.closest && ev.target.closest('header.top .mark'); if (m) { ev.preventDefault(); csShowWall(true); location.hash = '#/'; } });
-/* owner 2026-10-07: the start page is a wall of countryside and motorbike photographs and nothing else.
-   Wikimedia Commons categories, loaded in the reader's browser; landscape JPEGs under CC0 / public domain /
-   CC BY / CC BY-SA only (never NC/ND), each credited. Start controls stay in Find. */
-const CS_WALL_CATS = ['Motorcycle touring', 'Motorcycles on mountain roads', 'Stelvio Pass', 'Grossglockner High Alpine Road', 'Furka Pass', 'Transfagarasan',
-  'Trollstigen', 'Great Ocean Road', 'Col du Galibier', 'Grimsel Pass', 'Susten Pass', 'Dolomites', 'Atlantic Ocean Road', 'Passo Giau', 'Tuscany landscapes', 'Scottish Highlands'];
-/* owner 2026-10-07: NO mosaic. One full-screen photograph at a time, cross-fading to the next,
-   and every app start opens on a different photo than the last one (localStorage csLastPic). */
-let csWallDone = false, csWallPool = [], csWallIdx = 0, csWallTimer = null;
+/* owner 2026-10-07: "start like a Hollywood movie" - the welcome is a cinematic opening, then a full-screen
+   slideshow of hand-picked, free (Unsplash License) motorcycle landscapes: no tiles, no random category pulls,
+   no cars, no traffic, no towns. Each app start opens on the next photo of the curated sequence. */
+const CS_HERO = [
+  { id: '1771427795503-74fa80babf5d', by: 'Volodymyr Diadechko', where: 'Above the clouds' },
+  { id: '1686170017528-37a086f1dd55', by: 'Patrick Robert Doyle', where: 'Sustenpass, Switzerland' },
+  { id: '1787733294020-a5ef190153e8', by: 'Ardin Vermeulen', where: 'Dolomites, South Tyrol' },
+  { id: '1701384063512-6d3551fb1bca', by: 'Mateusz Suski', where: 'Passo dello Stelvio, Italy' },
+  { id: '1602342703730-2e68c2fccbce', by: 'Yury Kirillov', where: 'Julian Alps, Slovenia' },
+  { id: '1761582363392-7493c9e1d895', by: 'Fridi Antrack', where: 'Fjord road, Norway' },
+  { id: '1789286669771-f12c33cb2c25', by: 'Egor Myznik', where: 'Rybachiy Peninsula, Arctic coast' },
+  { id: '1774740768625-2104fc501300', by: 'Chandler Cruttenden', where: 'Tail of the Dragon, Tennessee' },
+  { id: '1781344837862-f33d9abc16ef', by: 'Jan Hildebrand', where: 'Austrian Alps' },
+  { id: '1790161170218-1c18b48d96df', by: 'maks_d', where: 'Open road at golden hour' },
+  { id: '1781036833518-d8afa0b888b7', by: 'Karandeep G', where: 'Mount Diablo, California' },
+  { id: '1764747995496-463d6286f9f0', by: 'Ilya Godze', where: 'Mountain gravel road' },
+  { id: '1761415476148-4637cc80d5d0', by: 'Ben Kupke', where: 'Mountain road' },
+  { id: '1771184031738-7ff9bae1965e', by: 'Jesús Ruiz', where: 'Winding mountain road' }];
+function csHeroUrl(p) { const w = Math.min(2400, Math.ceil(Math.max(innerWidth, innerHeight * 1.5) * Math.min(2, window.devicePixelRatio || 1) / 200) * 200);
+  return 'https://images.unsplash.com/photo-' + p.id + '?auto=format&fit=crop&w=' + w + '&q=80'; }
+const CS_HERO_START = (() => { let n = 0; try { n = (parseInt(localStorage.getItem('csHeroNext'), 10) || 0) % CS_HERO.length;
+  localStorage.setItem('csHeroNext', String((n + 1) % CS_HERO.length)); } catch (e) { n = Math.floor(Math.random() * CS_HERO.length); } return n; })();
+const csHeroQuick = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+/* the cold open: black, letterbox, the first photograph pushes in, a red road draws itself, the title pulls focus */
+(function csIntro() { try {
+  if (sessionStorage.getItem('csIntroSeen')) return; sessionStorage.setItem('csIntroSeen', '1');
+  const p = CS_HERO[CS_HERO_START];
+  const d = document.createElement('div'); d.id = 'csIntro'; d.setAttribute('aria-hidden', 'true');
+  d.innerHTML = '<div class="ciPic"><img alt=""></div><div class="ciShade"></div>' +
+    '<svg class="ciRoad" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMax slice"><defs>' +
+    '<linearGradient id="ciFade" x1="0" y1="1" x2="0" y2="0" ><stop offset="0" stop-color="#2a2d33" stop-opacity=".95"/><stop offset=".45" stop-color="#2a2d33" stop-opacity="0"/></linearGradient>' +
+    '<mask id="ciReveal" maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="1000"><polyline class="ciRev" points="500.0,1000.0 518.9,952.9 534.1,914.8 546.5,883.5 556.8,857.3 565.5,835.0 572.7,815.8 578.9,799.1 584.1,784.5 588.5,771.5 592.2,760.0 595.3,749.7 597.9,740.3 600.0,731.9 601.6,724.2 602.9,717.1 603.8,710.7 604.4,704.7 604.7,699.2 604.7,694.1 604.5,689.4 604.0,685.0 603.3,680.9 602.4,677.0 601.3,673.4 600.0,670.0 598.5,666.8 596.9,663.8 595.1,660.9 593.2,658.2 591.1,655.7 589.0,653.2 586.7,650.9 584.3,648.7 581.8,646.6 579.3,644.6 576.6,642.7 573.9,640.9 571.1,639.1 568.3,637.5 565.4,635.9 562.4,634.3 559.4,632.8 556.4,631.4 553.4,630.1 550.3,628.8 547.2,627.5 544.2,626.3 541.1,625.1 538.0,624.0 534.9,622.9 531.9,621.8 528.9,620.8 525.9,619.8 522.9,618.8 520.0,617.9 517.1,617.0 514.2,616.1 511.4,615.3 508.7,614.5 506.0,613.7 503.4,612.9 500.8,612.1 498.4,611.4 495.9,610.7 493.6,610.0 491.3,609.3 489.2,608.7 487.1,608.0 485.1,607.4 483.2,606.8 481.3,606.2 479.6,605.6 478.0,605.1 476.4,604.5 475.0,604.0 473.6,603.5 472.4,603.0 471.2,602.5 470.2,602.0 469.2,601.5 468.3,601.0 467.6,600.6 466.9,600.1 466.4,599.7 465.9,599.3 465.5,598.9 465.2,598.5 465.1,598.1 465.0,597.7 465.0,597.3 465.0,596.9 465.2,596.5 465.5,596.2 465.8,595.8 466.2,595.5 466.7,595.1 467.3,594.8 467.9,594.5 468.6,594.2 469.4,593.8 470.2,593.5 471.1,593.2 472.1,592.9 473.1,592.6 474.2,592.4 475.3,592.1 476.4,591.8 477.6,591.5 478.8,591.2 480.1,591.0 481.4,590.7 482.7,590.5 484.0,590.2 485.3,590.0 486.7,589.7 488.1,589.5 489.5,589.3 490.9,589.0 492.3,588.8 493.6,588.6" pathLength="1"/></mask></defs>' +
+    '<g mask="url(#ciReveal)"><polygon points="200.0,1000.0 251.0,952.9 292.1,914.8 325.9,883.5 354.1,857.3 378.0,835.0 398.3,815.8 415.8,799.1 431.0,784.5 444.3,771.5 455.8,760.0 466.0,749.7 474.9,740.3 482.8,731.9 489.7,724.2 495.8,717.1 501.1,710.7 505.7,704.7 509.8,699.2 513.3,694.1 516.2,689.4 518.8,685.0 520.9,680.9 522.6,677.0 523.9,673.4 525.0,670.0 525.7,666.8 526.1,663.8 526.3,660.9 526.2,658.2 525.9,655.7 525.4,653.2 524.7,650.9 523.8,648.7 522.8,646.6 521.6,644.6 520.2,642.7 518.7,640.9 517.1,639.1 515.4,637.5 513.6,635.9 511.7,634.3 509.8,632.8 507.7,631.4 505.6,630.1 503.4,628.8 501.2,627.5 499.0,626.3 496.7,625.1 494.4,624.0 492.1,622.9 489.8,621.8 487.4,620.8 485.1,619.8 482.8,618.8 480.5,617.9 478.2,617.0 476.0,616.1 473.7,615.3 471.6,614.5 469.4,613.7 467.3,612.9 465.3,612.1 463.3,611.4 461.4,610.7 459.5,610.0 457.7,609.3 456.0,608.7 454.3,608.0 452.7,607.4 451.2,606.8 449.8,606.2 448.5,605.6 447.2,605.1 446.1,604.5 445.0,604.0 444.0,603.5 443.1,603.0 442.3,602.5 441.5,602.0 440.9,601.5 440.4,601.0 439.9,600.6 439.5,600.1 439.3,599.7 439.1,599.3 439.0,598.9 439.0,598.5 439.1,598.1 439.3,597.7 439.5,597.3 439.9,596.9 440.3,596.5 440.8,596.2 441.4,595.8 442.0,595.5 442.8,595.1 443.6,594.8 444.4,594.5 445.3,594.2 446.3,593.8 447.4,593.5 448.5,593.2 449.6,592.9 450.8,592.6 452.1,592.4 453.4,592.1 454.7,591.8 456.1,591.5 457.5,591.2 458.9,591.0 460.4,590.7 461.9,590.5 463.4,590.2 464.9,590.0 466.4,589.7 468.0,589.5 469.5,589.3 471.1,589.0 472.6,588.8 474.2,588.6 513.1,588.6 511.9,588.8 510.7,589.0 509.4,589.3 508.2,589.5 507.0,589.7 505.8,590.0 504.6,590.2 503.4,590.5 502.3,590.7 501.2,591.0 500.1,591.2 499.1,591.5 498.1,591.8 497.1,592.1 496.2,592.4 495.4,592.6 494.6,592.9 493.8,593.2 493.1,593.5 492.5,593.8 491.9,594.2 491.4,594.5 491.0,594.8 490.7,595.1 490.4,595.5 490.2,595.8 490.1,596.2 490.1,596.5 490.2,596.9 490.4,597.3 490.6,597.7 491.0,598.1 491.5,598.5 492.0,598.9 492.7,599.3 493.4,599.7 494.3,600.1 495.3,600.6 496.3,601.0 497.5,601.5 498.8,602.0 500.2,602.5 501.7,603.0 503.3,603.5 505.0,604.0 506.8,604.5 508.7,605.1 510.7,605.6 512.8,606.2 515.1,606.8 517.4,607.4 519.8,608.0 522.4,608.7 525.0,609.3 527.7,610.0 530.5,610.7 533.4,611.4 536.4,612.1 539.4,612.9 542.6,613.7 545.8,614.5 549.1,615.3 552.5,616.1 555.9,617.0 559.4,617.9 563.0,618.8 566.6,619.8 570.3,620.8 574.0,621.8 577.8,622.9 581.6,624.0 585.5,625.1 589.3,626.3 593.3,627.5 597.2,628.8 601.1,630.1 605.1,631.4 609.1,632.8 613.1,634.3 617.1,635.9 621.1,637.5 625.1,639.1 629.0,640.9 633.0,642.7 637.0,644.6 640.9,646.6 644.8,648.7 648.7,650.9 652.5,653.2 656.4,655.7 660.2,658.2 663.9,660.9 667.6,663.8 671.3,666.8 675.0,670.0 678.6,673.4 682.2,677.0 685.7,680.9 689.2,685.0 692.7,689.4 696.2,694.1 699.6,699.2 703.1,704.7 706.6,710.7 710.0,717.1 713.6,724.2 717.2,731.9 720.8,740.3 724.6,749.7 728.6,760.0 732.7,771.5 737.1,784.5 741.9,799.1 747.1,815.8 753.0,835.0 759.5,857.3 767.1,883.5 776.0,914.8 786.7,952.9 800.0,1000.0" fill="url(#ciFade)"/><polyline class="ciEdge" points="200.0,1000.0 251.0,952.9 292.1,914.8 325.9,883.5 354.1,857.3 378.0,835.0 398.3,815.8 415.8,799.1 431.0,784.5 444.3,771.5 455.8,760.0 466.0,749.7 474.9,740.3 482.8,731.9 489.7,724.2 495.8,717.1 501.1,710.7 505.7,704.7 509.8,699.2 513.3,694.1 516.2,689.4 518.8,685.0 520.9,680.9 522.6,677.0 523.9,673.4 525.0,670.0 525.7,666.8 526.1,663.8 526.3,660.9 526.2,658.2 525.9,655.7 525.4,653.2 524.7,650.9 523.8,648.7 522.8,646.6 521.6,644.6 520.2,642.7 518.7,640.9 517.1,639.1 515.4,637.5 513.6,635.9 511.7,634.3 509.8,632.8 507.7,631.4 505.6,630.1 503.4,628.8 501.2,627.5 499.0,626.3 496.7,625.1 494.4,624.0 492.1,622.9 489.8,621.8 487.4,620.8 485.1,619.8 482.8,618.8 480.5,617.9 478.2,617.0 476.0,616.1 473.7,615.3 471.6,614.5 469.4,613.7 467.3,612.9 465.3,612.1 463.3,611.4 461.4,610.7 459.5,610.0 457.7,609.3 456.0,608.7 454.3,608.0 452.7,607.4 451.2,606.8 449.8,606.2 448.5,605.6 447.2,605.1 446.1,604.5 445.0,604.0 444.0,603.5 443.1,603.0 442.3,602.5 441.5,602.0 440.9,601.5 440.4,601.0 439.9,600.6 439.5,600.1 439.3,599.7 439.1,599.3 439.0,598.9 439.0,598.5 439.1,598.1 439.3,597.7 439.5,597.3 439.9,596.9 440.3,596.5 440.8,596.2 441.4,595.8 442.0,595.5 442.8,595.1 443.6,594.8 444.4,594.5 445.3,594.2 446.3,593.8 447.4,593.5 448.5,593.2 449.6,592.9 450.8,592.6 452.1,592.4 453.4,592.1 454.7,591.8 456.1,591.5 457.5,591.2 458.9,591.0 460.4,590.7 461.9,590.5 463.4,590.2 464.9,590.0 466.4,589.7 468.0,589.5 469.5,589.3 471.1,589.0 472.6,588.8 474.2,588.6"/><polyline class="ciEdge" points="800.0,1000.0 786.7,952.9 776.0,914.8 767.1,883.5 759.5,857.3 753.0,835.0 747.1,815.8 741.9,799.1 737.1,784.5 732.7,771.5 728.6,760.0 724.6,749.7 720.8,740.3 717.2,731.9 713.6,724.2 710.0,717.1 706.6,710.7 703.1,704.7 699.6,699.2 696.2,694.1 692.7,689.4 689.2,685.0 685.7,680.9 682.2,677.0 678.6,673.4 675.0,670.0 671.3,666.8 667.6,663.8 663.9,660.9 660.2,658.2 656.4,655.7 652.5,653.2 648.7,650.9 644.8,648.7 640.9,646.6 637.0,644.6 633.0,642.7 629.0,640.9 625.1,639.1 621.1,637.5 617.1,635.9 613.1,634.3 609.1,632.8 605.1,631.4 601.1,630.1 597.2,628.8 593.3,627.5 589.3,626.3 585.5,625.1 581.6,624.0 577.8,622.9 574.0,621.8 570.3,620.8 566.6,619.8 563.0,618.8 559.4,617.9 555.9,617.0 552.5,616.1 549.1,615.3 545.8,614.5 542.6,613.7 539.4,612.9 536.4,612.1 533.4,611.4 530.5,610.7 527.7,610.0 525.0,609.3 522.4,608.7 519.8,608.0 517.4,607.4 515.1,606.8 512.8,606.2 510.7,605.6 508.7,605.1 506.8,604.5 505.0,604.0 503.3,603.5 501.7,603.0 500.2,602.5 498.8,602.0 497.5,601.5 496.3,601.0 495.3,600.6 494.3,600.1 493.4,599.7 492.7,599.3 492.0,598.9 491.5,598.5 491.0,598.1 490.6,597.7 490.4,597.3 490.2,596.9 490.1,596.5 490.1,596.2 490.2,595.8 490.4,595.5 490.7,595.1 491.0,594.8 491.4,594.5 491.9,594.2 492.5,593.8 493.1,593.5 493.8,593.2 494.6,592.9 495.4,592.6 496.2,592.4 497.1,592.1 498.1,591.8 499.1,591.5 500.1,591.2 501.2,591.0 502.3,590.7 503.4,590.5 504.6,590.2 505.8,590.0 507.0,589.7 508.2,589.5 509.4,589.3 510.7,589.0 511.9,588.8 513.1,588.6"/>' +
+    '<polyline class="ciMid" points="500.0,1000.0 518.9,952.9 534.1,914.8 546.5,883.5 556.8,857.3 565.5,835.0 572.7,815.8 578.9,799.1 584.1,784.5 588.5,771.5 592.2,760.0 595.3,749.7 597.9,740.3 600.0,731.9 601.6,724.2 602.9,717.1 603.8,710.7 604.4,704.7 604.7,699.2 604.7,694.1 604.5,689.4 604.0,685.0 603.3,680.9 602.4,677.0 601.3,673.4 600.0,670.0 598.5,666.8 596.9,663.8 595.1,660.9 593.2,658.2 591.1,655.7 589.0,653.2 586.7,650.9 584.3,648.7 581.8,646.6 579.3,644.6 576.6,642.7 573.9,640.9 571.1,639.1 568.3,637.5 565.4,635.9 562.4,634.3 559.4,632.8 556.4,631.4 553.4,630.1 550.3,628.8 547.2,627.5 544.2,626.3 541.1,625.1 538.0,624.0 534.9,622.9 531.9,621.8 528.9,620.8 525.9,619.8 522.9,618.8 520.0,617.9 517.1,617.0 514.2,616.1 511.4,615.3 508.7,614.5 506.0,613.7 503.4,612.9 500.8,612.1 498.4,611.4 495.9,610.7 493.6,610.0 491.3,609.3 489.2,608.7 487.1,608.0 485.1,607.4 483.2,606.8 481.3,606.2 479.6,605.6 478.0,605.1 476.4,604.5 475.0,604.0 473.6,603.5 472.4,603.0 471.2,602.5 470.2,602.0 469.2,601.5 468.3,601.0 467.6,600.6 466.9,600.1 466.4,599.7 465.9,599.3 465.5,598.9 465.2,598.5 465.1,598.1 465.0,597.7 465.0,597.3 465.0,596.9 465.2,596.5 465.5,596.2 465.8,595.8 466.2,595.5 466.7,595.1 467.3,594.8 467.9,594.5 468.6,594.2 469.4,593.8 470.2,593.5 471.1,593.2 472.1,592.9 473.1,592.6 474.2,592.4 475.3,592.1 476.4,591.8 477.6,591.5 478.8,591.2 480.1,591.0 481.4,590.7 482.7,590.5 484.0,590.2 485.3,590.0 486.7,589.7 488.1,589.5 489.5,589.3 490.9,589.0 492.3,588.8 493.6,588.6"/></g></svg>' +
+    '<div class="ciPresents">CurveScout presents</div>' +
+    '<div class="ciTitle">Curve<b>Scout</b></div><div class="ciTag">The road worth the ride</div>' +
+    '<div class="ciBar ciTop"></div><div class="ciBar ciBot"></div>';
+  const img = d.querySelector('img'); img.onload = () => d.classList.add('pic'); img.src = csHeroUrl(p);
+  let gone = false; const done = () => { if (gone) return; gone = true; d.classList.add('out'); setTimeout(() => d.remove(), 900); };
+  d.addEventListener('click', done); document.body.appendChild(d);
+  void d.offsetWidth; setTimeout(() => d.classList.add('go'), 40);
+  setTimeout(done, csHeroQuick ? 500 : 3600);
+} catch (e) {} })();
+/* the welcome screen: one photograph at a time, slow Ken Burns drift, cross-fade, a line of copy and two ways in */
+let csWallDone = false, csWallPool = CS_HERO.slice(), csWallIdx = CS_HERO_START - 1, csWallTimer = null, csWallKb = 0;
 function csWallSlot(k) { const w = document.getElementById('csWall'); return w ? w.querySelectorAll('.csSlide')[k] : null; }
 function csWallShow(i) { try {
-  if (!csWallPool.length) return; csWallIdx = ((i % csWallPool.length) + csWallPool.length) % csWallPool.length;
+  const n = csWallPool.length; if (!n) return; csWallIdx = ((i % n) + n) % n;
   const p = csWallPool[csWallIdx], w = document.getElementById('csWall'); if (!w) return;
   const cur = w.querySelector('.csSlide.on'), nxt = csWallSlot(cur === csWallSlot(0) ? 1 : 0); if (!nxt) return;
-  const img = nxt.querySelector('img'), cap = nxt.querySelector('figcaption');
-  const go = () => { cap.textContent = p.credit; img.alt = p.alt; nxt.classList.add('on'); if (cur && cur !== nxt) cur.classList.remove('on'); };
-  if (img.getAttribute('src') === p.src) go(); else { img.onload = go; img.onerror = () => { csWallPool.splice(csWallIdx, 1); csWallShow(csWallIdx); }; img.src = p.src; }
-  try { localStorage.setItem('csLastPic', p.src); } catch (e) {}
-  const after = csWallPool[(csWallIdx + 1) % csWallPool.length]; if (after) { const pre = new Image(); pre.src = after.src; }
+  const img = nxt.querySelector('img'), cap = nxt.querySelector('figcaption'), url = csHeroUrl(p);
+  const go = () => { cap.textContent = 'Photo: ' + p.by + ' / Unsplash'; img.alt = p.where;
+    nxt.classList.remove('kb0', 'kb1', 'kb2', 'kb3'); void nxt.offsetWidth; nxt.classList.add('kb' + (csWallKb++ % 4));
+    nxt.classList.add('on'); if (cur && cur !== nxt) cur.classList.remove('on');
+    const k = w.querySelector('.csHeroWhere'); if (k) k.textContent = p.where;
+    w.querySelectorAll('.csHeroDots i').forEach((el, j) => el.classList.toggle('on', j === csWallIdx)); };
+  if (img.getAttribute('src') === url && img.complete) go(); else { img.onload = go; img.onerror = () => { csWallPool.splice(csWallIdx, 1); csWallShow(csWallIdx); }; img.src = url; }
+  const after = csWallPool[(csWallIdx + 1) % n]; if (after) { const pre = new Image(); pre.src = csHeroUrl(after); }
 } catch (e) {} }
-/* the photo fills exactly the screen between the header and the bottom bar, credit visible */
+/* the photo fills exactly the screen between the header and the bottom bar */
 function csWallFit() { try { const w = document.getElementById('csWall'); if (!w || !w.offsetParent) return;
   const nav = [...document.querySelectorAll('#bottomNav, .bnav, nav.bottom')].find(e => e.getClientRects().length && getComputedStyle(e).position === 'fixed');
   const bottom = nav ? nav.getBoundingClientRect().top : innerHeight; const top = w.getBoundingClientRect().top;
-  w.style.height = Math.max(320, Math.round(bottom - top - 8)) + 'px'; } catch (e) {} }
+  w.style.height = Math.max(420, Math.round(bottom - top)) + 'px'; } catch (e) {} }
 window.addEventListener('resize', csWallFit); window.csWallFit = csWallFit;
 setInterval(() => { const h = document.getElementById('view-home'); if (h && h.classList.contains('csWallOn')) csWallFit(); }, 700);
 function csWallTick() { const h = document.getElementById('view-home');
@@ -5261,42 +5291,30 @@ async function csPhotoWall() { try {
   const home = document.getElementById('view-home'); if (!home || csWallDone) return; csWallDone = true;
   let wall = document.getElementById('csWall');
   if (!wall) { wall = document.createElement('div'); wall.id = 'csWall'; home.insertAdjacentElement('afterbegin', wall); }
-  if (!wall.querySelector('.csSlide')) wall.innerHTML = '<figure class="csSlide"><img alt=""><figcaption class="credit"></figcaption></figure><figure class="csSlide"><img alt=""><figcaption class="credit"></figcaption></figure>';
-  let last = ''; try { last = localStorage.getItem('csLastPic') || ''; } catch (e) {}
-  const seen = new Set(); const OK = /^(CC0|CC[ -]?BY(-SA)?( [\d.]+)?|Public domain|PD.*)$/i;
-  const cats = CS_WALL_CATS.slice().sort(() => Math.random() - 0.5); let started = false;
-  for (const cat of cats) {
-    if (csWallPool.length >= 60) break;
-    try {
-      const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=categorymembers&gcmtype=file&gcmlimit=20&gcmtitle=' +
-        encodeURIComponent('Category:' + cat) + '&prop=imageinfo&iiprop=url%7Cmime%7Csize%7Cextmetadata&iiurlwidth=1600';
-      const j = await (await fetch(u)).json(); const add = [];
-      for (const pg of Object.values((j.query || {}).pages || {})) {
-        const ii = (pg.imageinfo || [])[0]; if (!ii || ii.mime !== 'image/jpeg' || ii.width < ii.height * 1.2 || ii.width < 1200 || seen.has(ii.thumburl)) continue;
-        const m = ii.extmetadata || {}, strip = v => String((v || {}).value || '').replace(/<[^>]+>/g, '').trim(), lic = strip(m.LicenseShortName);
-        if (!OK.test(lic) || /\b(NC|ND)\b/i.test(lic)) continue; seen.add(ii.thumburl);
-        add.push({ src: ii.thumburl, alt: cat, credit: (strip(m.Artist).slice(0, 50) || 'Wikimedia Commons') + ' · ' + lic });
-      }
-      add.sort(() => Math.random() - 0.5); csWallPool.push(...add);
-      if (!started && csWallPool.length) {
-        if (csWallPool[0].src === last && csWallPool.length > 1) csWallPool.push(csWallPool.shift());
-        if (csWallPool[0].src === last) continue;   /* never open on the same photo as last time */
-        started = true; csWallShow(0); if (csWallMode) home.classList.add('csWallOn'); csWallFit();
-        if (!csWallTimer) csWallTimer = setInterval(csWallTick, 4500);
-      }
-    } catch (e) {}
-  }
-  if (!csWallPool.length) { csWallDone = false; }
+  const slide = '<figure class="csSlide"><img alt=""><figcaption class="credit"></figcaption></figure>';
+  wall.innerHTML = slide + slide + '<div class="csHeroShade"></div>' +
+    '<div class="csHeroText"><div class="csHeroKicker"><span class="csHeroWhere"></span></div>' +
+    '<h1 class="csHeroH">Find the road<br>worth the ride.</h1>' +
+    '<p class="csHeroP">Hand-picked motorcycle roads with the real curves, the weather on the way, stops and a roadbook.</p>' +
+    '<div class="csHeroCta"><button type="button" class="csHeroGo" data-hero="find">Find a ride</button><button type="button" class="csHeroAlt" data-hero="atlas">Open the Atlas</button></div></div>' +
+    '<div class="csHeroDots" aria-hidden="true">' + csWallPool.map(() => '<i></i>').join('') + '</div>';
+  wall.addEventListener('click', ev => { const b = ev.target.closest && ev.target.closest('[data-hero]'); if (!b) return;
+    if (b.dataset.hero === 'find') { csShowWall(false); if (location.hash && location.hash !== '#/') location.hash = '#/'; try { scrollTo(0, 0); } catch (e) {} }
+    else location.hash = '#/atlas'; });
+  csWallShow(CS_HERO_START); if (csWallMode) home.classList.add('csWallOn'); csWallFit();
+  if (!csWallTimer) csWallTimer = setInterval(csWallTick, csHeroQuick ? 9000 : 6500);
 } catch (e) {} }
 window.csPhotoWall = csPhotoWall;
 /* owner 2026-10-07: the photo wall is the START page (app start, logo) - Find must still show the search.
    The wall hid the Find controls, which made Find look dead (my regression). */
 let csWallMode = true;
-function csShowWall(on) { csWallMode = on; const h = document.getElementById('view-home'); if (!h) return;
-  h.classList.toggle('csWallOn', on && csWallPool.length > 0); if (on) { csWallFit(); csPhotoWall().then(() => { if (csWallMode) h.classList.toggle('csWallOn', csWallPool.length > 0); csWallFit(); }); } }
+function csShowWall(on) { csWallMode = on; const h = document.getElementById('view-home'); if (!h) return; document.body.classList.toggle('csWelcome', !!on);
+  h.classList.toggle('csWallOn', on && !!document.querySelector('#csWall .csSlide')); if (on) { csWallFit(); csPhotoWall().then(() => { if (csWallMode) h.classList.toggle('csWallOn', !!document.querySelector('#csWall .csSlide')); csWallFit(); }); } }
 window.csShowWall = csShowWall;
 document.addEventListener('click', ev => { const t = ev.target && ev.target.closest && ev.target.closest('nav a, nav button, .bnav a, .bnav button, #bottomNav a, #bottomNav button');
   if (t && /^find$/i.test(t.textContent.trim())) csShowWall(false); }, true);
+/* New search always opens the search form, never the welcome screen */
+document.addEventListener('click', ev => { if (ev.target && ev.target.closest && ev.target.closest('#newSearchBtn')) csShowWall(false); }, true);
 setTimeout(() => csShowWall(true), 0);
 function renderLegal() {
   show('legal');

@@ -3941,14 +3941,77 @@ svg.cs-map .cs-lbl-m{display:none}@media (max-width:600px){svg.cs-map .cs-lbl-d{
 /* ---- owner 2026-10-07 ---- */
 header.top .mark { cursor: pointer; }
 /* start page: photographs and nothing else */
+/* ---- the cold open (owner 2026-10-07: "start like a Hollywood movie") ----
+   black, cinemascope bars, the photograph pushes in out of the dark, a red road draws itself,
+   the title pulls focus, the bars open and the welcome screen is already there. Nothing glows. */
+#csIntro { position: fixed; inset: 0; z-index: 10000; background: #000; overflow: hidden; cursor: pointer; transition: opacity .9s ease; }
+#csIntro.out { opacity: 0; pointer-events: none; }
+#csIntro .ciPic { position: absolute; inset: 0; opacity: 0; transition: opacity 1.6s ease 1.5s; }
+#csIntro.pic.go .ciPic { opacity: 1; }
+#csIntro .ciPic img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.22); transition: transform 5s cubic-bezier(.2,.6,.3,1); }
+#csIntro.go .ciPic img { transform: scale(1.04); }
+#csIntro .ciShade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 40%, rgba(0,0,0,.25) 60%, rgba(0,0,0,.8) 100%); }
+#csIntro .ciBar { position: absolute; left: 0; right: 0; height: 13vh; background: #000; transition: height .9s cubic-bezier(.7,0,.3,1) 2.6s; z-index: 3; }
+#csIntro .ciTop { top: 0; } #csIntro .ciBot { bottom: 0; }
+#csIntro.go .ciBar { height: 0; }
+#csIntro .ciRoad { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; transition: opacity 1.1s ease 1.7s; }
+#csIntro.go .ciRoad { opacity: 0; }
+#csIntro .ciRev { fill: none; stroke: #fff; stroke-width: 760; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.7s cubic-bezier(.45,0,.2,1) .2s; }
+#csIntro.go .ciRev { stroke-dashoffset: 0; }
+#csIntro .ciEdge { fill: none; stroke: #e11b2b; stroke-width: 2.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+#csIntro .ciMid { fill: none; stroke: #f4f2ec; stroke-width: 2; stroke-dasharray: 16 20; vector-effect: non-scaling-stroke; opacity: .85; }
+#csIntro .ciPresents { position: absolute; left: 0; right: 0; top: 34%; text-align: center; z-index: 2; color: #e9e6df;
+  font: 600 14px/1 var(--display); letter-spacing: .55em; text-transform: uppercase; opacity: 0; animation: ciPresents 1.5s ease .15s forwards; }
+#csIntro .ciTitle { position: absolute; left: 0; right: 0; top: 40%; text-align: center; z-index: 2; color: #fff;
+  font: 800 italic clamp(48px, 12vw, 132px)/1 var(--display); text-transform: uppercase; letter-spacing: .6em; opacity: 0; filter: blur(6px);
+  transition: letter-spacing 2.2s cubic-bezier(.2,.7,.2,1) 1.25s, opacity 1.2s ease 1.25s, filter 1.4s ease 1.25s; }
+#csIntro .ciTitle b { color: #e11b2b; font-weight: 800; }
+#csIntro.go .ciTitle { letter-spacing: .04em; opacity: 1; filter: none; }
+#csIntro .ciTag { position: absolute; left: 0; right: 0; top: calc(40% + clamp(56px, 13vw, 142px)); text-align: center; z-index: 2; color: #e9e6df;
+  font: 600 clamp(16px, 2.2vw, 22px)/1.2 var(--display); letter-spacing: .32em; text-transform: uppercase; opacity: 0; transform: translateY(10px);
+  transition: opacity .8s ease 2.1s, transform .8s ease 2.1s; }
+#csIntro.go .ciTag { opacity: 1; transform: none; }
+#csIntro .ciTitle { font-size: clamp(52px, 14vw, 150px) !important; line-height: 1 !important; }
+#csIntro .ciTag { font-size: clamp(16px, 2.2vw, 22px) !important; }
+#csIntro .ciPresents { font-size: 14px !important; }
+#csIntro .ciTitle b { font-size: inherit !important; font-style: inherit; }
+@keyframes ciPresents { 0% { opacity: 0; } 30% { opacity: .9; } 70% { opacity: .9; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #csIntro *, #csWall * { transition-duration: .01s !important; transition-delay: 0s !important; animation: none !important; } }
+/* ---- the welcome screen: one photograph at a time, Ken Burns drift, a line of copy, two ways in ---- */
 #view-home.csWallOn > :not(#csWall) { display: none !important; }
+body.csWelcome #viewModes { display: none !important; }
+body.csWelcome #view-home.csWallOn { padding: 0 !important; margin-top: 0 !important; max-width: none !important; }
 #view-home:not(.csWallOn) > #csWall { display: none !important; }
-/* one photograph at a time, full screen, cross-fade - no mosaic */
-#csWall { position: relative; width: 100%; height: calc(100dvh - 140px); min-height: 320px; overflow: hidden; background: #0b0c0e; }
-#csWall .csSlide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1.2s ease; }
+#csWall { position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); height: calc(100dvh - 140px); min-height: 420px; overflow: hidden; background: #050506; }
+#csWall .csSlide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1.8s ease; overflow: hidden; }
 #csWall .csSlide.on { opacity: 1; }
-#csWall .csSlide img { width: 100%; height: 100%; object-fit: cover; display: block; }
-#csWall .csSlide figcaption { position: absolute; right: 8px; bottom: 6px; color: #e8e8e8; background: rgba(0,0,0,.45); padding: 1px 4px; border-radius: 3px; }
+#csWall .csSlide img { width: 100%; height: 100%; object-fit: cover; display: block; transform-origin: 50% 50%; }
+#csWall .csSlide.kb0 img { animation: csKb0 9s linear forwards; }
+#csWall .csSlide.kb1 img { animation: csKb1 9s linear forwards; }
+#csWall .csSlide.kb2 img { animation: csKb2 9s linear forwards; }
+#csWall .csSlide.kb3 img { animation: csKb3 9s linear forwards; }
+@keyframes csKb0 { from { transform: scale(1.04) translate(0, 0); } to { transform: scale(1.16) translate(-2%, -1%); } }
+@keyframes csKb1 { from { transform: scale(1.16) translate(2%, 0); } to { transform: scale(1.04) translate(0, 1%); } }
+@keyframes csKb2 { from { transform: scale(1.06) translate(-2%, 1%); } to { transform: scale(1.18) translate(1.5%, -1%); } }
+@keyframes csKb3 { from { transform: scale(1.18) translate(0, -1.5%); } to { transform: scale(1.05) translate(-1%, 0); } }
+#csWall .csSlide figcaption { position: absolute; right: 10px; bottom: 8px; z-index: 3; color: rgba(255,255,255,.75); }
+#csWall .csHeroShade { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 28%, rgba(0,0,0,0) 45%, rgba(0,0,0,.72) 82%, rgba(0,0,0,.88) 100%); }
+#csWall .csHeroText { position: absolute; z-index: 2; left: clamp(18px, 5vw, 72px); right: clamp(18px, 5vw, 72px); bottom: clamp(40px, 9vh, 96px); max-width: 860px;
+  animation: csHeroIn 1.2s cubic-bezier(.2,.7,.2,1) both; }
+#csWall .csHeroKicker { color: #e9e6df; font: 600 14px/1 var(--display); letter-spacing: .28em; text-transform: uppercase; display: flex; align-items: center; gap: 12px; }
+#csWall .csHeroKicker::before { content: ''; width: 34px; height: 3px; background: #e11b2b; display: inline-block; }
+#csWall .csHeroH { margin: 14px 0 12px; color: #fff; font: 800 italic clamp(44px, 8.4vw, 104px)/.92 var(--display); text-transform: uppercase; letter-spacing: .01em; }
+#csWall .csHeroP { margin: 0 0 22px; color: #e9e6df; font-size: clamp(16px, 1.6vw, 20px); line-height: 1.45; max-width: 560px; }
+#csWall .csHeroCta { display: flex; gap: 12px; flex-wrap: wrap; }
+#csWall .csHeroCta button { font: 700 16px/1 var(--display); letter-spacing: .12em; text-transform: uppercase; border-radius: 999px; padding: 16px 28px; cursor: pointer; min-height: 48px; }
+#csWall .csHeroGo { background: #e11b2b; color: #fff; border: 0; }
+#csWall .csHeroAlt { background: rgba(0,0,0,.35); color: #fff; border: 1.5px solid rgba(255,255,255,.7); }
+#csWall .csHeroDots { position: absolute; z-index: 2; top: 14px; left: clamp(18px, 5vw, 72px); right: clamp(18px, 5vw, 72px); display: flex; gap: 6px; }
+#csWall .csHeroDots i { flex: 1; height: 2px; background: rgba(255,255,255,.28); border-radius: 2px; transition: background .6s; }
+#csWall .csHeroDots i.on { background: #fff; }
+@keyframes csHeroIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@media (max-width: 600px) { #csWall .csHeroCta button { flex: 1 1 auto; padding: 15px 18px; } #csWall .csHeroH { font-size: clamp(42px, 13vw, 64px); } }
 /* every photo source line at half its size */
 .credit, .rotCred, .exCred, figcaption.credit, .csSlide figcaption, .cgCredit, .csStoryPic figcaption { font-size: 7px !important; line-height: 1.2 !important; }
 @media (max-width: 600px) {
@@ -3965,20 +4028,6 @@ header.top .mark { cursor: pointer; }
 /* ---- owner 2026-10-07: mobile redesign ---- */
 html { touch-action: manipulation; }
 nav a:active, nav button:active, .bnav a:active, .bnav button:active, button:active { transform: scale(0.96); filter: brightness(1.2); transition: transform 60ms; }
-/* startup sequence */
-#csIntro { position: fixed; inset: 0; z-index: 10000; background: radial-gradient(circle at 50% 40%, #1d2026, #08090b 70%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; transition: opacity .4s ease; }
-#csIntro.out { opacity: 0; pointer-events: none; }
-#csIntro .csIntroRoad { position: absolute; width: min(92vw, 720px); top: 50%; left: 50%; transform: translate(-50%, -30%); opacity: .9; }
-#csIntro .csIntroRoad path { fill: none; stroke: #e11b2b; stroke-width: 7; stroke-linecap: round; stroke-dasharray: 700; stroke-dashoffset: 700; animation: csRoad 1.5s ease-out forwards; }
-#csIntro .csIntroMark { width: 112px; height: 112px; object-fit: contain; opacity: 0; transform: scale(.6) rotate(-12deg); animation: csPop .7s .35s cubic-bezier(.2,1.4,.4,1) forwards; position: relative; }
-#csIntro .csIntroWord { font: 900 34px/1 system-ui, sans-serif; color: #fff; letter-spacing: .02em; opacity: 0; animation: csUp .5s .8s ease-out forwards; position: relative; }
-#csIntro .csIntroWord b { color: #e11b2b; }
-#csIntro .csIntroTag { font: 600 16px/1 system-ui, sans-serif; color: #c9c9c9; letter-spacing: .3em; text-transform: uppercase; opacity: 0; animation: csUp .5s 1.15s ease-out forwards; position: relative; }
-@keyframes csRoad { to { stroke-dashoffset: 0; } }
-@keyframes csPop { to { opacity: 1; transform: scale(1) rotate(0); } }
-@keyframes csUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { #csIntro * { animation-duration: .01s !important; animation-delay: 0s !important; } }
 @media (max-width: 600px) {
   /* the map: route, numbered stops and the bike only - nothing else on it */
   .mapBox { display: flex !important; flex-wrap: wrap; gap: 6px; align-items: center; }
@@ -3990,4 +4039,35 @@ nav a:active, nav button:active, .bnav a:active, .bnav button:active, button:act
   .mapBox .csMapCredit a { color: inherit; }
 }
 @media (max-width: 600px) {
+}
+
+/* ---- owner 2026-10-07: on the phone no text overlaps and nothing is cut short (tools/audit-mobile-layout.mjs) ---- */
+/* swipe: the ride's short lines show in full; the info panel already scrolls inside the card, so the
+   card and the Pass/Keep buttons keep their place */
+.swInfo > p { display: block !important; -webkit-line-clamp: unset !important; overflow: visible !important; }
+.heroIn h1 .l1, .heroIn h1 .l2 { line-height: 1.1 !important; }
+@media (max-width: 600px) {
+  /* the last line of every page clears the bottom bar */
+  body { padding-bottom: calc(78px + env(safe-area-inset-bottom)) !important; }
+  /* section heads wrap instead of ending in "..." */
+  .chev { flex-wrap: wrap; row-gap: 4px; }
+  .chev h2, .chev small { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+  /* scenic-road tags on cards wrap instead of being cut */
+  span.icTag { white-space: normal !important; max-width: 100% !important; overflow: visible !important; text-overflow: clip !important; line-height: 1.3 !important; }
+  /* "Yes, go" keeps its full label */
+  #wbGo { flex: none !important; white-space: nowrap !important; overflow: visible !important; text-overflow: clip !important; }
+}
+@media (max-width: 600px) {
+  /* card badges in one row at the top (score left, shape next to it, tier right), so neither covers the
+     card's own title lines underneath */
+  .rideHero .shTag { right: auto !important; left: 62px !important; top: 10px !important; }
+}
+@media (max-width: 600px) {
+  /* roadbook direction chips show the whole direction, on two lines if needed */
+  .rbWayChip { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; line-height: 1.3 !important; }
+  /* "What this page knows" fits the phone: the table wraps inside the screen */
+  .rbConfT { table-layout: fixed !important; width: 100% !important; }
+  .rbConfT th, .rbConfT td { overflow-wrap: anywhere; word-break: break-word; white-space: normal !important; }
+  /* stop names under the route strip: whole name, wrapped */
+  .csName { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; max-width: 70px !important; overflow-wrap: anywhere; line-height: 1.15 !important; }
 }
