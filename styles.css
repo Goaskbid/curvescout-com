@@ -3942,12 +3942,15 @@ svg.cs-map .cs-lbl-m{display:none}@media (max-width:600px){svg.cs-map .cs-lbl-d{
 header.top .mark { cursor: pointer; }
 /* start page: photographs and nothing else */
 #view-home.csWallOn > :not(#csWall) { display: none !important; }
-#csWall { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 6px; padding: 6px; }
-#csWall .csWallPic { position: relative; margin: 0; overflow: hidden; border-radius: 10px; aspect-ratio: 3 / 2; background: #15171b; }
-#csWall .csWallPic img { width: 100%; height: 100%; object-fit: cover; display: block; }
-#csWall .csWallPic figcaption { position: absolute; right: 6px; bottom: 4px; color: #e8e8e8; text-shadow: 0 1px 2px #000; }
+#view-home:not(.csWallOn) > #csWall { display: none !important; }
+/* one photograph at a time, full screen, cross-fade - no mosaic */
+#csWall { position: relative; width: 100%; height: calc(100dvh - 140px); min-height: 320px; overflow: hidden; background: #0b0c0e; }
+#csWall .csSlide { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1.2s ease; }
+#csWall .csSlide.on { opacity: 1; }
+#csWall .csSlide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#csWall .csSlide figcaption { position: absolute; right: 8px; bottom: 6px; color: #e8e8e8; background: rgba(0,0,0,.45); padding: 1px 4px; border-radius: 3px; }
 /* every photo source line at half its size */
-.credit, .rotCred, .exCred, figcaption.credit, .csWallPic figcaption, .cgCredit, .csStoryPic figcaption { font-size: 7px !important; line-height: 1.2 !important; }
+.credit, .rotCred, .exCred, figcaption.credit, .csSlide figcaption, .cgCredit, .csStoryPic figcaption { font-size: 7px !important; line-height: 1.2 !important; }
 @media (max-width: 600px) {
   /* mobile map: the bar and the note go BELOW the map; corner buttons stay small at the edges; nothing is cut */
   .mapBox .mapBar, .mapBox .mapNote { position: static !important; inset: auto !important; transform: none !important; width: auto !important; max-width: none !important; margin: 6px 0 0 !important; }

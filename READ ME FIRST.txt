@@ -1,4 +1,14 @@
-CurveScout update (build 0027645): 5 files, no folders.
-1. Open https://github.com/Goaskbid/curvescout-com/upload/main
-2. Select ALL files in this folder except this text file (Ctrl+A / Cmd+A), drag them in.
-3. Commit changes. Wait 2-5 minutes, then reload with Ctrl+Shift+R (Mac: Cmd+Shift+R).
+CurveScout update c09def9 (2026-10-07) - start page slideshow
+
+Upload these 6 files to github.com/Goaskbid/curvescout-com (main branch, top level):
+  app.js, styles.css, sw.js, config.js, 404.html, release-manifest.json
+"Add file" > "Upload files" > drag all 6 > "Commit changes". They replace the old ones.
+Do NOT upload this READ ME file.
+
+What changes: the start page now shows ONE full-screen photograph at a time,
+cross-fading to the next every 4.5 seconds. Every app start opens on a different
+photo than last time. No mosaic. Find still shows the search.
+
+All other 499 files in the repository are already correct (checked byte for byte
+against the live repository; 3 files differ only in line endings and need nothing).
+After upload: reload curvescout.com twice (the app updates itself on the 2nd load).

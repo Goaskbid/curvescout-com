@@ -5234,36 +5234,66 @@ document.addEventListener('click', ev => { const m = ev.target && ev.target.clos
    CC BY / CC BY-SA only (never NC/ND), each credited. Start controls stay in Find. */
 const CS_WALL_CATS = ['Motorcycle touring', 'Motorcycles on mountain roads', 'Stelvio Pass', 'Grossglockner High Alpine Road', 'Furka Pass', 'Transfagarasan',
   'Trollstigen', 'Great Ocean Road', 'Col du Galibier', 'Grimsel Pass', 'Susten Pass', 'Dolomites', 'Atlantic Ocean Road', 'Passo Giau', 'Tuscany landscapes', 'Scottish Highlands'];
-let csWallDone = false;
+/* owner 2026-10-07: NO mosaic. One full-screen photograph at a time, cross-fading to the next,
+   and every app start opens on a different photo than the last one (localStorage csLastPic). */
+let csWallDone = false, csWallPool = [], csWallIdx = 0, csWallTimer = null;
+function csWallSlot(k) { const w = document.getElementById('csWall'); return w ? w.querySelectorAll('.csSlide')[k] : null; }
+function csWallShow(i) { try {
+  if (!csWallPool.length) return; csWallIdx = ((i % csWallPool.length) + csWallPool.length) % csWallPool.length;
+  const p = csWallPool[csWallIdx], w = document.getElementById('csWall'); if (!w) return;
+  const cur = w.querySelector('.csSlide.on'), nxt = csWallSlot(cur === csWallSlot(0) ? 1 : 0); if (!nxt) return;
+  const img = nxt.querySelector('img'), cap = nxt.querySelector('figcaption');
+  const go = () => { cap.textContent = p.credit; img.alt = p.alt; nxt.classList.add('on'); if (cur && cur !== nxt) cur.classList.remove('on'); };
+  if (img.getAttribute('src') === p.src) go(); else { img.onload = go; img.onerror = () => { csWallPool.splice(csWallIdx, 1); csWallShow(csWallIdx); }; img.src = p.src; }
+  try { localStorage.setItem('csLastPic', p.src); } catch (e) {}
+  const after = csWallPool[(csWallIdx + 1) % csWallPool.length]; if (after) { const pre = new Image(); pre.src = after.src; }
+} catch (e) {} }
+/* the photo fills exactly the screen between the header and the bottom bar, credit visible */
+function csWallFit() { try { const w = document.getElementById('csWall'); if (!w || !w.offsetParent) return;
+  const nav = [...document.querySelectorAll('#bottomNav, .bnav, nav.bottom')].find(e => e.getClientRects().length && getComputedStyle(e).position === 'fixed');
+  const bottom = nav ? nav.getBoundingClientRect().top : innerHeight; const top = w.getBoundingClientRect().top;
+  w.style.height = Math.max(320, Math.round(bottom - top - 8)) + 'px'; } catch (e) {} }
+window.addEventListener('resize', csWallFit); window.csWallFit = csWallFit;
+setInterval(() => { const h = document.getElementById('view-home'); if (h && h.classList.contains('csWallOn')) csWallFit(); }, 700);
+function csWallTick() { const h = document.getElementById('view-home');
+  if (csWallMode && h && h.classList.contains('csWallOn') && !document.hidden && csWallPool.length > 1) csWallShow(csWallIdx + 1); }
 async function csPhotoWall() { try {
   const home = document.getElementById('view-home'); if (!home || csWallDone) return; csWallDone = true;
   let wall = document.getElementById('csWall');
   if (!wall) { wall = document.createElement('div'); wall.id = 'csWall'; home.insertAdjacentElement('afterbegin', wall); }
+  if (!wall.querySelector('.csSlide')) wall.innerHTML = '<figure class="csSlide"><img alt=""><figcaption class="credit"></figcaption></figure><figure class="csSlide"><img alt=""><figcaption class="credit"></figcaption></figure>';
+  let last = ''; try { last = localStorage.getItem('csLastPic') || ''; } catch (e) {}
   const seen = new Set(); const OK = /^(CC0|CC[ -]?BY(-SA)?( [\d.]+)?|Public domain|PD.*)$/i;
-  for (const cat of CS_WALL_CATS) {
-    if (wall.children.length >= 48) break;
+  const cats = CS_WALL_CATS.slice().sort(() => Math.random() - 0.5); let started = false;
+  for (const cat of cats) {
+    if (csWallPool.length >= 60) break;
     try {
-      const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=categorymembers&gcmtype=file&gcmlimit=12&gcmtitle=' +
-        encodeURIComponent('Category:' + cat) + '&prop=imageinfo&iiprop=url%7Cmime%7Csize%7Cextmetadata&iiurlwidth=900';
-      const j = await (await fetch(u)).json();
+      const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=categorymembers&gcmtype=file&gcmlimit=20&gcmtitle=' +
+        encodeURIComponent('Category:' + cat) + '&prop=imageinfo&iiprop=url%7Cmime%7Csize%7Cextmetadata&iiurlwidth=1600';
+      const j = await (await fetch(u)).json(); const add = [];
       for (const pg of Object.values((j.query || {}).pages || {})) {
-        const ii = (pg.imageinfo || [])[0]; if (!ii || ii.mime !== 'image/jpeg' || ii.width < ii.height * 1.2 || seen.has(ii.thumburl)) continue;
+        const ii = (pg.imageinfo || [])[0]; if (!ii || ii.mime !== 'image/jpeg' || ii.width < ii.height * 1.2 || ii.width < 1200 || seen.has(ii.thumburl)) continue;
         const m = ii.extmetadata || {}, strip = v => String((v || {}).value || '').replace(/<[^>]+>/g, '').trim(), lic = strip(m.LicenseShortName);
         if (!OK.test(lic) || /\b(NC|ND)\b/i.test(lic)) continue; seen.add(ii.thumburl);
-        const fig = document.createElement('figure'); fig.className = 'csWallPic';
-        fig.innerHTML = '<img loading="lazy" alt="" src="' + ii.thumburl + '"><figcaption class="credit">' + (strip(m.Artist).slice(0, 50) || 'Wikimedia Commons') + ' \u00b7 ' + lic + '</figcaption>';
-        fig.querySelector('img').alt = cat; wall.appendChild(fig); if (wall.children.length >= 48) break;
+        add.push({ src: ii.thumburl, alt: cat, credit: (strip(m.Artist).slice(0, 50) || 'Wikimedia Commons') + ' · ' + lic });
+      }
+      add.sort(() => Math.random() - 0.5); csWallPool.push(...add);
+      if (!started && csWallPool.length) {
+        if (csWallPool[0].src === last && csWallPool.length > 1) csWallPool.push(csWallPool.shift());
+        if (csWallPool[0].src === last) continue;   /* never open on the same photo as last time */
+        started = true; csWallShow(0); if (csWallMode) home.classList.add('csWallOn'); csWallFit();
+        if (!csWallTimer) csWallTimer = setInterval(csWallTick, 4500);
       }
     } catch (e) {}
   }
-  if (!wall.children.length) { csWallDone = false; }
+  if (!csWallPool.length) { csWallDone = false; }
 } catch (e) {} }
 window.csPhotoWall = csPhotoWall;
 /* owner 2026-10-07: the photo wall is the START page (app start, logo) - Find must still show the search.
    The wall hid the Find controls, which made Find look dead (my regression). */
 let csWallMode = true;
 function csShowWall(on) { csWallMode = on; const h = document.getElementById('view-home'); if (!h) return;
-  h.classList.toggle('csWallOn', on && !!document.querySelector('#csWall .csWallPic')); if (on) csPhotoWall().then(() => { if (csWallMode) h.classList.toggle('csWallOn', !!document.querySelector('#csWall .csWallPic')); }); }
+  h.classList.toggle('csWallOn', on && csWallPool.length > 0); if (on) { csWallFit(); csPhotoWall().then(() => { if (csWallMode) h.classList.toggle('csWallOn', csWallPool.length > 0); csWallFit(); }); } }
 window.csShowWall = csShowWall;
 document.addEventListener('click', ev => { const t = ev.target && ev.target.closest && ev.target.closest('nav a, nav button, .bnav a, .bnav button, #bottomNav a, #bottomNav button');
   if (t && /^find$/i.test(t.textContent.trim())) csShowWall(false); }, true);
