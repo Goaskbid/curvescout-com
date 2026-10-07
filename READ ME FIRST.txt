@@ -1,4 +1,4 @@
-CurveScout update (build a79d097): 87 files, no folders.
+CurveScout update (build 0027645): 5 files, no folders.
 1. Open https://github.com/Goaskbid/curvescout-com/upload/main
 2. Select ALL files in this folder except this text file (Ctrl+A / Cmd+A), drag them in.
 3. Commit changes. Wait 2-5 minutes, then reload with Ctrl+Shift+R (Mac: Cmd+Shift+R).

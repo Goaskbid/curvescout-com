@@ -3958,3 +3958,33 @@ header.top .mark { cursor: pointer; }
   #pfHost { overflow-x: auto !important; }
   #pfHost svg { min-width: 760px !important; height: auto !important; }
 }
+
+/* ---- owner 2026-10-07: mobile redesign ---- */
+html { touch-action: manipulation; }
+nav a:active, nav button:active, .bnav a:active, .bnav button:active, button:active { transform: scale(0.96); filter: brightness(1.2); transition: transform 60ms; }
+/* startup sequence */
+#csIntro { position: fixed; inset: 0; z-index: 10000; background: radial-gradient(circle at 50% 40%, #1d2026, #08090b 70%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; transition: opacity .4s ease; }
+#csIntro.out { opacity: 0; pointer-events: none; }
+#csIntro .csIntroRoad { position: absolute; width: min(92vw, 720px); top: 50%; left: 50%; transform: translate(-50%, -30%); opacity: .9; }
+#csIntro .csIntroRoad path { fill: none; stroke: #e11b2b; stroke-width: 7; stroke-linecap: round; stroke-dasharray: 700; stroke-dashoffset: 700; animation: csRoad 1.5s ease-out forwards; }
+#csIntro .csIntroMark { width: 112px; height: 112px; object-fit: contain; opacity: 0; transform: scale(.6) rotate(-12deg); animation: csPop .7s .35s cubic-bezier(.2,1.4,.4,1) forwards; position: relative; }
+#csIntro .csIntroWord { font: 900 34px/1 system-ui, sans-serif; color: #fff; letter-spacing: .02em; opacity: 0; animation: csUp .5s .8s ease-out forwards; position: relative; }
+#csIntro .csIntroWord b { color: #e11b2b; }
+#csIntro .csIntroTag { font: 600 16px/1 system-ui, sans-serif; color: #c9c9c9; letter-spacing: .3em; text-transform: uppercase; opacity: 0; animation: csUp .5s 1.15s ease-out forwards; position: relative; }
+@keyframes csRoad { to { stroke-dashoffset: 0; } }
+@keyframes csPop { to { opacity: 1; transform: scale(1) rotate(0); } }
+@keyframes csUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { #csIntro * { animation-duration: .01s !important; animation-delay: 0s !important; } }
+@media (max-width: 600px) {
+  /* the map: route, numbered stops and the bike only - nothing else on it */
+  .mapBox { display: flex !important; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .mapBox > #map, .mapBox > .leaflet-container { flex: 0 0 100%; }
+  .mapBox .mapNote, .mapBox .mapBar { flex: 0 0 100%; }
+  .mapBox .mapEdit, .mapBox .mapLayers, .mapBox .mapBase, .mapBox .mapExpand, .mapBox .mapHome { position: static !important; inset: auto !important; transform: none !important; margin: 0 !important; }
+  .mapBox .passPin, .mapBox .legendPin, .mapBox .restPin, .mapBox .whPin, .mapBox .leaflet-control-zoom, .mapBox .leaflet-control-attribution { display: none !important; }
+  .mapBox .csMapCredit { flex: 0 0 100%; font-size: 14px; color: #8d8d8d; }
+  .mapBox .csMapCredit a { color: inherit; }
+}
+@media (max-width: 600px) {
+}

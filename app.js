@@ -5194,7 +5194,31 @@ const THIRD_PARTIES = [
   if (adsOn && pc) { pc.hidden = false; pc.addEventListener('click', ev => { ev.preventDefault();
     try { window.googlefc = window.googlefc || {}; window.googlefc.callbackQueue = window.googlefc.callbackQueue || []; window.googlefc.callbackQueue.push({ CONSENT_API_READY: () => window.googlefc.showRevocationMessage() }); } catch (e) {} }); }
 } catch (e) {} })();
+/* owner 2026-10-07: a startup sequence when the app is opened anew (about 2 s, tap to skip, once per session) */
+(function csIntro() { try {
+  if (sessionStorage.getItem('csIntroSeen')) return; sessionStorage.setItem('csIntroSeen', '1');
+  const quick = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const d = document.createElement('div'); d.id = 'csIntro'; d.setAttribute('aria-hidden', 'true');
+  d.innerHTML = '<svg viewBox="0 0 400 240" class="csIntroRoad"><path d="M-10 200 C 60 200, 70 120, 130 120 S 200 210, 250 150 S 330 40, 410 70"/></svg>' +
+    '<img class="csIntroMark" src="assets__curvescout-mark-transparent.png" alt=""><div class="csIntroWord">Curve<b>Scout</b></div><div class="csIntroTag">We scout the curves</div>';
+  const done = () => { d.classList.add('out'); setTimeout(() => d.remove(), 420); };
+  d.addEventListener('click', done); document.body.appendChild(d); setTimeout(done, quick ? 600 : 2000);
+} catch (e) {} })();
 /* owner 2026-10-07: the rider briefing sits below "Change this ride" and above fuel */
+/* owner 2026-10-07: on phones the ride map comes first (right under the title) and nothing sits on it -
+   controls, note and the map credits go below; only route, numbered stops and the bike stay on the map */
+function csMobileMap() { try {
+  if (!(window.matchMedia && matchMedia('(max-width:600px)').matches)) return;
+  const mb = document.querySelector('#rideDetail .mapBox'), head = document.querySelector('#rideDetail .dHead'); if (!mb || !head) return;
+  /* right after the title area. The ride page orders its sections with CSS 'order', so the map takes the
+     title area's own order value: same rank, next in line - directly under the title, above everything else */
+  if (head.nextElementSibling !== mb) head.insertAdjacentElement('afterend', mb);
+  const ord = getComputedStyle(head).order; if (mb.style.order !== ord) mb.style.order = ord;
+  const at = mb.querySelector('.leaflet-control-attribution'); let out = mb.querySelector('.csMapCredit');
+  if (at) { if (!out) { out = document.createElement('div'); out.className = 'csMapCredit'; mb.appendChild(out); } if (out.innerHTML !== at.innerHTML) out.innerHTML = at.innerHTML; }
+} catch (e) {} }
+window.csMobileMap = csMobileMap;
+setInterval(() => { if (location.hash.indexOf('#/ride/') === 0) csMobileMap(); }, 600);
 function csPlaceBriefing() { try {
   const box = document.getElementById('briefBox'), fuel = document.getElementById('fuelHead'); if (!box || !fuel) return;
   const head = box.previousElementSibling && box.previousElementSibling.classList.contains('chev') ? box.previousElementSibling : null;
@@ -5204,7 +5228,7 @@ function csPlaceBriefing() { try {
 window.csPlaceBriefing = csPlaceBriefing;
 setInterval(() => { if (location.hash.indexOf('#/ride/') === 0) csPlaceBriefing(); }, 800);
 /* owner 2026-10-07: the logo takes you back to the start page */
-document.addEventListener('click', ev => { const m = ev.target && ev.target.closest && ev.target.closest('header.top .mark'); if (m) { ev.preventDefault(); location.hash = '#/'; } });
+document.addEventListener('click', ev => { const m = ev.target && ev.target.closest && ev.target.closest('header.top .mark'); if (m) { ev.preventDefault(); csShowWall(true); location.hash = '#/'; } });
 /* owner 2026-10-07: the start page is a wall of countryside and motorbike photographs and nothing else.
    Wikimedia Commons categories, loaded in the reader's browser; landscape JPEGs under CC0 / public domain /
    CC BY / CC BY-SA only (never NC/ND), each credited. Start controls stay in Find. */
@@ -5213,7 +5237,7 @@ const CS_WALL_CATS = ['Motorcycle touring', 'Motorcycles on mountain roads', 'St
 let csWallDone = false;
 async function csPhotoWall() { try {
   const home = document.getElementById('view-home'); if (!home || csWallDone) return; csWallDone = true;
-  home.classList.add('csWallOn'); let wall = document.getElementById('csWall');
+  let wall = document.getElementById('csWall');
   if (!wall) { wall = document.createElement('div'); wall.id = 'csWall'; home.insertAdjacentElement('afterbegin', wall); }
   const seen = new Set(); const OK = /^(CC0|CC[ -]?BY(-SA)?( [\d.]+)?|Public domain|PD.*)$/i;
   for (const cat of CS_WALL_CATS) {
@@ -5232,10 +5256,18 @@ async function csPhotoWall() { try {
       }
     } catch (e) {}
   }
-  if (!wall.children.length) { home.classList.remove('csWallOn'); csWallDone = false; }
+  if (!wall.children.length) { csWallDone = false; }
 } catch (e) {} }
 window.csPhotoWall = csPhotoWall;
-setInterval(() => { const h = document.getElementById('view-home'); if (h && h.classList.contains('on')) csPhotoWall(); }, 700);
+/* owner 2026-10-07: the photo wall is the START page (app start, logo) - Find must still show the search.
+   The wall hid the Find controls, which made Find look dead (my regression). */
+let csWallMode = true;
+function csShowWall(on) { csWallMode = on; const h = document.getElementById('view-home'); if (!h) return;
+  h.classList.toggle('csWallOn', on && !!document.querySelector('#csWall .csWallPic')); if (on) csPhotoWall().then(() => { if (csWallMode) h.classList.toggle('csWallOn', !!document.querySelector('#csWall .csWallPic')); }); }
+window.csShowWall = csShowWall;
+document.addEventListener('click', ev => { const t = ev.target && ev.target.closest && ev.target.closest('nav a, nav button, .bnav a, .bnav button, #bottomNav a, #bottomNav button');
+  if (t && /^find$/i.test(t.textContent.trim())) csShowWall(false); }, true);
+setTimeout(() => csShowWall(true), 0);
 function renderLegal() {
   show('legal');
   const host = $('legalBody');
