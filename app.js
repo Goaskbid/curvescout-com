@@ -5194,6 +5194,48 @@ const THIRD_PARTIES = [
   if (adsOn && pc) { pc.hidden = false; pc.addEventListener('click', ev => { ev.preventDefault();
     try { window.googlefc = window.googlefc || {}; window.googlefc.callbackQueue = window.googlefc.callbackQueue || []; window.googlefc.callbackQueue.push({ CONSENT_API_READY: () => window.googlefc.showRevocationMessage() }); } catch (e) {} }); }
 } catch (e) {} })();
+/* owner 2026-10-07: the rider briefing sits below "Change this ride" and above fuel */
+function csPlaceBriefing() { try {
+  const box = document.getElementById('briefBox'), fuel = document.getElementById('fuelHead'); if (!box || !fuel) return;
+  const head = box.previousElementSibling && box.previousElementSibling.classList.contains('chev') ? box.previousElementSibling : null;
+  if (head && head.nextElementSibling === box && fuel.previousElementSibling === box) return;
+  if (head) fuel.insertAdjacentElement('beforebegin', head); fuel.insertAdjacentElement('beforebegin', box);
+} catch (e) {} }
+window.csPlaceBriefing = csPlaceBriefing;
+setInterval(() => { if (location.hash.indexOf('#/ride/') === 0) csPlaceBriefing(); }, 800);
+/* owner 2026-10-07: the logo takes you back to the start page */
+document.addEventListener('click', ev => { const m = ev.target && ev.target.closest && ev.target.closest('header.top .mark'); if (m) { ev.preventDefault(); location.hash = '#/'; } });
+/* owner 2026-10-07: the start page is a wall of countryside and motorbike photographs and nothing else.
+   Wikimedia Commons categories, loaded in the reader's browser; landscape JPEGs under CC0 / public domain /
+   CC BY / CC BY-SA only (never NC/ND), each credited. Start controls stay in Find. */
+const CS_WALL_CATS = ['Motorcycle touring', 'Motorcycles on mountain roads', 'Stelvio Pass', 'Grossglockner High Alpine Road', 'Furka Pass', 'Transfagarasan',
+  'Trollstigen', 'Great Ocean Road', 'Col du Galibier', 'Grimsel Pass', 'Susten Pass', 'Dolomites', 'Atlantic Ocean Road', 'Passo Giau', 'Tuscany landscapes', 'Scottish Highlands'];
+let csWallDone = false;
+async function csPhotoWall() { try {
+  const home = document.getElementById('view-home'); if (!home || csWallDone) return; csWallDone = true;
+  home.classList.add('csWallOn'); let wall = document.getElementById('csWall');
+  if (!wall) { wall = document.createElement('div'); wall.id = 'csWall'; home.insertAdjacentElement('afterbegin', wall); }
+  const seen = new Set(); const OK = /^(CC0|CC[ -]?BY(-SA)?( [\d.]+)?|Public domain|PD.*)$/i;
+  for (const cat of CS_WALL_CATS) {
+    if (wall.children.length >= 48) break;
+    try {
+      const u = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&origin=*&generator=categorymembers&gcmtype=file&gcmlimit=12&gcmtitle=' +
+        encodeURIComponent('Category:' + cat) + '&prop=imageinfo&iiprop=url%7Cmime%7Csize%7Cextmetadata&iiurlwidth=900';
+      const j = await (await fetch(u)).json();
+      for (const pg of Object.values((j.query || {}).pages || {})) {
+        const ii = (pg.imageinfo || [])[0]; if (!ii || ii.mime !== 'image/jpeg' || ii.width < ii.height * 1.2 || seen.has(ii.thumburl)) continue;
+        const m = ii.extmetadata || {}, strip = v => String((v || {}).value || '').replace(/<[^>]+>/g, '').trim(), lic = strip(m.LicenseShortName);
+        if (!OK.test(lic) || /\b(NC|ND)\b/i.test(lic)) continue; seen.add(ii.thumburl);
+        const fig = document.createElement('figure'); fig.className = 'csWallPic';
+        fig.innerHTML = '<img loading="lazy" alt="" src="' + ii.thumburl + '"><figcaption class="credit">' + (strip(m.Artist).slice(0, 50) || 'Wikimedia Commons') + ' \u00b7 ' + lic + '</figcaption>';
+        fig.querySelector('img').alt = cat; wall.appendChild(fig); if (wall.children.length >= 48) break;
+      }
+    } catch (e) {}
+  }
+  if (!wall.children.length) { home.classList.remove('csWallOn'); csWallDone = false; }
+} catch (e) {} }
+window.csPhotoWall = csPhotoWall;
+setInterval(() => { const h = document.getElementById('view-home'); if (h && h.classList.contains('on')) csPhotoWall(); }, 700);
 function renderLegal() {
   show('legal');
   const host = $('legalBody');
@@ -11017,12 +11059,26 @@ function renderRides() {
 }
 
 /* ---------------- weather + briefing ---------------- */
+function wxFill(js) { try {
+  if (!js || !js.hourly || !js.hourly.time || !js.hourly.time.length) return js; const H = js.hourly, now = Date.now();
+  let k = 0, best = Infinity; H.time.forEach((t, i) => { const d = Math.abs(new Date(t).getTime() - now); if (d < best) { best = d; k = i; } });
+  js.current = js.current || {};
+  for (const f of ['temperature_2m', 'weather_code', 'wind_gusts_10m', 'wind_speed_10m', 'precipitation', 'precipitation_probability', 'cloud_cover'])
+    if (js.current[f] == null && H[f] && H[f][k] != null) js.current[f] = H[f][k];
+  js.daily = js.daily || {};
+  if (!js.daily.precipitation_probability_max && H.precipitation_probability) { const day = String(H.time[k]).slice(0, 10);
+    const v = H.time.map((t, i) => String(t).slice(0, 10) === day ? H.precipitation_probability[i] : null).filter(x => x != null);
+    if (v.length) js.daily.precipitation_probability_max = [Math.max(...v)]; }
+} catch (e) {} return js; }
 async function weatherAt(lat, lon) {
   const key = lat.toFixed(2) + ',' + lon.toFixed(2);
   if (S.wxCache.has(key)) return S.wxCache.get(key);
   /* through the adapter, so the vendor is WX's business and not this function's */
-  const js = await WX.forecast(lat, lon, { days: 2 });
-  S.wxCache.set(key, js); return js;
+  const js = wxFill(await WX.forecast(lat, lon, { days: 2 }));
+  /* owner 2026-10-07: the briefing said "no usable forecast" while the trail below showed real numbers -
+     the card read current/daily fields some sources do not send. Fill them from the same hourly data the
+     trail uses, and never cache an answer without numbers (the next call tries again). */
+  if (wxHasNumbers(js, null)) S.wxCache.set(key, js); return js;
 }
 /* ---------------- WHEN TO LEAVE, AND WHICH WAY ROUND ----------------
    Every rival answers "how do I get there". None of them answers "when should I set off, and
@@ -23997,7 +24053,8 @@ async function renderRide(id) {
       if (window.matchMedia && matchMedia('(max-width:767px)').matches) {
         /* the grouped "Change this ride" block folds as one: grouping it pulled its panels out of
            their own folds and the page grew by 4,400 px. */
-        const FOLD = [['addGroup', 'Change this ride'], ['legendBox', 'Map legend'],
+        /* owner 2026-10-07: Change this ride is always shown in full - it no longer folds */
+        const FOLD = [['legendBox', 'Map legend'],
           ['camTail', 'Cameras and enforcement'],
           ['bbBox', 'Riding rules by country'], ['pfHost', 'Height profile']];
         for (const [id, title] of FOLD) {
