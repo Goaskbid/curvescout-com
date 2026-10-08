@@ -1,8 +1,8 @@
-CurveScout update 6bb2108 (2026-10-07): design polish (bigger guides, aligned pills, buttons and boxes)
+CurveScout update 954c7ac (2026-10-08): Swipe on the phone, ride shapes on the Atlas, map credits
 
-Your repository already has the previous update (checked). Only 4 files change:
-  config.js, release-manifest.json, styles.css, sw.js
+Your repository has the previous update (checked). 6 files change:
+  app.js, config.js, index.html, release-manifest.json, styles.css, sw.js
 
 1. github.com/Goaskbid/curvescout-com > "Add file" > "Upload files"
-2. Drag in the 4 files (not this READ ME) > "Commit changes"
+2. Drag in the 6 files (not this READ ME) > "Commit changes"
 3. Wait 2 minutes, open curvescout.com, reload twice.

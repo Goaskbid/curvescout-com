@@ -1,6 +1,6 @@
 {
- "build_id": "6bb2108",
- "build_date": "2026-10-07T16:22:37.609Z",
+ "build_id": "954c7ac",
+ "build_date": "2026-10-08T06:48:13.476Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -53,8 +53,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 1619333,
-   "sha256": "ecec7d545dac7fd2fff344c2012edf7a095dbce18902f03f7cdd18104cb4dab6"
+   "bytes": 1624158,
+   "sha256": "094decd948186e397cab204da10465cc78842706aed137848cdad64f05b6afff"
   },
   {
    "path": "archive.js",
@@ -959,7 +959,7 @@
   {
    "path": "config.js",
    "bytes": 8341027,
-   "sha256": "2ecdbf045af4bd40f9cf8eb62949298caac126eab22dbbdb38f72beb0bdbeb82"
+   "sha256": "6087badc3b6c73d3f76abbb8c9b1d017ce4f183e81600262c387ed4860c0da6d"
   },
   {
    "path": "data__cities.txt",
@@ -2528,8 +2528,8 @@
   },
   {
    "path": "index.html",
-   "bytes": 28083,
-   "sha256": "789cee95a1a45f308011ec35d80c615fef6a610efb354f89895aa66f7e731cfc"
+   "bytes": 28119,
+   "sha256": "bbb2efec8f342cddeebce66f1031d8cda754ef469cd41a3961a7efa917708c5f"
   },
   {
    "path": "manifest.webmanifest",
@@ -2548,13 +2548,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 275487,
-   "sha256": "e18ea622e51251de3e9a3e971943cd51cdf96202d9b66d53f1db7ca9c19bc7e9"
+   "bytes": 278129,
+   "sha256": "d27345896e739d6e98172335fe3f854b14b5d92152e6517c4768315e0ecb0c52"
   },
   {
    "path": "sw.js",
    "bytes": 5090,
-   "sha256": "af5c9d1813179df1260f947f5b1a376d488d68ce516a4c7824cea25250338152"
+   "sha256": "53fa65be264974018909a1b5739604e4eb8515d914636d03d2ebcaaec0279b68"
   }
  ]
 }

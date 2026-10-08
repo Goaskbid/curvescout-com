@@ -4153,6 +4153,30 @@ function atlasPicksStrip(near, listEl) {
     } catch (e) {}
 }
 
+
+/* routed shapes for the Atlas: only when zoomed in to 15 rides or fewer, two at a time, cached for the session,
+   at most 120 per session - the public router is shared and must not be hammered */
+const CS_ATLAS_ROAD = new Map(); const csAtlasQ = []; let csAtlasBusy = 0, csAtlasAsked = 0;
+function csAtlasApply(rec, road) { try { rec.core.setLatLngs(road); rec.casing.setLatLngs(road); rec.hit.setLatLngs(road);
+  rec.core.setStyle({ dashArray: null, opacity: Math.min(1, rec.base.o / .85 * .98) }); rec.base.o = rec.core.options.opacity; rec.routed = true; } catch (e) {} }
+function csAtlasRoad(id, raw, rec, inView) { try {
+  if (CS_ATLAS_ROAD.has(id)) { const road = CS_ATLAS_ROAD.get(id); if (road) csAtlasApply(rec, road); return; }
+  if (inView > 15 || csAtlasAsked >= 120 || raw.length < 2 || typeof OSRM === 'undefined' || !NET || !NET.router) return;
+  csAtlasAsked++; csAtlasQ.push({ id, raw, rec }); csAtlasPump();
+} catch (e) {} }
+function csAtlasPump() {
+  while (csAtlasBusy < 2 && csAtlasQ.length) {
+    const job = csAtlasQ.shift(); if (CS_ATLAS_ROAD.has(job.id)) { const road = CS_ATLAS_ROAD.get(job.id); if (road) csAtlasApply(job.rec, road); continue; }
+    csAtlasBusy++;
+    const pts = job.raw.length > 25 ? job.raw.filter((p, i) => i % Math.ceil(job.raw.length / 25) === 0 || i === job.raw.length - 1) : job.raw;
+    const coords = pts.map(p => (+p[1]).toFixed(5) + ',' + (+p[0]).toFixed(5)).join(';');
+    Promise.resolve().then(() => OSRM.run(NET.router + '/route/v1/driving/' + coords + '?overview=full&geometries=geojson', 15000, 10)).then(js => {
+      const line = js && js.routes && js.routes[0] && js.routes[0].geometry && js.routes[0].geometry.coordinates;
+      const road = Array.isArray(line) && line.length > 20 ? line.map(c => [c[1], c[0]]) : null;
+      CS_ATLAS_ROAD.set(job.id, road); if (road && job.rec.core._map) csAtlasApply(job.rec, road);
+    }).catch(() => { CS_ATLAS_ROAD.set(job.id, null); }).finally(() => { csAtlasBusy--; csAtlasPump(); });
+  }
+}
 function renderAtlas() {
   const host = $('atlasMap');
   if (!host || !window.L || !L.map) return;
@@ -4277,7 +4301,10 @@ function renderAtlas() {
       if (i >= 0) S.atlas.lines.splice(i, 1);
     }
     for (const r of want) {
-      if (S.atlas.drawn.has(r.i)) continue;
+      if (S.atlas.drawn.has(r.i)) {
+        /* zoomed in onto rides drawn earlier as outlines: route them now */
+        if (want.length <= 15) { const rec = S.atlas.lines.find(x => x.id === r.i && x.raw && !x.exact && !x.routed); if (rec) csAtlasRoad(r.i, rec.raw, rec, want.length); }
+        continue; }
       S.atlas.drawn.set(r.i, 1);
       try {
         const f = await loadFull(r.i);
@@ -4371,6 +4398,11 @@ function renderAtlas() {
           base: { w: core.options.weight, o: core.options.opacity },
           caseBase: { w: casing.options.weight, o: casing.options.opacity } };
         S.atlas.lines.push(rec);
+        /* owner 2026-10-08: show rides with their more complex shape. A ride drawn as a dashed outline is routed
+           along the real roads through its own checkpoints, in the reader's browser, when only a few rides are in
+           view (zoomed in); the line then turns solid - the legend already says solid = the road as routed. */
+        rec.raw = raw; rec.exact = exact;
+        if (!exact) csAtlasRoad(r.i, raw, rec, want.length);
         /* keep the layers with the id, so the reconciliation above can take them off the map
            rather than merely forgetting them - forgetting is what left stale lines behind */
         rec.id = r.i;
@@ -4557,6 +4589,12 @@ function deckCardHTML(x, top) {
          number is how the board RANKS; it is not how a rider decides. The deck is already
          ordered by it, so the good rides arrive first without anyone having to read a badge. */
       '<div class="swTop"><h3>' + esc(r.t) + '</h3></div>' +
+      /* owner 2026-10-08: the key numbers at a glance on the swipe card - distance, riding time, high point */
+      ((() => { try { const km = +r.km, mn = +r.mn, al = +r.al, b = [];
+        if (km > 0) b.push('<span><b>' + Math.round(km) + '</b> km</span>');
+        if (mn > 0) b.push('<span><b>' + Math.floor(mn / 60) + ' h ' + String(Math.round(mn % 60)).padStart(2, '0') + '</b> riding</span>');
+        if (al > 0) b.push('<span><b>' + Math.round(al).toLocaleString('en-US') + '</b> m high</span>');
+        return b.length ? '<div class="swStats">' + b.join('') + '</div>' : ''; } catch (e) { return ''; } })()) +
       /* ---- WHY GO, AND WHY NOW ----
          A card gave a score, a distance and a slogan, and left the rider to guess what the
          number meant. Both lines are read off what the record already knows: the strongest
@@ -5191,9 +5229,27 @@ const THIRD_PARTIES = [
   const adsOn = !!(window.CS_ADS && window.CS_ADS.publisher && /^ca-pub-\d{10,}$/.test(String(window.CS_ADS.publisher)));
   const note = document.getElementById('csFootNote'), pc = document.getElementById('csPrivacyChoices');
   if (adsOn && note) note.textContent = 'No account. Ads by Google AdSense load only after your choice in the consent dialog. Saved rides stay in your browser; maps, weather and photographs are fetched from named services as you use them.';
-  if (adsOn && pc) { pc.hidden = false; pc.addEventListener('click', ev => { ev.preventDefault();
+  if (adsOn && pc) { pc.hidden = false; try { document.querySelectorAll('.csPcSep').forEach(x => { x.hidden = false; }); } catch (e) {} pc.addEventListener('click', ev => { ev.preventDefault();
     try { window.googlefc = window.googlefc || {}; window.googlefc.callbackQueue = window.googlefc.callbackQueue || []; window.googlefc.callbackQueue.push({ CONSENT_API_READY: () => window.googlefc.showRevocationMessage() }); } catch (e) {} }); }
 } catch (e) {} })();
+
+/* owner 2026-10-08: map credits without repeats - "© OpenStreetMap, © OpenStreetMap" in one row becomes one entry.
+   Applies to every Leaflet/MapLibre attribution and to the phone's copy of it under the map. */
+function csDedupeCredits(el) { try {
+  if (!el || el.dataset.csDedup === el.innerHTML.length + ':' + el.textContent) return;
+  const html = el.innerHTML; const parts = html.split(/\s*(?:,|\||·)\s*(?![^<]*>)/).map(x => x.trim()).filter(Boolean);
+  const seen = new Set(), keep = [];
+  for (const part of parts) { const t = document.createElement('span'); t.innerHTML = part;
+    const k = t.textContent.replace(/[©©]/g, '').replace(/\s+/g, ' ').trim().toLowerCase();
+    if (!k) { keep.push(part); continue; } if (seen.has(k)) continue; seen.add(k); keep.push(part); }
+  const out = keep.join(' · ');
+  if (keep.length < parts.length && out !== html) el.innerHTML = out;
+  el.dataset.csDedup = el.innerHTML.length + ':' + el.textContent;
+} catch (e) {} }
+window.csDedupeCredits = csDedupeCredits;
+(function () { try { const run = () => document.querySelectorAll('.leaflet-control-attribution, .maplibregl-ctrl-attrib-inner, .csMapCredit').forEach(csDedupeCredits);
+  let t = 0; new MutationObserver(() => { clearTimeout(t); t = setTimeout(run, 120); }).observe(document.body, { childList: true, subtree: true, characterData: true });
+  setTimeout(run, 1500); } catch (e) {} })();
 /* owner 2026-10-07: the rider briefing sits below "Change this ride" and above fuel */
 /* owner 2026-10-07: on phones the ride map comes first (right under the title) and nothing sits on it -
    controls, note and the map credits go below; only route, numbered stops and the bike stay on the map */
