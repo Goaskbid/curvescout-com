@@ -4071,3 +4071,62 @@ nav a:active, nav button:active, .bnav a:active, .bnav button:active, button:act
   /* stop names under the route strip: whole name, wrapped */
   .csName { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; max-width: 70px !important; overflow-wrap: anywhere; line-height: 1.15 !important; }
 }
+
+/* ---- owner 2026-10-07: "testimonials a little bigger; buttons, pills, boxes and texts aligned to use the space optimally;
+   mobile crazy amazing and pro". One grid for everything: pills 36 px, buttons 52 px, gaps 8 px, boxes 16 px padding. ---- */
+/* the guides: bigger faces and readable text everywhere */
+.csGuide { gap: 14px; padding: 14px 16px; align-items: center; }
+.csGuide .csgFace, .csgFace-card { width: 84px !important; height: 84px !important; }
+.csgFace-roadbook { width: 92px !important; height: 92px !important; }
+.csGuide .csgHead { font-size: 15px; }
+.csGuide .csgLabel { font-size: 13px; }
+.csGuide p { font-size: 16px; line-height: 1.55; }
+.csGuide small { font-size: 14px; }
+@media (max-width: 600px) {
+  .csGuide { align-items: flex-start; }
+  .csGuide .csgFace, .csgFace-card { width: 76px !important; height: 76px !important; }
+  .csReadV .csgFace { width: 76px !important; height: 76px !important; }
+
+  /* pills: one height, centred text, even gaps */
+  .apChip, .rTags > span, .blLinks a, .srcRow a, .filterBar .chip, .why > span {
+    display: inline-block !important; padding: 8px 14px !important; line-height: 20px !important;
+    border-radius: 999px; font-size: 16px !important; box-sizing: border-box; text-align: left; }
+  .rTags > span, .apChip { white-space: normal; }
+  .why, .rTags, .blLinks, .srcRow { display: flex !important; flex-wrap: wrap; gap: 8px !important; }
+  .filterBar { gap: 8px !important; }
+  .filterBar .chip { min-height: 40px; }
+
+  /* plain buttons in heads and on the map: same height and shape */
+  #editSearch, .mapExpand, .mapBase button, #pinStart, #rideBtn { min-height: 44px !important; border-radius: 12px !important; }
+
+  /* map bar: the three views as an even segmented control, the two ride controls side by side, the clock on its own line */
+  #lineMode { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
+  #lineMode button { min-height: 44px; padding: 6px 8px !important; white-space: normal !important; line-height: 1.15; text-align: center; border-radius: 12px !important; }
+  .mapBarRight { display: grid !important; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+  .mapBarRight button { width: 100%; justify-content: center; }
+  .mapBarRight #rideClock { grid-column: 1 / -1; justify-self: center; }
+
+  /* the action groups: a clean two-column grid, every button the same height, nothing squeezed */
+  .actionBar .actGroup { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  .actionBar .actGroup > * { grid-column: auto !important; }
+  .actionBar .actGroup > .actGroupHead, .actionBar .actGroup > .recBox, .actionBar .actGroup > .beBack,
+  .actionBar .actGroup > .backByOut { grid-column: 1 / -1 !important; }
+  .actionBar .abtn { min-height: 52px !important; border-radius: 12px !important; padding: 8px 12px !important; font-size: 16px !important; width: 100%; box-sizing: border-box; }
+  .actionBar .abtn.icon { font-size: 20px !important; }
+  .actionBar .beBack { justify-content: space-between !important; padding: 6px 8px 6px 16px !important; }
+  /* no orphan half-width buttons: Google Maps takes the full row so star and share pair up;
+     Reverse and The way back sit together above Be back by */
+  .actionBar #gmapA { grid-column: 1 / -1 !important; }
+  .actionBar .actGroup > .actGroupHead { order: 0; }
+  .actionBar #revBtn { order: 1; } .actionBar #wayHomeBtn { order: 2; } .actionBar #capBtn { order: 3; }
+  .actionBar .actGroup > .beBack { order: 4; } .actionBar .actGroup > .backByOut { order: 5; }
+  /* the highest-point line: the number never breaks from its unit */
+  .altOnly > b { white-space: nowrap; flex: none; }
+  /* ride stats: an even 2 x 2 instead of three and an orphan */
+  #view-ride .statRow { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+  #view-ride .statRow .stat { border-radius: 14px !important; }
+
+  /* boxes: same radius and breathing room */
+  .ownRoute, .recBox, .csGuide { border-radius: 14px !important; }
+  .ownRoute { padding: 16px !important; }
+}

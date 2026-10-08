@@ -1,6 +1,6 @@
 {
- "build_id": "2c33471",
- "build_date": "2026-10-07T14:50:58.481Z",
+ "build_id": "6bb2108",
+ "build_date": "2026-10-07T16:22:37.609Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -959,7 +959,7 @@
   {
    "path": "config.js",
    "bytes": 8341027,
-   "sha256": "dc3d2349fc8c1e4e117859692bad83e9ed558bea850c76eccce216e2ee232132"
+   "sha256": "2ecdbf045af4bd40f9cf8eb62949298caac126eab22dbbdb38f72beb0bdbeb82"
   },
   {
    "path": "data__cities.txt",
@@ -2548,13 +2548,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 271425,
-   "sha256": "8b6e340614645d56281dd253eab4a3212561a07fe3aed435bfdf4127cc0db183"
+   "bytes": 275487,
+   "sha256": "e18ea622e51251de3e9a3e971943cd51cdf96202d9b66d53f1db7ca9c19bc7e9"
   },
   {
    "path": "sw.js",
    "bytes": 5090,
-   "sha256": "d3b7874d7476aa72028e2a39854aa6ebeb93327d0b55f187cae5d6f1d0d29bbe"
+   "sha256": "af5c9d1813179df1260f947f5b1a376d488d68ce516a4c7824cea25250338152"
   }
  ]
 }

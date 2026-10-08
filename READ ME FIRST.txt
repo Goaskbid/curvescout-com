@@ -1,17 +1,8 @@
-CurveScout update 2c33471 (2026-10-07): welcome screen + phone text fixes
-Replaces the earlier update ZIP from today. Use only this one.
+CurveScout update 6bb2108 (2026-10-07): design polish (bigger guides, aligned pills, buttons and boxes)
 
-1. Open github.com/Goaskbid/curvescout-com
-2. "Add file" > "Upload files"
-3. Drag these 5 files in: app.js, config.js, release-manifest.json, styles.css, sw.js
-   (not this READ ME)
-4. "Commit changes"
-5. Wait 2 minutes, then open curvescout.com and reload twice
-   (the app updates itself on the second load).
+Your repository already has the previous update (checked). Only 4 files change:
+  config.js, release-manifest.json, styles.css, sw.js
 
-What you should see:
-- The opening plays once per browser session (tap to skip it), then the full-screen welcome with motorbike photos.
-- "Find a ride" opens the search.
-- On the phone: no cut or overlapping text.
-
-The other 501 files in your repository are already correct (checked byte for byte today).
+1. github.com/Goaskbid/curvescout-com > "Add file" > "Upload files"
+2. Drag in the 4 files (not this READ ME) > "Commit changes"
+3. Wait 2 minutes, open curvescout.com, reload twice.

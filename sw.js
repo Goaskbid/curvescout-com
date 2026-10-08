@@ -2,7 +2,7 @@
    Shell + index: cache-first, refreshed in the background.
    Ride shards: cached the moment a ride is opened, so it stays readable with no bars.
    Tiles / live APIs: never cached here (they go stale and they're big). */
-const V = 'curvescout-dbcc643';
+const V = 'curvescout-5e1be53';
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
    Route data was cached in the same versioned cache as the shell, and activation deletes every
    cache but the new version - so each app update silently wiped the routes a rider had taken
