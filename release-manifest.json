@@ -1,6 +1,6 @@
 {
- "build_id": "954c7ac",
- "build_date": "2026-10-08T06:48:13.476Z",
+ "build_id": "081b1e2",
+ "build_date": "2026-10-08T12:44:55.654Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -53,8 +53,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 1624158,
-   "sha256": "094decd948186e397cab204da10465cc78842706aed137848cdad64f05b6afff"
+   "bytes": 1631963,
+   "sha256": "06f8aee372d50fcb3567319f91d6baf7dbc538c0f21d208fe1bbe74becaf6e09"
   },
   {
    "path": "archive.js",
@@ -959,7 +959,7 @@
   {
    "path": "config.js",
    "bytes": 8341027,
-   "sha256": "6087badc3b6c73d3f76abbb8c9b1d017ce4f183e81600262c387ed4860c0da6d"
+   "sha256": "8c10e366233b58ddf50132e5cdd77af0b48df8ba8cfc551609c3e9888669f7e7"
   },
   {
    "path": "data__cities.txt",
@@ -2548,13 +2548,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 278129,
-   "sha256": "d27345896e739d6e98172335fe3f854b14b5d92152e6517c4768315e0ecb0c52"
+   "bytes": 279358,
+   "sha256": "e0fc07bf6d3d58beb952ada06c7b972f03307ef4dc631eb5588e9d7e9eea6668"
   },
   {
    "path": "sw.js",
    "bytes": 5090,
-   "sha256": "53fa65be264974018909a1b5739604e4eb8515d914636d03d2ebcaaec0279b68"
+   "sha256": "9f0bb91d37c52006372c1eb70bed6ad9e531c147344f0a25ad41ae7a4b428d1f"
   }
  ]
 }

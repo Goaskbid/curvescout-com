@@ -5261,7 +5261,8 @@ function csMobileMap() { try {
   if (head.nextElementSibling !== mb) head.insertAdjacentElement('afterend', mb);
   const ord = getComputedStyle(head).order; if (mb.style.order !== ord) mb.style.order = ord;
   const at = mb.querySelector('.leaflet-control-attribution'); let out = mb.querySelector('.csMapCredit');
-  if (at) { if (!out) { out = document.createElement('div'); out.className = 'csMapCredit'; mb.appendChild(out); } if (out.innerHTML !== at.innerHTML) out.innerHTML = at.innerHTML; }
+  if (at) { try { if (window.csDedupeCredits) { delete at.dataset.csDedup; window.csDedupeCredits(at); } } catch (e) {}
+    if (!out) { out = document.createElement('div'); out.className = 'csMapCredit'; mb.appendChild(out); } if (out.innerHTML !== at.innerHTML) out.innerHTML = at.innerHTML; }
 } catch (e) {} }
 window.csMobileMap = csMobileMap;
 setInterval(() => { if (location.hash.indexOf('#/ride/') === 0) csMobileMap(); }, 600);
@@ -14514,7 +14515,12 @@ function navPointsFor(r) {
   }
   return base;
 }
-const geomKey = r => r.id + (S.fromMe && S.start ? '@' + S.start.lat.toFixed(3) + ',' + S.start.lon.toFixed(3) : '');
+const geomKey = r => r.id + csAvoidKey() + (S.fromMe && S.start ? '@' + S.start.lat.toFixed(3) + ',' + S.start.lon.toFixed(3) : '');
+/* ---- owner 2026-10-08: avoid motorways / avoid tolls ----
+   Two switches on the ride map. The router is asked with OSRM's exclude= classes; if it refuses a combination
+   or a class, the next simpler request is tried and finally the normal route, and the rider is told so. */
+function csAvoidList() { const a = (S.avoid || {}); return ['motorway', 'toll'].filter(k => a[k]); }
+function csAvoidKey() { const l = csAvoidList(); return l.length ? '~no-' + l.join('-') : ''; }
 /* THE APPENDIX. THIS IS THE BUG.
    Dropping "Thalwil start" from the roadbook never touched the LINE. The geometry - stored
    by the nightly or fetched live - is routed through the route's ORIGINAL waypoints, so the
@@ -14561,6 +14567,78 @@ function clipLineToWaypoints(line, wps) {
   return kept.length >= line.length * 0.55 ? kept : line;
 }
 
+
+/* ---- owner 2026-10-08: motorways and toll roads on the map (Conditions) and the avoid switches ----
+   The road classes come from the router itself (OSRM step classes "motorway" / "toll"), asked once per ride
+   version and cached. Nothing is guessed: if the router does not answer, the key says so. */
+try { S.avoid = JSON.parse(sessionStorage.getItem('csAvoid') || 'null') || { motorway: false, toll: false }; } catch (e) { S.avoid = { motorway: false, toll: false }; }
+const CS_CLASS_CACHE = new Map();
+async function csRoadClasses(r) {
+  const key = geomKey(r); if (CS_CLASS_CACHE.has(key)) return CS_CLASS_CACHE.get(key);
+  const pts = navPointsFor(r); if (!pts || pts.length < 2 || typeof OSRM === 'undefined' || !NET || !NET.router) return null;
+  const coords = pts.map(p => p.lon + ',' + p.lat).join(';');
+  const used = (S.avoidResult && S.avoidResult.id === r.id) ? S.avoidResult.used : [];
+  const url = NET.router + '/route/v1/driving/' + coords + '?overview=false&geometries=geojson&steps=true' + (used.length ? '&exclude=' + used.join(',') : '');
+  let out = null;
+  try { const js = await OSRM.run(url, 15000, 10); const rt = js && js.routes && js.routes[0];
+    if (rt) { out = { segs: [], km: { motorway: 0, toll: 0 } };
+      for (const leg of rt.legs || []) for (const st of leg.steps || []) {
+        const cls = ((st.intersections || [])[0] || {}).classes || [];
+        const g = st.geometry && st.geometry.coordinates; if (!g || g.length < 2) continue;
+        const line = g.map(c => [c[1], c[0]]);
+        for (const k of ['motorway', 'toll']) if (cls.includes(k)) { out.segs.push({ cls: k, line }); out.km[k] += (st.distance || 0) / 1000; }
+      } } } catch (e) { out = null; }
+  CS_CLASS_CACHE.set(key, out); return out;
+}
+function csRoadKey(text) { const bar = document.getElementById('mapBar'); if (!bar) return null; let k = document.getElementById('csRoadKey');
+  if (!k) { k = document.createElement('div'); k.id = 'csRoadKey'; k.className = 'csRoadKey'; bar.appendChild(k); } k.innerHTML = text; k.hidden = !text; return k; }
+function csDrawRoadClasses(map, grp, r) {
+  csRoadKey('<span class="mut">Checking for motorways and toll roads…</span>');
+  csRoadClasses(r).then(res => {
+    if (S.lineMode !== 'conditions' || !map || !map._container || !map._container.isConnected) return;
+    if (!res) { csRoadKey('<span class="mut">Motorway and toll information is not available for this ride right now.</span>'); return; }
+    for (const sg of res.segs) {
+      const col = sg.cls === 'motorway' ? '#3d8bfd' : '#f2b134';
+      try { L.polyline(sg.line, { color: '#0b0c0e', weight: 11, opacity: .55, lineCap: 'round', interactive: false }).addTo(grp);
+        L.polyline(sg.line, { color: col, weight: 6, opacity: .95, lineCap: 'round', dashArray: sg.cls === 'toll' ? '10 8' : null, interactive: false }).addTo(grp); } catch (e) {}
+    }
+    const mw = Math.round(res.km.motorway), tl = Math.round(res.km.toll);
+    csRoadKey(mw || tl
+      ? (mw ? '<span><i style="background:#3d8bfd"></i>Motorway · ' + mw + ' km</span>' : '') + (tl ? '<span><i class="toll"></i>Toll road · ' + tl + ' km</span>' : '')
+      : '<span><i style="background:#2f9e5e"></i>The router reports no motorway and no toll road on this ride</span>');
+  }).catch(() => {});
+}
+function csAvoidUi(r) { try {
+  const bar = document.getElementById('mapBar'); if (!bar) return;
+  let box = document.getElementById('csAvoid');
+  if (!box) { box = document.createElement('div'); box.id = 'csAvoid'; box.className = 'csAvoid'; const lm = document.getElementById('lineMode'); if (lm && lm.nextSibling) bar.insertBefore(box, lm.nextSibling); else bar.appendChild(box); }
+  const a = S.avoid || {};
+  box.innerHTML = '<button type="button" data-av="motorway" aria-pressed="' + !!a.motorway + '" class="' + (a.motorway ? 'on' : '') + '">⛔ Avoid motorways</button>' +
+    '<button type="button" data-av="toll" aria-pressed="' + !!a.toll + '" class="' + (a.toll ? 'on' : '') + '">⛔ Avoid tolls</button><p class="csAvoidNote" hidden></p>';
+  box.querySelectorAll('button[data-av]').forEach(b => b.onclick = () => {
+    const k = b.dataset.av; S.avoid = Object.assign({ motorway: false, toll: false }, S.avoid); S.avoid[k] = !S.avoid[k];
+    try { sessionStorage.setItem('csAvoid', JSON.stringify(S.avoid)); } catch (e) {}
+    S.keepLineMode = S.lineMode || null;
+    S.routeLine = null; S.roadBase = null; S.fitLine = null; S.speedCache.delete(r.id);
+    try { flash(S.avoid[k] ? (k === 'motorway' ? 'Re-routing without motorways…' : 'Re-routing without toll roads…') : 'Back to the route with ' + (k === 'motorway' ? 'motorways' : 'toll roads') + ' allowed.'); } catch (e) {}
+    go('#/ride/' + encodeURIComponent(r.id));
+  });
+  const res = S.avoidResult, note = box.querySelector('.csAvoidNote'), asked = csAvoidList();
+  if (asked.length && res && res.id === r.id) {
+    const name = k => (k === 'motorway' ? 'motorways' : 'toll roads');
+    const meta = (S.routeMeta || {})[geomKey(r)], base = (S.routeMeta || {})[geomKey(r).replace(csAvoidKey(), '')];
+    let t;
+    if (!res.used.length) t = 'The router could not avoid ' + asked.map(name).join(' and ') + ' on this ride, so this is the normal route.';
+    else {
+      t = 'Avoiding ' + res.used.map(name).join(' and ');
+      if (meta) t += ': ' + Math.round(meta.km) + ' km, about ' + Math.floor(meta.min / 60) + ' h ' + String(Math.round(meta.min % 60)).padStart(2, '0') + ' of riding';
+      if (meta && base) { const dk = Math.round(meta.km - base.km), dm = Math.round(meta.min - base.min); t += ' (' + (dk >= 0 ? '+' : '') + dk + ' km, ' + (dm >= 0 ? '+' : '') + dm + ' min against the normal route)'; }
+      t += '.';
+      const missed = asked.filter(k => !res.used.includes(k)); if (missed.length) t += ' The router could not also avoid ' + missed.map(name).join(' and ') + ' here.';
+    }
+    note.textContent = t; note.hidden = false;
+  }
+} catch (e) {} }
 async function osrmGeometry(r) {
   /* If the nightly has already routed this ride, use it: the map draws instantly, the
      minimaps get their road immediately and the routing service is left alone. It is the
@@ -14604,7 +14682,8 @@ async function osrmGeometry(r) {
     const qualifies = (() => { try { return routeIsRouted(r) === true; } catch (e) { return false; } })();
     const flagged = nl.approximate === true || (nl.meta && nl.meta.approximate === true) ||
       (r && r.navAudit && r.navAudit.passed === false);
-    if (okEnds && longEnough && qualifies && !flagged) return nl;
+    /* with an avoid switch on, the stored line (which may use motorways or tolls) is not reused */
+    if (okEnds && longEnough && qualifies && !flagged && !csAvoidList().length) return nl;
     if (okEnds && longEnough && !qualifies)
       try { console.warn('stored line not reused: it does not pass route qualification'); } catch (e) {}
     if (okEnds && !longEnough) {
@@ -14707,7 +14786,17 @@ async function osrmGeometry(r) {
     return out;
   };
   let js;
-  try {
+  /* avoid switches: try the full exclude, then each class alone, then the normal route */
+  const avoid = csAvoidList(); S.avoidResult = null;
+  if (avoid.length) {
+    const tries = avoid.length > 1 ? [avoid.join(','), avoid[0], avoid[1]] : [avoid[0]];
+    for (const ex of tries) {
+      try { js = await OSRM.run(base + extra + '&exclude=' + ex, 15000, 10);
+        if (js && js.routes && js.routes[0]) { S.avoidResult = { asked: avoid.slice(), used: ex.split(','), id: r.id }; break; } } catch (e) { js = null; }
+    }
+    if (!js) S.avoidResult = { asked: avoid.slice(), used: [], id: r.id };
+  }
+  if (!js) try {
     js = await OSRM.run(base + extra, 15000, 10);
   } catch (e) {
     if (extra) {
@@ -14722,6 +14811,7 @@ async function osrmGeometry(r) {
   const line = rt && rt.geometry && rt.geometry.coordinates;
   if (!line) { const o = outline(); if (o) { S.geomCache.set(key, o); return o; } throw new Error('no route'); }
   const latlng = line.map(c => [c[1], c[0]]);
+  try { S.routeMeta = S.routeMeta || {}; S.routeMeta[key] = { km: (rt.distance || 0) / 1000, min: (rt.duration || 0) / 60 }; } catch (e) {}
   // per-segment speed in km/h, concatenated across legs
   /* MISALIGNED SPEEDS ARE WORSE THAN NO SPEEDS.
      This concatenated each leg's annotation and skipped any leg that had none - so one
@@ -19254,6 +19344,7 @@ function hardBorder(a, b) {
     const drawLine = mode => {
       /* what is actually on screen right now, so a late callback can check before redrawing */
       S.lineMode = mode;
+      try { const k = document.getElementById('csRoadKey'); if (k && mode !== 'conditions') k.hidden = true; } catch (e) {}
       /* and put the scenic trails back, whatever this rebuild does to them */
       setTimeout(function () { try { if (S.drawFamousRoads) S.drawFamousRoads(); } catch (e) {} }, 0);
       /* ---- THE ROAD IS DRAWN ONCE AND NEVER TAKEN AWAY ----
@@ -19307,6 +19398,7 @@ function hardBorder(a, b) {
         }
         const res = drawConditionLine(map, line, S.svcNow || null, r);
         lineLayer = res.grp;
+        try { csDrawRoadClasses(map, res.grp, r); } catch (e) {}
         const shown = Object.entries(COND)
           .map(([k, c]) => (res.counts[k]
             ? '<span><i style="background:' + c.col + '"></i>' + esc(c.label) + ' · ' + res.counts[k] + '</span>'
@@ -19443,7 +19535,7 @@ function hardBorder(a, b) {
       }
       if (_sk) _sk.hidden = false;
     };
-    let mode = 'sections';
+    let mode = S.keepLineMode || 'sections'; S.keepLineMode = null;
     /* published so an early reopen can refill the colour key - see setExpanded */
     S.redrawLine = () => { try { drawLine(mode); } catch (e) {} };
     drawLine(mode);
@@ -19453,11 +19545,13 @@ function hardBorder(a, b) {
       mb2.innerHTML = '<button type="button" data-m="sections" class="on">What the road is like</button>' +
                       '<button type="button" data-m="speed">Expected speed</button>' +
                       '<button type="button" data-m="conditions">Conditions</button>';
+      if (mode !== 'sections') mb2.querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.m === mode));
       mb2.querySelectorAll('button').forEach(b => b.onclick = () => {
         mb2.querySelectorAll('button').forEach(x => x.classList.remove('on'));
         b.classList.add('on'); mode = b.dataset.m; drawLine(mode);
       });
     }
+    try { csAvoidUi(r); } catch (e) {}
     if (miniLine) miniLine.setLatLngs(line);
     if (miniCase) miniCase.setLatLngs(line);   // or the casing keeps the old coarse shape
     /* Fit the map to the line that is actually drawn. Fitting the checkpoints once at

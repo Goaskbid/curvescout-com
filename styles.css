@@ -4162,3 +4162,17 @@ nav a:active, nav button:active, .bnav a:active, .bnav button:active, button:act
   /* heritage tags under a place wrap instead of ending in "..." */
   .whTags i { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; max-width: 100% !important; }
 }
+
+/* ---- owner 2026-10-08: avoid motorways / tolls, and the motorway / toll key on the Conditions map ---- */
+.csAvoid { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; margin: 6px 0 2px; }
+.csAvoid button { min-height: 40px; padding: 6px 14px; border-radius: 12px; border: 1px solid var(--edge); background: #14161a; color: #e9e6df;
+  font: 700 14px/1.1 var(--display); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+.csAvoid button.on { background: #e11b2b; border-color: #e11b2b; color: #fff; }
+.csAvoidNote { flex: 1 1 100%; margin: 4px 0 0; color: #c9c6bf; font-size: 14px; line-height: 1.45; }
+.csRoadKey { display: flex; flex-wrap: wrap; gap: 8px 16px; width: 100%; margin-top: 6px; font-size: 14px; color: #e9e6df; }
+.csRoadKey span { display: inline-flex; align-items: center; gap: 8px; }
+.csRoadKey i { width: 22px; height: 6px; border-radius: 3px; display: inline-block; }
+.csRoadKey i.toll { background: repeating-linear-gradient(90deg, #f2b134 0 8px, transparent 8px 13px); }
+.csRoadKey .mut { color: #8d9199; }
+@media (max-width: 600px) { .csAvoid { display: grid; grid-template-columns: 1fr 1fr; } .csAvoid button { min-height: 44px; } }
+.csAvoid .csAvoidNote { grid-column: 1 / -1; }
