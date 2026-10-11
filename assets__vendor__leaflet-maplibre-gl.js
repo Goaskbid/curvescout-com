@@ -255,6 +255,9 @@
 
         _transitionEnd: function (e) {
             L.Util.requestAnimFrame(function () {
+                /* CurveScout 2026-10-11: a map removed during its zoom animation (a swiped-away card) has no size;
+                   getBounds() then threw "Invalid LatLng (NaN, NaN)" from this callback. */
+                if (!this._map || !this._map._container || !this._map._container.isConnected || !this._map.getSize().x) return;
                 var zoom = this._map.getZoom();
                 var center = this._map.getCenter();
                 var offset = this._map.latLngToContainerPoint(
