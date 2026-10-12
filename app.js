@@ -4342,7 +4342,7 @@ function csAtlasStoreGet(id) { try { const v = localStorage.getItem('csAR:' + id
 function csAtlasStorePut(id, road) { try { const st = Math.max(1, Math.ceil(road.length / 160)); const slim = road.filter((p, i) => i % st === 0 || i === road.length - 1).map(p => [+p[0].toFixed(4), +p[1].toFixed(4)]);
   localStorage.setItem('csAR:' + id, JSON.stringify(slim)); } catch (e) {} }
 function csAtlasApply(rec, road) { try { rec.core.setLatLngs(road); rec.casing.setLatLngs(road); rec.hit.setLatLngs(road);
-  rec.core.setStyle({ dashArray: null, opacity: Math.min(1, rec.base.o / .85 * .98) }); rec.base.o = rec.core.options.opacity; rec.routed = true; } catch (e) {} }
+  rec.core.setStyle({ dashArray: null, opacity: Math.min(1, .98 * (rec.emph || 1)) }); rec.base.o = rec.core.options.opacity; rec.routed = true; } catch (e) {} }
 function csAtlasRoad(id, raw, rec, inView) { try {
   if (!CS_ATLAS_ROAD.has(id)) { const kept = csAtlasStoreGet(id) || (typeof csRoadMemoGet === 'function' ? csRoadMemoGet(id) : null); if (kept && kept.length > 10) CS_ATLAS_ROAD.set(id, kept); }
   if (CS_ATLAS_ROAD.has(id)) { const road = CS_ATLAS_ROAD.get(id); if (road) csAtlasApply(rec, road); return; }
@@ -4354,23 +4354,37 @@ function csAtlasRoad(id, raw, rec, inView) { try {
   if (csAtlasQ.length >= 60) csAtlasQ.splice(0, csAtlasQ.length - 59);
   csAtlasAsked++; csAtlasQ.push({ id, raw, rec }); csAtlasPump();
 } catch (e) {} }
+/* owner 2026-10-12: "make the atlas routes more curvy and less vectors - they still look crap". One road at a time,
+   behind a 400 ms pause, through the one shared queue, meant a view of forty rides took minutes and most of them stayed
+   dashed chords. The atlas now has its own lane: two requests in flight, one on each public OSRM server (the same two
+   the ride page uses), each server asked at most every 300 ms and rested for 8 s when it says it is busy. The rider's
+   own requests still go first - the lane waits while the shared queue has work. */
+const CS_ATLAS_SRV = [{ cool: 0 }, { cool: 0 }];
 function csAtlasPump() {
-  if (csAtlasBusy || !csAtlasQ.length) return;
-  /* the rider's own requests (ride map, swipe cards) go first; the atlas waits for a quiet queue */
-  if (OSRM.q && OSRM.q.length > 1) { setTimeout(csAtlasPump, 1500); return; }
+  if (!csAtlasQ.length || csAtlasBusy >= 2) return;
+  if (OSRM.q && OSRM.q.length > 1) { setTimeout(csAtlasPump, 1200); return; }
   if (OSRM.down && OSRM.down()) { setTimeout(csAtlasPump, 15000); return; }
   if (!location.hash.startsWith('#/atlas')) { csAtlasQ.length = 0; return; }
+  const now = Date.now(); const k = CS_ATLAS_SRV[0].cool <= CS_ATLAS_SRV[1].cool ? 0 : 1; const srv = CS_ATLAS_SRV[k];
+  if (srv.cool > now) { setTimeout(csAtlasPump, srv.cool - now + 20); return; }
   /* nearest the middle of the map first - that is where he is looking */
   try { const c = S.atlas && S.atlas.map && S.atlas.map.getCenter(); if (c) csAtlasQ.sort((a, b) => { const da = a.raw[0] ? Math.abs(a.raw[0][0] - c.lat) + Math.abs(a.raw[0][1] - c.lng) : 1e9, db = b.raw[0] ? Math.abs(b.raw[0][0] - c.lat) + Math.abs(b.raw[0][1] - c.lng) : 1e9; return da - db; }); } catch (e) {}
   const job = csAtlasQ.shift(); if (CS_ATLAS_ROAD.has(job.id)) { const road = CS_ATLAS_ROAD.get(job.id); if (road) csAtlasApply(job.rec, road); csAtlasPump(); return; }
-  csAtlasBusy = 1;
+  csAtlasBusy++; srv.cool = now + 300;
+  const base = k === 0 ? NET.router : (NET.routerAlt || NET.router);
   const pts = job.raw.length > 25 ? job.raw.filter((p, i) => i % Math.ceil(job.raw.length / 25) === 0 || i === job.raw.length - 1) : job.raw;
   const coords = pts.map(p => (+p[1]).toFixed(5) + ',' + (+p[0]).toFixed(5)).join(';');
-  OSRM.run(NET.router + '/route/v1/driving/' + coords + '?overview=full&geometries=geojson', 15000, 0).then(js => {
+  jget(base + '/route/v1/driving/' + coords + '?overview=full&geometries=geojson', 15000).then(js => {
     const line = js && js.routes && js.routes[0] && js.routes[0].geometry && js.routes[0].geometry.coordinates;
     const road = Array.isArray(line) && line.length > 20 ? line.map(c => [c[1], c[0]]) : null;
     CS_ATLAS_ROAD.set(job.id, road); if (road) { csAtlasStorePut(job.id, road); if (job.rec.core._map) csAtlasApply(job.rec, road); }
-  }).catch(() => { CS_ATLAS_ROAD.delete(job.id); }).finally(() => { csAtlasBusy = 0; setTimeout(csAtlasPump, 400); });
+  }).catch(e => { const busy = /\b(429|502|503|504)\b/.test(String(e && e.message || ''));
+    if (busy) srv.cool = Date.now() + 8000;
+    /* one more try, on the other server, before the ride keeps its outline */
+    if (!job.retried) { job.retried = 1; csAtlasQ.push(job); } else CS_ATLAS_ROAD.delete(job.id);
+  }).finally(() => { csAtlasBusy--; setTimeout(csAtlasPump, 60); });
+  /* the second lane starts at once */
+  if (csAtlasBusy < 2) setTimeout(csAtlasPump, 0);
 }
 function renderAtlas() {
   const host = $('atlasMap');
@@ -4498,7 +4512,7 @@ function renderAtlas() {
     for (const r of want) {
       if (S.atlas.drawn.has(r.i)) {
         /* zoomed in onto rides drawn earlier as outlines: route them now */
-        { const rec = S.atlas.lines.find(x => x.id === r.i && x.raw && !x.exact && !x.routed); if (rec) csAtlasRoad(r.i, rec.raw, rec, want.length); }
+        { const rec = S.atlas.lines.find(x => x.id === r.i && x.raw && !x.routed); if (rec) csAtlasRoad(r.i, rec.raw, rec, want.length); }
         continue; }
       S.atlas.drawn.set(r.i, 1);
       try {
@@ -4568,7 +4582,8 @@ function renderAtlas() {
         const casing = L.polyline(pts, { color: '#0b0c0e', weight: (exact ? 7 : 5) * (0.72 + 0.28 * rank), opacity: .30 + .30 * rank,
           lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6 }).addTo(worms);
         const core = L.polyline(pts, { color: colour(r), weight: (exact ? 3.4 : 2.6) * (0.66 + 0.5 * rank),
-          opacity: (exact ? .98 : .85) * emph,
+          /* an outline waiting for its road stays quiet; the road, once routed, is drawn at full strength */
+          opacity: (exact ? .98 : .5) * emph,
           lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6,
           dashArray: exact ? null : '8 7' }).addTo(worms)
           /* ---- A FLOATING TOOLTIP GETS CUT OFF AT THE EDGE OF THE MAP ----
@@ -4589,7 +4604,7 @@ function renderAtlas() {
            the finger. 26px, and the grab layer is raised above the drawn ones. */
         const hit = L.polyline(pts, { color: '#000', weight: 26, opacity: 0.01,
           lineJoin: 'round', lineCap: 'round', interactive: true }).addTo(worms);
-        const rec = { core, casing, hit, r,
+        const rec = { core, casing, hit, r, emph,
           base: { w: core.options.weight, o: core.options.opacity },
           caseBase: { w: casing.options.weight, o: casing.options.opacity } };
         S.atlas.lines.push(rec);
@@ -4597,7 +4612,8 @@ function renderAtlas() {
            along the real roads through its own checkpoints, in the reader's browser, when only a few rides are in
            view (zoomed in); the line then turns solid - the legend already says solid = the road as routed. */
         rec.raw = raw; rec.exact = exact;
-        if (!exact) csAtlasRoad(r.i, raw, rec, want.length);
+        /* owner 2026-10-12: rides with stored nav points (one every few km) are routed too - their corners showed */
+        csAtlasRoad(r.i, raw, rec, want.length);
         /* keep the layers with the id, so the reconciliation above can take them off the map
            rather than merely forgetting them - forgetting is what left stale lines behind */
         rec.id = r.i;
