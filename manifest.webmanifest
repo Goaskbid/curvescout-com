@@ -1,0 +1,55 @@
+{
+  "name": "CurveScout.com",
+  "short_name": "CurveScout",
+  "description": "Curve intelligence for motorcycle road trips: find, map, master.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0c0e",
+  "theme_color": "#0b0c0e",
+  "icons": [
+    {
+      "src": "assets/curvescout-mark-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/curvescout-mark-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/curvescout-mark-transparent.png",
+      "sizes": "218x201",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "This week's road",
+      "short_name": "This week",
+      "description": "The road CurveScout is featuring right now",
+      "url": "./#/week"
+    },
+    {
+      "name": "My board",
+      "short_name": "Board",
+      "description": "The rides ranked for where you are and the day you have",
+      "url": "./#/rides"
+    },
+    {
+      "name": "Saved rides",
+      "short_name": "Saved",
+      "description": "The rides you starred",
+      "url": "./#/saved"
+    }
+  ],
+  "categories": [
+    "travel",
+    "navigation"
+  ]
+}
