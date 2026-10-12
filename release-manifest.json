@@ -1,6 +1,6 @@
 {
- "build_id": "50a9e20",
- "build_date": "2026-10-11T19:52:22.070Z",
+ "build_id": "8261304",
+ "build_date": "2026-10-12T18:04:16.823Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -53,8 +53,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 1801206,
-   "sha256": "4ca8e6e2601c55c812e335406056025df78f597b70aa7ea47a71ac03d94a3810"
+   "bytes": 1836569,
+   "sha256": "93f275a26712a3bc7b42b3e3091d351c8a4f4dcf243ae6d189d80b946147b99c"
   },
   {
    "path": "archive.js",
@@ -63,8 +63,8 @@
   },
   {
    "path": "archive.json.gz",
-   "bytes": 3114055,
-   "sha256": "26183c0f2f47bfecb6255828e587a38463cef5fcb3db5bbb69ed4327d671f6bb"
+   "bytes": 3053673,
+   "sha256": "b220aad43f066c4a91ea160edd075145063b28eee9c6bc472ad72e657fd802c2"
   },
   {
    "path": "founder-ride.jpg",
@@ -974,7 +974,7 @@
   {
    "path": "config.js",
    "bytes": 161288,
-   "sha256": "5e81471ba0c5b2ae3b76d1fbedef0eae8d7659397b6db90425ae4bbd4a6bdb3e"
+   "sha256": "48738f60c2c9f2970515be4fb6fba16a6abbf22d331f62ca2b616424b9c84d35"
   },
   {
    "path": "cities.txt",
@@ -2543,8 +2543,8 @@
   },
   {
    "path": "index.html",
-   "bytes": 29056,
-   "sha256": "671d0ae906e87c451f29782eed73826d8df021843da676173affe3a5cee35b63"
+   "bytes": 29481,
+   "sha256": "a24e61a2fd97192db4cb19a87463e4d1c4d0fa8f72acc682bf95d6d3cff65517"
   },
   {
    "path": "manifest.webmanifest",
@@ -2563,13 +2563,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 307340,
-   "sha256": "a89fb4c09b47e1a65a86756c54306cf3e387f7c94e55430fc28cf4838a11b8c0"
+   "bytes": 311402,
+   "sha256": "f23c1a4d547127d1001dada6a4e38fd0fd4ef89cebaaae3402f800b4a31d3723"
   },
   {
    "path": "sw.js",
-   "bytes": 5242,
-   "sha256": "1d06ba2aed092031ce6f2530f9362572b3b3ca84ed814bca2abe396d65a71212"
+   "bytes": 8544,
+   "sha256": "610dc42f8015ed9adcb19188da95ae58b92baa5a5b92d2ad567b4ca482bfd067"
   }
  ]
 }

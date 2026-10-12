@@ -988,8 +988,16 @@ function sloganTrue(r) {
     if (!place || place.length < 3 || low === title || (title.includes(low) && low.length > 12) || low.includes(title)) sl = 'A ' + m[2] + ' loop';
     else sl = 'A ' + m[2] + ' loop from ' + place;
   }
-  return sl.replace(/^A (8\d|11|18)\b/, 'An $1');
+  return csAn(sl.replace(/^A (8\d|11|18)\b/, 'An $1'));
 }
+/* audit: generated sentences read "A alpine loop", "a orchard" - the article follows the sound of the next word */
+function csAn(t) { return String(t == null ? '' : t).replace(/\b(A|a) (?=[aeiouAEIOU])(?!(?:uni|use|usu|ure|eu|one\b|once)\w*)/g, (m, a) => (a === 'A' ? 'An ' : 'an '))
+  .replace(/\b(A|a) (?=(?:8\d*|11|18)(?:[ ,.]|$))/g, (m, a) => (a === 'A' ? 'An ' : 'an ')); }
+window.csAn = csAn;
+/* one pass over the text fields a ride or famous road carries, when the list is loaded: "A island highway" -> "An island
+   highway" everywhere it is shown, without touching thirty call sites or the data files */
+function csTidyRows(rows) { try { const AR = /\b[Aa] (?:[aeiouAEIOU]|8|1[18]\b)/; for (const r of rows || []) { if (!r) continue;
+  for (const k of ['why', 'sl', 'd', 'blurb']) if (typeof r[k] === 'string') { let v = r[k]; if (AR.test(v)) v = csAn(v); if (/ [\u2013\u2014] /.test(v)) v = v.replace(/ [\u2013\u2014] /g, ' - '); r[k] = v; } } } catch (e) {} }
 window.csSloganTrue = sloganTrue;
 /* ---- SLOT WRITERS ----
    The generic renderer asks every character for the same fields, so Mara, Kenji, Elise and Leon
@@ -1016,7 +1024,8 @@ function teaserClauses(r, f, ev) {
       'one continuous loop rather than an out-and-back';
   else if (km) out.shape = 'It runs ' + km + ' km point to point, so the way home is a separate decision';
   if (f.duration && km) {
-    const kmh = f.minutes ? Math.round(km / (f.minutes / 60)) : null;
+    /* the planned time of a curated ride is distance / 52: that "average" is the planning constant, not the road */
+    const kmh0 = f.minutes ? km / (f.minutes / 60) : null, kmh = kmh0 != null && Math.abs(kmh0 - 52) >= 0.75 ? Math.round(kmh0) : null;
     out.time = 'About ' + f.duration + ' of riding before stops' +
       (kmh ? ', an average of ' + kmh + ' km/h, which is the sign of a road that turns rather than a transfer' : '');
   }
@@ -2450,14 +2459,14 @@ function csEnrichAltitude() { try {
       let best = 0; for (let i = 0; i < w.length; i++) { const a = one.get(w[i]); if (a > best) best = a; if (i + 1 < w.length) { const b = two.get(w[i] + ' ' + w[i + 1]); if (b > best) best = b; } }
       if (best) { r.al = best; r.alSrc = 'pass'; n++; } }
     if (typeof r.sl === 'string' && /high point 0 m|topping out at 0\b/.test(r.sl))
-      r.sl = r.sl.replace(/,?\s*high point 0 m/, r.al > 0 ? ', high point ' + Math.round(r.al).toLocaleString('en-GB') + ' m' : '').replace(/,?\s*topping out at 0\b( m)?/, r.al > 0 ? ', topping out at ' + Math.round(r.al) + ' m' : '');
+      r.sl = r.sl.replace(/,?\s*high point 0 m/, r.al > 0 ? ', high point ' + Math.round(r.al) + ' m' : '').replace(/,?\s*topping out at 0\b( m)?/, r.al > 0 ? ', topping out at ' + Math.round(r.al) + ' m' : '');
   }
   S._altFromPasses = n; try { window.csAltFromPasses = n; } catch (e) {}
 } catch (e) {} }
 async function loadCore(onStep) {
   if (window.CURVESCOUT_INLINE) {
     const inl = window.CURVESCOUT_INLINE;
-    S.routes = inl.summary.routes.filter(rideIsOffered); S.places = inl.places;
+    S.routes = inl.summary.routes.filter(rideIsOffered); S.places = inl.places; csTidyRows(S.routes);
     csEnrichAltitude();
     S.byId = new Map(S.routes.map(r => [r.i, r]));
     /* ---- THE SHARDS ARRIVE WHEN THEY ARE WANTED ----
@@ -2546,13 +2555,13 @@ async function loadCore(onStep) {
       for (let j = 0; j < core.fields.length; j++) if (a[j] !== null && a[j] !== undefined) o[core.fields[j]] = a[j];
       return o;
     });
-    S.routes = S.routes.filter(rideIsOffered);
+    S.routes = S.routes.filter(rideIsOffered); csTidyRows(S.routes);
     S._cells = new Map();
     S._splitIndex = true;
     S._detailed = +core.detailed || 0;
   } else {
     sum = await jget('data/summary.json', 20000);
-    S.routes = sum.routes.filter(rideIsOffered);
+    S.routes = sum.routes.filter(rideIsOffered); csTidyRows(S.routes);
     S._splitIndex = false;
     /* hand the worker the copy we just paid for, rather than let it fetch its own. Measured
        before this: 23.8 MB on a cold load, 21.6 MB of it this file twice. */
@@ -3011,6 +3020,21 @@ async function loadFull(id) {
         .replace(/(Next is [^,.]+), [\d,.]+ km on and /gi, '$1, ')
         .replace(/(Next is [^,.]+), [\d,.]+ km on\b/gi, '$1')
         .replace(/\s{2,}/g, ' ').trim(); }); } } catch (e) {}
+    /* audit (open item "stored roadbook data"): some stored rides list the same stretch twice (Innertkirchen -> Grimsel,
+       19 km and again 20 km) or a stretch from a stop to itself. The first of each pair stays; a stop-to-itself
+       stretch goes. Nothing is invented - only the duplicate is dropped. */
+    try { if (!rec._secClean && Array.isArray(rec.sections)) { rec._secClean = true; const seen = new Set();
+      rec.sections = rec.sections.filter(x => { if (!x) return false; const a = String(x.from || '').trim().toLowerCase(), b = String(x.to || '').trim().toLowerCase();
+        if (a && a === b) return false; const k = a + '|' + b; if (seen.has(k)) return false; seen.add(k); return true; }); } } catch (e) {}
+    /* a scenic stretch's "average gradient" must agree with its own length and climb: Furka said 9.8 % for 891 m over
+       16 km (that is 5.6 %). The figure is recomputed from the two measured facts; if those are missing it is not shown. */
+    try { if (!rec._chClean && Array.isArray(rec.scenicChapters)) { rec._chClean = true;
+      rec.scenicChapters.forEach(c => { if (!c || !Array.isArray(c.facts)) return; const F = k => c.facts.find(f => f && f.k === k);
+        const g = F('Average gradient'); if (!g) return; const L = parseFloat((F('Length') || {}).v), up = parseFloat((F('Climb') || F('Descent') || {}).v);
+        if (!(L > 0) || !(up > 0)) { c.facts = c.facts.filter(f => f !== g); return; }
+        const calc = up / (L * 1000) * 100;
+        if (!(calc > 0 && calc <= 15)) { c.facts = c.facts.filter(f => f !== g); return; }
+        if (Math.abs(calc - parseFloat(g.v)) > 0.5) { g.v = calc.toFixed(1) + '%'; g.p = 'COMPUTED'; } }); } } catch (e) {}
     return rec;
   };
   /* A recipe is resolved before the shard lookup, because a derived ride is in no shard -
@@ -3650,7 +3674,9 @@ function rank() {
 const CMP = { picked: new Set() };
 /* Explore is where you browse the whole archive rather than the ranked shortlist, so it
    needs real filters: free text, country, type of road, length and altitude. */
-const EXF = { q: '', country: '', kind: '', style: '', alt: '' };
+const EXF = { q: '', country: '', kind: '', style: '', alt: '', tag: '' };
+/* the phone's Rides list sorts like the board did (owner 2026-10-12): best match for today first */
+let EX_SORT = 'fit';
 function exploreMatches(x) {
   const r = x.r;
   if (EXF.country && r.cc !== EXF.country) return false;
@@ -3662,6 +3688,9 @@ function exploreMatches(x) {
      screen and not on the other. Whichever number is right, having two is wrong. 250 is the
      honest boundary for a long day on a motorcycle, and the board's chip now says so too. */
   if (EXF.style === 'long' && (r.km || 0) <= LONG_KM) return false;
+  /* the board's quick filters, carried into the phone's Rides list - one definition, the board's own */
+  if (EXF.tag && EXF.tag !== 'all') { const f = EXF.tag;
+    if (f === 'short' ? !(r.km <= SHORT_KM) : f === 'long' ? !(r.km > LONG_KM) : f === 'high' ? !((r.tg || []).includes('high') || (+r.al || 0) >= 1500) : !(r.tg || []).includes(f)) return false; }
   if (EXF.alt === 'high' && (r.al || 0) < 2000) return false;
   if (EXF.alt === 'mtn' && ((r.al || 0) < 1200 || (r.al || 0) >= 2000)) return false;
   /* unknown height is not "low" (QA 2026-10-10: 30,000 rides with no height were listed as lower roads) */
@@ -3710,6 +3739,7 @@ function wireExploreFilters(all, repaint) {
     clr.addEventListener('click', () => {
       Object.keys(EXF).forEach(k => EXF[k] = '');
       ['exQ', 'exCountry', 'exKind', 'exStyle', 'exAlt'].forEach(i => { if ($(i)) $(i).value = ''; });
+      document.querySelectorAll('#exChips .chip').forEach(c => c.classList.toggle('on', c.dataset.f === 'all'));
       repaint();
     });
   }
@@ -3760,6 +3790,48 @@ function exploreCard(x, idx) {
         '<button class="exCmp">' + (on ? '✓ In compare' : '+ Compare') + '</button></div>' +
     '</div></article>';
 }
+/* ---- THE PHONE'S RIDES LIST CARRIES WHAT THE BOARD HAD (owner 2026-10-12) ----
+   The board's picks ("Best bends", "Best scenery today", with Decide these now), its quick filters, its sort orders, the
+   way to change the start and the GPX briefing - built once into the Explore view, on a phone only. */
+function exPhoneExtras(repaint) {
+  const head = $('exFilters'); if (!head) return;
+  if (!$('exChips')) {
+    const chips = document.createElement('div'); chips.className = 'exChips'; chips.id = 'exChips'; chips.setAttribute('role', 'group'); chips.setAttribute('aria-label', 'Quick filters');
+    chips.innerHTML = FILTERS.map(([k, l]) => '<button type="button" class="chip' + ((EXF.tag || 'all') === k ? ' on' : '') + '" data-f="' + k + '">' + esc(l) + '</button>').join('');
+    chips.addEventListener('click', ev => { const c = ev.target.closest('.chip'); if (!c) return; EXF.tag = c.dataset.f === 'all' ? '' : c.dataset.f;
+      chips.querySelectorAll('.chip').forEach(x => x.classList.toggle('on', x === c)); repaint(); });
+    head.insertAdjacentElement('afterend', chips);
+    const sort = document.createElement('div'); sort.className = 'exSortRow'; sort.id = 'exSortRow';
+    sort.innerHTML = '<span>Sort</span><select id="exSort" aria-label="Sort the rides"><option value="fit">Best match for today</option><option value="score">Highest score</option><option value="near">Nearest</option><option value="short">Shortest</option><option value="long">Longest</option></select>';
+    chips.insertAdjacentElement('afterend', sort);
+    sort.querySelector('select').addEventListener('change', e => { EX_SORT = e.target.value; repaint(); });
+    const picks = document.createElement('p'); picks.className = 'boardPicks exPicks'; picks.id = 'exPicks'; picks.hidden = true;
+    head.insertAdjacentElement('beforebegin', picks);
+    picks.addEventListener('click', ev => { if (ev.target.closest('.boardSwipe')) { const b = $('swipeBtn'); if (b) b.click(); else go('#/swipe'); return; }
+      const it = ev.target.closest('[data-id]'); if (it) go('#/ride/' + encodeURIComponent(it.dataset.id)); });
+    const back = $('exBack'); if (back) { back.textContent = 'Change start'; back.dataset.phone = '1'; }
+    const h2 = document.querySelector('#view-explore .resHead h2'); if (h2) h2.textContent = 'Rides';
+    /* the four selects fold behind one line so the first ride shows on the first screen; the search box stays */
+    if (!head.querySelector('details.exMore')) { const d = document.createElement('details'); d.className = 'exMore'; d.innerHTML = '<summary>Country, type, length, altitude</summary>';
+      ['exCountry', 'exKind', 'exStyle', 'exAlt', 'exClear'].forEach(id => { const el = $(id); if (el) d.appendChild(el); });
+      const q = $('exQ'); if (q) q.insertAdjacentElement('afterend', d); else head.prepend(d); }
+  }
+  /* picks from the rides you can start today, curated and generated tiers only - the board's own rule */
+  /* a ride without a name is never held up as a pick (the board printed its id instead) */
+  const pool = (S.ranked || []).filter(x => x && x.r && x.r.pv !== 'p' && x.r.t).slice(0, 40), used = new Set(), tg = x => x.r.tg || [];
+  const pick = (label, score) => { const b = pool.filter(x => !used.has(x.r.i)).sort((a, c) => score(c) - score(a))[0]; if (!b) return ''; used.add(b.r.i);
+    return '<span class="bpItem" data-id="' + esc(b.r.i) + '" role="link" tabindex="0"><b>' + esc(label) + ':</b> ' + esc(b.r.t || b.r.i) + '</span>'; };
+  const html = [pick('Best bends', x => (+x.r.s || 0) + (tg(x).includes('serpentine') ? 25 : 0) + (tg(x).includes('pass') ? 15 : 0)),
+    pick('Best scenery today', x => (+x.r.s || 0) + (tg(x).includes('sight') || tg(x).includes('photo') ? 20 : 0) - (+x.d || 0) / 40)].filter(Boolean).join('');
+  const pk = $('exPicks'); if (pk) { pk.hidden = !html; pk.innerHTML = html ? html + '<button type="button" class="boardSwipe">Decide these now</button>' : ''; }
+  /* the ride names arrive a moment after the first list: try again until they are there */
+  if (!html && (exPhoneExtras._tries = (exPhoneExtras._tries || 0) + 1) < 6) setTimeout(() => { if (S.view === 'explore') exPhoneExtras(repaint); }, 2000);
+  /* the GPX briefing moves under the list, folded to one line */
+  const own = document.getElementById('ownRoute'), grid = $('exGrid');
+  if (own && grid) { let fold = own.closest('details.ownFold');
+    if (!fold) { fold = document.createElement('details'); fold.className = 'ownFold'; fold.innerHTML = '<summary>Brief my own GPX</summary>'; fold.appendChild(own); }
+    if (fold.parentElement !== grid.parentElement || fold.previousElementSibling !== grid) grid.insertAdjacentElement('afterend', fold); }
+}
 function renderExplore() {
   show('explore');
   if (!S.start) { go('#/'); return; }
@@ -3797,10 +3869,18 @@ function renderExplore() {
   /* audit 2026-10-11: "30472 roads - showing the first 48" in archive order, with no way to see more, and sight
      lists (places-…) mixed in with scouted roads. Scouted rides first, nearest and best first; then sight lists;
      "Show 48 more" at the end. */
-  const exRank = x => (/^places-/.test(x.r.i || '') ? 1e6 : 0) + (x.r.pv === 'r' || x.r.pv === 'e' ? 0 : 2e5) + (x.d != null ? x.d : 5000) - (+x.r.s || 0) * 2;
+  const exRank0 = x => (/^places-/.test(x.r.i || '') ? 1e6 : 0) + (x.r.pv === 'r' || x.r.pv === 'e' ? 0 : 2e5) + (x.d != null ? x.d : 5000) - (+x.r.s || 0) * 2;
+  /* owner 2026-10-12: on a phone this list replaces the board, so it opens in the board's order - the rides you can start
+     today, best match first - then everything else in the archive; the sort control offers the board's other orders */
+  const exPhone = !!(window.matchMedia && matchMedia('(max-width:767px)').matches);
+  const boardIdx = new Map((S.ranked || []).map((x, i) => [x.r.i, i]));
+  const exRank = x => { if (!exPhone || EX_SORT === 'fit') return exPhone && boardIdx.has(x.r.i) ? boardIdx.get(x.r.i) - 1e7 : exRank0(x);
+    const k = +x.r.km || 0;
+    return EX_SORT === 'score' ? -(+x.r.s || 0) : EX_SORT === 'near' ? (x.d != null ? x.d : 1e6) : EX_SORT === 'short' ? k : EX_SORT === 'long' ? -k : exRank0(x); };
+  if (exPhone) exPhoneExtras(() => paint());
   let exLimit = 48, exKey = '';
   const paint = () => {
-    const key = JSON.stringify(EXF); if (key !== exKey) { exKey = key; exLimit = 48; }
+    const key = JSON.stringify(EXF) + EX_SORT; if (key !== exKey) { exKey = key; exLimit = 48; }
     const hits = pool.filter(exploreMatches).sort((a, b) => exRank(a) - exRank(b));
     const list = hits.slice(0, exLimit);
     if ($('exFound')) {
@@ -4659,7 +4739,11 @@ function swipeScope() {
     DECK.scope = scope;
     here.classList.toggle('on', scope === 'here');
     search.classList.toggle('on', scope !== 'here');
-    deckReset(); renderSwipe();
+    /* audit: switching Near me / Near my search set "0 kept" although the rides stayed starred - the shortlist carries
+       over, and a ride already kept is not dealt again */
+    const keptBefore = DECK.kept.slice();
+    deckReset(); DECK.kept = keptBefore; DECK.queue = DECK.queue.filter(x => !(x && x.r && keptBefore.includes(x.r.i)));
+    renderSwipe();
   };
   if (!here.dataset.wired) {
     here.dataset.wired = '1';
@@ -4709,7 +4793,7 @@ function deckCardHTML(x, top) {
       ((() => { try { const km = +r.km, mn = +r.mn, al = +r.al, b = [];
         if (km > 0) b.push('<span><b>' + Math.round(km) + '</b> km</span>');
         if (mn > 0) b.push('<span><b>' + Math.floor(mn / 60) + ' h ' + String(Math.round(mn % 60)).padStart(2, '0') + '</b> riding</span>');
-        if (al > 0) b.push('<span><b>' + Math.round(al).toLocaleString('en-US') + '</b> m high</span>');
+        if (al > 0) b.push('<span><b>' + Math.round(al) + '</b> m high</span>');
         return b.length ? '<div class="swStats">' + b.join('') + '</div>' : ''; } catch (e) { return ''; } })()) +
       /* ---- WHY GO, AND WHY NOW ----
          A card gave a score, a distance and a slogan, and left the rider to guess what the
@@ -4760,7 +4844,7 @@ function swipeLine(r, x) {
             : +r.al >= 700 ? 'up to ' + r.al + ' m' : '';
   const day = hrs >= 6 ? 'a full day' : hrs >= 3.5 ? 'most of a day'
             : hrs >= 1.6 ? 'a half day' : 'a short run';
-  const parts = [day + ' \u2014 ' + km + ' km' + (time ? ', ' + time : '')];
+  const parts = [day + ' - ' + km + ' km' + (time ? ', ' + time : '')];
   if (top) parts.push(top);
   if (away) parts.push(away);
   return parts.join(', ') + '.';
@@ -5736,7 +5820,12 @@ const CS_TRIPS = (() => {
   /* rebuild a plan from ride ids (shared links, replacements) without re-choosing */
   function fromIds(routes, opts, ids) {
     const by = new Map(routes.map(r => [r.i, r])); const o = Object.assign({ days: ids.length, dayKm: [150, 300], style: 'touring', mode: 'base' }, opts || {});
-    const chosen = ids.map(id => by.get(id)).filter(Boolean).map(r => fit(r, Object.assign({}, o, { dayKm: [0, 1e6] })) || { r, km: +r.km || 0, mn: +r.mn || 0, score: 0, why: [] });
+    /* a link made before a data release may carry an id that was renamed ("…-darss-…" / "…-dar-…", a sight list now
+       prefixed "places-"): exact first, then the same words with filler and spelling variants folded */
+    const fold = s => String(s || '').toLowerCase().replace(/^places-/, '').split('-').filter(w => w && !/^(and|of|the|a)$/.test(w)).join('').replace(/ss/g, '').replace(/[^a-z0-9]/g, '');
+    let folded = null;
+    const find = id => by.get(id) || by.get('places-' + id) || (() => { if (!folded) { folded = new Map(); routes.forEach(r => { const k = fold(r.i); if (!folded.has(k)) folded.set(k, r); }); } return folded.get(fold(id)); })();
+    const chosen = ids.map(find).filter(Boolean).map(r => fit(r, Object.assign({}, o, { dayKm: [0, 1e6] })) || { r, km: +r.km || 0, mn: +r.mn || 0, score: 0, why: [] });
     const fake = { days: chosen }; const plan = compose([], o);
     plan.days = chosen.map((c, i, arr) => {
       const prevEnd = i === 0 ? [+o.start[0], +o.start[1]] : (o.mode === 'base' ? [+o.start[0], +o.start[1]] : (isLoop(arr[i - 1].r) ? startOf(arr[i - 1].r) : endOf(arr[i - 1].r)));
@@ -6013,7 +6102,7 @@ function tripResult() {
     '<div class="tripDays">' + plan.days.map((d, i) => tripDayCard(d, i)).join('') + '</div></div>' +
     '<div class="tripActs"><button type="button" class="primary" id="tripShare">Share this trip</button><a class="ghost2" id="tripMail" href="#">✉ Email to a friend</a><button type="button" class="ghost2" id="tripGpx">⬇ GPX, all days</button><button type="button" class="ghost2" id="tripSave">☆ Save trip</button></div>' +
     '<p class="tripFine">Routes, distances and riding times come from CurveScout’s scouted rides. The way from one night to the next start is a straight-line estimate and is marked "about". Places to stay and eat are from OpenStreetMap: no prices, availability or opening hours are promised - check before you go. Road and pass conditions change; posted signs and official closures always win.</p></section>';
-  tripWire(); tripDrawMap();
+  tripWire(); tripDrawMap(); tripDayPhotos(plan);
 }
 /* the trip at a glance: counted from the rides themselves */
 function tripStatsHtml(plan) {
@@ -6028,7 +6117,7 @@ function tripStatsHtml(plan) {
   const flag = c => c.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0)));
   const tile = (v, l) => '<div class="tripStat"><b>' + v + '</b><span>' + l + '</span></div>';
   return '<div class="tripStats" data-n="' + (3 + (top ? 1 : 0) + (roads.size ? 1 : 0) + (cc.length ? 1 : 0)) + '">' + tile(plan.days.length, plan.days.length === 1 ? 'riding day' : 'riding days') + tile(plan.totalKm.toLocaleString('en-GB'), 'km') + tile(tripFmtMin(plan.totalMin), 'riding') +
-    (top ? tile(Math.round(top).toLocaleString('en-GB') + ' m', 'highest') : '') + (roads.size ? tile(roads.size, roads.size === 1 ? 'named road' : 'named roads') : '') +
+    (top ? tile(Math.round(top) + ' m', 'highest') : '') + (roads.size ? tile(roads.size, roads.size === 1 ? 'named road' : 'named roads') : '') +
     (cc.length ? tile(cc.map(flag).join(' '), cc.length === 1 ? 'country' : 'countries') : '') + '</div>';
 }
 /* one segment per day, as long as its riding: tap to see that day on the map */
@@ -6055,16 +6144,17 @@ function tripDayCard(d, i) {
   const month = o.from ? tripDate(o.from, i) : null;
   const hi = CS_TRIPS.altOf(r, o);
   const seasonNote = month && hi >= 1800 && CS_TRIPS.seasonFit(hi, month.getMonth(), +r.la || 0) < 0.6
-    ? '<p class="tripSeason">⚠ Up to ' + Math.round(hi).toLocaleString('en-GB') + ' m in ' + month.toLocaleDateString('en-GB', { month: 'long' }) + ': roads this high often close outside June–September. Check the pass status before you set off.</p>' : '';
+    ? '<p class="tripSeason">⚠ Up to ' + Math.round(hi) + ' m in ' + month.toLocaleDateString('en-GB', { month: 'long' }) + ': roads this high often close outside June–September. Check the pass status before you set off.</p>' : '';
   /* one base = one place to stay: the options are shown once, on day 1, for all nights */
   const hideStay = (o.mode !== 'base' && o.end === 'return' && last) || (o.mode === 'base' && i > 0);
   const nightLabel = o.mode === 'base' ? (TRIP.plan.days.length > 1 ? 'Your base for ' + (TRIP.plan.days.length - 1) + (TRIP.plan.days.length === 2 ? ' night' : ' nights') : 'Your base') : (i === TRIP.plan.days.length - 1 ? 'Last night' : 'Night ' + (i + 1));
   return '<article class="tripDay" data-i="' + i + '"><div class="tripDayHead"><span class="tripNum" style="background:' + TRIP_COL[i % TRIP_COL.length] + '">' + (i + 1) + '</span><div><h3>' +
     (date ? '<span class="tripDate">' + esc(tripDayLabel(date)) + '</span>' : 'Day ' + (i + 1) + ' · ') + esc(r.t) + '</h3>' +
-    '<p class="tripMeta"><b>' + Math.round(d.km) + ' km</b> · <b>' + tripFmtMin(d.minutes) + '</b> riding' + (CS_TRIPS.altOf(r, o) ? ' · up to <b>' + Math.round(CS_TRIPS.altOf(r, o)).toLocaleString('en-GB') + ' m</b>' : '') + (r.k ? ' · ' + esc(r.k) : '') + (d.loop ? ' · loop' : ' · point to point') + '</p></div></div>' +
+    '<p class="tripMeta"><b>' + Math.round(d.km) + ' km</b> · <b>' + tripFmtMin(d.minutes) + '</b> riding' + (CS_TRIPS.altOf(r, o) ? ' · up to <b>' + Math.round(CS_TRIPS.altOf(r, o)) + ' m</b>' : '') + (r.k ? ' · ' + esc(r.k) : '') + (d.loop ? ' · loop' : ' · point to point') + '</p></div></div>' +
     (r.sl ? '<p class="tripSl">' + esc(window.csSloganTrue ? window.csSloganTrue(r) : r.sl) + '</p>' : '') +
     (roads ? '<ul class="tripRoads">' + roads + '</ul>' : '') +
     (d.reasons.length ? '<p class="tripWhy">Why this day: ' + esc(d.reasons.join('; ')) + '.</p>' : '') + seasonNote + approach + backP + homeP +
+    '<figure class="tripPic" id="tripPic' + i + '" hidden></figure>' +
     '<p class="tripRoadSt" id="tripRoad' + i + '">Loading the road line…</p>' +
     '<div class="tripBtns"><a class="ghost2" href="#/ride/' + encodeURIComponent(d.id) + '">View ride</a><button type="button" class="ghost2" data-rep="' + i + '">⇄ Replace day</button><button type="button" class="ghost2" data-gpx="' + i + '">⬇ GPX</button></div>' +
     '<div class="tripAlt" id="tripAlt' + i + '" hidden></div>' +
@@ -6103,12 +6193,22 @@ function tripWire() {
     const days = plan.days.map((d, i) => (o.from ? tripDayLabel(tripDate(o.from, i)) : 'Day ' + (i + 1)) + ': ' + d.route.t + ' - ' + Math.round(d.km) + ' km, ' + tripFmtMin(d.minutes) + ' riding');
     const subject = (plan.days.length === 2 ? 'Motorcycle weekend' : plan.days.length + '-day motorcycle trip') + ' from ' + (o.label || 'CurveScout') + (o.from ? ', ' + tripDayLabel(tripDate(o.from, 0)) : '') + ' - are you in?';
     const body = 'I planned this on CurveScout:\n\n' + days.join('\n') + '\n\nTotal: ' + plan.totalKm + ' km, ' + tripFmtMin(plan.totalMin) + ' of riding' + (tripApproachKm(plan) > 10 ? ' (plus about ' + tripApproachKm(plan) + ' km to reach the starts)' : '') + (o.mode === 'base' ? ', one base' : ', moving on each day') + '.\n\nOpen the trip (map, every day, places to stay, GPX):\n' + url + '\n';
-    $('tripMail').href = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-    $('tripMail').onclick = () => { try { navigator.clipboard && navigator.clipboard.writeText(url).catch(() => {}); } catch (e) {} }; }
+    /* owner 2026-10-12: "the emails must have some sort of multimedia that adds excitement and looks appealing and not
+       like spam junk". The button opens the email composer of this page: a picture of the trip (map with the four day
+       lines, the days, photographs where Commons has them), sent through the share sheet with the picture attached, or
+       copied as a ready email with the picture in it. The plain-text email is still one tap away inside it. */
+    const plain = 'mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    $('tripMail').href = plain;
+    $('tripMail').onclick = ev => { ev.preventDefault(); tripMailBox(plan, { url, subject, body, plain }); }; }
   $('tripShare').onclick = async () => {
     const url = location.origin + location.pathname + '#/trip?p=' + tripEncode(plan);
     const o = TRIP.opts, lines = plan.days.map((d, i) => { const dt = o.from ? tripDayLabel(tripDate(o.from, i)) + ': ' : 'Day ' + (i + 1) + ': ';
       return dt + d.route.t + ' (' + Math.round(d.km) + ' km, ' + tripFmtMin(d.minutes) + ')'; });
+    /* a phone that can share files sends the trip picture with the link (owner 2026-10-12: shares must look appealing) */
+    try { const file = await tripCardFile(plan);
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Motorcycle trip from ' + (o.label || 'CurveScout'), text: lines.join('\n') + '\n\n' + url });
+        return; } } catch (e) { if (e && e.name === 'AbortError') return; }
     try { const res = await Platform.share._send({ title: 'Motorcycle trip from ' + (o.label || 'CurveScout'), text: lines.join('\n'), url });
       if (res.how === 'COPIED') flash('Trip link copied - paste it to your friends.');
       else if (res.how !== 'SHARED' && res.how !== 'CANCELLED') tripLinkBox(url); } catch (e) { tripLinkBox(url); } };
@@ -6147,7 +6247,7 @@ async function tripDrawMap() {
   TRIP.lines = []; TRIP.polys = []; TRIP.group = g;
   L.circleMarker(base, { radius: 8, color: '#fff', weight: 2.5, fillColor: '#15171b', fillOpacity: 1 }).addTo(g).bindTooltip(esc(o.label || 'Start'));
   TRIP.plan.days.forEach((d, i) => {
-    const w = (() => { let x = d.route.wp; if (typeof x === 'string') { try { x = JSON.parse(x); } catch (e) { x = []; } } return (x || []).filter(p => Array.isArray(p)).map(p => [+p[0], +p[1]]); })();
+    const w = (() => { let x = d.route.wp; if (typeof x === 'string') { try { x = JSON.parse(x); } catch (e) { x = []; } } return (Array.isArray(x) ? x : []).filter(p => Array.isArray(p)).map(p => [+p[0], +p[1]]); })();
     const col = TRIP_COL[i % TRIP_COL.length];
     TRIP.lines[i] = w;
     const outline = L.polyline(w, { color: col, weight: 3, opacity: .85, dashArray: '8 6' }).addTo(g); w.forEach(p => all.push(p));
@@ -6326,6 +6426,173 @@ function tripMoveWire(i) {
 }
 window.renderTrip = renderTrip;
 window.addEventListener('hashchange', () => { if (String(location.hash).indexOf('#/trip') !== 0) tripStop(); });
+
+/* ---- PICTURES FOR THE TRIP (owner 2026-10-12) ----
+   One free photograph per day from Wikimedia Commons, near the ride's high point (the same filtered lookup the ride page
+   uses, credited, and only when photographs are switched on). They show on the day cards and in the trip picture. */
+function tripDayPhotos(plan) {
+  TRIP.photos = TRIP.photos || {};
+  plan.days.forEach((d, i) => { const r = d.route, la = +(r.pla || r.la || (d.start && d.start[0])), lo = +(r.plo || r.lo || (d.start && d.start[1]));
+    if (!Number.isFinite(la) || !Number.isFinite(lo) || typeof commonsPhotos !== 'function') return;
+    const key = d.id;
+    const show = ph => { const f = $('tripPic' + i); if (!f || !ph || TRIP.plan !== plan) return;
+      f.innerHTML = '<img src="' + esc(ph.url) + '" alt="' + esc(ph.title || r.t) + '" loading="lazy" decoding="async"><figcaption>' + esc(ph.title || '') + (ph.by ? ' · ' + esc(ph.by) : '') + ' · ' + esc(ph.lic || '') + ' · <a href="' + esc(ph.page || '#') + '" target="_blank" rel="noopener">Wikimedia Commons</a></figcaption>';
+      const im = f.querySelector('img'); im.onerror = () => { f.hidden = true; }; f.hidden = false; };
+    if (TRIP.photos[key] !== undefined) { show(TRIP.photos[key]); return; }
+    commonsPhotos(la, lo, 6, 800).then(list => { const ph = (list || []).find(x => x && x.wide !== false) || (list || [])[0] || null; TRIP.photos[key] = ph; show(ph); })
+      .catch(() => { TRIP.photos[key] = null; });
+  });
+}
+
+/* ---- THE TRIP PICTURE ----
+   1080 x 1350, drawn in the browser: the trip's name, its numbers, a map with every day's road in the day's colour
+   (OpenStreetMap tiles, credited on the picture; without tiles the roads are drawn on dark ground), the photographs and
+   the days. Nothing leaves the browser to make it. */
+function tripImg(src, cors) {
+  return new Promise(res => { const im = new Image(); if (cors) im.crossOrigin = 'anonymous'; let t = setTimeout(() => res(null), 6000);
+    im.onload = () => { clearTimeout(t); res(im); }; im.onerror = () => { clearTimeout(t); res(null); }; im.src = src; });
+}
+async function tripCardCanvas(plan) {
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d'), o = TRIP.opts || {}, n = plan.days.length;
+  const F = (w, px, fam) => w + ' ' + px + 'px ' + (fam || '"Barlow Condensed", "Arial Narrow", Arial, sans-serif');
+  try { if (document.fonts && document.fonts.load) await Promise.race([Promise.all([document.fonts.load(F('800', 60)), document.fonts.load(F('600', 30))]), new Promise(r => setTimeout(r, 1500))]); } catch (e) {}
+  x.fillStyle = '#0b0c0e'; x.fillRect(0, 0, W, H);
+  /* map panel */
+  const MX = 0, MY = 0, MW = W, MH = 700;
+  const pts = []; (TRIP.lines || []).forEach(l => (l || []).forEach(p => pts.push(p))); if (o.start) pts.push([+o.start[0], +o.start[1]]);
+  plan.days.forEach(d => { if (d.start) pts.push(d.start); });
+  const px = (lat, lon, z) => { const s = 256 * Math.pow(2, z), sn = Math.sin(lat * Math.PI / 180);
+    return [(lon + 180) / 360 * s, (0.5 - Math.log((1 + sn) / (1 - sn)) / (4 * Math.PI)) * s]; };
+  if (pts.length) {
+    let la0 = 90, la1 = -90, lo0 = 180, lo1 = -180; pts.forEach(p => { la0 = Math.min(la0, p[0]); la1 = Math.max(la1, p[0]); lo0 = Math.min(lo0, p[1]); lo1 = Math.max(lo1, p[1]); });
+    let z = 12; for (; z > 3; z--) { const a = px(la1, lo0, z), b = px(la0, lo1, z); if (b[0] - a[0] < MW * 0.78 && b[1] - a[1] < MH * 0.72) break; }
+    const a = px(la1, lo0, z), b = px(la0, lo1, z), cx = (a[0] + b[0]) / 2, cy = (a[1] + b[1]) / 2, ox = cx - MW / 2, oy = cy - MH / 2 + 30;
+    const tiles = [], t0x = Math.floor(ox / 256), t0y = Math.floor(oy / 256), t1x = Math.floor((ox + MW) / 256), t1y = Math.floor((oy + MH) / 256), N = Math.pow(2, z);
+    for (let ty = t0y; ty <= t1y; ty++) for (let tx = t0x; tx <= t1x; tx++) { if (ty < 0 || ty >= N) continue; const wx = ((tx % N) + N) % N;
+      tiles.push(tripImg('https://tile-a.openstreetmap.fr/hot/' + z + '/' + wx + '/' + ty + '.png', true).then(im => ({ im, tx, ty }))); }
+    const got = await Promise.all(tiles); let drawn = 0;
+    x.save(); x.beginPath(); x.rect(MX, MY, MW, MH); x.clip();
+    got.forEach(g => { if (g.im) { try { x.drawImage(g.im, g.tx * 256 - ox, g.ty * 256 - oy); drawn++; } catch (e) {} } });
+    /* calm the map so the roads read: a dark wash over the tiles */
+    x.fillStyle = drawn ? 'rgba(11,12,14,0.28)' : '#16191e'; x.fillRect(MX, MY, MW, MH);
+    const P = (p) => { const q = px(p[0], p[1], z); return [q[0] - ox, q[1] - oy]; };
+    plan.days.forEach((d, i) => { const l = (TRIP.lines || [])[i]; if (!l || l.length < 2) return; const col = TRIP_COL[i % TRIP_COL.length];
+      for (const [w, cl] of [[13, 'rgba(255,255,255,0.95)'], [8, col]]) { x.beginPath(); l.forEach((p, k) => { const q = P(p); k ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]); });
+        x.lineWidth = w; x.lineJoin = 'round'; x.lineCap = 'round'; x.strokeStyle = cl; x.stroke(); } });
+    plan.days.forEach((d, i) => { if (!d.start) return; const q = P(d.start), col = TRIP_COL[i % TRIP_COL.length];
+      x.beginPath(); x.arc(q[0], q[1], 24, 0, 7); x.fillStyle = '#fff'; x.fill(); x.beginPath(); x.arc(q[0], q[1], 19, 0, 7); x.fillStyle = col; x.fill();
+      x.fillStyle = '#fff'; x.font = F('800', 26); x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(i + 1), q[0], q[1] + 1); });
+    if (o.start) { const q = P([+o.start[0], +o.start[1]]); x.beginPath(); x.arc(q[0], q[1], 13, 0, 7); x.fillStyle = '#0b0c0e'; x.fill(); x.lineWidth = 5; x.strokeStyle = '#fff'; x.stroke(); }
+    x.restore();
+    TRIP._cardTiles = drawn;
+  }
+  /* fade from the map into the page, logo and title over it */
+  const gr = x.createLinearGradient(0, MH - 260, 0, MH); gr.addColorStop(0, 'rgba(11,12,14,0)'); gr.addColorStop(1, 'rgba(11,12,14,1)'); x.fillStyle = gr; x.fillRect(0, MH - 260, W, 260);
+  const top = x.createLinearGradient(0, 0, 0, 150); top.addColorStop(0, 'rgba(11,12,14,0.85)'); top.addColorStop(1, 'rgba(11,12,14,0)'); x.fillStyle = top; x.fillRect(0, 0, W, 150);
+  const logo = await tripImg('curvescout-mark-transparent.png', false);
+  if (logo) { try { x.drawImage(logo, 40, 34, 64, 59); } catch (e) {} }
+  if (TRIP._cardTiles) { x.font = F('400', 17, 'Arial, sans-serif'); x.fillStyle = 'rgba(255,255,255,0.8)'; x.textAlign = 'right'; x.textBaseline = 'alphabetic'; x.fillText('Map © OpenStreetMap contributors', W - 30, 70); }
+  x.textAlign = 'left'; x.textBaseline = 'alphabetic'; x.font = F('800 italic', 40); x.fillStyle = '#fff'; x.fillText('CURVE', 118, 80); const wC = x.measureText('CURVE').width; x.fillStyle = '#e11b2b'; x.fillText('SCOUT', 118 + wC, 80);
+  const title = n === 1 ? 'A day ride' : n === 2 ? 'A motorcycle weekend' : n === 3 ? 'A long weekend on the bike' : n + ' days on the bike';
+  let y = MH - 70; x.fillStyle = '#e11b2b'; x.fillRect(48, y - 62, 70, 6);
+  x.fillStyle = '#fff'; x.font = F('800 italic', 76); x.fillText(title.toUpperCase(), 44, y + 6);
+  y += 52; x.font = F('600', 34); x.fillStyle = '#d9d6cf';
+  x.fillText((o.mode === 'base' ? 'From one base in ' : 'Starting in ') + (o.label || 'your start') + (o.from ? ' · ' + tripDayLabel(tripDate(o.from, 0)) : ''), 48, y);
+  /* numbers */
+  y += 30; const stats = [[plan.totalKm.toLocaleString('en-GB'), 'km'], [tripFmtMin(plan.totalMin), 'riding'], [String(n), n === 1 ? 'day' : 'days']];
+  const top2 = Math.max(0, ...plan.days.map(d => CS_TRIPS.altOf(d.route, o))); if (top2) stats.push([Math.round(top2) + ' m', 'highest']);
+  const sw = (W - 96 - (stats.length - 1) * 16) / stats.length;
+  stats.forEach((st, k) => { const sx = 48 + k * (sw + 16); x.fillStyle = '#17191d'; tripRound(x, sx, y, sw, 104, 16); x.fill();
+    x.fillStyle = '#fff'; x.font = F('800', 46); x.textAlign = 'left'; x.fillText(st[0], sx + 20, y + 56); x.fillStyle = '#9a968e'; x.font = F('600', 24); x.fillText(st[1].toUpperCase(), sx + 20, y + 88); });
+  /* days, with a photograph where there is one */
+  y += 132; const rowH = Math.min(n <= 3 ? 150 : 110, Math.floor((H - y - 100) / Math.max(1, n)));
+  y += Math.max(0, Math.floor((H - y - 100 - rowH * n) / 2));
+  const photos = await Promise.all(plan.days.map(d => { const ph = TRIP.photos && TRIP.photos[d.id]; return ph && ph.url ? tripImg(ph.url, true) : Promise.resolve(null); }));
+  plan.days.forEach((d, i) => { const ry = y + i * rowH, col = TRIP_COL[i % TRIP_COL.length], im = photos[i];
+    let tx = 48;
+    if (im && rowH >= 70) { const pw = Math.round((rowH - 12) * 1.5), ph = rowH - 12; x.save(); tripRound(x, 48, ry, pw, ph, 12); x.clip();
+      const s = Math.max(pw / im.width, ph / im.height); try { x.drawImage(im, 48 + (pw - im.width * s) / 2, ry + (ph - im.height * s) / 2, im.width * s, im.height * s); } catch (e) {} x.restore(); tx = 48 + pw + 20; }
+    x.beginPath(); x.arc(tx + 18, ry + (rowH - 12) / 2, 18, 0, 7); x.fillStyle = col; x.fill(); x.fillStyle = '#fff'; x.font = F('800', 24); x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(i + 1), tx + 18, ry + (rowH - 12) / 2 + 1);
+    x.textAlign = 'left'; x.textBaseline = 'alphabetic'; const lx = tx + 50, maxW = W - 48 - lx;
+    x.fillStyle = '#fff'; x.font = F('700', 32); x.fillText(tripFit(x, d.route.t || d.id, maxW), lx, ry + (rowH - 12) / 2 - 4);
+    x.fillStyle = '#b5b1a9'; x.font = F('500', 26); x.fillText(Math.round(d.km) + ' km · ' + tripFmtMin(d.minutes) + ' riding' + ((d.route.ic && d.route.ic[0] && d.route.ic[0].n) ? ' · ' + d.route.ic[0].n : ''), lx, ry + (rowH - 12) / 2 + 30);
+  });
+  /* footer */
+  x.fillStyle = '#e11b2b'; x.fillRect(0, H - 70, W, 70); x.fillStyle = '#fff'; x.font = F('800', 34); x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillText('OPEN THE TRIP ON CURVESCOUT.COM', W / 2, H - 34);
+  const credit = plan.days.map(d => TRIP.photos && TRIP.photos[d.id]).filter(p => p && p.by).map(p => p.by + (p.lic ? ' (' + p.lic + ')' : '')).filter((v, k, a) => a.indexOf(v) === k).slice(0, 3);
+  if (credit.length && photos.some(Boolean)) { x.font = F('400', 15, 'Arial, sans-serif'); x.fillStyle = '#7d7972'; x.textAlign = 'right'; x.textBaseline = 'alphabetic'; x.fillText(tripFit(x, 'Photos: ' + credit.join(', ') + ' · Wikimedia Commons', W - 96), W - 48, H - 82); }
+  return c;
+}
+function tripRound(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
+function tripFit(x, t, w) { t = String(t || ''); if (x.measureText(t).width <= w) return t; while (t.length > 4 && x.measureText(t + '…').width > w) t = t.slice(0, -1); return t + '…'; }
+async function tripCardFile(plan) {
+  if (TRIP._card && TRIP._card.plan === plan && TRIP._card.photos === JSON.stringify(TRIP.photos || {})) return TRIP._card.file;
+  const c = await tripCardCanvas(plan);
+  const blob = await new Promise(r => { try { c.toBlob(b => r(b), 'image/jpeg', 0.88); } catch (e) { r(null); } });
+  if (!blob) return null;
+  const file = new File([blob], 'curvescout-trip-' + plan.days.length + '-days.jpg', { type: 'image/jpeg' });
+  let data = ''; try { data = c.toDataURL('image/jpeg', 0.85); } catch (e) {}
+  TRIP._card = { plan, file, data, photos: JSON.stringify(TRIP.photos || {}) };
+  return file;
+}
+
+/* ---- THE EMAIL ----
+   A static site cannot send email, so the page prepares one. On a phone the share sheet sends the picture with the
+   text and link (Mail shows the picture in the message). On a computer the email is copied with the picture in it and
+   the mail program opens: paste, add your friend, send. The picture can also be saved and attached, and the old
+   plain-text email is kept as the last option. */
+function tripMailHtml(plan, m, img) {
+  const o = TRIP.opts || {}, e = esc;
+  const rows = plan.days.map((d, i) => '<tr><td style="padding:8px 12px 8px 0;vertical-align:top"><span style="display:inline-block;width:28px;height:28px;line-height:28px;border-radius:14px;background:' + TRIP_COL[i % TRIP_COL.length] + ';color:#fff;font-weight:bold;text-align:center;font-family:Arial,sans-serif">' + (i + 1) + '</span></td>' +
+    '<td style="padding:8px 0;font-family:Arial,sans-serif;font-size:15px;color:#1b1b1b"><b>' + e((o.from ? tripDayLabel(tripDate(o.from, i)) + ' · ' : '') + d.route.t) + '</b><br><span style="color:#666">' + Math.round(d.km) + ' km · ' + tripFmtMin(d.minutes) + ' riding' + (d.route.ic && d.route.ic[0] && d.route.ic[0].n ? ' · ' + e(d.route.ic[0].n) : '') + '</span></td></tr>').join('');
+  return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1b1b1b">' +
+    '<p style="margin:0 0 14px">I planned this on CurveScout - are you in?</p>' +
+    '<table cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;border-collapse:collapse;background:#ffffff;border:1px solid #e6e3dd;border-radius:12px">' +
+    (img ? '<tr><td><a href="' + e(m.url) + '"><img src="' + img + '" width="600" alt="The trip on a map, with every day" style="display:block;width:100%;max-width:600px;height:auto;border:0;border-radius:12px 12px 0 0"></a></td></tr>' : '') +
+    '<tr><td style="padding:20px 24px 8px"><div style="font-size:22px;font-weight:bold;margin:0 0 4px">' + e(m.subject.replace(/ - are you in\?$/, '')) + '</div>' +
+    '<div style="color:#666;margin:0 0 10px">' + plan.totalKm.toLocaleString('en-GB') + ' km · ' + tripFmtMin(plan.totalMin) + ' of riding · ' + (o.mode === 'base' ? 'one base' : 'moving on each day') + '</div>' +
+    '<table cellpadding="0" cellspacing="0" border="0">' + rows + '</table></td></tr>' +
+    '<tr><td style="padding:12px 24px 24px"><a href="' + e(m.url) + '" style="display:inline-block;background:#e11b2b;color:#ffffff;font-weight:bold;text-decoration:none;padding:13px 24px;border-radius:999px">Open the trip →</a>' +
+    '<div style="color:#888;font-size:12px;margin-top:12px">Map, every day, places to stay and GPX for your navigation. No account needed.</div></td></tr></table></div>';
+}
+async function tripMailBox(plan, m) {
+  let box = $('tripMailBox');
+  if (!box) { box = document.createElement('div'); box.id = 'tripMailBox'; box.className = 'tripMailBox'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Email this trip'); document.body.appendChild(box); }
+  box.innerHTML = '<div class="tmbIn"><button type="button" class="tmbX" aria-label="Close">×</button><h3>Email this trip</h3>' +
+    '<p class="tmbLead">Your friend gets a picture of the trip, every day of it and a button that opens it on CurveScout.</p>' +
+    '<div class="tmbPrev" id="tmbPrev"><span class="tmbWait">Drawing the trip picture…</span></div>' +
+    '<div class="tmbActs" id="tmbActs"></div>' +
+    '<p class="tmbFine"><a href="' + esc(m.plain) + '" id="tmbPlain">Plain-text email instead</a></p></div>';
+  box.hidden = false; document.body.classList.add('tmbOpen');
+  const close = () => { box.hidden = true; document.body.classList.remove('tmbOpen'); document.removeEventListener('keydown', esc1); };
+  const esc1 = ev => { if (ev.key === 'Escape') close(); };
+  document.addEventListener('keydown', esc1);
+  box.querySelector('.tmbX').onclick = close; box.onclick = ev => { if (ev.target === box) close(); };
+  let file = null; try { file = await tripCardFile(plan); } catch (e) {}
+  const data = TRIP._card && TRIP._card.plan === plan ? TRIP._card.data : '';
+  const prev = $('tmbPrev'); if (prev) prev.innerHTML = data ? '<img src="' + data + '" alt="The trip picture">' : '<span class="tmbWait">The picture could not be drawn here; the email still carries every day and the link.</span>';
+  const acts = $('tmbActs'); if (!acts) return;
+  const canFiles = !!(file && navigator.canShare && (() => { try { return navigator.canShare({ files: [file] }); } catch (e) { return false; } })());
+  const html = tripMailHtml(plan, m, data);
+  const text = m.body;
+  acts.innerHTML = (canFiles ? '<button type="button" class="primary" id="tmbShare">Send with the picture</button>' : '') +
+    '<button type="button" class="' + (canFiles ? 'ghost2' : 'primary') + '" id="tmbCopy">1 · Copy the email</button>' +
+    '<a class="ghost2" id="tmbOpen" href="mailto:?subject=' + encodeURIComponent(m.subject) + '">2 · Open my email and paste</a>' +
+    (data ? '<button type="button" class="ghost2" id="tmbSave">⬇ Save the picture</button>' : '');
+  if ($('tmbShare')) $('tmbShare').onclick = async () => { try { await navigator.share({ files: [file], title: m.subject, text: text }); close(); } catch (e) { if (!e || e.name !== 'AbortError') flash('Sharing did not work here - copy the email instead.'); } };
+  $('tmbCopy').onclick = async () => {
+    let ok = false;
+    try { if (window.ClipboardItem && navigator.clipboard && navigator.clipboard.write) {
+      await navigator.clipboard.write([new ClipboardItem({ 'text/html': new Blob([html], { type: 'text/html' }), 'text/plain': new Blob([text], { type: 'text/plain' }) })]); ok = true; } } catch (e) {}
+    if (!ok) { try { const d = document.createElement('div'); d.contentEditable = 'true'; d.style.cssText = 'position:fixed;left:-9999px;top:0'; d.innerHTML = html; document.body.appendChild(d);
+      const r = document.createRange(); r.selectNodeContents(d); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); ok = document.execCommand('copy'); sel.removeAllRanges(); d.remove(); } catch (e) {} }
+    $('tmbCopy').textContent = ok ? '✓ Copied - now open your email and paste' : 'Copying is blocked here - save the picture and use the plain-text email';
+    if (ok) $('tmbOpen').classList.add('primary');
+  };
+  if ($('tmbSave')) $('tmbSave').onclick = () => { const a = document.createElement('a'); a.href = data; a.download = (file && file.name) || 'curvescout-trip.jpg'; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 500); };
+}
 
 /* About: founder interview (owner 2026-10-11). Text supplied by the owner; photographs his own. */
 const ABOUT_DATA = {"title": "I wanted to build the service I kept looking for.", "standfirst": "A conversation with Torsten Sauter, founder of CurveScout, about mountain roads, making time for a proper ride, and building something other motorcyclists will want to use.", "intro": ["Torsten Sauter’s starting point for CurveScout was personal. Based in Switzerland, he loves riding, mountains and the roads that make an ordinary day out worth remembering. What he wanted online was equally straightforward: help finding those roads, enough information to choose between them, and a practical way to turn the choice into a trip.", "Developed and launched in 2026, CurveScout began with scenic-road discovery. Its ambitions now extend to day trips, weekends and longer motorcycle holidays. The service remains free, and Sauter describes its commercial future as an open question. His immediate priority is more definite: make it useful enough that riders come back.", "We asked him what that means in practice, where the idea came from, and how he intends to grow without losing sight of the ride itself."], "blocks": [{"t": "photo", "n": 1}, {"t": "q", "x": "You could have spent your spare time riding. Why spend so much of it building a website about riding?"}, {"t": "a", "x": "That is a fair question. I wanted something that would help me make better use of the time I do have on the bike."}, {"t": "a", "x": "Living in Switzerland, I have mountains and extraordinary roads within reach. But even with that advantage, deciding where to go can involve surprisingly much work. You find a road, look somewhere else for a description, check whether the distance makes sense, then start thinking about the rest of the day."}, {"t": "a", "x": "Some of the services I tried were too basic for what I wanted. Others offered more, but at a price that made casual use less attractive. I kept thinking there was room for something generous, detailed and easy to get into. Eventually, I decided to pursue it myself."}, {"t": "q", "x": "What does a really good ride mean to you?"}, {"t": "a", "x": "Mountains are a large part of it, certainly. I like the changing landscape, the way a road climbs and then opens into a different valley. But I would not reduce a good ride to altitude or the number of hairpins."}, {"t": "a", "x": "It is also the sequence. A demanding section followed by something more flowing. Somewhere worth stopping. Enough time to enjoy the place rather than immediately looking at the clock."}, {"t": "a", "x": "I love life in the saddle, but I do not need every ride to become an endurance exercise. Sometimes a few hours on roads that suit your mood are more satisfying than covering a much greater distance because a route happens to look impressive on a screen."}, {"t": "q", "x": "There are already plenty of maps and route planners. What is the question CurveScout tries to answer differently?"}, {"t": "a", "x": "The question comes before navigation: which ride should I choose?"}, {"t": "a", "x": "Knowing how to reach somewhere is useful once you have decided to go there. I wanted more help with that decision. What is the road like? How does it fit with the roads around it? Is this a sensible afternoon ride, or am I committing to something much longer? What would make me choose it over another option nearby?"}, {"t": "a", "x": "That is where the idea of CurveScout starts. Discovery needs explanation. A photograph can catch your attention, but the next step should be information that helps you decide whether the ride is right for you."}, {"t": "q", "x": "Walk us through someone’s first visit. What do they actually do?"}, {"t": "a", "x": "You begin with a starting point, the distance you have in mind and the kind of riding you are looking for. Then you explore the alternatives through route cards, the map or Swipe, and build a shortlist. The route information brings together the roadbook, elevation, weather context, services and GPX export. Those are the core functions around which the experience is organised."}, {"t": "a", "x": "The important part for me is that you should not need to become an expert in the application before you can use it. You might arrive with a particular pass in mind. Or you might simply have Saturday free. Both are perfectly reasonable starting points."}, {"t": "q", "x": "Your own enthusiasm is for the mountains. Does that make CurveScout a product mainly for Alpine riders?"}, {"t": "a", "x": "The Alps inspired the idea, but they should not limit it."}, {"t": "a", "x": "A coastal road, a route through wooded hills or an unfamiliar stretch near home can be just as worthwhile. The rider who has a free evening deserves attention as much as the person planning a week abroad."}, {"t": "a", "x": "I also do not want the service to assume that everybody enjoys the same kind of riding. Some people want technically demanding roads. Others want scenery, a relaxed pace and somewhere pleasant to stop. Those preferences should influence the recommendations. My own taste gave the project its starting point; it should not become a rule that everyone else has to follow."}, {"t": "photo", "n": 2}, {"t": "q", "x": "You have extended the idea into trip, weekend and holiday planning. What changes when someone has several days rather than an afternoon?"}, {"t": "a", "x": "The individual roads still matter, but the choices start affecting one another."}, {"t": "a", "x": "For an afternoon, you might want a satisfying loop from home. For a weekend, you need to think about what belongs on the first day, where you finish, and whether the second day offers something different. For a longer holiday, the balance becomes more important again. You want good riding, but you also want time to stop and experience the places you have travelled to."}, {"t": "a", "x": "That is the thinking behind the expanded planners. We are using the road inventory as the basis for a fuller itinerary, rather than treating every day as an isolated route. The aim is to help people put together a trip they would actually enjoy riding."}, {"t": "q", "x": "What would you tell someone who keeps adding another pass to the itinerary?"}, {"t": "a", "x": "I understand the temptation. You see another interesting road and think it would be a shame to miss it."}, {"t": "a", "x": "But the useful question is what that addition does to the whole day. Does it add a worthwhile contrast, or does it turn the last two hours into a rush? Does it leave time for the stop you were looking forward to? Are you still planning for the people on the trip, or for the satisfaction of completing a list?"}, {"t": "a", "x": "A planner should make those consequences easier to see. It should help you make a good choice, including the choice to leave something for another visit. I would rather help someone enjoy four days than persuade them to squeeze six days of riding into them."}, {"t": "q", "x": "A large road inventory sounds attractive. How do you prevent it from becoming a large collection of places nobody can distinguish?"}, {"t": "a", "x": "By remembering that the number of entries is not the product."}, {"t": "a", "x": "The useful work is in making those entries understandable: what a route contains, how the sections connect, what is distinctive, and what information is reliable. Ten genuinely relevant choices are more helpful than hundreds that all sound alike."}, {"t": "a", "x": "That is also why I care about the descriptions. Repeating “beautiful views” does not tell you much. A rider needs to understand what changes along the road and why one option might suit them better."}, {"t": "a", "x": "We want breadth, because discovery benefits from having alternatives. But breadth has to be accompanied by detail and clear distinctions. Otherwise we have simply moved the research burden onto another screen."}, {"t": "q", "x": "How much authority should a platform like this claim over a rider’s decisions?"}, {"t": "a", "x": "Less than it might be tempting to claim."}, {"t": "a", "x": "There is a difference between helping someone prepare and telling them that a road is safe to ride. A route description, a forecast and a suggested itinerary are useful inputs. They do not replace the conditions in front of you or your own judgement."}, {"t": "a", "x": "I want CurveScout to be clear about what it knows and what still needs checking. That is part of being useful, not an admission that the idea does not work. People can make sensible decisions with incomplete information when the limits are clear. What they cannot use is confidence that the underlying information does not justify."}, {"t": "a", "x": "The rider remains responsible for the ride."}, {"t": "q", "x": "“From bikers for bikers” is an appealing phrase. What would make it more than a slogan?"}, {"t": "a", "x": "The details that affect an actual day out."}, {"t": "a", "x": "You should be able to see the time implications of a decision, not only the distance. You should be able to distinguish an interesting road from the journey needed to reach it. You should get a reason to stop at a place, rather than another marker to decipher."}, {"t": "a", "x": "It also means respecting different riders. Experience, preferred pace and appetite for a long day vary considerably. I do not want the platform to reward one type of rider and make everyone else feel they have chosen the less serious option."}, {"t": "a", "x": "The phrase only earns its place if riders recognise their own needs in the product."}, {"t": "q", "x": "You say the response has been encouraging. What matters to you in that response?"}, {"t": "a", "x": "We are very happy with the early response. It gives me confidence that the interest is shared and that this was not simply a service I wanted for myself."}, {"t": "a", "x": "But I would be careful about confusing enthusiasm for an idea with proof that every part of the product is finished. Those are different things."}, {"t": "a", "x": "The response that matters most is whether people find it useful enough to return. Does it help them choose a ride? Does it make planning easier? Do they feel that their time was well spent?"}, {"t": "a", "x": "I want to keep that practical test. Positive feedback is encouraging; suggestions and criticism are valuable because they tell us where the experience still needs work."}, {"t": "q", "x": "Why keep it free?"}, {"t": "a", "x": "Because reaching fellow enthusiasts is a central part of why I started it."}, {"t": "a", "x": "I would like someone to hear about CurveScout, try it and discover whether it helps them without having to make a purchasing decision first. That matters for a service people might use for a spontaneous outing as well as a bigger trip."}, {"t": "a", "x": "My primary motivation is to build something people genuinely like using. Of course, running and developing a platform has to be sustainable. A freemium model may make sense at some stage. I am not ruling it out, and I am not making a promise about pricing forever."}, {"t": "a", "x": "But I do not want the initial experience to feel like a demonstration of everything you cannot do until you pay."}, {"t": "q", "x": "You want the platform to keep evolving. How do you stop that from becoming an excuse for leaving things unfinished?"}, {"t": "a", "x": "By separating ambition from what a rider is being asked to rely on today."}, {"t": "a", "x": "There will always be more we could add. That does not remove the obligation to make the existing experience coherent. A new feature should improve the trip, not make something familiar harder to use."}, {"t": "a", "x": "For me, evolving means listening, correcting and adding carefully. It does not mean changing things simply to have another announcement. We need to preserve what people value while making the weak parts better."}, {"t": "a", "x": "I am ambitious about where CurveScout can go. But someone opening it to plan this weekend should not need to care about our long-term ambitions. It has to be useful to them now."}, {"t": "photo", "n": 3}, {"t": "q", "x": "CurveScout has a couple of cousins. What are DipMapper and Nestlyzer?"}, {"t": "a", "x": "They explore different interests through a similar approach."}, {"t": "a", "x": "DipMapper is centred on finding places to swim: lakes, beaches, pools, baths and other swimming spots. Its map and place cards bring practical details together, including facilities, parking, weather and source links where available. The wider direction is information around time spent in and around the water, including water sports."}, {"t": "a", "x": "Nestlyzer applies the idea to municipalities and the question of where to live. It is about comparing places and understanding how they fit different priorities, rather than assuming there is one universally right place for everyone. The latest version is still being prepared and is not yet live."}, {"t": "a", "x": "They are separate products, but the connection is quite natural to me: helping someone understand a place before choosing what to do there."}, {"t": "q", "x": "You describe the common approach as open-source intelligence. What does that mean for someone who just wants a good ride or a swim?"}, {"t": "a", "x": "In this context, it means working with information that is already publicly available and making it more useful."}, {"t": "a", "x": "The information may exist, but it is often spread across maps, public records, local websites and specialist sources. Finding it is one job. Working out whether it concerns the same place, how current it is, and what it means for the user is another."}, {"t": "a", "x": "That is the part that interests me. A person should not need to repeat all that work every time they consider somewhere new."}, {"t": "a", "x": "And it requires judgement. Combining five sources does not automatically produce a better answer. You still have to understand the differences between them and avoid presenting an assumption as an established fact."}, {"t": "q", "x": "Is the ambition eventually to build a much larger family of services?"}, {"t": "a", "x": "Potentially, yes. I like the idea of starting with a concrete need, building something useful and allowing the scope to grow from there."}, {"t": "a", "x": "I am curious about what is possible, and I am motivated by making things that help people. That can lead to more than one product. But I do not think having a long list of websites is an achievement in itself."}, {"t": "a", "x": "Each one needs a reason to exist. It needs to do something well enough that people choose to use it. CurveScout should succeed as a riding platform, DipMapper as a service for finding and understanding swimming places, and Nestlyzer on its own merits."}, {"t": "a", "x": "There is more I would like to explore. The responsibility is to finish useful things as well as imagine new ones."}, {"t": "q", "x": "What would make you proudest of CurveScout a few years from now?"}, {"t": "a", "x": "Being able to say that people genuinely use it to get more from something they enjoy."}, {"t": "a", "x": "I would love CurveScout to become one of the best platforms available to motorcyclists. But I would rather earn that description than put it in a headline ourselves."}, {"t": "a", "x": "The simplest version of success is still close to the original idea: someone has time for a ride, opens CurveScout, finds an option that interests them and comes home pleased they went. Perhaps they discovered a road they would otherwise have missed. Perhaps they planned a better weekend because they understood the choices more clearly."}, {"t": "a", "x": "That is a worthwhile result. It is why I wanted to build it."}]};
@@ -6697,7 +6964,9 @@ function show(v) {
 function paintNav(v) {
   const back = $('backTo');
   const onSub = (v === 'ride' || v === 'explore' || v === 'swipe');
-  back.hidden = !onSub;
+  /* on a phone List and Swipe are tabs of Rides: no back arrow to a board that is no longer a tab (owner 2026-10-12) */
+  const phoneTabs = !!(window.matchMedia && matchMedia('(max-width:767px)').matches);
+  back.hidden = !onSub || (phoneTabs && (v === 'explore' || v === 'swipe'));
   /* 2026-10-11 audit: "← Board" on a ride opened from Trips, Atlas, Swipe or Explore threw the rider out of where
      he came from (the trip was gone from view). The arrow now names where it goes and goes back there. */
   if (v === 'ride' && S._navPrev && S._navPrev !== 'ride') S._rideFrom = S._navPrev;
@@ -6705,8 +6974,9 @@ function paintNav(v) {
   const FROM = { trip: 'Trip', atlas: 'Atlas', swipe: 'Swipe', explore: 'Explore', saved: 'Saved', rides: 'Board' };
   if (onSub) {
     const from = v === 'ride' && S._rideFrom && FROM[S._rideFrom] ? S._rideFrom : null;
-    back.innerHTML = '<span aria-hidden="true">←</span> ' + (from ? FROM[from] : 'Board');
-    back.onclick = () => { if (from && history.length > 1) history.back(); else go(S.ranked.length ? '#/rides' : '#/'); };
+    const lab = phoneTabs && (!from || from === 'rides' || from === 'explore' || from === 'atlas' || from === 'swipe') ? 'Rides' : (from ? FROM[from] : 'Board');
+    back.innerHTML = '<span aria-hidden="true">←</span> ' + lab;
+    back.onclick = () => { if (from && history.length > 1) history.back(); else go(S.ranked.length ? (phoneTabs ? '#/explore' : '#/rides') : '#/'); };
   }
   S._navPrev = (v === 'rides' && S.showSaved) ? 'saved' : v;
   document.querySelectorAll('.tbtn[data-view]').forEach(b =>
@@ -6724,7 +6994,13 @@ function paintNav(v) {
   if (vm) vm.hidden = !(v === 'rides' || v === 'atlas' || v === 'swipe' || v === 'home');
   /* 2026-10-11 audit: Atlas, Swipe and Saved all lit up "Find", a ride lit nothing. Each tab lights for its own
      view; a ride lights the tab it was opened from. */
-  { const key = (v === 'rides' && S.showSaved) ? 'saved' : (v === 'ride' ? (S._rideFrom || 'rides') : v);
+  /* owner 2026-10-12: on a phone the board, the list, the atlas and the deck are one tab - Rides - with a List / Map /
+     Swipe switch on top */
+  { const mm = $('mModes'), phoneNav = !!(window.matchMedia && matchMedia('(max-width:767px)').matches);
+    if (mm) { const show = phoneNav && (v === 'explore' || v === 'atlas' || v === 'swipe' || (v === 'rides' && !S.showSaved)); mm.hidden = !show;
+      mm.querySelectorAll('.mmBtn').forEach(b => { const on = b.dataset.mm === (v === 'rides' ? 'explore' : v); b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); }); } }
+  { let key = (v === 'rides' && S.showSaved) ? 'saved' : (v === 'ride' ? (S._rideFrom || 'rides') : v);
+    if (key === 'rides' || key === 'atlas' || key === 'swipe') key = 'explore';
     document.querySelectorAll('#bottomNav button[data-go]').forEach(b => {
       const on = b.dataset.go === '#/' + key; b.classList.toggle('cur', on);
       if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); }); }
@@ -6825,6 +7101,8 @@ function csBoardPicks() {
   teaser.hidden = true;
 }
 function route() {
+  /* a release arrived while this page was open: the next view opens in the new version, at the same address */
+  if (window.__csReloadOnNav) { window.__csReloadOnNav = false; location.reload(); return; }
   /* Hand back what the last view was holding: its map, its document listeners, its
      observers and its pending timers. Without this, moving between rides stacked them
      until the tab crawled. */
@@ -6895,11 +7173,16 @@ function route() {
     /* 2026-10-11 audit: a start changed on a ride page (Set start) left the board ranked for the old start - the
        header said Innsbruck while the cards and travel times were Zurich's. Re-rank when the start has moved. */
     else if (S._rankKey && S._rankKey !== csRankKey() && Array.isArray(S.routes) && S.routes.length) { try { rank(); rankSettle(); } catch (e) {} }
+    /* owner 2026-10-12: on a phone the board's job is done by the Rides list - an old #/rides link opens it */
+    if (window.matchMedia && matchMedia('(max-width:767px)').matches) { try { history.replaceState(null, '', '#/explore'); } catch (e) {} try { document.body.dataset.view = 'explore'; } catch (e) {} renderExplore(); return; }
     renderRides(); return;
   }
   if (h === '#/explore') {
     /* audit 2026-10-11: a shared Explore link opened the search form with no word of why */
     if (!S.start) { show('home'); try { flash('Tell me where you start and Explore sorts every ride by distance from there.'); const inp = $('startIn'); if (inp) inp.focus({ preventScroll: true }); } catch (e) {} return; }
+    /* the Rides list opens in the board's order, so it needs the board ranked for this start (owner 2026-10-12) */
+    if (!(S.ranked && S.ranked.length) && Array.isArray(S.routes) && S.routes.length) { try { rank(); rankSettle(); } catch (e) {} }
+    else if (S._rankKey && S._rankKey !== csRankKey() && Array.isArray(S.routes) && S.routes.length) { try { rank(); rankSettle(); } catch (e) {} }
     renderExplore(); return;
   }
   /* ---- A LINK TO SAVED SHOULD OPEN SAVED ----
@@ -6926,6 +7209,8 @@ function route() {
       } catch (e) {}
       return;
     }
+    /* audit: a reload on #/swipe dealt an empty deck - the start came back from memory but the rides were never ranked */
+    if (!(S.ranked && S.ranked.length) && Array.isArray(S.routes) && S.routes.length) { try { rank(); rankSettle(); DECK.queue = []; } catch (e) {} }
     renderSwipe(); return;
   }
   if (h === '#/atlas') {
@@ -7754,6 +8039,11 @@ function initHome() {
     go('#/rides');
   };
 
+  const mmodes = $('mModes');
+  if (mmodes && !mmodes.dataset.wired) { mmodes.dataset.wired = '1';
+    mmodes.addEventListener('click', ev => { const b = ev.target.closest('.mmBtn'); if (!b) return;
+      const id = { explore: 'exploreBtn', atlas: 'atlasBtn', swipe: 'swipeBtn' }[b.dataset.mm]; const el = id && $(id);
+      if (el) el.click(); else go('#/' + b.dataset.mm); }); }
   const bottom = $('bottomNav');
   if (bottom && !bottom.dataset.wired) {
     bottom.dataset.wired = '1';
@@ -7775,7 +8065,8 @@ function initHome() {
     if (!S.ranked.length) rank();
     go('#/explore');
   };
-  $('exBack').onclick = () => go('#/rides');
+  /* on a phone the board is not a tab any more: the button changes the start instead (owner 2026-10-12) */
+  $('exBack').onclick = () => go($('exBack').dataset.phone ? '#/' : '#/rides');
   const startSwipe = () => {
     if (!S.start) { go('#/'); flash('Tell me where you start and I will deal you some rides.'); return; }
     if (!S.ranked.length) rank();
@@ -8680,8 +8971,10 @@ function sceneHtml(r, i) {
              'data-a="' + c.startLineIndex + '" data-b="' + c.endLineIndex + '">' +
       media +
       '<div class="rbSceneBody">' +
-        '<div class="rbSceneType">Scenic stretch \u00b7 <span class="num">km ' +
-          c.startKm + ' to ' + c.endKm + '</span> \u00b7 ' + esc(c.chapterType) + '</div>' +
+        /* the stretch's km marks must agree with the roadbook's own marks for the same stops (Furka: "km 136 to 152"
+           against stops at km 119 and 126); when they do not, the marks are left out rather than contradicting it */
+        '<div class="rbSceneType">Scenic stretch \u00b7 ' + ((() => { const wk = Array.isArray(r.wpKm) ? r.wpKm : null, a = wk && +wk[c.startLineIndex];
+          return (!wk || !Number.isFinite(a) || Math.abs(a - (+c.startKm || 0)) <= 5) ? '<span class="num">km ' + c.startKm + ' to ' + c.endKm + '</span> \u00b7 ' : ''; })()) + esc(c.chapterType) + '</div>' +
         '<h4 class="rbSceneTitle">' + esc(c.title) + '</h4>' +
         '<p class="rbSceneText">' + esc(c.narrative) + '</p>' +
         (c.riderNote ? '<p class="rbSceneNote">' + esc(c.riderNote) + '</p>' : '') +
@@ -10048,7 +10341,7 @@ function noBackdrop(map) {
     n.className = 'tileNote';
     n.innerHTML = '<b>No map backdrop right now</b>' +
       '<span>The tile server is not answering this connection. The route, the roadbook, ' +
-      'the elevation and the GPX are unaffected \u2014 they come from CurveScout, not from the map.</span>';
+      'the elevation and the GPX are unaffected - they come from CurveScout, not from the map.</span>';
     c.appendChild(n);
   } catch (e) {}
 }
@@ -10137,7 +10430,7 @@ function tileRefused(layer, map) {
       n.className = 'tileNote';
       n.innerHTML = '<b>No map backdrop right now</b>' +
         '<span>The tile server is not answering this connection. The route, the roadbook, ' +
-        'the elevation and the GPX are unaffected \u2014 they come from CurveScout, not from ' +
+        'the elevation and the GPX are unaffected - they come from CurveScout, not from ' +
         'the map.</span>';
       c.appendChild(n);
     });
@@ -10475,10 +10768,10 @@ async function loadLegends() {
   LEGENDS.tried = true;
   /* the single-file build carries the atlas inline; the deployed site fetches it */
   const inl = window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.legends;
-  if (inl && inl.roads) { LEGENDS.roads = inl.roads; return LEGENDS.roads; }
+  if (inl && inl.roads) { LEGENDS.roads = inl.roads; csTidyRows(LEGENDS.roads); return LEGENDS.roads; }
   try {
     const j = await jget('legends.json', 8000);
-    LEGENDS.roads = (j && j.roads) || [];
+    LEGENDS.roads = (j && j.roads) || []; csTidyRows(LEGENDS.roads);
   } catch (e) { LEGENDS.roads = []; }
   /* THE TRUE SHAPE, WHEN THE NIGHTLY HAS FETCHED IT.
      The corridors in legends.json are traced by hand from settlements and summits, so they
@@ -11627,7 +11920,7 @@ function routeShapeSVG(r) {
   const d = pts.map((p, i) => (i ? 'L' : 'M') + X(p[1]) + ' ' + Y(p[0])).join(' ');
   const a0 = pts[0], z0 = pts[pts.length - 1];
   return '<svg class="spark miniTopo" viewBox="0 0 ' + W + ' ' + H + '" role="img" ' +
-    'aria-label="' + esc(r.t || 'route') + ' \u2014 route shape">' +
+    'aria-label="' + esc(r.t || 'route') + ' - route shape">' +
     '<rect width="' + W + '" height="' + H + '" rx="8" fill="#161a20"/>' +
     '<g opacity=".28" stroke="#2b313a" stroke-width="1">' +
       [1, 2, 3].map(i => '<line x1="0" y1="' + (i * H / 4).toFixed(0) + '" x2="' + W +
@@ -12224,7 +12517,7 @@ function renderRides() {
          names nobody has measured, presented as the pick of the day. Anything with a label
          on it comes from the curated and generated tiers only. Experimental rides remain
          findable; they are simply never held up as the answer. */
-      const pool = (S.ranked || []).filter(x => x && x.r && x.r.pv !== 'p').slice(0, 40);
+      const pool = (S.ranked || []).filter(x => x && x.r && x.r.pv !== 'p' && x.r.t).slice(0, 40);
       const pick = (label, score) => {
         const best = pool.filter(x => !used.has(x.r.i))
           .sort((a, b) => score(b) - score(a))[0];
@@ -13482,13 +13775,13 @@ function poiWhy(a, used) {
            : 'A ' + what + ' beside the route.',
       () => alt && alt >= 800 ? 'High ground: a ' + what + ' at ' + alt + ' m.'
            : nm ? 'A ' + what + ' on the ' + nm + ' road.' : 'A ' + what + ' off the main line.',
-      () => off ? 'Out and back for a ' + what + ' \u2014 ' + (off * 2).toFixed(1) + ' km all in.'
+      () => off ? 'Out and back for a ' + what + ' - ' + (off * 2).toFixed(1) + ' km all in.'
                 : 'A ' + what + ' a short way from the road.',
       () => nm ? 'Signposted from ' + nm + ': a ' + what + '.' : 'A ' + what + ' off the route.',
     ];
     /* h is the title hash already computed above - the same seed the banks use, so two places
        with different names get different shapes and the same place is stable across renders */
-    line = shapes[h % shapes.length]();
+    line = csAn(shapes[h % shapes.length]());
   }
   /* and one fact about THIS one, so neighbours of the same kind still read differently */
   const bits = [];
@@ -13702,6 +13995,7 @@ const SVC_CATS = {
   bar: { icon: '\ud83c\udf7a', label: 'Bars and pubs', note: 'Bars, pubs and beer gardens within reach of the road, kept apart from the eating list because they answer a different question - this is where a ride ends, not where you stop for lunch. Opening hours are only shown where OpenStreetMap records them.' },
   stay: { icon: '\ud83d\udecf\ufe0f', label: 'Beds', note: 'Hotels, guest houses, hostels and mountain huts near the route. A hut is filed here rather than under food: it is the thing you cannot get at a restaurant, and the eating list reaches in for the ones that also feed you. Book ahead in season - mountain beds go early, and hours are never invented.' },
   fuel: { icon: '⛽', label: 'Fuel', note: 'Brands, opening hours and 24/7 flags from OpenStreetMap. Per-litre prices are not published in open data, so the roadbook does not invent them - it flags the forecourts most likely to be cheaper and says why: a supermarket forecourt, an independent, a chain that usually undercuts, or several stations competing within a kilometre. Motorway forecourts are marked down because they are reliably dearer. Check the sign; these are odds, not prices.' },
+  ev: { icon: '⚡', label: 'EV charging', note: 'Charging points for electric motorcycles from OpenStreetMap, with the sockets and power where a mapper recorded them. Most are built for cars: check the connector (Type 2, CCS) and whether the site is public before you count on it. Charging takes time - plan it as a stop, not a top-up.' },
   moto: { icon: '🏍️', label: 'Bike service', note: 'Dealers and repair shops within reach of the route. Worth a phone call before you rely on one on a Sunday.' },
   camera: { icon: '📷', label: 'Speed cameras', note: 'Fixed cameras mapped in OpenStreetMap, shown for route planning. Using a device or app to warn you about cameras while riding is illegal in Switzerland, Germany and France, among others - read this before you leave, not on the move. Mapped cameras are also incomplete, and mobile controls appear anywhere. Ride the posted limit.' },
   police: { icon: '🚓', label: 'Police & help', note: 'Police stations and hospitals near the route. Emergency number 112 works across the EU, Switzerland and the UK.' },
@@ -13712,7 +14006,9 @@ const SVC_CATS = {
 };
 function classifySvc(t) {
   if (!t) return null;
-  if (t.amenity === 'fuel' || t.amenity === 'charging_station') return 'fuel';
+  if (t.amenity === 'fuel') return 'fuel';
+  /* owner 2026-10-12: chargers are their own layer, never counted as fuel */
+  if (t.amenity === 'charging_station') return 'ev';
   if (t.shop === 'motorcycle' || t.shop === 'motorcycle_repair' || t.shop === 'motorcycle_parts' ||
       t.craft === 'motorcycle_repair' || (t.shop === 'car_repair' && /motorcycle|motorrad|moto/i.test(t.name || ''))) return 'moto';
   if (t.highway === 'rest_area' || t.highway === 'services' || t.amenity === 'drinking_water' ||
@@ -13781,7 +14077,7 @@ function classifySvc(t) {
 }
 function svcName(t, cat) {
   return t.name || t.brand || t.operator ||
-    (cat === 'camera' ? 'Speed camera' : cat === 'fuel' ? 'Fuel station' :
+    (cat === 'camera' ? 'Speed camera' : cat === 'fuel' ? 'Fuel station' : cat === 'ev' ? 'Charging point' :
      cat === 'police' ? (t.amenity === 'hospital' ? 'Hospital' : 'Police station') :
      cat === 'rest' ? (t.highway === 'rest_area' ? 'Rest area' : t.highway === 'services' ? 'Services' :
                        t.amenity === 'drinking_water' ? 'Drinking water' : t.amenity === 'toilets' ? 'Toilets' :
@@ -14106,6 +14402,9 @@ function overpassGroups(routePts, stopPts) {
       'way(around:6000,' + A + ')[route=ferry][name];' +
       'rel(around:6000,' + A + ')[route=ferry][name];'
     ),
+    /* 7. EV charging (owner 2026-10-12: "show ev chargers") - its own small group, so chargers can never crowd fuel
+          stations out of the fuel answer and a refusal here costs nothing else */
+    '[out:json][timeout:25];(nwr(around:2000,' + A + ')[amenity=charging_station];);out center tags 300;',
   ];
 }
 
@@ -14299,7 +14598,7 @@ async function scanServices(r) {
 
   /* `shop` is not a layer - it exists so the fuel picks can see a supermarket forecourt.
      Without the bucket, classifySvc returned 'shop' and the push threw it away. */
-  const out = { fuel: [], moto: [], camera: [], police: [], food: [], stay: [], view: [], swim: [], rest: [], shop: [], rough: [], works: [], queue: [], toll: [], hazard: [], border: [], pass: [], sight: [], slow: [], ferry: [] };
+  const out = { fuel: [], ev: [], moto: [], camera: [], police: [], food: [], stay: [], view: [], swim: [], rest: [], shop: [], rough: [], works: [], queue: [], toll: [], hazard: [], border: [], pass: [], sight: [], slow: [], ferry: [] };
   const peaks = [];
   const seen = new Set();
   for (const el of (js.elements || [])) {
@@ -14348,6 +14647,11 @@ async function scanServices(r) {
       diesel: t['fuel:diesel'] === 'yes',
       /* an EV charger is not somewhere to fill a petrol tank: listed, never counted as fuel */
       ev: t.amenity === 'charging_station',
+      /* owner 2026-10-12: what a charger offers, as mapped - socket types with counts and the highest output */
+      sockets: t.amenity === 'charging_station' ? Object.keys(t).filter(k => /^socket:[a-z0-9_]+$/i.test(k) && t[k] && t[k] !== 'no' && t[k] !== '0')
+        .map(k => { const nm = { type2: 'Type 2', type2_combo: 'CCS', chademo: 'CHAdeMO', schuko: 'Schuko', type1: 'Type 1', type1_combo: 'CCS1', tesla_supercharger: 'Tesla', type2_cable: 'Type 2 cable', cee_blue: 'CEE blue' }[k.slice(7).toLowerCase()] || k.slice(7).replace(/_/g, ' ');
+          const kw = t[k + ':output']; return nm + (/^\d+$/.test(t[k]) && +t[k] > 1 ? ' ×' + t[k] : '') + (kw ? ' ' + String(kw).replace(/\s*kw$/i, '') + ' kW' : ''); }).slice(0, 4) : [],
+      capacity: t.amenity === 'charging_station' ? (parseInt(t.capacity, 10) || 0) : 0,
       e5: t['fuel:octane_95'] === 'yes' || t['fuel:octane_98'] === 'yes',
       prices: (() => {
         // OSM price tags are rare but real; show them where a mapper has filled them in
@@ -16433,7 +16737,7 @@ function drawSectionLine(map, line, ranges) {
     try {
       const mid = line[Math.floor(line.length / 2)];
       L.marker(mid, { interactive: false, icon: L.divIcon({ className: 'chordNote',
-        html: '<span>checkpoints only \u2014 the road has not been routed yet</span>',
+        html: '<span>checkpoints only - the road has not been routed yet</span>',
         iconSize: [0, 0] }) }).addTo(grp);
     } catch (e) {}
     return grp;
@@ -18221,8 +18525,8 @@ function reachSay(q, used) {
          opening, not the suffix. Say the plain thing about THIS one instead. */
       const what = String(q.kind || '').replace(/ \u00b7.*$/, '').replace(/^UNESCO /, '').toLowerCase() || 'place';
       line = Number.isFinite(+q.alt) && +q.alt > 0
-        ? 'A ' + what + ' at ' + Math.round(+q.alt) + ' m.'
-        : 'A ' + what + ', ' + (Number.isFinite(+q.km) ? q.km.toFixed(1) + ' km off the road.' : 'close to the road.');
+        ? csAn('A ' + what + ' at ' + Math.round(+q.alt) + ' m.')
+        : csAn('A ' + what + ', ' + (Number.isFinite(+q.km) ? q.km.toFixed(1) + ' km off the road.' : 'close to the road.'));
     }
     used.add(line);
   }
@@ -19755,7 +20059,13 @@ function drawMap(r) {
       const profileMeasured = !!(r.profileReal || (r.profile && r.profile.real) ||
         (typeof r.geometryStatus === 'string' && r.geometryStatus.toUpperCase() === 'ROUTED'));
       const perKm = (profileMeasured && climbM && KM) ? climbM / KM : null;
-      const kmh = (KM && +r.minutes > 0) ? KM / (+r.minutes / 60) : null;
+      /* audit: "Technicality 52 km/h" on every curated ride - their planned time is distance / 52, so the "average" was the
+         planning constant. The router's time for this ride's real road is used when it is in; a planned time that is just
+         the constant says nothing and the row is left out rather than shown as a measurement. */
+      const kmh = (() => { try { const mt = S.routeMeta && typeof geomKey === 'function' && S.routeMeta[geomKey(r)];
+          if (mt && mt.km > 5 && mt.min > 5) return mt.km / (mt.min / 60); } catch (e) {}
+        const v = (KM && +r.minutes > 0) ? KM / (+r.minutes / 60) : null;
+        return v != null && Math.abs(v - 52) < 0.75 ? null : v; })();
       /* audit 2026-10-11: "Fuel spacing very high · about every 294 km" (km divided by planned fuel checkpoints) sat beside
          the measured "longest stretch ≈ 167 km". Only the measured longest gap between stations along the road is shown. */
       const fuelGap = (() => { try { const st = (CS_FUEL_KM.has(r.id) && CS_FUEL_KM.get(r.id)) || (S.svcNow && Array.isArray(S.svcNow._fuelKm) && S.svcNow._fuelKm);
@@ -23932,7 +24242,7 @@ function fuelGateHtml(w, svc, cum, i, wps) {
     return '<div class="fuelBox fuelUnres">' +
       '<b>Fuel planning point</b>' +
       '<div>No forecourt resolved within 6 km of this coordinate. It marks where the tank ' +
-      'will be low, not a station \u2014 fill where you find one before here.' +
+      'will be low, not a station - fill where you find one before here.' +
       (nextFuel ? ' Next fuel point on the line: ' + nextFuel + ' km.' : '') + '</div></div>';
   }
 
@@ -24047,7 +24357,7 @@ function wireRoadbookExtras(r, host, getSvc) {
               shown.reduce((n, [, v]) => n + v.length, 0) + ' places along this road</b>' +
               '<span>' + shown.map(([k, v]) =>
                 esc((STOP_KINDS[k] || {}).label || k) + ' \u00d7 ' + v.length).join(' \u00b7 ') +
-              '</span><span class="stopHint">they are the coloured dots on the map above \u2014 ' +
+              '</span><span class="stopHint">they are the coloured dots on the map above - ' +
               'hover or tap one for the detour, the hours and why it is worth it</span></div>'
           : '<span class="nearLbl">nothing mapped within a few kilometres - carry what you need</span>') +
         (missing.length && cards
@@ -26151,8 +26461,8 @@ const seedWhy = (w, kind, km, total, used) => {
   if (!used.has(head)) { used.add(head); return out; }
   const what = String(kind || (w && w.kind) || 'stop').toLowerCase();
   return Number.isFinite(+(w && w.alt)) && +w.alt >= 400
-    ? 'A ' + what + ' at ' + Math.round(+w.alt) + ' m, ' + Math.round(km) + ' km into the day.'
-    : 'A ' + what + ', ' + Math.round(km) + ' km into the day.';
+    ? csAn('A ' + what + ' at ' + Math.round(+w.alt) + ' m, ' + Math.round(km) + ' km into the day.')
+    : csAn('A ' + what + ', ' + Math.round(km) + ' km into the day.');
 };
 
 const seedFromRoute = () => {
@@ -26256,7 +26566,7 @@ const seedFromRoute = () => {
             const wrap = document.createElement('div');
             wrap.className = 'atrGrid atrReach';
             wrap.innerHTML = '<p class="atrNote atrReachNote">Within reach of the road, not on it yet ' +
-              '\u2014 adding one re-routes the day and tells you what it costs.</p>' +
+              '- adding one re-routes the day and tells you what it costs.</p>' +
               extra.map((q, i) =>
                 '<article class="atrCard">' +
                   '<div class="atrBody"><h4>' + esc(q.name) + '</h4>' +
@@ -26582,10 +26892,10 @@ const seedFromRoute = () => {
     // Everything along the road, on the map by default - decluttered so pins stay readable.
     if (S.map && window.L) {
       const box = $('mapLayers'); box.hidden = false;
-      const PIN = { fuel: ['⛽', '#f2a71b'], moto: ['🏍️', '#f4f2ec'], camera: ['📷', '#ff2d40'],
+      const PIN = { fuel: ['⛽', '#f2a71b'], ev: ['⚡', '#38d39f'], moto: ['🏍️', '#f4f2ec'], camera: ['📷', '#ff2d40'],
                     police: ['🚓', '#4a9fd8'], food: ['🍽️', '#4fce7f'], view: ['🌄', '#2bbfa4'],
                     swim: ['🏊', '#3ba6dd'], rest: ['☕', '#c9a227'] };
-      const ON_BY_DEFAULT = ['camera', 'fuel', 'view', 'moto', 'rest'];
+      const ON_BY_DEFAULT = ['camera', 'fuel', 'ev', 'view', 'moto', 'rest'];
       const layers = {}, placed = {};
 
       /* Two pins closer than ~38 screen pixels become one blob. Nudging them apart is fine,
@@ -26735,6 +27045,8 @@ const seedFromRoute = () => {
         if (x.supervised) bits.push('supervised');
         if (x.diesel) bits.push('diesel');
         if (x.e5) bits.push('petrol');
+        if (x.sockets && x.sockets.length) bits.push(x.sockets.map(esc).join(', '));
+        if (x.capacity) bits.push(x.capacity + ' charging point' + (x.capacity > 1 ? 's' : ''));
         const st = x.open247 ? 'open' : x.state;
         const pill = st === 'open' ? '<span class="stOpen">Open now</span>'
           : st === 'closed' ? '<span class="stShut">Closed now</span>'
@@ -26931,7 +27243,9 @@ const OFF = { ready: false, sw: null };
 function initOffline() {
   // file:// and any non-secure origin can't run a service worker - the app just stays online-only.
   if (!('serviceWorker' in navigator) || !window.isSecureContext) return;
-  navigator.serviceWorker.register('sw.js').then(reg => {
+  /* updateViaCache 'none': the browser asks for sw.js itself on every visit, so a release is seen at once (owner 2026-10-12) */
+  navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => {
+    try { reg.update(); } catch (e) {}
     OFF.ready = true;
     OFF.sw = reg;
     setOfflineBadge();
@@ -26939,6 +27253,13 @@ function initOffline() {
   navigator.serviceWorker.addEventListener('message', ev => {
     const d = ev.data || {};
     if (d.type === 'cached') flash('Saved for offline: ' + d.ok + ' of ' + d.total + ' rides.');
+    /* a new release took over (see sw.js): answer, then switch - at once if this page was only just opened (a link was
+       tapped), otherwise on the rider's next tap, so a half-typed search or trip is never thrown away */
+    if (d.type === 'cs-release') {
+      try { ev.source && ev.source.postMessage({ type: 'cs-ack' }); } catch (e) {}
+      if (performance.now() < 15000) { location.reload(); return; }
+      window.__csReloadOnNav = true; flash('CurveScout was updated - the new version opens with your next tap.');
+    }
   });
   /* one subscription through the platform instead of two raw window listeners */
   VIEW.add(Platform.network.onChange(setOfflineBadge));

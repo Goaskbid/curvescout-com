@@ -1,8 +1,8 @@
 /* CurveScout service worker - the road is where the signal isn't.
-   Shell + index: cache-first, refreshed in the background.
+   App files: network first, cached copy offline. Pictures and libraries: cache-first.
    Ride shards: cached the moment a ride is opened, so it stays readable with no bars.
    Tiles / live APIs: never cached here (they go stale and they're big). */
-const V = 'curvescout-df68a0a';
+const V = 'curvescout-8261304';
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
    Route data was cached in the same versioned cache as the shell, and activation deletes every
    cache but the new version - so each app update silently wiped the routes a rider had taken
@@ -49,13 +49,34 @@ self.addEventListener('install', e => {
   );
 });
 
+/* ---- A NEW RELEASE MUST REACH A PAGE THAT IS ALREADY OPEN (owner 2026-10-12) ----
+   A browser that had visited the old site kept running the old app from this cache: a shared trip link opened the start
+   page (the old app has no trips) and back left the trip. When this worker replaces an older CurveScout release it asks
+   every open page who it is. A page running this app or newer answers and decides itself (it switches at once if it was
+   just opened, otherwise on the rider's next tap, so nothing typed is lost). A page that does not answer is an older app
+   that cannot update itself: it is reloaded once, at the same address, so the link the rider tapped opens in the new
+   app. A first install reloads nothing; the map library's own tile cache does not count as an older release. */
+const ACKS = new Set();
+self.addEventListener('message', e => { if (e.data && e.data.type === 'cs-ack' && e.source) ACKS.add(e.source.id); });
 self.addEventListener('activate', e => {
+  let upgrade = 0;
   e.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(k => k !== V && k !== ROUTES).map(k => caches.delete(k))))
+      .then(keys => { const old = keys.filter(k => k !== V && k !== ROUTES);
+        upgrade = old.filter(k => /^curvescout-/.test(k)).length;
+        return Promise.all(old.map(k => caches.delete(k))); })
       .then(() => self.clients.claim())
+      /* the hand-over to open pages runs AFTER activation, never inside it: a page reload inside waitUntil held the
+         worker in "activating", and every request of every page waited behind it (found in testing, 2026-10-12) */
+      .then(() => { if (upgrade) setTimeout(handOver, 0); })
   );
 });
+function handOver() {
+  self.clients.matchAll({ type: 'window' }).then(cs => {
+    cs.forEach(c => { try { c.postMessage({ type: 'cs-release', v: V }); } catch (err) {} });
+    setTimeout(() => cs.filter(c => !ACKS.has(c.id)).forEach(c => { try { c.navigate && c.navigate(c.url).catch(() => {}); } catch (err) {} }), 1500);
+  });
+}
 
 self.addEventListener('fetch', e => {
   const req = e.request;
@@ -70,7 +91,8 @@ self.addEventListener('fetch', e => {
      Measured on a cold load: 23.8 MB fetched, 21.6 MB of it that one file, doubled.
      On a hit, serve the cache and refresh behind it. On a miss, fetch once and keep it. */
   /* the folder-free site names data files data__… (audit 2026-10-11: route data landed in the per-release cache) */
-  if (url.pathname.includes('/data/') || /\/data__/.test(url.pathname)) {
+  /* the GitHub build stores every file without folders, so ride data is any .json at the top level (not the manifest) */
+  if (url.pathname.includes('/data/') || /\/data__/.test(url.pathname) || /\.json(\.gz)?$/.test(url.pathname)) {
     e.respondWith(
       caches.match(req).then(hit => {
         if (hit) {
@@ -88,7 +110,27 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Shell: cache-first with a network fallback, and index.html for any navigation.
+  /* ---- THE APP ITSELF COMES FROM THE NETWORK FIRST ----
+     Cache-first kept a phone on the old app after every release, until a second reload. The page and the files that
+     make the app (index, app.js, styles, config, the mapper) are now asked from the network first, with the cached copy
+     as the offline fallback and after 4 s of no answer. Pictures and the map library stay cache-first. */
+  const shellFile = req.mode === 'navigate' || /\/(index\.html|app\.js|styles\.css|config\.js|sw\.js)?$/.test(url.pathname);
+  if (shellFile) {
+    e.respondWith(new Promise(resolve => {
+      let done = false;
+      const fromCache = () => caches.match(req).then(h => h || (req.mode === 'navigate' ? caches.match('./index.html') : null));
+      const t = setTimeout(() => fromCache().then(h => { if (h && !done) { done = true; resolve(h); } }), 4000);
+      /* cache: 'no-cache' asks the server whether the file changed - GitHub Pages lets browsers keep files 10 minutes,
+         which paired a new page with the old app.js */
+      fetch(req, { cache: 'no-cache' }).then(res => {
+        if (res && res.ok && res.type === 'basic') { const copy = res.clone(); caches.open(V).then(c => c.put(req, copy)); }
+        if (!done) { done = true; clearTimeout(t); resolve(res); }
+      }).catch(() => fromCache().then(h => { if (!done) { done = true; clearTimeout(t); resolve(h || Response.error()); } }));
+    }));
+    return;
+  }
+
+  // Everything else from this site: cache-first with a network fallback.
   e.respondWith(
     caches.match(req).then(hit => hit || fetch(req).then(res => {
       if (res && res.ok && (res.type === 'basic')) {

@@ -117,14 +117,19 @@
      three ways of looking at the same rides and the third (Cards) had a thumb target, so on
      the surface where a rider actually uses this they were harder to reach than the others.
      Nothing is removed to make room: five targets, each still at the 44px minimum. -->
+<!-- owner 2026-10-12: "simplify the mobile version - an upgraded explore is enough, maybe we don't need find. reduce to
+     the max." Three tabs on a phone. Rides is Explore with the board's picks, chips, sort and GPX briefing folded in, and a
+     List / Map / Swipe switch on top, so the atlas and the deck stay one tap away. Every old address still opens. -->
 <nav class="bottomNav" id="bottomNav" aria-label="Main">
-  <button type="button" data-go="#/rides" aria-label="Find a ride"><span>Find</span></button>
+  <button type="button" data-go="#/explore" aria-label="Rides"><span>Rides</span></button>
   <button type="button" data-go="#/trip" aria-label="Plan a trip"><span>Trips</span></button>
-  <button type="button" data-go="#/atlas" aria-label="Atlas"><span>Atlas</span></button>
-  <button type="button" data-go="#/swipe" aria-label="Swipe"><span>Swipe</span></button>
-  <button type="button" data-go="#/explore" aria-label="Explore"><span>Explore</span></button>
   <button type="button" data-go="#/saved" aria-label="Saved"><span>Saved</span></button>
 </nav>
+<div class="mModes" id="mModes" role="tablist" aria-label="How to show the rides" hidden>
+  <button type="button" class="mmBtn" data-mm="explore" role="tab">List</button>
+  <button type="button" class="mmBtn" data-mm="atlas" role="tab">Map</button>
+  <button type="button" class="mmBtn" data-mm="swipe" role="tab">Swipe</button>
+</div>
 
 <!-- HOME -->
 <main class="view" id="view-home">
