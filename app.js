@@ -1,5 +1,5 @@
 /* CurveScout v2 - reinvented app. Vanilla JS, no build step.
-   Data: data/summary.json (index) + data/places.json (geocode) + data/routes/<region>.json (lazy). */
+   Data: data/summary.json (index) + places.json (geocode) + data/routes/<region>.json (lazy). */
 (function () {
 'use strict';
 
@@ -1059,7 +1059,7 @@ let TEASER_RANGE = [55, 90];
    pose and its source links - and fall back to the template only where nothing better exists. */
 function editorialFor(routeId, surface) {
   try {
-    /* the standalone carries it in its payload; the hosted site fetches data/editorial.json */
+    /* the standalone carries it in its payload; the hosted site fetches editorial.json */
     const ed = (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.editorial) || (window.S && S.editorial) || null;
     if (!ed || !Array.isArray(ed.drafts)) return null;
     /* EDITORIAL-STATE-01 (audit 4312f23): a REJECTED collection or draft is never selected */
@@ -1076,7 +1076,7 @@ window.csEditorial = editorialFor;
    arrives the writers use the template, and a later paint picks the sourced text up */
 try {
   if (!window.CURVESCOUT_INLINE && typeof fetch === 'function')
-    window.__csEditorialReady = fetch('data/editorial.json').then(r => r.ok ? r.json() : null).then(j => {
+    window.__csEditorialReady = fetch('editorial.json').then(r => r.ok ? r.json() : null).then(j => {
       if (j && window.S) S.editorial = j;
       /* a route page drawn before the file arrived showed the fallback; if the page on screen has a
          sourced contribution, draw it again once, now that the text is here */
@@ -2535,9 +2535,9 @@ async function loadCore(onStep) {
   /* the sourced editorial file is small and the first screens read it, so it arrives with the
      index rather than racing the first paint */
   const [core, pl] = await Promise.all([
-    wantSplit ? jget('data/index/core.json', 20000).then(v => { onStep(1, 2); return v; }).catch(() => null)
+    wantSplit ? jget('core.json', 20000).then(v => { onStep(1, 2); return v; }).catch(() => null)
               : Promise.resolve(null),
-    jget('data/places.json', 20000),
+    jget('places.json', 20000),
   ]);
   let sum = null;
   if (core && Array.isArray(core.rows) && Array.isArray(core.fields)) {
@@ -2754,10 +2754,10 @@ async function derivedRecipes() {
   if (DERIVED.tried) return DERIVED.map;
   DERIVED.tried = true;
   try {
-    /* a hosted build ships the recipes as buckets + data/derived-index.json (the whole file is over
+    /* a hosted build ships the recipes as buckets + derived-index.json (the whole file is over
        the 10 MiB file budget and is not deployed): never request derived.json when the index exists */
     let viaIndex = false;
-    if (location.protocol !== 'file:') { try { viaIndex = !!(await jget('data/derived-index.json', 8000)); } catch (e) { viaIndex = false; } }
+    if (location.protocol !== 'file:') { try { viaIndex = !!(await jget('derived-index.json', 8000)); } catch (e) { viaIndex = false; } }
     const j = viaIndex ? null : await jget('data/derived.json', 20000);
     for (const x of (j && j.recipes) || []) DERIVED.map.set(x.i, x);
   } catch (e) { /* no recipes reachable: the scouted archive still works */ }
@@ -2801,7 +2801,7 @@ async function derivedBucketFor(id) {
   if (!DERIVED_SHARDS.tried) {
     DERIVED_SHARDS.tried = true;
     try { DERIVED_SHARDS.idx = (location.protocol === 'file:' || window.CURVESCOUT_INLINE) ? null
-      : await Promise.resolve(jget('data/derived-index.json', 8000)); }
+      : await Promise.resolve(jget('derived-index.json', 8000)); }
     catch (e) { DERIVED_SHARDS.idx = null; }
   }
   const meta = DERIVED_SHARDS.idx;
@@ -3127,7 +3127,7 @@ async function geocode(q) {
   if (co) return { lat: +co[1], lon: +co[2], label: (+co[1]).toFixed(3) + ', ' + (+co[2]).toFixed(3) };
   const loc = localPlace(q); if (loc) return loc;
   /* ---- THE LOCAL GAZETTEER ANSWERS FIRST, AND USUALLY ANSWERS ----
-     data/cities.txt carries several hundred towns worldwide with coordinates and ships inside
+     cities.txt carries several hundred towns worldwide with coordinates and ships inside
      the build, so the common case never touches anybody's server. Public Nominatim is a
      LAST resort, it is off unless NET.geocoderEnabled is true, every answer is cached so a
      query is never repeated, and nothing the product needs depends on it: the rider can
@@ -6331,9 +6331,9 @@ window.addEventListener('hashchange', () => { if (String(location.hash).indexOf(
 const ABOUT_DATA = {"title": "I wanted to build the service I kept looking for.", "standfirst": "A conversation with Torsten Sauter, founder of CurveScout, about mountain roads, making time for a proper ride, and building something other motorcyclists will want to use.", "intro": ["Torsten Sauter’s starting point for CurveScout was personal. Based in Switzerland, he loves riding, mountains and the roads that make an ordinary day out worth remembering. What he wanted online was equally straightforward: help finding those roads, enough information to choose between them, and a practical way to turn the choice into a trip.", "Developed and launched in 2026, CurveScout began with scenic-road discovery. Its ambitions now extend to day trips, weekends and longer motorcycle holidays. The service remains free, and Sauter describes its commercial future as an open question. His immediate priority is more definite: make it useful enough that riders come back.", "We asked him what that means in practice, where the idea came from, and how he intends to grow without losing sight of the ride itself."], "blocks": [{"t": "photo", "n": 1}, {"t": "q", "x": "You could have spent your spare time riding. Why spend so much of it building a website about riding?"}, {"t": "a", "x": "That is a fair question. I wanted something that would help me make better use of the time I do have on the bike."}, {"t": "a", "x": "Living in Switzerland, I have mountains and extraordinary roads within reach. But even with that advantage, deciding where to go can involve surprisingly much work. You find a road, look somewhere else for a description, check whether the distance makes sense, then start thinking about the rest of the day."}, {"t": "a", "x": "Some of the services I tried were too basic for what I wanted. Others offered more, but at a price that made casual use less attractive. I kept thinking there was room for something generous, detailed and easy to get into. Eventually, I decided to pursue it myself."}, {"t": "q", "x": "What does a really good ride mean to you?"}, {"t": "a", "x": "Mountains are a large part of it, certainly. I like the changing landscape, the way a road climbs and then opens into a different valley. But I would not reduce a good ride to altitude or the number of hairpins."}, {"t": "a", "x": "It is also the sequence. A demanding section followed by something more flowing. Somewhere worth stopping. Enough time to enjoy the place rather than immediately looking at the clock."}, {"t": "a", "x": "I love life in the saddle, but I do not need every ride to become an endurance exercise. Sometimes a few hours on roads that suit your mood are more satisfying than covering a much greater distance because a route happens to look impressive on a screen."}, {"t": "q", "x": "There are already plenty of maps and route planners. What is the question CurveScout tries to answer differently?"}, {"t": "a", "x": "The question comes before navigation: which ride should I choose?"}, {"t": "a", "x": "Knowing how to reach somewhere is useful once you have decided to go there. I wanted more help with that decision. What is the road like? How does it fit with the roads around it? Is this a sensible afternoon ride, or am I committing to something much longer? What would make me choose it over another option nearby?"}, {"t": "a", "x": "That is where the idea of CurveScout starts. Discovery needs explanation. A photograph can catch your attention, but the next step should be information that helps you decide whether the ride is right for you."}, {"t": "q", "x": "Walk us through someone’s first visit. What do they actually do?"}, {"t": "a", "x": "You begin with a starting point, the distance you have in mind and the kind of riding you are looking for. Then you explore the alternatives through route cards, the map or Swipe, and build a shortlist. The route information brings together the roadbook, elevation, weather context, services and GPX export. Those are the core functions around which the experience is organised."}, {"t": "a", "x": "The important part for me is that you should not need to become an expert in the application before you can use it. You might arrive with a particular pass in mind. Or you might simply have Saturday free. Both are perfectly reasonable starting points."}, {"t": "q", "x": "Your own enthusiasm is for the mountains. Does that make CurveScout a product mainly for Alpine riders?"}, {"t": "a", "x": "The Alps inspired the idea, but they should not limit it."}, {"t": "a", "x": "A coastal road, a route through wooded hills or an unfamiliar stretch near home can be just as worthwhile. The rider who has a free evening deserves attention as much as the person planning a week abroad."}, {"t": "a", "x": "I also do not want the service to assume that everybody enjoys the same kind of riding. Some people want technically demanding roads. Others want scenery, a relaxed pace and somewhere pleasant to stop. Those preferences should influence the recommendations. My own taste gave the project its starting point; it should not become a rule that everyone else has to follow."}, {"t": "photo", "n": 2}, {"t": "q", "x": "You have extended the idea into trip, weekend and holiday planning. What changes when someone has several days rather than an afternoon?"}, {"t": "a", "x": "The individual roads still matter, but the choices start affecting one another."}, {"t": "a", "x": "For an afternoon, you might want a satisfying loop from home. For a weekend, you need to think about what belongs on the first day, where you finish, and whether the second day offers something different. For a longer holiday, the balance becomes more important again. You want good riding, but you also want time to stop and experience the places you have travelled to."}, {"t": "a", "x": "That is the thinking behind the expanded planners. We are using the road inventory as the basis for a fuller itinerary, rather than treating every day as an isolated route. The aim is to help people put together a trip they would actually enjoy riding."}, {"t": "q", "x": "What would you tell someone who keeps adding another pass to the itinerary?"}, {"t": "a", "x": "I understand the temptation. You see another interesting road and think it would be a shame to miss it."}, {"t": "a", "x": "But the useful question is what that addition does to the whole day. Does it add a worthwhile contrast, or does it turn the last two hours into a rush? Does it leave time for the stop you were looking forward to? Are you still planning for the people on the trip, or for the satisfaction of completing a list?"}, {"t": "a", "x": "A planner should make those consequences easier to see. It should help you make a good choice, including the choice to leave something for another visit. I would rather help someone enjoy four days than persuade them to squeeze six days of riding into them."}, {"t": "q", "x": "A large road inventory sounds attractive. How do you prevent it from becoming a large collection of places nobody can distinguish?"}, {"t": "a", "x": "By remembering that the number of entries is not the product."}, {"t": "a", "x": "The useful work is in making those entries understandable: what a route contains, how the sections connect, what is distinctive, and what information is reliable. Ten genuinely relevant choices are more helpful than hundreds that all sound alike."}, {"t": "a", "x": "That is also why I care about the descriptions. Repeating “beautiful views” does not tell you much. A rider needs to understand what changes along the road and why one option might suit them better."}, {"t": "a", "x": "We want breadth, because discovery benefits from having alternatives. But breadth has to be accompanied by detail and clear distinctions. Otherwise we have simply moved the research burden onto another screen."}, {"t": "q", "x": "How much authority should a platform like this claim over a rider’s decisions?"}, {"t": "a", "x": "Less than it might be tempting to claim."}, {"t": "a", "x": "There is a difference between helping someone prepare and telling them that a road is safe to ride. A route description, a forecast and a suggested itinerary are useful inputs. They do not replace the conditions in front of you or your own judgement."}, {"t": "a", "x": "I want CurveScout to be clear about what it knows and what still needs checking. That is part of being useful, not an admission that the idea does not work. People can make sensible decisions with incomplete information when the limits are clear. What they cannot use is confidence that the underlying information does not justify."}, {"t": "a", "x": "The rider remains responsible for the ride."}, {"t": "q", "x": "“From bikers for bikers” is an appealing phrase. What would make it more than a slogan?"}, {"t": "a", "x": "The details that affect an actual day out."}, {"t": "a", "x": "You should be able to see the time implications of a decision, not only the distance. You should be able to distinguish an interesting road from the journey needed to reach it. You should get a reason to stop at a place, rather than another marker to decipher."}, {"t": "a", "x": "It also means respecting different riders. Experience, preferred pace and appetite for a long day vary considerably. I do not want the platform to reward one type of rider and make everyone else feel they have chosen the less serious option."}, {"t": "a", "x": "The phrase only earns its place if riders recognise their own needs in the product."}, {"t": "q", "x": "You say the response has been encouraging. What matters to you in that response?"}, {"t": "a", "x": "We are very happy with the early response. It gives me confidence that the interest is shared and that this was not simply a service I wanted for myself."}, {"t": "a", "x": "But I would be careful about confusing enthusiasm for an idea with proof that every part of the product is finished. Those are different things."}, {"t": "a", "x": "The response that matters most is whether people find it useful enough to return. Does it help them choose a ride? Does it make planning easier? Do they feel that their time was well spent?"}, {"t": "a", "x": "I want to keep that practical test. Positive feedback is encouraging; suggestions and criticism are valuable because they tell us where the experience still needs work."}, {"t": "q", "x": "Why keep it free?"}, {"t": "a", "x": "Because reaching fellow enthusiasts is a central part of why I started it."}, {"t": "a", "x": "I would like someone to hear about CurveScout, try it and discover whether it helps them without having to make a purchasing decision first. That matters for a service people might use for a spontaneous outing as well as a bigger trip."}, {"t": "a", "x": "My primary motivation is to build something people genuinely like using. Of course, running and developing a platform has to be sustainable. A freemium model may make sense at some stage. I am not ruling it out, and I am not making a promise about pricing forever."}, {"t": "a", "x": "But I do not want the initial experience to feel like a demonstration of everything you cannot do until you pay."}, {"t": "q", "x": "You want the platform to keep evolving. How do you stop that from becoming an excuse for leaving things unfinished?"}, {"t": "a", "x": "By separating ambition from what a rider is being asked to rely on today."}, {"t": "a", "x": "There will always be more we could add. That does not remove the obligation to make the existing experience coherent. A new feature should improve the trip, not make something familiar harder to use."}, {"t": "a", "x": "For me, evolving means listening, correcting and adding carefully. It does not mean changing things simply to have another announcement. We need to preserve what people value while making the weak parts better."}, {"t": "a", "x": "I am ambitious about where CurveScout can go. But someone opening it to plan this weekend should not need to care about our long-term ambitions. It has to be useful to them now."}, {"t": "photo", "n": 3}, {"t": "q", "x": "CurveScout has a couple of cousins. What are DipMapper and Nestlyzer?"}, {"t": "a", "x": "They explore different interests through a similar approach."}, {"t": "a", "x": "DipMapper is centred on finding places to swim: lakes, beaches, pools, baths and other swimming spots. Its map and place cards bring practical details together, including facilities, parking, weather and source links where available. The wider direction is information around time spent in and around the water, including water sports."}, {"t": "a", "x": "Nestlyzer applies the idea to municipalities and the question of where to live. It is about comparing places and understanding how they fit different priorities, rather than assuming there is one universally right place for everyone. The latest version is still being prepared and is not yet live."}, {"t": "a", "x": "They are separate products, but the connection is quite natural to me: helping someone understand a place before choosing what to do there."}, {"t": "q", "x": "You describe the common approach as open-source intelligence. What does that mean for someone who just wants a good ride or a swim?"}, {"t": "a", "x": "In this context, it means working with information that is already publicly available and making it more useful."}, {"t": "a", "x": "The information may exist, but it is often spread across maps, public records, local websites and specialist sources. Finding it is one job. Working out whether it concerns the same place, how current it is, and what it means for the user is another."}, {"t": "a", "x": "That is the part that interests me. A person should not need to repeat all that work every time they consider somewhere new."}, {"t": "a", "x": "And it requires judgement. Combining five sources does not automatically produce a better answer. You still have to understand the differences between them and avoid presenting an assumption as an established fact."}, {"t": "q", "x": "Is the ambition eventually to build a much larger family of services?"}, {"t": "a", "x": "Potentially, yes. I like the idea of starting with a concrete need, building something useful and allowing the scope to grow from there."}, {"t": "a", "x": "I am curious about what is possible, and I am motivated by making things that help people. That can lead to more than one product. But I do not think having a long list of websites is an achievement in itself."}, {"t": "a", "x": "Each one needs a reason to exist. It needs to do something well enough that people choose to use it. CurveScout should succeed as a riding platform, DipMapper as a service for finding and understanding swimming places, and Nestlyzer on its own merits."}, {"t": "a", "x": "There is more I would like to explore. The responsibility is to finish useful things as well as imagine new ones."}, {"t": "q", "x": "What would make you proudest of CurveScout a few years from now?"}, {"t": "a", "x": "Being able to say that people genuinely use it to get more from something they enjoy."}, {"t": "a", "x": "I would love CurveScout to become one of the best platforms available to motorcyclists. But I would rather earn that description than put it in a headline ourselves."}, {"t": "a", "x": "The simplest version of success is still close to the original idea: someone has time for a ride, opens CurveScout, finds an option that interests them and comes home pleased they went. Perhaps they discovered a road they would otherwise have missed. Perhaps they planned a better weekend because they understood the choices more clearly."}, {"t": "a", "x": "That is a worthwhile result. It is why I wanted to build it."}]};
 
 const ABOUT_PHOTOS = {
-  1: { src: 'assets/about/founder-ride.jpg', w: 1400, h: 788, alt: 'Torsten Sauter in his open-face helmet beside a road sign reading Bad Egg', cap: 'Torsten Sauter, founder of CurveScout, out on the bike.' },
-  2: { src: 'assets/about/founder-signpost.jpg', w: 825, h: 1100, alt: 'A wooden signpost covered in yellow arrows to places around the world, snowy Alpine peaks behind', cap: 'Every direction is a possible ride. Choosing one is the hard part.' },
-  3: { src: 'assets/about/founder-teide.jpg', w: 1400, h: 1050, alt: 'An empty road curving through volcanic scrubland towards Mount Teide on Tenerife', cap: 'Beyond the Alps: the road towards Mount Teide, Tenerife.' },
+  1: { src: 'founder-ride.jpg', w: 1400, h: 788, alt: 'Torsten Sauter in his open-face helmet beside a road sign reading Bad Egg', cap: 'Torsten Sauter, founder of CurveScout, out on the bike.' },
+  2: { src: 'founder-signpost.jpg', w: 825, h: 1100, alt: 'A wooden signpost covered in yellow arrows to places around the world, snowy Alpine peaks behind', cap: 'Every direction is a possible ride. Choosing one is the hard part.' },
+  3: { src: 'founder-teide.jpg', w: 1400, h: 1050, alt: 'An empty road curving through volcanic scrubland towards Mount Teide on Tenerife', cap: 'Beyond the Alps: the road towards Mount Teide, Tenerife.' },
 };
 function renderAbout() {
   show('about');
@@ -8475,7 +8475,7 @@ function depNow() {
 let PLACE_GRID = null;
 async function placesNear(lat, lon, radiusM) {
   if (!PLACE_GRID) {
-    try { PLACE_GRID = await jget('data/places-index.json', 12000); }
+    try { PLACE_GRID = await jget('places-index.json', 12000); }
     catch (e) { PLACE_GRID = { cell: 0.25, grid: {} }; }
   }
   const c = PLACE_GRID.cell || 0.25;
@@ -8505,7 +8505,7 @@ const APPROVED_UNAVAILABLE = new Set();
     if (window.CS_APPROVED_MEDIA && typeof window.CS_APPROVED_MEDIA === 'object') {
       APPROVED_MEDIA = window.CS_APPROVED_MEDIA.approved || {}; return;
     }
-    const j = await jget('data/media/approved-media.json', 8000);
+    const j = await jget('approved-media.json', 8000);
     APPROVED_MEDIA = j && j.approved ? j.approved : {};
   } catch (e) { APPROVED_MEDIA = {}; }
 })();
@@ -10465,7 +10465,7 @@ window.csAds = ADS;
 
 /* ---------------- the named roads of the world ----------------
    Matching legends by NAME only caught rides whose title happened to mention one. This
-   matches on GEOGRAPHY: data/legends.json holds 61 named roads across 26 countries with an
+   matches on GEOGRAPHY: legends.json holds 61 named roads across 26 countries with an
    approximate corridor, and a ride counts if it runs within 12 km of one.
    The corridors are anchor points, not surveyed centrelines: accurate enough to say "you
    are on the Stelvio", nowhere near accurate enough to navigate by, and the page says so. */
@@ -10477,18 +10477,18 @@ async function loadLegends() {
   const inl = window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.legends;
   if (inl && inl.roads) { LEGENDS.roads = inl.roads; return LEGENDS.roads; }
   try {
-    const j = await jget('data/legends.json', 8000);
+    const j = await jget('legends.json', 8000);
     LEGENDS.roads = (j && j.roads) || [];
   } catch (e) { LEGENDS.roads = []; }
   /* THE TRUE SHAPE, WHEN THE NIGHTLY HAS FETCHED IT.
      The corridors in legends.json are traced by hand from settlements and summits, so they
      draw as a chain of straight segments - no hairpins, and one of them cut across a lake.
      OpenStreetMap holds these routes as relations with every way in order. When the nightly
-     has pulled them, data/legends-geom.json carries the real line, hairpin for hairpin, and
+     has pulled them, legends-geom.json carries the real line, hairpin for hairpin, and
      it replaces the approximation. Until then the corridor is what we have, and it is
      labelled as approximate on the page. */
   try {
-    const geom = await jget('data/legends-geom.json', 9000);
+    const geom = await jget('legends-geom.json', 9000);
     if (geom && geom.roads) {
       let swapped = 0;
       for (const r of LEGENDS.roads) {
@@ -17891,7 +17891,7 @@ function drawSpeedLine(map, line, speeds) {
    transparent to the pointer, so hovering works on whatever basemap is showing. */
 
 /* ---- 7,622 CATALOGUED PLACES, NEVER ONCE PUT ON A MAP ----
-   data/heritage.json has been in the repository the whole time: World Heritage sites and
+   heritage.json has been in the repository the whole time: World Heritage sites and
    catalogued landmarks with coordinates, 1.16 MB, and nothing had ever fetched it. A rider
    looking at a route wants to know what is beside it - a monastery, a gorge, a palace two
    kilometres off the line is the difference between a ride and a day out.
@@ -17937,7 +17937,7 @@ async function nearbyAdditions(r, howMany) {
   if (line.length < 2) return [];
   if (!S._heritage) {
     /* ---- THE CATALOGUE IS ALREADY IN THE FILE. ASK FOR IT BEFORE ASKING THE NETWORK ----
-       "Add a stop" and "Worth adding" fetched data/heritage.json. The single-file build he
+       "Add a stop" and "Worth adding" fetched heritage.json. The single-file build he
        downloads has no server, so the fetch always failed, S._heritage came back with zero
        rows and BOTH panels rendered with nothing to offer - a feature that exists in code
        and gives the rider nothing, which is the definition of lost. release.mjs has been
@@ -17950,7 +17950,7 @@ async function nearbyAdditions(r, howMany) {
        row read the same. */
     S._heritage = (inl && inl.rows && inl.rows.length)
       ? Promise.resolve({ rows: inl.rows, grid: inl.grid || null, prose: inl.prose || null })
-      : jget('data/heritage.json', 20000)
+      : jget('heritage.json', 20000)
           .then(j => (j && j.rows) ? { rows: j.rows, grid: j.grid || null, prose: j.prose || null }
                                    : { rows: [], grid: null, prose: null })
           .catch(() => ({ rows: [], grid: null, prose: null }));
@@ -18437,13 +18437,13 @@ function drawHeritageNear(map) {
   if (!map || !window.L || !L.circleMarker || !L.layerGroup || !line || line.length < 2) return;
   /* ---- READ THE FILE THE WAY IT IS ACTUALLY BUILT ----
      I guessed at `places` or a bare array and got neither, so this quietly resolved to an
-     empty list and drew nothing for three sessions. data/heritage.json is `rows` - 7,622
+     empty list and drew nothing for three sessions. heritage.json is `rows` - 7,622
      places as [lat, lon, name, ...] - plus `grid`, which already indexes them into one-degree
      cells. That grid is exactly the lookup this needs, so the whole catalogue never has to be
      scanned: take the cells the route passes through and look only at those. */
   if (!S._heritage) {
     /* ---- THE CATALOGUE IS ALREADY IN THE FILE. ASK FOR IT BEFORE ASKING THE NETWORK ----
-       "Add a stop" and "Worth adding" fetched data/heritage.json. The single-file build he
+       "Add a stop" and "Worth adding" fetched heritage.json. The single-file build he
        downloads has no server, so the fetch always failed, S._heritage came back with zero
        rows and BOTH panels rendered with nothing to offer - a feature that exists in code
        and gives the rider nothing, which is the definition of lost. release.mjs has been
@@ -18456,7 +18456,7 @@ function drawHeritageNear(map) {
        row read the same. */
     S._heritage = (inl && inl.rows && inl.rows.length)
       ? Promise.resolve({ rows: inl.rows, grid: inl.grid || null, prose: inl.prose || null })
-      : jget('data/heritage.json', 20000)
+      : jget('heritage.json', 20000)
           .then(j => (j && j.rows) ? { rows: j.rows, grid: j.grid || null, prose: j.prose || null }
                                    : { rows: [], grid: null, prose: null })
           .catch(() => ({ rows: [], grid: null, prose: null }));
@@ -22860,7 +22860,7 @@ const clock = m => String(Math.floor((m / 60) % 24)).padStart(2, '0') + ':' + St
    after the box was resized. Rebuilding the path against the measured width removes the
    distortion completely instead of reducing it. */
 /* ---------------- rider gatherings near the road ----------------
-   Reads data/events.json, which ships EMPTY. There is no open dataset of motorcycle
+   Reads events.json, which ships EMPTY. There is no open dataset of motorcycle
    events, and a wrong date sends someone a long way to an empty car park - so the app
    claims nothing until a list exists. When one does, an event within 30 km of the route
    and within a fortnight of the ride shows up, always with the organiser's own link so a
@@ -22868,7 +22868,7 @@ const clock = m => String(Math.floor((m / 60) % 24)).padStart(2, '0') + ':' + St
 const EVENTS = { data: null, tried: false };
 /* THE FEED FINALLY HAS SOMETHING IN IT: 429 recurring series with coordinates, 51 countries.
    It arrives inline like everything else, because the download has no server to fetch from -
-   this mechanism has been reading `data/events.json` over the network since it was written,
+   this mechanism has been reading `events.json` over the network since it was written,
    which in the single file is a 404 every time and an empty list for ever.
    Rows are positional to keep the payload small; expanded once, here, into the shape the
    rest of the code already expects. */
