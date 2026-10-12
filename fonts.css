@@ -1,0 +1,7 @@
+/* Barlow Condensed, served from this domain.
+   Loaded from fonts.googleapis.com before, which sent every visitor's IP to Google
+   on page load, with no consent and nothing gained. Same font, no third party. */
+@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:500;font-display:swap;src:url(barlow-condensed-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600;font-display:swap;src:url(barlow-condensed-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:700;font-display:swap;src:url(barlow-condensed-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Barlow Condensed';font-style:italic;font-weight:700;font-display:swap;src:url(barlow-condensed-latin-700-italic.woff2) format('woff2')}
