@@ -4382,7 +4382,7 @@ body.tmbOpen { overflow: hidden; }
 .tripRetry { margin-left: 6px; background: #14161a; border: 1px solid rgba(242,177,52,.6); color: #f6d58b; border-radius: 999px; padding: 3px 12px; min-height: 32px; font: 600 14px/1.1 system-ui, sans-serif; cursor: pointer; }
 .tripActs #tripMail { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
 /* the road is not loaded: said on the map, with a way to try again */
-.csRoadBan { position: absolute; z-index: 600; left: 10px; right: 10px; top: 10px; background: rgba(12,13,16,.94); border: 1px solid rgba(242,177,52,.6); color: #f6d58b; border-radius: 12px; padding: 10px 12px; font-size: 15px; line-height: 1.4; }
+.csRoadBan { position: static; margin: 0 0 10px; background: rgba(12,13,16,.94); border: 1px solid rgba(242,177,52,.6); color: #f6d58b; border-radius: 12px; padding: 10px 12px; font-size: 15px; line-height: 1.4; }
 .csRoadBan b { color: #fff; }
 .csRoadBan button { margin-left: 6px; background: #e11b2b; color: #fff; border: 0; border-radius: 999px; padding: 4px 12px; min-height: 32px; font: 700 14px/1 var(--display); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
 /* ride page: jump to the briefing and the roadbook (they sat far down a phone page) */
@@ -4548,3 +4548,4 @@ body:not(.csWelcome) #view-home .heroIn h1 b { font-size: inherit !important; }
 /* the phone's Rides list is the board now, so its card titles follow the 16 px core text rule (R21) */
 @media(max-width:767px){ .exTop h3{font-size:17px} }
 @media(max-width:767px){ #view-explore details > summary{font-size:16px} }
+.mapNote[hidden]{display:none !important}

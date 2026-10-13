@@ -1,6 +1,6 @@
 {
- "build_id": "1e7736b",
- "build_date": "2026-10-12T19:59:52.856Z",
+ "build_id": "4f10440",
+ "build_date": "2026-10-12T21:23:17.460Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -53,8 +53,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 1837917,
-   "sha256": "f7214293b6365231ef2089834ad1037c3b83b1a6dc71786c17ac995c189588ca"
+   "bytes": 1843883,
+   "sha256": "4315d60472891fd7676429322d3d37b54590cc040a4445f3ceb7e0714c1b0e78"
   },
   {
    "path": "archive.js",
@@ -974,7 +974,7 @@
   {
    "path": "config.js",
    "bytes": 161288,
-   "sha256": "156c24f96d4c130179726104b9afc144d5c552eb311bcc689100ce01e39886a9"
+   "sha256": "4a1e9abfcf810fa6ec64a9552b9b90f5f2e6d34629a1d769f71a0c64c0b5d42d"
   },
   {
    "path": "cities.txt",
@@ -1398,8 +1398,8 @@
   },
   {
    "path": "route-flags.json",
-   "bytes": 134628,
-   "sha256": "fedb532f08e4ceadd7104630247ba972de5d324843ba6eabdee3738020d0441f"
+   "bytes": 129191,
+   "sha256": "a8d574c31325b6435806cdd0fc8dbb24744d92d49ed373fff034adbae33cdfdb"
   },
   {
    "path": "amsterdam.json",
@@ -2558,18 +2558,18 @@
   },
   {
    "path": "route-flags.js",
-   "bytes": 134659,
-   "sha256": "8fe68b84e1f2385e77fca2bf6f28711befbc1e6a034e494eeff45fc7a789ca35"
+   "bytes": 129222,
+   "sha256": "3ddce9e292cc5a4e329a61e7c644458ef43e21722a2b24a960d3a782c94eb4b2"
   },
   {
    "path": "styles.css",
-   "bytes": 311402,
-   "sha256": "f23c1a4d547127d1001dada6a4e38fd0fd4ef89cebaaae3402f800b4a31d3723"
+   "bytes": 311410,
+   "sha256": "88ab8731e5758fa1a6bf56a836384bb5f02c28940eadb200a267a585d3b029e6"
   },
   {
    "path": "sw.js",
    "bytes": 8544,
-   "sha256": "a0b13ac802838b5fd98ab667fb63e7d235694cb6442e4366c1fda11b75e1c9a5"
+   "sha256": "494f31bea893a6507a5d97a1e3b803f7b993f67d43906f0564aad2049e4cd087"
   }
  ]
 }

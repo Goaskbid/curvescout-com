@@ -4197,8 +4197,12 @@ function focusLine(rec) {
       }
     }
   } catch (e) {}
+  /* owner 2026-10-12: "the atlas is blinking". A hover dimmed every other road and the next hover put them back - the
+     whole map pulsed as the pointer crossed it. A hover now lifts only the road under the pointer; the rest of the map is
+     quieted only once a road is picked, which is a decision, not a passing pointer. */
+  const dimOthers = !!(rec && A.picked === rec);
   const host = A.map && A.map.getContainer && A.map.getContainer();
-  if (host) host.classList.toggle('atFocus', !!rec);
+  if (host) host.classList.toggle('atFocus', dimOthers);
 
   /* ---- RESTYLING 194 LINES ON EVERY POINTER MOVE IS THE FLICKER ----
      This walked every line in view and called setStyle on the core AND the casing, whether
@@ -4208,8 +4212,9 @@ function focusLine(rec) {
      Each line remembers the state it is currently drawn in. A line only gets touched when
      its state actually changes, which for moving the focus from one road to another is two
      lines instead of all of them. */
-  const stateOf = (l) => (l === rec ? 'focus' : rec ? 'dim' : 'base');
-  if (A._focus === rec) return;          // nothing changed: do nothing at all
+  const stateOf = (l) => (l === rec ? 'focus' : dimOthers ? 'dim' : 'base');
+  if (A._focus === rec && A._focusDim === dimOthers) return;          // nothing changed: do nothing at all
+  A._focusDim = dimOthers;
   A._focus = rec;
 
   for (const l of A.lines) {
@@ -4357,7 +4362,7 @@ function csAtlasRoad(id, raw, rec, inView) { try {
 /* owner 2026-10-12: "make the atlas routes more curvy and less vectors - they still look crap". One road at a time,
    behind a 400 ms pause, through the one shared queue, meant a view of forty rides took minutes and most of them stayed
    dashed chords. The atlas now has its own lane: two requests in flight, one on each public OSRM server (the same two
-   the ride page uses), each server asked at most every 300 ms and rested for 8 s when it says it is busy. The rider's
+   the ride page uses), each server asked at most once a second (their fair-use rate) and rested for 8 s when it says it is busy. The rider's
    own requests still go first - the lane waits while the shared queue has work. */
 const CS_ATLAS_SRV = [{ cool: 0 }, { cool: 0 }];
 function csAtlasPump() {
@@ -4370,7 +4375,8 @@ function csAtlasPump() {
   /* nearest the middle of the map first - that is where he is looking */
   try { const c = S.atlas && S.atlas.map && S.atlas.map.getCenter(); if (c) csAtlasQ.sort((a, b) => { const da = a.raw[0] ? Math.abs(a.raw[0][0] - c.lat) + Math.abs(a.raw[0][1] - c.lng) : 1e9, db = b.raw[0] ? Math.abs(b.raw[0][0] - c.lat) + Math.abs(b.raw[0][1] - c.lng) : 1e9; return da - db; }); } catch (e) {}
   const job = csAtlasQ.shift(); if (CS_ATLAS_ROAD.has(job.id)) { const road = CS_ATLAS_ROAD.get(job.id); if (road) csAtlasApply(job.rec, road); csAtlasPump(); return; }
-  csAtlasBusy++; srv.cool = now + 300;
+  /* the public servers ask for about one request a second each: the lane keeps to that (two servers, two a second) */
+  csAtlasBusy++; srv.cool = now + 1100;
   const base = k === 0 ? NET.router : (NET.routerAlt || NET.router);
   const pts = job.raw.length > 25 ? job.raw.filter((p, i) => i % Math.ceil(job.raw.length / 25) === 0 || i === job.raw.length - 1) : job.raw;
   const coords = pts.map(p => (+p[1]).toFixed(5) + ',' + (+p[0]).toFixed(5)).join(';');
@@ -4501,7 +4507,18 @@ function renderAtlas() {
        that the paint it belonged to was still the current one. Two panes of the same fault:
        a token says which paint this is, and the wanted set is reconciled rather than added to. */
     const paint = (S.atlas._paint = (S.atlas._paint || 0) + 1);
-    const wantIds = new Set(want.map(r => r.i));
+    /* owner 2026-10-12: "the atlas is blinking". Every small pan re-picked "the best ride per cell" for the new bounds,
+       so roads that were still on screen were taken off and others put on - the map flickered under the pointer. A road
+       that is still in view now stays (up to half the cap again), the picked road always stays, and only the free room is
+       filled with new ones. */
+    const nearIds = new Set(near.map(r => r.i));
+    const keep = [...S.atlas.drawn.keys()].filter(id => nearIds.has(id)).slice(0, Math.round(CAP * 1.5));
+    const pickedId = S.atlas.picked && S.atlas.picked.r && S.atlas.picked.r.i;
+    const room = Math.max(0, CAP - keep.length);
+    const fresh = want.filter(r => !keep.includes(r.i)).slice(0, room);
+    const wantIds = new Set(keep.concat(fresh.map(r => r.i)));
+    if (pickedId) wantIds.add(pickedId);
+    want.splice(0, want.length, ...want.filter(r => wantIds.has(r.i)));
     for (const [id, layer] of [...S.atlas.drawn]) {
       if (wantIds.has(id)) continue;
       try { if (layer && layer.remove) layer.remove(); } catch (e) {}
@@ -4579,19 +4596,22 @@ function renderAtlas() {
            clickable, still in the count. */
         const rank = Math.max(0, Math.min(1, ((+r.s || 0) - 70) / 22));
         const emph = 0.55 + 0.45 * rank;
+        /* owner 2026-10-12: only the wide invisible grab line takes the pointer. The drawn lines were interactive too, so
+           the next ride's road sat over this ride's grab line: the hover never arrived and a click on a visible road
+           opened it straight away instead of selecting it. */
         const casing = L.polyline(pts, { color: '#0b0c0e', weight: (exact ? 7 : 5) * (0.72 + 0.28 * rank), opacity: .30 + .30 * rank,
-          lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6 }).addTo(worms);
+          lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6, interactive: false }).addTo(worms);
         const core = L.polyline(pts, { color: colour(r), weight: (exact ? 3.4 : 2.6) * (0.66 + 0.5 * rank),
           /* an outline waiting for its road stays quiet; the road, once routed, is drawn at full strength */
           opacity: (exact ? .98 : .5) * emph,
-          lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6,
+          lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6, interactive: false,
           dashArray: exact ? null : '8 7' }).addTo(worms)
           /* ---- A FLOATING TOOLTIP GETS CUT OFF AT THE EDGE OF THE MAP ----
              A road near the bottom of the frame had its own description clipped by the map
              container - the one place a rider needs it. The card is pinned inside the map
              instead: it never leaves the frame, it can hold a full sentence, and it cannot
              cover the road it is describing because it sits in a corner. */
-          .on('click', () => go('#/ride/' + encodeURIComponent(r.i)));
+          ;
         /* ---- A THREE-PIXEL LINE IS NOT A TARGET ----
            The click handler was on the road itself, which is 2.6px wide and usually
            diagonal: a rider has to land the pointer on it exactly, and mostly does not.
@@ -4602,12 +4622,16 @@ function renderAtlas() {
         /* 18px was a thin target for a diagonal line on a phone, and the hit lines sat under
            each other in draw order so the one on top won regardless of which road was nearer
            the finger. 26px, and the grab layer is raised above the drawn ones. */
+        /* owner 2026-10-12: the pointer is matched to the NEAREST road by the map itself (see atlasNearest), not to
+           whichever wide grab line happens to be drawn on top - overlapping grab lines picked the wrong road */
         const hit = L.polyline(pts, { color: '#000', weight: 26, opacity: 0.01,
-          lineJoin: 'round', lineCap: 'round', interactive: true }).addTo(worms);
+          lineJoin: 'round', lineCap: 'round', interactive: false }).addTo(worms);
         const rec = { core, casing, hit, r, emph,
           base: { w: core.options.weight, o: core.options.opacity },
           caseBase: { w: casing.options.weight, o: casing.options.opacity } };
         S.atlas.lines.push(rec);
+        /* a road drawn while another is picked joins the quieted background, like the rest */
+        if (S.atlas.picked && S.atlas.picked !== rec) { try { rec._drawn = 'dim'; core.setStyle({ opacity: 0.38 }); casing.setStyle({ opacity: 0.22 }); } catch (e) {} }
         /* owner 2026-10-08: show rides with their more complex shape. A ride drawn as a dashed outline is routed
            along the real roads through its own checkpoints, in the reader's browser, when only a few rides are in
            view (zoomed in); the line then turns solid - the legend already says solid = the road as routed. */
@@ -4625,15 +4649,19 @@ function renderAtlas() {
            set-focus, clear-focus within a few milliseconds, and the map strobed. Clearing is
            deferred by a frame or two: if the pointer has landed on another line by then, the
            clear never happens and the focus simply moves. */
+        /* a road lights up when the pointer rests on it (90 ms), not on every line it brushes past */
         hit.on('mouseover', () => {
           if (!S.atlas) return;
           if (S.atlas._unfocusT) { clearTimeout(S.atlas._unfocusT); S.atlas._unfocusT = null; }
-          if (!S.atlas.picked) focusLine(rec);
+          if (S.atlas._hoverT) clearTimeout(S.atlas._hoverT);
+          S.atlas._hoverT = setTimeout(() => { if (S.atlas && !S.atlas.picked) focusLine(rec); }, 90);
         });
         hit.on('mouseout', () => {
-          if (!S.atlas || S.atlas.picked) return;
+          if (!S.atlas) return;
+          if (S.atlas._hoverT) { clearTimeout(S.atlas._hoverT); S.atlas._hoverT = null; }
+          if (S.atlas.picked) return;
           if (S.atlas._unfocusT) clearTimeout(S.atlas._unfocusT);
-          S.atlas._unfocusT = setTimeout(() => { if (!S.atlas) return; S.atlas._unfocusT = null; focusLine(null); }, 140);
+          S.atlas._unfocusT = setTimeout(() => { if (!S.atlas) return; S.atlas._unfocusT = null; focusLine(null); }, 220);
         });
         hit.on('click', (ev) => {
           /* Leaflet passes a layer click on to the map, and the map handler clears the
@@ -4717,12 +4745,34 @@ function renderAtlas() {
     });
   }
   /* clicking bare map, or Escape, lets the whole picture back */
-  map.on('click', () => {
-    if (!S.atlas || !S.atlas.picked) return;
-    if (Date.now() - (S.atlas._picked_at || 0) < 300) return;   // this is the same click
-    pickLine(S.atlas.picked);
+  /* owner 2026-10-12: "very difficult to select a ride". A click had to land on a 3 px line, and a click on bare map
+     went through pickLine with the picked road - which, after a moment, OPENED that ride instead of clearing it. Now a
+     click picks the nearest road within 24 px of the pointer (so a near miss still selects), and a click on bare map
+     only clears the selection. */
+  const clearPick = () => { if (!S.atlas || !S.atlas.picked) return; S.atlas.picked = null; S.atlas._pickFirst = 0; focusLine(null);
+    const card = document.getElementById('atlasHover'); if (card) card.classList.remove('picked'); };
+  const atlasNearest = (cp, only) => { let best = null, bd = 24;
+    const segD = (p, a, b) => { const dx = b.x - a.x, dy = b.y - a.y, l2 = dx * dx + dy * dy; let t = l2 ? ((p.x - a.x) * dx + (p.y - a.y) * dy) / l2 : 0; t = Math.max(0, Math.min(1, t)); const x = a.x + t * dx - p.x, y = a.y + t * dy - p.y; return Math.sqrt(x * x + y * y); };
+    try { for (const rec of (only || S.atlas.lines || [])) { if (!rec || !rec.core || !rec.core._map) continue; let ll = rec.core.getLatLngs(); if (Array.isArray(ll[0])) ll = ll.flat();
+      const step = Math.max(1, Math.floor(ll.length / 120)); let prev = null;
+      for (let i = 0; i < ll.length; i += step) { const q = map.latLngToContainerPoint(ll[i]); if (prev) { const d = segD(cp, prev, q); if (d < bd) { bd = d; best = rec; } } prev = q; }
+      if (ll.length > 1 && (ll.length - 1) % step) { const q = map.latLngToContainerPoint(ll[ll.length - 1]); if (prev) { const d = segD(cp, prev, q); if (d < bd) { bd = d; best = rec; } } } } } catch (e) {}
+    return best; };
+  /* hover: the nearest road within 24 px lights up after the pointer rests 90 ms; the cursor says it can be picked */
+  let hovT = null, lastHov = null;
+  map.on('mousemove', (ev) => { if (!S.atlas) return; const cp = ev.containerPoint; clearTimeout(hovT);
+    hovT = setTimeout(() => { if (!S.atlas) return; const rec = atlasNearest(cp);
+      try { map.getContainer().style.cursor = rec ? 'pointer' : ''; } catch (e) {}
+      if (S.atlas.picked || rec === lastHov) return; lastHov = rec; focusLine(rec || null); }, 90); });
+  map.on('mouseout', () => { clearTimeout(hovT); lastHov = null; if (S.atlas && !S.atlas.picked) focusLine(null); });
+  map.on('click', (ev) => {
+    if (!S.atlas) return;
+    /* the road that is lit under the pointer is the one a click means, if the click is still near it */
+    const best = (lastHov && atlasNearest(ev.containerPoint, [lastHov])) || atlasNearest(ev.containerPoint);
+    if (best) { S.atlas._picked_at = Date.now(); pickLine(best); return; }
+    clearPick();
   });
-  const esc0 = (e) => { if (e.key === 'Escape' && S.atlas && S.atlas.picked) pickLine(S.atlas.picked); };
+  const esc0 = (e) => { if (e.key === 'Escape') clearPick(); };
   document.addEventListener('keydown', esc0);
   VIEW.add(() => document.removeEventListener('keydown', esc0));
   wire('atlasBack', () => go('#/rides'));
@@ -15477,14 +15527,18 @@ function rideFromImport(parsed) {
 function csRoadHonesty(line) { try {
   const box = document.querySelector('#view-ride .mapBox') || (S.map && S.map._container && S.map._container.parentNode);
   let ban = document.getElementById('csRoadBan');
-  if (!line || !line.approximate) { if (ban) ban.remove(); return; }
+  if (!line || !line.approximate) { if (ban) ban.remove(); try { const nt = document.getElementById('mapNote'); if (nt && nt.dataset.csBan) { nt.hidden = false; delete nt.dataset.csBan; } } catch (e) {} return; }
   /* every road-coloured line on the ride map turns into grey dashes - grading a straight line would be invented */
   const grey = l => { try { if (l && l.setStyle && l.getLatLngs && !(L.Polygon && l instanceof L.Polygon)) l.setStyle({ color: '#8d99a6', dashArray: '6 9', weight: 3, opacity: .9 }); } catch (e) {} };
   (S.drawnLayers || []).forEach(grey);
   try { if (S.map && S.map.eachLayer) S.map.eachLayer(l => { if (l && l.getLatLngs && (l.getLatLngs() || []).length > 1) grey(l); }); } catch (e) {}
-  try { const nt = document.getElementById('mapNote'); if (nt) nt.innerHTML = '<b>Road not loaded</b> - no road colours until the routed line arrives.'; } catch (e) {}
+  /* owner 2026-10-12 (screenshot): the banner lay across the map under the legend note, the Whole route and Expand
+     buttons - three boxes saying the same thing on top of each other. One message now, ABOVE the map, in the page flow;
+     the legend note steps aside while it shows. */
+  try { const nt = document.getElementById('mapNote'); if (nt) { nt.innerHTML = '<b>Road not loaded</b> - no road colours until the routed line arrives.'; nt.hidden = true; nt.dataset.csBan = '1'; } } catch (e) {}
   if (!box) return;
-  if (!ban) { ban = document.createElement('div'); ban.id = 'csRoadBan'; ban.className = 'csRoadBan'; box.appendChild(ban); }
+  if (!ban) { ban = document.createElement('div'); ban.id = 'csRoadBan'; ban.className = 'csRoadBan'; }
+  if (ban.nextElementSibling !== box) box.insertAdjacentElement('beforebegin', ban);
   ban.innerHTML = '<b>Road not loaded.</b> The routing services did not answer, so grey dashes join the checkpoints - they are not the road. <button type="button" id="csRoadRetry">Try again</button>';
   const b = document.getElementById('csRoadRetry');
   if (b) b.onclick = () => { try { OSRM.openUntil = 0; OSRM.fails = 0; } catch (e) {} ban.innerHTML = 'Loading the road…'; try { if (S._redrawRoute) S._redrawRoute(); } catch (e) {} };
@@ -16463,7 +16517,10 @@ async function osrmGeometry(r) {
   }
   /* when the routers do not answer, the line this ride had last time is better than straight lines */
   /* the straight-line outline is never cached: a retry must really ask the router again (QA 2026-10-10) */
-  const memoOrOutline = () => { const m = csRoadMemoGet(key); if (m) { S.geomCache.set(key, m); return m; } return outline(); };
+  /* a road the atlas already found for this ride (kept in the browser) is the real road too - better than an outline
+     when the routers are busy (owner 2026-10-12: "Road not loaded" on a ride opened from the atlas) */
+  const memoOrOutline = () => { const m = csRoadMemoGet(key) || (!avoid.length && !(S.fromMe && S.start) && (() => { try { const a = csAtlasStoreGet(r.id); if (Array.isArray(a) && a.length > 10) { a.fromMemo = true; return a; } } catch (e) {} return null; })());
+    if (m) { S.geomCache.set(key, m); return m; } return outline(); };
   if (!js) try {
     js = await OSRM.run(base + extra, 15000, 10);
   } catch (e) {
