@@ -4549,3 +4549,167 @@ body:not(.csWelcome) #view-home .heroIn h1 b { font-size: inherit !important; }
 @media(max-width:767px){ .exTop h3{font-size:17px} }
 @media(max-width:767px){ #view-explore details > summary{font-size:16px} }
 .mapNote[hidden]{display:none !important}
+
+/* ================= r22 (owner 2026-10-13) =================
+   Pins instead of chords, trips A to B with transfers, place suggestions, What's here at every stop,
+   the phone atlas card below the map, and My Road Atlas. Type floor: 16 px core, 14 px secondary. */
+.lgPin{display:inline-block;width:11px;height:11px;border-radius:50%;background:#ffa62b;border:2px solid #0b0c0e;box-shadow:0 0 0 1px #9aa4b2;vertical-align:middle;margin-right:4px}
+.lgRid{background:#ffd166}.lgWant{background:#6cb8ff}
+/* place suggestions */
+.csSug{position:absolute;left:0;right:0;top:100%;z-index:60;margin:4px 0 0;padding:4px;list-style:none;background:#14161a;border:1px solid var(--edge2);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.45);max-height:min(60vh,380px);overflow:auto}
+.csSugRow{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;cursor:pointer;min-height:44px}
+.csSugRow:hover,.csSugRow.on{background:#22262d}
+.csSugF{font-size:20px;line-height:1;flex:0 0 auto}
+.csSugT{display:flex;flex-direction:column;min-width:0}
+.csSugT b{font-size:16px;color:var(--ink);font-weight:600}
+.csSugT small{font-size:14px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.csSugNote,.csSugCredit{padding:8px 10px;font-size:14px;color:var(--mut)}
+.csSugCredit{font-size:14px;color:var(--dim);border-top:1px solid var(--edge);margin-top:4px}
+/* trips: kinds, schedule, destination */
+.tripKind .chip{font-size:16px}
+.tripKindHelp{margin:6px 0 0;font-size:14px;color:var(--mut);max-width:60ch}
+.tripSched{list-style:none;margin:10px 0;padding:0 0 0 2px;border-left:2px solid var(--edge2)}
+.tripSched li{display:flex;gap:10px;align-items:baseline;padding:5px 0 5px 12px;position:relative;font-size:16px;line-height:1.4}
+.tripSched li::before{content:'';position:absolute;left:-6px;top:12px;width:10px;height:10px;border-radius:50%;background:#5f6875;border:2px solid var(--card)}
+.tripSched li.tsR::before{background:var(--red)}.tripSched li.tsN::before{background:#ffd166}
+.tripSched time{font-variant-numeric:tabular-nums;color:var(--mut);font-size:14px;min-width:44px}
+.tripSched .tsKm{font-weight:600;color:var(--ink)}
+.tripSched li.tsX span{color:#c9cdd3}
+.tripDest{width:26px;height:26px;border-radius:50%;background:#0b0c0e;color:#ffd166;border:2px solid #ffd166;font:800 14px/22px var(--display);text-align:center}
+/* What's here at every stop */
+.wh{margin:10px 0 6px;padding:12px 14px;border:1px solid var(--edge);border-radius:12px;background:rgba(255,255,255,.025)}
+.whLead{margin:0 0 8px;font-size:16px;color:var(--ink);font-weight:600}
+.whList{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.whList li{display:grid;grid-template-columns:24px 52px 1fr;gap:6px;align-items:baseline;font-size:16px;line-height:1.45}
+.whIc{font-size:16px}.whK{font-size:14px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;font-family:var(--display)}
+.whV{color:#d9dce1}.whV b{color:var(--ink);font-weight:600}.whV a{color:#7cc4ff}
+.whWarn{color:#ffb35c}
+@media(max-width:767px){.whList li{grid-template-columns:22px 1fr}.whK{grid-column:2}.whV{grid-column:2}}
+/* the phone atlas card: below the map, short */
+@media(max-width:767px){
+  #view-atlas > .atHover{position:static;max-width:none;margin:10px 0 80px;pointer-events:auto;backdrop-filter:none;background:var(--card)}
+  #view-atlas > .atHover b{font-size:17px}
+  #view-atlas > .atHover span{font-size:14px}
+  #view-atlas > .atHover em{font-size:14px}
+}
+/* My Road Atlas */
+.raStrip{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 12px}
+.raB{min-height:44px;padding:9px 14px;border-radius:999px;border:1px solid var(--edge2);background:#16191e;color:var(--ink);font-size:16px;cursor:pointer}
+.raB.on{background:#2a2414;border-color:#ffd166;color:#ffd166}
+.raB[data-ras="w"].on{background:#14212d;border-color:#6cb8ff;color:#9fd2ff}
+.raB[data-raf].on{background:#2a1416;border-color:var(--red);color:#ff8a92}
+.raSm .raB{font-size:14px;padding:7px 11px;min-height:40px}
+.raLink{font-size:16px;color:#7cc4ff;margin-left:4px}
+.raToast{position:fixed;left:50%;bottom:88px;transform:translate(-50%,30px);opacity:0;transition:opacity .25s,transform .25s;z-index:3000;background:#14161a;border:1px solid #ffd166;border-radius:999px;padding:10px 18px;box-shadow:0 10px 30px rgba(0,0,0,.5);pointer-events:none;max-width:calc(100vw - 32px)}
+.raToast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.raToast a{color:#ffd166;font-size:16px;text-decoration:none}
+.raSavedLink{display:flex;flex-direction:column;gap:2px;margin:0 0 10px;padding:12px 14px;border:1px solid #ffd166;border-radius:12px;background:#1c1a12;text-decoration:none}
+.raSavedLink b{color:#ffd166;font-size:16px}.raSavedLink span{color:var(--mut);font-size:14px}
+.raWrap{max-width:1040px;margin:0 auto;padding:18px 16px 110px}
+.raWrap h2{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:22px;margin:26px 0 10px}
+.raHead h1{font-family:var(--display);font-style:italic;text-transform:uppercase;font-size:44px;margin:2px 0 8px}
+.raKick{margin:0;color:#ffd166;font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-size:15px}
+.raXp span{font-size:15px;color:var(--mut)}
+.raXpBar,.raBar{height:10px;border-radius:99px;background:#22262d;overflow:hidden;margin:6px 0}
+.raXpBar i,.raBar i{display:block;height:100%;background:linear-gradient(90deg,#e11b2b,#ffd166);border-radius:99px}
+.raEmpty{font-size:16px;line-height:1.5;padding:14px;border:1px dashed var(--edge2);border-radius:12px;color:#d9dce1}
+.raEmpty a{color:#7cc4ff}
+.raTiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.raTile{background:var(--card);border:1px solid var(--edge);border-radius:12px;padding:12px 14px}
+.raTile b{display:block;font-family:var(--display);font-size:32px;color:var(--ink)}.raTile span{font-size:14px;color:var(--mut)}
+.raFlags{font-size:28px;margin:12px 0 4px}
+.raPassList{font-size:16px;line-height:1.5;color:#d9dce1}
+.raCols{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.raCol{background:var(--card);border:1px solid var(--edge);border-radius:14px;padding:14px}
+.raCol.done{border-color:#ffd166}
+.raCol h3{margin:0 0 4px;font-family:var(--display);text-transform:uppercase;letter-spacing:.03em;font-size:19px}
+.raCol p{margin:0 0 8px;font-size:14px;color:var(--mut)}
+.raOf{font-size:14px;color:var(--mut)}
+.raCol ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px}
+.raCol li{display:flex;align-items:center;gap:8px;font-size:16px;min-height:40px}
+.raCol li span{width:18px;color:var(--dim)}.raCol li.r span{color:#ffd166}.raCol li.w span{color:#6cb8ff}
+.raPassB{margin-left:auto;font-size:14px;background:none;border:1px solid var(--edge2);color:var(--mut);border-radius:999px;padding:6px 11px;min-height:36px;cursor:pointer}
+.raBadges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.raBadge{background:var(--card);border:1px solid var(--edge);border-radius:12px;padding:12px;opacity:.55;filter:grayscale(1)}
+.raBadge.got{opacity:1;filter:none;border-color:#5a4c22}
+.raBadge i{display:block;font-style:normal;font-size:28px}.raBadge b{display:block;font-size:16px;margin:4px 0 2px}.raBadge span{font-size:14px;color:var(--mut)}
+.raLists{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:767px){.raLists{grid-template-columns:1fr}.raHead h1{font-size:36px}}
+.raList{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.raList a{display:flex;flex-direction:column;padding:10px 12px;border:1px solid var(--edge);border-radius:10px;background:var(--card);text-decoration:none;min-height:44px}
+.raList b{color:var(--ink);font-size:16px}.raList span{color:var(--mut);font-size:14px}
+.raMut{font-size:14px;color:var(--mut);line-height:1.5}
+.raBtns{display:flex;flex-wrap:wrap;gap:8px}
+.raCodeBox{display:block;width:100%;margin:8px 0;background:#0f1114;color:var(--ink);border:1px solid var(--edge2);border-radius:10px;padding:10px;font-size:14px;font-family:ui-monospace,monospace}
+.raCardImg{display:block;max-width:360px;width:100%;border-radius:12px;margin:10px 0}
+@media(max-width:767px){
+.raToast{bottom:calc(76px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 32px);white-space:normal;text-align:center}
+}
+/* map UI cleanup (owner 2026-10-13: "clean up the map ui"): the legend explanation folds on every screen behind
+   "What the lines mean", so the map starts right under the key */
+#view-atlas .atlasLegend .lgNote{display:none}
+#view-atlas .atlasLegend.open .lgNote{display:block;flex:0 0 100%;white-space:normal}
+@media(min-width:768px){.atlasLegend .lgMoreBtn{display:inline-block}}
+/* ---- trip day cards, rewritten (owner 2026-10-17: "clean and neat ... much more great text per waypoint ... less
+   redundancies and crisper, especially on the mobile") ---- */
+.tripDayT{min-width:0;flex:1}
+.tripKick small{font-size:14px}
+.tripKick{margin:0 0 2px;color:#a9a69d;font:700 14px/1.2 var(--display);letter-spacing:.08em;text-transform:uppercase}
+.tripDay h3{overflow-wrap:anywhere}
+.tripLead{color:#e2e0da;font-size:16px;line-height:1.5;margin:10px 0 0}
+.tripPath{margin:8px 0 0;color:#ffd23f;font:700 15px/1.45 var(--display);overflow-wrap:anywhere}
+.tripPath i{color:#6b7280;font-style:normal;margin:0 2px}
+.tripPath small{color:#c9c6bf;font-weight:600;font-size:14px}
+.tripBook{margin-top:12px;border-top:1px solid #23262d;padding-top:4px}
+.tripBook>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:44px;color:#f4f2ec}
+.tripBook>summary::-webkit-details-marker{display:none}
+.tripBook>summary .tbT{font:700 15px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase}
+.tripBook>summary .tbT::before{content:'▸';display:inline-block;width:16px;color:#e11b2b;transition:transform .15s}
+.tripBook[open]>summary .tbT::before{transform:rotate(90deg)}
+.tripBook>summary .tbS{color:#a9a69d;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tripSched li{align-items:flex-start}
+.tripSched time{padding-top:1px}
+.tripSched .tsB{min-width:0;flex:1}
+.tripSched .tsH,.tripSched .tsT,.tripSched .tsTags,.tripSched .tsKmL{margin:0}
+.tripSched .tsH{color:#f4f2ec;overflow-wrap:anywhere}
+.tripSched .tsT{color:#c9c6bf;font-size:16px;line-height:1.5;margin-top:3px}
+.tripSched .tsT b{color:#f4f2ec;font-weight:700}
+.tripSched .tsI{display:inline-block;min-width:18px;color:#e11b2b;font-size:14px}
+.tripSched .tsAlt{color:#ffd23f;font-weight:700;font-size:16px;white-space:nowrap}
+.tripSched .tsMk{color:#8d9199;font-size:14px;white-space:nowrap}
+.tripSched .tsTags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tripSched .tsTag{background:#0d0f12;border:1px solid #2a2e36;border-radius:999px;padding:3px 10px;font-size:14px;line-height:1.35;color:#d7d4cd;overflow-wrap:anywhere}
+.tripSched .tsTag.warn{border-color:#6b5320;color:#f6d58b}
+.tripSched .tsTag.meal{border-color:#2f5e45;color:#9ee0b9}
+.tripSched .tsTag.ev{border-color:#5b2f63;color:#e5b8f0}
+.tripSched li.tsW{padding-top:8px;padding-bottom:8px}
+.tripSched li.tsW::before{background:#e11b2b}
+.tripSched li.tsW.k-pass::before,.tripSched li.tsW.k-high::before{background:#ffd23f}
+.tripSched .tsWait{color:#8d9199}
+.tripRoads{margin:6px 0 0 14px;color:#a9a69d;font-size:14px;line-height:1.45}
+.tripRoads b{color:#e9e6df}
+.tripFineD{margin-top:12px;grid-column:1/-1}
+.tripFineD>summary{cursor:pointer;color:#a9a69d;font-size:14px;min-height:32px}
+@media (max-width:600px){
+  .tripDay{padding:14px 12px}
+  .tripDay h3{font-size:18px}
+  .tripDayHead{gap:10px}
+  .tripNum{width:30px;height:30px;line-height:30px;font-size:16px}
+  .tripSched li{gap:8px;padding-left:10px}
+  .tripSched time{min-width:42px}
+  .tripBtns{grid-template-columns:repeat(3,1fr)!important}
+  .tripBtns .ghost2:first-child{grid-column:auto!important}
+  .tripBtns .ghost2{font-size:15px;padding:6px 4px;min-height:44px}
+  .tripPic img{aspect-ratio:2/1}
+}
+.tripSched .tsWiki{margin:6px 0 0;color:#c9c6bf;font-size:16px;line-height:1.5;overflow:hidden}
+.tripSched .tsWiki a{color:#f4f2ec;font-weight:700;text-decoration:underline;text-decoration-color:#4a505b;text-underline-offset:2px}
+.tripSched .tsWiki .tsPic{float:right;width:84px;height:84px;object-fit:cover;border-radius:10px;margin:2px 0 4px 10px;background:#0d0f12}
+.tripSched .tsWiki .tsSrc{color:#8d9199;font-size:14px}
+.tripSched .tsNext{margin:6px 0 0;color:#8d9199}
+.tripSched .tsNext small{font-size:14px}
+@media (max-width:600px){
+  .tripActs{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
+  .tripActs>*{margin:0!important;width:auto!important;min-width:0;padding:0 8px!important}
+  .tripActs #tripShare{grid-column:1/-1}
+}

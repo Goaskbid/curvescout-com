@@ -1574,7 +1574,7 @@ window.csStoryEnhance = async function csStoryEnhance() {
       csBasemap(m, 'street');
       const pts = wps.map(w => [+w.lat, +w.lon]);
       m.fitBounds(L.latLngBounds(pts).pad(0.15));
-      const outline = L.polyline(pts, { color: '#e6002e', weight: 3, opacity: .85, dashArray: '8 7' }).addTo(m);
+      const outline = L.polyline(pts, { color: '#e6002e', weight: 3, opacity: 0, interactive: false }).addTo(m);   /* pins only until the road arrives */
       wps.forEach((w, i) => { const first = i === 0, last = i === wps.length - 1;
         L.circleMarker([+w.lat, +w.lon], { radius: first || last ? 8 : 6, color: '#fff', weight: 2.5,
           fillColor: first ? '#2f9e5e' : last ? '#e6002e' : '#15171b', fillOpacity: 1 }).addTo(m)
@@ -2439,6 +2439,59 @@ function suggestions(all, n = 6) {
    next to Furka (2,429 m) and the home page under-counted. A ride that names a pass in its title or its named roads
    takes that pass's height from the app's own pass list (388 passes with summit heights); a ride with neither stays
    unknown and no sentence pretends otherwise. */
+/* ---- A HIGH POINT FOR EVERY RIDE (owner 2026-10-17) ----
+   Only about 600 of 32,524 rides carried a height. Offline sources first (its checkpoint heights,
+   a pass on a checkpoint); for the rest the browser asks Open-Meteo's elevation service for the heights of the ride's
+   own checkpoints - points on the road, so the figure is never a mountain the road goes round - eleven rides per request,
+   only for rides on screen, and keeps every answer on this device so a ride is asked once. The ride page's measured
+   profile, when it loads, replaces the checkpoint figure with the road's own highest point. */
+const CS_ALT = { mem: null, q: new Map(), busy: false, t: 0 };
+function csAltStore() { if (!CS_ALT.mem) { try { CS_ALT.mem = JSON.parse(store.get('cs_alt') || '{}') || {}; } catch (e) { CS_ALT.mem = {}; } } return CS_ALT.mem; }
+function csAltSave() { clearTimeout(CS_ALT.t); CS_ALT.t = setTimeout(() => { try { store.set('cs_alt', JSON.stringify(CS_ALT.mem || {})); } catch (e) {} }, 400); }
+function csAltWps(r) { let w = r.wp; if (typeof w === 'string') { try { w = JSON.parse(w); } catch (e) { w = []; } }
+  if ((!Array.isArray(w) || !w.length) && Array.isArray(r.waypoints)) w = r.waypoints.map(x => [+x.lat, +x.lon]);
+  return (Array.isArray(w) ? w : []).filter(p => Array.isArray(p) && Number.isFinite(+p[0]) && Number.isFinite(+p[1])).map(p => [+p[0], +p[1]]); }
+function csAltOffline(r, passes) {
+  let best = 0;
+  /* checkpoint heights only: `sp` is a profile shared by many rides of a region (see routeLine), not this ride's own */
+  if (Array.isArray(r.wa)) for (const v of r.wa) if (+v > best && +v < 9000) best = +v;
+  if (best) return Math.round(best);
+  if (Array.isArray(passes) && passes.length) {
+    if (!CS_ALT.pg) { CS_ALT.pg = new Map(); for (const p of passes) { if (!p || !Array.isArray(p.at) || !(+p.alt > 0)) continue; const k = Math.floor(+p.at[0] * 10) + '_' + Math.floor(+p.at[1] * 10); if (!CS_ALT.pg.has(k)) CS_ALT.pg.set(k, []); CS_ALT.pg.get(k).push(p); } }
+    for (const q of csAltWps(r)) { const a0 = Math.floor(q[0] * 10), b0 = Math.floor(q[1] * 10);
+      for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) for (const p of (CS_ALT.pg.get((a0 + i) + '_' + (b0 + j)) || []))
+        if (hav({ lat: q[0], lon: q[1] }, { lat: +p.at[0], lon: +p.at[1] }) <= 3 && +p.alt > best) best = +p.alt; } }
+  return Math.round(best);
+}
+function csAltNote(id, alt, fromRoad) { try { id = String(id || '').split('#')[0]; alt = Math.round(+alt); if (!id || !(alt > 0)) return;
+  const m = csAltStore(); if (!fromRoad && +m[id] > 0) return; m[id] = alt; csAltSave();
+  const r = (S.routes || []).find(x => x.i === id); if (r && (fromRoad || !(+r.al > 0) || r.alSrc === 'dem')) { r.al = alt; r.alSrc = fromRoad ? 'road' : 'dem'; csAltPaint(id, alt); } } catch (e) {} }
+/* every list writes an empty slot for a ride without a height; the slots on screen are filled as the answers arrive */
+function csAltSlot(r, fmt) { return '<span class="altSlot" data-alt-for="' + esc(r.i) + '" data-alt-fmt="' + (fmt || 'dot') + '"></span>'; }
+function csAltPaint(id, alt) { try { document.querySelectorAll('.altSlot[data-alt-for="' + (window.CSS && CSS.escape ? CSS.escape(id) : id) + '"]').forEach(el => {
+  const f = el.dataset.altFmt; el.innerHTML = f === 'upto' ? 'up to <b>' + alt + ' m</b>' : f === 'trip' ? ' · up to <b>' + alt + ' m</b>' : ' · ' + alt + ' m'; el.title = 'Highest checkpoint, from the Open-Meteo elevation service'; el.classList.add('on'); }); } catch (e) {} }
+function csAltQueue(ids) {
+  for (const id of ids) { if (CS_ALT.q.has(id)) continue; const r = (S.routes || []).find(x => x.i === id); if (!r || +r.al > 0) { if (r && +r.al > 0) csAltPaint(id, r.al); continue; }
+    const w = csAltWps(r); if (w.length) CS_ALT.q.set(id, w.slice(0, 9)); }
+  csAltPump();
+}
+async function csAltPump() {
+  if (CS_ALT.busy || !CS_ALT.q.size) return; CS_ALT.busy = true;
+  try { while (CS_ALT.q.size) {
+    const group = []; let n = 0;
+    for (const [id, w] of CS_ALT.q) { if (n + w.length > 100) break; group.push([id, w]); n += w.length; }
+    group.forEach(([id]) => CS_ALT.q.delete(id));
+    const flat = [].concat(...group.map(g => g[1]));
+    let js = null; try { js = await jget(ELEV_HOST() + '/v1/elevation?latitude=' + flat.map(c => c[0].toFixed(4)).join(',') + '&longitude=' + flat.map(c => c[1].toFixed(4)).join(','), 12000); } catch (e) { js = null; }
+    const el = js && js.elevation;
+    if (!Array.isArray(el) || el.length !== flat.length) break;   /* refused or offline: the slots stay empty, asked again next visit */
+    let k = 0; for (const [id, w] of group) { const part = el.slice(k, k + w.length).filter(v => Number.isFinite(+v)); k += w.length; if (part.length) csAltNote(id, Math.max(...part), false); }
+    await new Promise(res => setTimeout(res, 350));
+  } } finally { CS_ALT.busy = false; }
+}
+/* slots appear whenever a list is painted: one observer queues the ones that are new */
+try { if (typeof MutationObserver !== 'undefined') { const mo = new MutationObserver(() => { clearTimeout(CS_ALT.mt); CS_ALT.mt = setTimeout(() => { const ids = [...document.querySelectorAll('.altSlot:not(.on):not(.asked)')].map(el => { el.classList.add('asked'); return el.dataset.altFor; }); if (ids.length) csAltQueue([...new Set(ids)]); }, 250); });
+  const start = () => { try { mo.observe(document.body, { childList: true, subtree: true }); } catch (e) {} }; if (document.body) start(); else document.addEventListener('DOMContentLoaded', start); } } catch (e) {}
 function csEnrichAltitude() { try {
   const raw = (window.CURVESCOUT_INLINE || {}).passes; const j = typeof raw === 'string' ? JSON.parse(raw) : raw; const list = (j && j.passes) || [];
   const f = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
@@ -2458,13 +2511,21 @@ function csEnrichAltitude() { try {
     if (!(+r.al > 0)) { const w = f(String(r.t || '') + ' ' + (Array.isArray(r.ic) ? r.ic.map(x => x && x.n).join(' ') : '')).split(' ');
       let best = 0; for (let i = 0; i < w.length; i++) { const a = one.get(w[i]); if (a > best) best = a; if (i + 1 < w.length) { const b = two.get(w[i] + ' ' + w[i + 1]); if (b > best) best = b; } }
       if (best) { r.al = best; r.alSrc = 'pass'; n++; } }
+    /* owner 2026-10-17: "many trips have no altitude info in the list". The ride's own measured profile or checkpoint
+       heights first, then a pass of the pass list that sits ON a checkpoint (within 3 km), then the height looked up for
+       its checkpoints in an earlier visit (csAltFill, kept on this device) */
+    if (!(+r.al > 0)) { const a2 = csAltOffline(r, list); if (a2 > 0) { r.al = a2; r.alSrc = 'own'; n++; } }
+    if (!(+r.al > 0)) { const c = csAltStore()[r.i]; if (+c > 0) { r.al = +c; r.alSrc = 'dem'; n++; } }
     if (typeof r.sl === 'string' && /high point 0 m|topping out at 0\b/.test(r.sl))
       r.sl = r.sl.replace(/,?\s*high point 0 m/, r.al > 0 ? ', high point ' + Math.round(r.al) + ' m' : '').replace(/,?\s*topping out at 0\b( m)?/, r.al > 0 ? ', topping out at ' + Math.round(r.al) + ' m' : '');
   }
   S._altFromPasses = n; try { window.csAltFromPasses = n; } catch (e) {}
 } catch (e) {} }
 async function loadCore(onStep) {
-  if (window.CURVESCOUT_INLINE) {
+  /* owner 2026-10-17 ("smaller first index: ok"): the hosted site's archive no longer carries the whole ride index - it
+     boots from the split index (core.json, the fields every list, ranking and the trip planner read) and the
+     descriptions arrive per area. The portable single file still carries everything inline. */
+  if (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.summary) {
     const inl = window.CURVESCOUT_INLINE;
     S.routes = inl.summary.routes.filter(rideIsOffered); S.places = inl.places; csTidyRows(S.routes);
     csEnrichAltitude();
@@ -2546,15 +2607,19 @@ async function loadCore(onStep) {
   const [core, pl] = await Promise.all([
     wantSplit ? jget('core.json', 20000).then(v => { onStep(1, 2); return v; }).catch(() => null)
               : Promise.resolve(null),
-    jget('places.json', 20000),
+    (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.places) ? Promise.resolve(window.CURVESCOUT_INLINE.places) : jget('places.json', 20000),
   ]);
   let sum = null;
   if (core && Array.isArray(core.rows) && Array.isArray(core.fields)) {
-    S.routes = core.rows.map(a => {
+    S.routes = core.rows.map((a, n) => {
       const o = {};
-      for (let j = 0; j < core.fields.length; j++) if (a[j] !== null && a[j] !== undefined) o[core.fields[j]] = a[j];
+      for (let j = 0; j < core.fields.length; j++) if (a[j] !== null && a[j] !== undefined) { const k = core.fields[j], cd = core.codes && core.codes[k]; o[k] = cd ? cd[a[j]] : a[j]; }
+      /* the row's place in the index: card cells are keyed by it, and filtering the unrideable rides out below must
+         not shift every description onto the wrong ride */
+      Object.defineProperty(o, '_n', { value: n, enumerable: false, writable: true });
       return o;
     });
+    S._byN = new Map(S.routes.map(r => [r._n, r]));
     S.routes = S.routes.filter(rideIsOffered); csTidyRows(S.routes);
     S._cells = new Map();
     S._splitIndex = true;
@@ -2622,7 +2687,7 @@ async function loadCore(onStep) {
    that a rider pays only for the ground he is actually looking at.
    THIS NUMBER LIVES IN TWO PLACES - here and CELL in tools/build-index.mjs - and they must
    agree or every lookup misses. tools/test-index-split.mjs checks that they do. */
-const CELL_DEG = 1;
+const CELL_DEG = 0.5;   /* owner 2026-10-17: half a degree, with tools/build-index.mjs */
 const cellOf = (la, lo) => Math.floor(+la / CELL_DEG) + '_' + Math.floor(+lo / CELL_DEG);
 async function ensureCards(rows) {
   if (!S._splitIndex || !S._cells) return;
@@ -2636,13 +2701,16 @@ async function ensureCards(rows) {
   for (const key of want) {
     if (!S._cells.has(key)) {
       S._cells.set(key, csCardCell(key).then(obj => {
+        const got = [];
         for (const n in obj) {
-          const row = S.routes[+n];
+          const row = S._byN ? S._byN.get(+n) : S.routes[+n];
           if (!row) continue;
           const card = obj[n];
-          for (const k in card) if (k !== '_abs') row[k] = card[k];
-          row._cards = 1;
+          for (const k in card) if (k !== '_abs' && !(k === 'al' && +row.al > 0)) row[k] = card[k];
+          row._cards = 1; got.push(row);
         }
+        /* the descriptions get the same clean-up the boot gives a whole index */
+        try { csTidyRows(got); for (const r of got) if (typeof r.sl === 'string' && /high point 0 m|topping out at 0\b/.test(r.sl)) r.sl = r.sl.replace(/,?\s*high point 0 m/, +r.al > 0 ? ', high point ' + Math.round(r.al) + ' m' : '').replace(/,?\s*topping out at 0\b( m)?/, +r.al > 0 ? ', topping out at ' + Math.round(r.al) + ' m' : ''); } catch (e) {}
       }).catch(() => {}));
     }
     jobs.push(S._cells.get(key));
@@ -2992,6 +3060,9 @@ async function loadFull(id) {
      S.imported, closing the tab is all it takes to be rid of it. */
   if (S.imported && S.imported.id === id) return S.imported;
   if (S.fullCache.has(id)) return S.fullCache.get(id);
+  /* split index: the row's own description (its shard file, its region) comes with its area's cell - fetch it first,
+     whoever asks (atlas, trips, minimaps), not only the ride page */
+  if (S._splitIndex) { try { const row = S.byId && S.byId.get(String(id).split('#')[0]); if (row && !row._cards) await ensureCards([row]); } catch (e) {} }
   /* ---- THE SCORE EXISTED ONE FILE AWAY ----
      30,656 of the rides are composed at runtime from a recipe and have no shard of their
      own, so nothing ever put a `score` on the record - and the ride page reads exactly that
@@ -3242,6 +3313,8 @@ async function elevationFor(r, n) {
     }
     const prof = el.map(v => Math.round(v));
     ELEV.cache.set(key, prof);
+    /* sampled on the routed road: the road's own highest point, kept for the lists */
+    if (drawn && drawn.length > 20 && !drawn.approximate) { try { csAltNote(r.id, Math.max(...prof), true); } catch (e) {} }
     return prof;
   })().catch(e => { ELEV.cache.set(key, null); return null; })
       .finally(() => ELEV.inflight.delete(key));
@@ -3780,7 +3853,7 @@ function exploreCard(x, idx) {
     '<div class="exPic" data-pic="' + esc(r.i) + '" data-lat="' + (r.pla != null ? r.pla : r.la) + '" data-lon="' + (r.plo != null ? r.plo : r.lo) + '"><span class="exPh">🏔️</span></div>' +
     '<div class="exBody">' +
       '<div class="exTop"><h3>' + esc(r.t) + '</h3><span class="scorePill' + (!isScored(r) ? ' unscored' : r.s < 85 ? ' mid' : '') + ' num">' + scoreLabel(r) + '</span></div>' +
-      '<div class="exMeta num">' + fmtKm(r.km) + ' · ' + fmtH(r.mn) + (r.al ? ' · ' + r.al + ' m' : '') + ' \u00b7 ' + (Number.isFinite(+x.d) ? Math.round(x.d) + ' km away' : 'Distance unavailable') + '</div>' +
+      '<div class="exMeta num">' + fmtKm(r.km) + ' · ' + fmtH(r.mn) + (r.al ? ' · ' + r.al + ' m' : csAltSlot(r, 'dot')) + ' \u00b7 ' + (Number.isFinite(+x.d) ? Math.round(x.d) + ' km away' : 'Distance unavailable') + '</div>' +
       '<p>' + esc(sloganTrue(r)) + '</p>' + gNote +
       /* a bar with no value is drawn empty and labelled, never as a number we do not have */
       '<div class="exBars">' + bars.map(b => Number.isFinite(+b[1])
@@ -3883,6 +3956,8 @@ function renderExplore() {
     const key = JSON.stringify(EXF) + EX_SORT; if (key !== exKey) { exKey = key; exLimit = 48; }
     const hits = pool.filter(exploreMatches).sort((a, b) => exRank(a) - exRank(b));
     const list = hits.slice(0, exLimit);
+    /* split index: the descriptions for the cards about to be drawn arrive per area; the list repaints once they are in */
+    csNeedCards(list.map(x => x.r), () => { if (S.view === 'explore') paint(); });
     if ($('exFound')) {
       $('exFound').textContent = hits.length
         ? hits.length.toLocaleString('en-GB') + ' road' + (hits.length > 1 ? 's' : '') + (hits.length > list.length ? ' - showing ' + list.length + ', near and best first' : '')
@@ -4155,20 +4230,26 @@ function focusLine(rec) {
     if (card) {
       if (!rec) card.hidden = true;
       else {
-        const r = rec.r, exact = !rec.core.options.dashArray;
+        const r = rec.r, exact = !rec.pending;
         card.hidden = false;
+        /* owner 2026-10-13: on a phone the card sits below the map and stays short - "you cannot see the map anymore" */
+        const phoneCard = (() => { try { return matchMedia('(max-width: 767px)').matches; } catch (e) { return false; } })();
+        if (phoneCard) { const mapEl = document.getElementById('atlasMap'); if (mapEl && card.parentNode === mapEl) mapEl.insertAdjacentElement('afterend', card); }
+        else { const mapEl = document.getElementById('atlasMap'); if (mapEl && card.parentNode !== mapEl) mapEl.appendChild(card); }
         /* ---- SAY WHICH OF THE TWO THINGS THIS IS ----
            Some of what the atlas draws is a ride we have planned; some is a famous road we
            know of and have not routed - the Grand Tour of Switzerland is a signed 1,643 km
            touring route, not a day out. Showing both without distinguishing them is what
            made him say it adds no value: he cannot tell which he is looking at. */
-        const known = /^(legend-|road-)/.test(r.i) || !exact;
+        const known = /^(legend-|road-)/.test(r.i);
         card.innerHTML = '<b>' + esc(r.t || r.i) + '</b>' +
           '<span>' + Math.round(+r.km || 0) + ' km \u00b7 ' + fmtH(r.mn) +
           ' \u00b7 score ' + (+r.s || 0) +
           (r.sh === 'circuit' ? ' \u00b7 circuit' : r.sh === 'a2b' ? ' \u00b7 point to point' : '') +
           '</span>' +
-          (known ? '<em>A named road we know of, not a planned day - open it to lay out a ride along it.</em>'
+          (phoneCard ? (known ? '<em>A named road, not a planned day.</em>' : !exact ? '<em>Road loading - shown as a pin.</em>' : '') :
+           known ? '<em>A named road we know of, not a planned day - open it to lay out a ride along it.</em>'
+                 : !exact ? '<em>A planned ride. Its road is still loading, so the map shows its start as a pin.</em>'
                  : '<em class="ok">A planned ride, measured end to end.</em>') +
           /* Scout Crew: nothing while the rider is just moving the map. Once a road is picked,
              one note that changes the decision - and on a corridor line, Mara says so plainly
@@ -4177,8 +4258,8 @@ function focusLine(rec) {
              One voice, and only once a road is chosen: nothing speaks while a rider is panning. The
              note comes from the slot writers, so it says something about THIS road rather than
              filling a template. */
-          (S.atlas.picked ? ((() => { try { return teaserStrip(r, 'card'); } catch (e) { return ''; } })()) : '') +
-          (S.atlas.picked ? ((() => { try { guideBudgetReset('atlas');
+          (S.atlas.picked && !phoneCard ? ((() => { try { return teaserStrip(r, 'card'); } catch (e) { return ''; } })()) : '') +
+          (S.atlas.picked && !phoneCard ? ((() => { try { guideBudgetReset('atlas');
             const f = guideFactsFor(r);
             if (!f.routed) return renderGuideCallout({ routeId: r.i, surfaceId: 'atlas', guideId: 'mara_line', tone: 'brief', limit: 240,
               evidence: { routed_geometry: true, curve_metrics: true },
@@ -4193,7 +4274,9 @@ function focusLine(rec) {
               fields: { verdict_label: 'Pack for the top', verdict_reason: 'at ' + f.high + ' m it runs about ' + f.colder + ' C colder than the valley' } });
             return ''; } catch (e) { return ''; } })()) : '') +
           (S.atlas.picked ? '<button type="button" class="atOpen" data-id="' + esc(r.i) + '">' +
-            (known ? 'Build a ride along it' : 'Open this ride') + '</button>' : '');
+            (known ? 'Build a ride along it' : 'Open this ride') + '</button>' : '') +
+          (S.atlas.picked && !known ? ((() => { try { return CS_RA.stripHtml(r.i, true); } catch (e) { return ''; } })()) : '');
+        if (S.atlas.picked && !known) { try { const ra = card.querySelector('.raStrip'); if (ra) CS_RA.wireStrip(ra, r); } catch (e) {} }
       }
     }
   } catch (e) {}
@@ -4229,6 +4312,9 @@ function focusLine(rec) {
            Pushing the others to 0.1 answered "too noisy" by deleting the context: a rider
            choosing a road wants to see what else is around it. 0.38 keeps the shape of the
            region while the picked road clearly sits on top of it. */
+      if (l.pending) { /* no road yet: only the pin speaks; the hidden chord stays hidden */
+        if (l.pin) l.pin.setStyle({ radius: l === rec ? 9 : (l.pin._r0 || (l.pin._r0 = l.pin.options.radius)), fillOpacity: l === rec ? 1 : (dimOthers ? 0.35 : .95), color: l === rec ? '#ffffff' : '#0b0c0e', weight: l === rec ? 3 : 1.5 });
+        continue; }
       l.core.setStyle({ opacity: l === rec ? 1 : (rec ? 0.38 : l.base.o),
         weight: (l === rec ? l.base.w + 2.4 : l.base.w) });
       l.casing.setStyle({ opacity: l === rec ? .9 : (rec ? 0.22 : l.caseBase.o),
@@ -4241,9 +4327,9 @@ function focusLine(rec) {
   /* the white core belongs to the focused road only. Repainting every casing back to dark
      was another full pass over the map on every mouseout; only the road that WAS focused
      needs putting back. */
-  if (rec) { try { rec.casing.setStyle({ color: '#ffffff' }); } catch (e) {} }
+  if (rec && !rec.pending) { try { rec.casing.setStyle({ color: '#ffffff' }); } catch (e) {} }
   if (A._whiteCasing && A._whiteCasing !== rec) {
-    try { A._whiteCasing.casing.setStyle({ color: '#0b0c0e' }); } catch (e) {}
+    try { A._whiteCasing.casing.setStyle({ color: A._whiteCasing.caseCol || '#0b0c0e' }); } catch (e) {}
   }
   A._whiteCasing = rec || null;
 }
@@ -4347,10 +4433,18 @@ function csAtlasStoreGet(id) { try { const v = localStorage.getItem('csAR:' + id
 function csAtlasStorePut(id, road) { try { const st = Math.max(1, Math.ceil(road.length / 160)); const slim = road.filter((p, i) => i % st === 0 || i === road.length - 1).map(p => [+p[0].toFixed(4), +p[1].toFixed(4)]);
   localStorage.setItem('csAR:' + id, JSON.stringify(slim)); } catch (e) {} }
 function csAtlasApply(rec, road) { try { rec.core.setLatLngs(road); rec.casing.setLatLngs(road); rec.hit.setLatLngs(road);
-  rec.core.setStyle({ dashArray: null, opacity: Math.min(1, .98 * (rec.emph || 1)) }); rec.base.o = rec.core.options.opacity; rec.routed = true; } catch (e) {} }
+  /* the road is known: the pin gives way to the real shape */
+  if (rec.pin) { try { rec.pin.remove(); } catch (e) {} rec.pin = null; } rec.pending = false;
+  const dim = !!(S.atlas && S.atlas.picked && S.atlas.picked !== rec);
+  rec.core.setStyle({ dashArray: null, opacity: dim ? 0.38 : Math.min(1, .98 * (rec.emph || 1)) }); rec.casing.setStyle({ opacity: dim ? 0.22 : rec.caseBase.o || .45 });
+  rec.base.o = Math.min(1, .98 * (rec.emph || 1)); rec.caseBase.o = rec.caseBase.o || .45; rec._drawn = dim ? 'dim' : 'base'; rec.routed = true; } catch (e) {} }
 function csAtlasRoad(id, raw, rec, inView) { try {
   if (!CS_ATLAS_ROAD.has(id)) { const kept = csAtlasStoreGet(id) || (typeof csRoadMemoGet === 'function' ? csRoadMemoGet(id) : null); if (kept && kept.length > 10) CS_ATLAS_ROAD.set(id, kept); }
   if (CS_ATLAS_ROAD.has(id)) { const road = CS_ATLAS_ROAD.get(id); if (road) csAtlasApply(rec, road); return; }
+  /* the road catalogue first (owner 2026-10-13): a stored road is drawn at once, no public router asked */
+  if (!rec._catTried) { rec._catTried = true;
+    csStoredRoad(id, raw, rec.r && +rec.r.km || 0).then(st => { if (st) { CS_ATLAS_ROAD.set(id, st); csAtlasApply(rec, st); } else csAtlasRoad(id, raw, rec, inView); }).catch(() => csAtlasRoad(id, raw, rec, inView));
+    return; }
   /* owner 2026-10-10: "in the atlas these curves should show" - with more than 80 rides in view nothing was routed at
      all, and a session stopped after 150. Now any view queues its rides (at most 60 waiting), the ones nearest the
      middle of the map are routed first, and every road found is kept for the next visit. */
@@ -4579,7 +4673,12 @@ function renderAtlas() {
           return worst;
         })();
         const pts = routed ? raw : (spacing <= 15 ? smoothChain(raw) : raw);
-        const exact = !!routed;
+        /* owner 2026-10-13: "no more crap vector rides". Only a real road shape is drawn: a routed line, or nav points
+           dense enough to follow the road (under 1.5 km apart on average). Anything else is a pin at the start until its
+           road arrives - never a straight line between checkpoints. */
+        const avgSp = routed && raw.length > 1 ? (() => { let t = 0; for (let i = 1; i < raw.length; i++) t += hav({ lat: raw[i - 1][0], lon: raw[i - 1][1] }, { lat: raw[i][0], lon: raw[i][1] }); return t / (raw.length - 1); })() : Infinity;
+        const exact = !!routed && avgSp < 1.5;
+        const pending = !exact;
         /* rounded joins and caps: a chain of straight segments reads as one road instead of
            a pile of spikes, and a rounded end is far easier to hit with a cursor */
         /* ---- SIXTY ROADS AT ONCE IS NOT A MAP, IT IS A HAYSTACK ----
@@ -4599,13 +4698,12 @@ function renderAtlas() {
         /* owner 2026-10-12: only the wide invisible grab line takes the pointer. The drawn lines were interactive too, so
            the next ride's road sat over this ride's grab line: the hover never arrived and a click on a visible road
            opened it straight away instead of selecting it. */
-        const casing = L.polyline(pts, { color: '#0b0c0e', weight: (exact ? 7 : 5) * (0.72 + 0.28 * rank), opacity: .30 + .30 * rank,
+        const casing = L.polyline(pts, { color: '#0b0c0e', weight: (exact ? 7 : 5) * (0.72 + 0.28 * rank), opacity: pending ? 0 : .30 + .30 * rank,
           lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6, interactive: false }).addTo(worms);
         const core = L.polyline(pts, { color: colour(r), weight: (exact ? 3.4 : 2.6) * (0.66 + 0.5 * rank),
           /* an outline waiting for its road stays quiet; the road, once routed, is drawn at full strength */
-          opacity: (exact ? .98 : .5) * emph,
-          lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6, interactive: false,
-          dashArray: exact ? null : '8 7' }).addTo(worms)
+          opacity: pending ? 0 : .98 * emph,
+          lineJoin: 'round', lineCap: 'round', smoothFactor: 1.6, interactive: false }).addTo(worms)
           /* ---- A FLOATING TOOLTIP GETS CUT OFF AT THE EDGE OF THE MAP ----
              A road near the bottom of the frame had its own description clipped by the map
              container - the one place a rider needs it. The card is pinned inside the map
@@ -4626,12 +4724,14 @@ function renderAtlas() {
            whichever wide grab line happens to be drawn on top - overlapping grab lines picked the wrong road */
         const hit = L.polyline(pts, { color: '#000', weight: 26, opacity: 0.01,
           lineJoin: 'round', lineCap: 'round', interactive: false }).addTo(worms);
-        const rec = { core, casing, hit, r, emph,
+        const pin = pending ? L.circleMarker(raw[0], { radius: 4 + 3 * rank, color: '#0b0c0e', weight: 1.5, fillColor: colour(r), fillOpacity: .95, interactive: false }).addTo(worms) : null;
+        const rec = { core, casing, hit, r, emph, pin, pending,
           base: { w: core.options.weight, o: core.options.opacity },
           caseBase: { w: casing.options.weight, o: casing.options.opacity } };
         S.atlas.lines.push(rec);
+        try { CS_RA.styleRec(rec); } catch (e) {}
         /* a road drawn while another is picked joins the quieted background, like the rest */
-        if (S.atlas.picked && S.atlas.picked !== rec) { try { rec._drawn = 'dim'; core.setStyle({ opacity: 0.38 }); casing.setStyle({ opacity: 0.22 }); } catch (e) {} }
+        if (S.atlas.picked && S.atlas.picked !== rec && !pending) { try { rec._drawn = 'dim'; core.setStyle({ opacity: 0.38 }); casing.setStyle({ opacity: 0.22 }); } catch (e) {} }
         /* owner 2026-10-08: show rides with their more complex shape. A ride drawn as a dashed outline is routed
            along the real roads through its own checkpoints, in the reader's browser, when only a few rides are in
            view (zoomed in); the line then turns solid - the legend already says solid = the road as routed. */
@@ -4642,7 +4742,7 @@ function renderAtlas() {
            rather than merely forgetting them - forgetting is what left stale lines behind */
         rec.id = r.i;
         S.atlas.drawn.set(r.i, { remove() {
-          for (const l of [core, casing, hit]) { try { worms.removeLayer(l); } catch (e) {} }
+          for (const l of [core, casing, hit, rec.pin]) { try { if (l) worms.removeLayer(l); } catch (e) {} }
         } });
         /* ---- LINES OVERLAP, SO mouseout FIRES BEFORE THE NEXT mouseover ----
            Crossing a junction where three roads share a few pixels produced clear-focus,
@@ -4753,7 +4853,9 @@ function renderAtlas() {
     const card = document.getElementById('atlasHover'); if (card) card.classList.remove('picked'); };
   const atlasNearest = (cp, only) => { let best = null, bd = 24;
     const segD = (p, a, b) => { const dx = b.x - a.x, dy = b.y - a.y, l2 = dx * dx + dy * dy; let t = l2 ? ((p.x - a.x) * dx + (p.y - a.y) * dy) / l2 : 0; t = Math.max(0, Math.min(1, t)); const x = a.x + t * dx - p.x, y = a.y + t * dy - p.y; return Math.sqrt(x * x + y * y); };
-    try { for (const rec of (only || S.atlas.lines || [])) { if (!rec || !rec.core || !rec.core._map) continue; let ll = rec.core.getLatLngs(); if (Array.isArray(ll[0])) ll = ll.flat();
+    try { for (const rec of (only || S.atlas.lines || [])) { if (!rec || !rec.core || !rec.core._map) continue;
+      if (rec.pending) { if (rec.pin && rec.pin._map) { const q = map.latLngToContainerPoint(rec.pin.getLatLng()); const d = Math.hypot(q.x - cp.x, q.y - cp.y); if (d < bd) { bd = d; best = rec; } } continue; }
+      let ll = rec.core.getLatLngs(); if (Array.isArray(ll[0])) ll = ll.flat();
       const step = Math.max(1, Math.floor(ll.length / 120)); let prev = null;
       for (let i = 0; i < ll.length; i += step) { const q = map.latLngToContainerPoint(ll[i]); if (prev) { const d = segD(cp, prev, q); if (d < bd) { bd = d; best = rec; } } prev = q; }
       if (ll.length > 1 && (ll.length - 1) % step) { const q = map.latLngToContainerPoint(ll[ll.length - 1]); if (prev) { const d = segD(cp, prev, q); if (d < bd) { bd = d; best = rec; } } } } } catch (e) {}
@@ -4821,11 +4923,18 @@ function swipeScope() {
   search.classList.toggle('on', DECK.scope !== 'here');
 }
 
+/* ---- DESCRIPTIONS FOR WHAT IS ON SCREEN (split index) ----
+   Every list asks for the cells of the rows it draws; when they arrive it repaints once. Returns true when it asked. */
+function csNeedCards(rows, repaint) {
+  try { if (!S._splitIndex) return false; const need = (rows || []).filter(r => r && !r._cards).slice(0, 120); if (!need.length) return false;
+    const key = need.map(r => r.i).join('|'); csNeedCards._k = csNeedCards._k || new Set(); if (csNeedCards._k.has(key)) return false; csNeedCards._k.add(key);
+    ensureCards(need).then(() => { try { repaint && repaint(); } catch (e) {} }); return true; } catch (e) { return false; } }
 function renderSwipe() {
   try { swipeScope(); guideBudgetReset('swipe'); SWIPE_SPOKEN = false; } catch (e) {}
   show('swipe');
   if (!S.start) { go('#/'); return; }
   if (!DECK.queue.length) deckReset();
+  csNeedCards(DECK.queue.slice(0, 30).map(x => x && x.r), () => { if (S.view === 'swipe') paintDeck(); });
   paintDeck();
 }
 function deckCardHTML(x, top) {
@@ -5780,11 +5889,16 @@ const CS_TRIPS = (() => {
   }
   function candidates(routes, o, near, maxKm) {
     const out = [], dLat = maxKm / 111, dLon = maxKm / (111 * Math.max(0.15, Math.cos(rad(near[0]))));
-    for (const f0 of fitted(routes, o)) { const s = f0.s0;
-      if (Math.abs(s[0] - near[0]) > dLat || Math.abs(s[1] - near[1]) > dLon) continue;
-      const d = dist(near, s); if (d > maxKm) continue;
-      const r = f0.r; if (o.mode === 'base' && !isLoop(r) && dist(near, endOf(r)) > maxKm) continue;
-      const f = Object.assign({}, f0); f.startKm = d; f.score -= Math.min(0.25, d / maxKm * 0.25); out.push(f); }
+    for (const f0 of fitted(routes, o)) { const r = f0.r, s = f0.s0, loop = isLoop(r);
+      /* owner 2026-10-13: "adjust the ins and outs" - a point-to-point ride may be ridden from its far end when that end
+         is the one near the rider; the day then says so (the ride page has Reverse) */
+      const e = loop ? s : endOf(r);
+      const inS = !(Math.abs(s[0] - near[0]) > dLat || Math.abs(s[1] - near[1]) > dLon), inE = !loop && o.allowRev !== false && !(Math.abs(e[0] - near[0]) > dLat || Math.abs(e[1] - near[1]) > dLon);
+      if (!inS && !inE) continue;
+      const dS = inS ? dist(near, s) : Infinity, dE = inE ? dist(near, e) : Infinity;
+      const rev = dE + 5 < dS, d = rev ? dE : dS; if (d > maxKm) continue;
+      if (o.mode === 'base' && !loop && Math.max(dS === Infinity ? dist(near, s) : dS, dE === Infinity ? dist(near, e) : dE) > maxKm) continue;
+      const f = Object.assign({}, f0); f.rev = rev; f.startKm = d; f.score -= Math.min(0.25, d / maxKm * 0.25); out.push(f); }
     return out.sort((a, b) => b.score - a.score || String(a.r.i).localeCompare(String(b.r.i)));
   }
   /* the shape of a moving tour (owner 2026-10-10: "the moving tour can zigzag"): a sharp turn back between two
@@ -5797,6 +5911,15 @@ const CS_TRIPS = (() => {
       let a = Math.abs(bearing(st.prev, st.at) - bearing(st.at, at)); if (a > Math.PI) a = 2 * Math.PI - a;
       if (a > 2.1) p += 0.4; else if (a > 1.6) p += 0.1; }
     for (let k = 0; k < trail.length - 1; k++) if (dist(trail[k], at) < 20) { p += 0.12; break; }
+    if (o.mode === 'a2b' && o.dest) { /* A to B: every night a fair step closer to the destination, the last one near it */
+      const D = [+o.dest[0], +o.dest[1]], total = Math.max(1, dist([+o.start[0], +o.start[1]], D)), left = o.days - 1 - d, rem = dist(at, D);
+      const expect = total * left / o.days, slack = Math.max(40, +o.radius || 80);
+      if (rem > expect + slack) p += Math.min(left === 0 ? 4 : 1.6, (rem - expect - slack) / slack * (left === 0 ? 1.4 : 0.6) + 0.2);
+      if (st.at && rem > dist(st.at, D) + 20) p += 0.35;   /* a day that ends further from B than it started */
+      /* progress is the point of an A to B trip: a day that covers its share of the way earns it back */
+      if (st.at) { const step = total / o.days, gain = dist(st.at, D) - rem; p -= Math.max(-0.6, Math.min(0.6, 0.6 * gain / step)); }
+      if (left === 0) p += Math.min(3, rem / slack);
+    }
     if (o.end === 'return') { /* every night must stay within reach of home in the days that are left */
       const home = dist(at, [+o.start[0], +o.start[1]]), left = o.days - 1 - d, reach = Math.max(25, +o.radius || 60) * (left + 0.5);
       if (home > reach) p += Math.min(left === 0 ? 4 : 1.5, (home - reach) / reach * (left === 0 ? 2 : 0.8) + 0.25); }
@@ -5824,11 +5947,16 @@ const CS_TRIPS = (() => {
       const next = [];
       for (const st of beam) {
         const near = o.mode === 'base' ? [+o.start[0], +o.start[1]] : st.at;
-        const cands = candidates(pool, o, near, radius).filter(c => !st.days.some(x => x.r.i === c.r.i || samePlace(x.r, c.r))).slice(0, 40);
+        let cands = candidates(pool, o, near, radius).filter(c => !st.days.some(x => x.r.i === c.r.i || samePlace(x.r, c.r)));
+        /* A to B: the forty kept for the beam are the best rides that also move towards B, not the best rides around here */
+        if (o.mode === 'a2b' && o.dest) { const D = [+o.dest[0], +o.dest[1]], here = dist(st.at, D), step = Math.max(30, dist([+o.start[0], +o.start[1]], D) / o.days);
+          const fin = c => isLoop(c.r) ? startOf(c.r) : (c.rev ? startOf(c.r) : endOf(c.r));
+          cands = cands.map(c => ({ c, k: c.score + 0.8 * Math.max(-1, Math.min(1.2, (here - dist(fin(c), D)) / step)) })).sort((a, b) => b.k - a.k || String(a.c.r.i).localeCompare(String(b.c.r.i))).map(x => x.c); }
+        cands = cands.slice(0, 40);
         for (const c of cands) {
           let pen = 0; for (const x of st.days) pen += clash(x.r, c.r);
           const variety = st.days.length && !st.days.some(x => x.r.k === c.r.k) ? 0.04 : 0;
-          const at = isLoop(c.r) ? (o.mode === 'base' ? near : startOf(c.r)) : endOf(c.r);
+          const at = isLoop(c.r) ? (o.mode === 'base' ? near : startOf(c.r)) : (c.rev ? startOf(c.r) : endOf(c.r));
           /* moving tour: keep a direction - turning back on the last leg, or riding back over earlier nights, zigzags the map */
           if (o.mode !== 'base') { pen += tourShape(st, at, o, d); }
           next.push({ days: st.days.concat([c]), score: st.score + c.score - pen + variety, at, prev: st.at, trail: (st.trail || [[+o.start[0], +o.start[1]]]).concat([at]) });
@@ -5844,15 +5972,48 @@ const CS_TRIPS = (() => {
     if (!best || !best.days.length) warnings.push('No scouted ride within reach of this start fits these settings.');
     else if (best.days.length < o.days) warnings.push('Only ' + best.days.length + ' different day' + (best.days.length === 1 ? '' : 's') + ' of scouted riding fit' + (best.days.length === 1 ? 's' : '') +
       ' these settings here, not ' + o.days + '. Moving on each day, another daily distance or fewer days may fit.');
-    const days = (best ? best.days : []).map((c, i, arr) => {
-      const prevEnd = i === 0 ? [+o.start[0], +o.start[1]] : (o.mode === 'base' ? [+o.start[0], +o.start[1]] : (isLoop(arr[i - 1].r) ? startOf(arr[i - 1].r) : endOf(arr[i - 1].r)));
-      const s = startOf(c.r), line = dist(prevEnd, s);
-      const night = o.mode === 'base' ? [+o.start[0], +o.start[1]] : (isLoop(c.r) ? startOf(c.r) : endOf(c.r));
-      const reasons = whyDay(c, arr, i);
-      return { route: c.r, id: c.r.i, km: c.km, minutes: c.mn, loop: isLoop(c.r), start: s, end: endOf(c.r), night, season: c.season,
-        approachKm: line < 1 ? 0 : Math.round(line * ROAD), approachApprox: true, reasons, score: +c.score.toFixed(3) };
+    const days = buildDays((best ? best.days : []), o);
+    if (o.mode === 'a2b' && o.dest && days.length) { const last = days[days.length - 1]; const off = dist(last.finish, [+o.dest[0], +o.dest[1]]);
+      if (off > Math.max(60, +o.radius || 80)) warnings.push('The last day finishes about ' + Math.round(off * ROAD) + ' km from ' + (o.dest[2] || 'your destination') + '; that transfer is on the schedule. More days or longer days bring the riding closer.'); }
+    return withTotals({ ok: days.length > 0, days, warnings, opts: o });
+  }
+  /* ---- THE DAYS, WITH THEIR TRANSFERS (owner 2026-10-13: "consider the transfers to the overnight") ----
+     Every day is: transfer in (from the base or last night to where the ride begins), the ride, transfer out (from where
+     it finishes to tonight's bed). A point-to-point ride is ridden from whichever end makes the two transfers shorter,
+     looking one day ahead. Transfers are straight line x the road factor here (labelled about); the trip page replaces
+     them with the routed road when the router answers. */
+  const TRANSFER_KMH = 62;
+  const xfer = (a, b) => { const line = dist(a, b); const km = line < 1.5 ? 0 : Math.round(line * ROAD); return { from: a, to: b, km, min: km ? Math.round(km / TRANSFER_KMH * 60) : 0, estimate: true }; };
+  function buildDays(chosen, o) {
+    const home = [+o.start[0], +o.start[1]], dest = o.mode === 'a2b' && o.dest ? [+o.dest[0], +o.dest[1]] : null;
+    const own = k => o.nights && o.nights[k] && Number.isFinite(+o.nights[k][0]) ? [+o.nights[k][0], +o.nights[k][1]] : null;
+    const forced = Array.isArray(o.rev) ? o.rev : null;
+    const out = []; let prevNight = home;
+    chosen.forEach((c, i, arr) => {
+      const r = c.r, loop = isLoop(r), s0 = startOf(r), e0 = endOf(r);
+      /* where tomorrow begins, as far as it is known: the base, the next ride's nearer end, or B */
+      const nx = arr[i + 1] ? arr[i + 1].r : null;
+      const nextAt = o.mode === 'base' ? home : nx ? (isLoop(nx) ? startOf(nx) : (dist(s0, startOf(nx)) < dist(s0, endOf(nx)) ? startOf(nx) : endOf(nx))) : (dest || (o.end === 'return' ? home : null));
+      let rev = false;
+      if (!loop) { if (forced && forced[i] != null) rev = !!forced[i];
+        else { const fwd = dist(prevNight, s0) + (nextAt ? dist(e0, nextAt) : 0), bwd = dist(prevNight, e0) + (nextAt ? dist(s0, nextAt) : 0); rev = bwd + 5 < fwd; } }
+      const begin = rev ? e0 : s0, finish = loop ? s0 : (rev ? s0 : e0);
+      const last = i === arr.length - 1;
+      const night = own(i) || (o.mode === 'base' ? home : (last && dest) ? dest : (last && o.end === 'return') ? home : finish);
+      const tin = xfer(prevNight, begin), tout = xfer(finish, night);
+      out.push({ route: r, id: r.i, km: c.km, minutes: c.mn, loop, rev, start: begin, end: finish, finish, night, season: c.season,
+        approachKm: tin.km, approachApprox: true, transferIn: tin, transferOut: tout,
+        reasons: whyDay(c, arr, i), score: +(c.score || 0).toFixed(3) });
+      prevNight = night;
     });
-    return { ok: days.length > 0, days, warnings, totalKm: days.reduce((a, d) => a + d.km, 0), totalMin: days.reduce((a, d) => a + d.minutes, 0), opts: o };
+    return out;
+  }
+  function withTotals(plan) {
+    const d = plan.days || [];
+    plan.totalKm = d.reduce((a, x) => a + x.km, 0); plan.totalMin = d.reduce((a, x) => a + x.minutes, 0);
+    plan.transferKm = d.reduce((a, x) => a + (x.transferIn ? x.transferIn.km : 0) + (x.transferOut ? x.transferOut.km : 0), 0);
+    plan.transferMin = d.reduce((a, x) => a + (x.transferIn ? x.transferIn.min : 0) + (x.transferOut ? x.transferOut.min : 0), 0);
+    return plan;
   }
   function whyDay(c, arr, i) {
     const others = arr.filter((x, j) => j !== i), reasons = [];
@@ -5865,13 +6026,14 @@ const CS_TRIPS = (() => {
   function alternatives(routes, plan, dayIndex, limit) {
     const o = plan.opts, days = plan.days, keep = days.filter((d, i) => i !== dayIndex);
     const near = o.mode === 'base' ? [+o.start[0], +o.start[1]] : (dayIndex === 0 ? [+o.start[0], +o.start[1]] : days[dayIndex - 1].night);
+    const o2 = Object.assign({}, o); delete o2.rev;
     const used = new Set(days.map(d => d.id));
     const pool = candidates(routes, Object.assign({}, o, { allowPlaces: false }), near, Math.max(15, +o.radius || 60)).filter(c => !used.has(c.r.i));
     const list = pool.length >= (limit || 5) ? pool : pool.concat(candidates(routes, Object.assign({}, o, { allowPlaces: true }), near, Math.max(15, +o.radius || 60)).filter(c => !used.has(c.r.i) && isPlaces(c.r)));
     return list.filter(c => !keep.some(k => samePlace(k.route, c.r)))
       .map(c => { let pen = 0; for (const k of keep) pen += clash(k.route, c.r);
         /* in a moving tour the following day must still start near this day's finish */
-        if (o.mode !== 'base' && days[dayIndex + 1]) { const nEnd = isLoop(c.r) ? startOf(c.r) : endOf(c.r); const gap = dist(nEnd, days[dayIndex + 1].start); if (gap > (o.radius || 60)) pen += 1; }
+        if (o.mode !== 'base' && days[dayIndex + 1]) { const nEnd = isLoop(c.r) ? startOf(c.r) : (c.rev ? startOf(c.r) : endOf(c.r)); const gap = dist(nEnd, days[dayIndex + 1].start); if (gap > (o.radius || 60)) pen += 1; }
         return { c, s: c.score - pen }; })
       .sort((a, b) => b.s - a.s || String(a.c.r.i).localeCompare(String(b.c.r.i)))
       /* the same road under two names is one alternative, not two (QA 2026-10-10) */
@@ -5881,7 +6043,8 @@ const CS_TRIPS = (() => {
   /* swap one day and rebuild only what depends on it */
   function replaceDay(routes, plan, dayIndex, newId) {
     const ids = plan.days.map(d => d.id); ids[dayIndex] = newId;
-    return fromIds(routes, plan.opts, ids);
+    const o = Object.assign({}, plan.opts); delete o.rev;   /* the new day chooses its own direction */
+    return fromIds(routes, o, ids);
   }
   /* rebuild a plan from ride ids (shared links, replacements) without re-choosing */
   function fromIds(routes, opts, ids) {
@@ -5892,19 +6055,11 @@ const CS_TRIPS = (() => {
     let folded = null;
     const find = id => by.get(id) || by.get('places-' + id) || (() => { if (!folded) { folded = new Map(); routes.forEach(r => { const k = fold(r.i); if (!folded.has(k)) folded.set(k, r); }); } return folded.get(fold(id)); })();
     const chosen = ids.map(find).filter(Boolean).map(r => fit(r, Object.assign({}, o, { dayKm: [0, 1e6] })) || { r, km: +r.km || 0, mn: +r.mn || 0, score: 0, why: [] });
-    const fake = { days: chosen }; const plan = compose([], o);
-    plan.days = chosen.map((c, i, arr) => {
-      const prevEnd = i === 0 ? [+o.start[0], +o.start[1]] : (o.mode === 'base' ? [+o.start[0], +o.start[1]] : (isLoop(arr[i - 1].r) ? startOf(arr[i - 1].r) : endOf(arr[i - 1].r)));
-      const own = (k) => o.nights && o.nights[k] && Number.isFinite(+o.nights[k][0]) ? [+o.nights[k][0], +o.nights[k][1]] : null;
-      const prevOwn = i > 0 && o.mode !== 'base' ? own(i - 1) : null;
-      const s = startOf(c.r), line = dist(prevOwn || prevEnd, s), night = o.mode === 'base' ? [+o.start[0], +o.start[1]] : (own(i) || (isLoop(c.r) ? startOf(c.r) : endOf(c.r)));
-      return { route: c.r, id: c.r.i, km: c.km, minutes: c.mn, loop: isLoop(c.r), start: s, end: endOf(c.r), night, approachKm: line < 1 ? 0 : Math.round(line * ROAD), approachApprox: true,
-        reasons: whyDay(c, arr, i), season: c.season, score: +(c.score || 0).toFixed(3) };
-    });
-    void fake;
+    const plan = { opts: o };
+    plan.days = buildDays(chosen, o);
     plan.ok = plan.days.length > 0; plan.warnings = plan.days.length < ids.length ? ['Some rides in this plan are no longer in the inventory.'] : [];
-    plan.totalKm = plan.days.reduce((a, d) => a + d.km, 0); plan.totalMin = plan.days.reduce((a, d) => a + d.minutes, 0); plan.opts = o;
-    return plan;
+    plan.opts = o;
+    return withTotals(plan);
   }
   /* move one night somewhere else (a town on that day's ride or near the next start): only the night and the next
      day's approach change - every ride stays as it is */
@@ -5934,9 +6089,364 @@ const CS_TRIPS = (() => {
     for (const r of routes) { if (!r || !TIER[r.tier] || !usable(r, {})) continue; const s = startOf(r); if (!s) continue; out.push({ r, d: dist(start, s), s }); }
     return out.sort((a, b) => a.d - b.d).slice(0, n || 3);
   }
-  return { compose, alternatives, nearest, seasonFit, altOf, replaceDay, fromIds, setNight, nightOptions, sensitive: r => SENSITIVE.test(String(r.t || '') + ' ' + String(r.i || '')), _dist: dist, _isLoop: isLoop, _startOf: startOf };
+  return { buildDays, compose, alternatives, nearest, seasonFit, altOf, replaceDay, fromIds, setNight, nightOptions, sensitive: r => SENSITIVE.test(String(r.t || '') + ' ' + String(r.i || '')), _dist: dist, _isLoop: isLoop, _startOf: startOf };
 })();
 if (typeof window !== 'undefined') window.CS_TRIPS = CS_TRIPS;
+
+/* ---- PLACE SUGGESTIONS AS YOU TYPE (owner 2026-10-13: "have a location suggestion to help find places with their
+ * local names and differentiate places with same names") ----
+ * "St. Petersburg" is a city in Russia and a city in Florida; "Санкт-Петербург" is what the Russian sign says. The box
+ * lists both, each with its region and country, the English name first and the local name beside it when it differs.
+ *
+ * Sources, in order: the app's own towns and passes (instant, no network), then Photon (photon.komoot.io, OpenStreetMap
+ * data, built for search-as-you-type - Nominatim's policy forbids autocomplete, so Nominatim is never asked here).
+ * Photon is asked twice per settled query: once in English and once without a language, which returns the local name.
+ * Polite by construction: nothing below 2 characters, 320 ms after the last key, one query in flight (older ones are
+ * cancelled), every answer cached for the session. The host is a setting (NET.suggest) like every other service.
+ */
+const CS_SUGGEST = (() => {
+  const CACHE = new Map();
+  const host = () => { try { return (typeof NET !== 'undefined' && NET.suggest) || 'https://photon.komoot.io'; } catch (e) { return 'https://photon.komoot.io'; } };
+  const fold = t => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9Ѐ-ӿͰ-Ͽ]+/g, ' ').trim();
+  const KIND = { city: 'city', town: 'town', village: 'village', hamlet: 'hamlet', suburb: 'district', locality: 'place', county: 'county', state: 'region', island: 'island', saddle: 'pass', mountain_pass: 'pass', peak: 'peak' };
+  let regionNames = null;
+  const countryName = cc => { try { if (!regionNames && typeof Intl !== 'undefined' && Intl.DisplayNames) regionNames = new Intl.DisplayNames(['en'], { type: 'region' }); return regionNames ? regionNames.of(String(cc).toUpperCase()) : cc; } catch (e) { return cc; } };
+  function fromPhoton(f) {
+    const p = f && f.properties || {}, c = f && f.geometry && f.geometry.coordinates;
+    if (!Array.isArray(c) || !p.name) return null;
+    const kind = KIND[p.osm_value] || (p.osm_key === 'place' ? 'place' : p.osm_key === 'boundary' ? 'area' : p.osm_value === 'saddle' ? 'pass' : p.osm_key === 'mountain_pass' ? 'pass' : '');
+    return { id: (p.osm_type || '') + (p.osm_id || ''), name: p.name, local: '', region: p.state || p.county || '', country: p.country || (p.countrycode ? countryName(p.countrycode) : ''),
+      cc: String(p.countrycode || '').toUpperCase(), kind, lat: +c[1], lon: +c[0], src: 'osm', place: p.osm_key === 'place' || p.osm_key === 'boundary' || kind === 'pass' };
+  }
+  async function photon(q, lang, signal) {
+    const url = host() + '/api/?q=' + encodeURIComponent(q) + '&limit=8' + (lang ? '&lang=' + lang : '');
+    if (CACHE.has(url)) return CACHE.get(url);
+    const res = await fetch(url, { signal, headers: { Accept: 'application/json' } });
+    if (!res.ok) throw new Error('suggest ' + res.status);
+    const js = await res.json(); const out = ((js && js.features) || []).map(fromPhoton).filter(Boolean);
+    CACHE.set(url, out); return out;
+  }
+  function local(q) {
+    const want = fold(q); if (!want) return [];
+    const out = [];
+    try { for (const t of (typeof gazetteer === 'function' ? gazetteer() : [])) { const n = fold(t.name); if (n === want || n.startsWith(want)) out.push({ id: 'cs:' + t.name + t.la, name: t.name, local: '', region: '', country: t.cc ? countryName(t.cc) : '', cc: String(t.cc || '').toUpperCase(), kind: 'town', lat: +t.la, lon: +t.lo, src: 'cs', place: true }); if (out.length >= 4) break; } } catch (e) {}
+    try { if (typeof tripPasses === 'function') for (const p of tripPasses()) { if (fold(p.n).startsWith(want) || fold(p.n).split(' ').includes(want)) out.push({ id: 'pass:' + p.n, name: p.n, local: '', region: '', country: '', cc: '', kind: 'pass', lat: +p.at[0], lon: +p.at[1], src: 'cs', place: true }); if (out.length >= 6) break; } } catch (e) {}
+    return out;
+  }
+  /* merge the English and the local answer: same OSM object = one row, local name beside the English one */
+  function merge(en, loc, mine) {
+    const by = new Map(); const rows = [];
+    for (const r of en) { if (!by.has(r.id)) { by.set(r.id, r); rows.push(r); } }
+    for (const r of loc) { const e = by.get(r.id); if (e) { if (fold(r.name) !== fold(e.name)) e.local = r.name; } else if (!rows.some(x => Math.abs(x.lat - r.lat) < 0.02 && Math.abs(x.lon - r.lon) < 0.02)) { by.set(r.id, r); rows.push(r); } }
+    /* places first (towns, cities, passes), then streets and things; the app's own towns lead when they are the same place */
+    const out = [];
+    for (const m of mine) { const twin = rows.find(x => Math.abs(x.lat - m.lat) < 0.08 && Math.abs(x.lon - m.lon) < 0.08); if (twin) { twin.src = 'cs+osm'; continue; } out.push(m); }
+    rows.sort((a, b) => (b.place ? 1 : 0) - (a.place ? 1 : 0));
+    return out.concat(rows).slice(0, 8);
+  }
+  /* two rows with the same name are told apart by region and country - and by the kind when even those agree */
+  function sub(r, all) {
+    const bits = []; if (r.local && fold(r.local) !== fold(r.name)) bits.push(r.local);
+    const same = all.filter(x => fold(x.name) === fold(r.name)).length > 1;
+    if (r.region && (same || fold(r.region) !== fold(r.name))) bits.push(r.region);
+    if (r.country) bits.push(r.country);
+    if (r.kind && r.kind !== 'town' && r.kind !== 'city') bits.push(r.kind);
+    return bits.join(' · ');
+  }
+  function flag(cc) { return /^[A-Z]{2}$/.test(cc || '') ? cc.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0))) : '📍'; }
+  /* attach to an input: a listbox under it, arrows / Enter / Escape, tap to pick */
+  function attach(input, onPick) {
+    if (!input || input._csSuggest) return; input._csSuggest = true;
+    input.removeAttribute('list'); input.setAttribute('autocomplete', 'off'); input.setAttribute('role', 'combobox'); input.setAttribute('aria-autocomplete', 'list'); input.setAttribute('aria-expanded', 'false');
+    const box = document.createElement('ul'); box.className = 'csSug'; box.setAttribute('role', 'listbox'); box.id = (input.id || 'in') + 'Sug'; box.hidden = true;
+    input.setAttribute('aria-controls', box.id);
+    const wrap = input.parentNode; if (getComputedStyle(wrap).position === 'static') wrap.style.position = 'relative'; wrap.appendChild(box);
+    let rows = [], act = -1, t = null, ctl = null, seq = 0;
+    const close = () => { box.hidden = true; input.setAttribute('aria-expanded', 'false'); act = -1; };
+    const paint = (note) => {
+      if (!rows.length) { if (note) { box.innerHTML = '<li class="csSugNote">' + esc(note) + '</li>'; box.hidden = false; } else close(); return; }
+      box.innerHTML = rows.map((r, i) => '<li role="option" id="' + box.id + i + '" class="csSugRow' + (i === act ? ' on' : '') + '" data-i="' + i + '" aria-selected="' + (i === act) + '"><span class="csSugF">' + flag(r.cc) + '</span><span class="csSugT"><b>' + esc(r.name) + '</b><small>' + esc(sub(r, rows)) + '</small></span></li>').join('') +
+        (rows.some(r => r.src !== 'cs') ? '<li class="csSugCredit">Places © OpenStreetMap · search by Photon</li>' : '');
+      box.hidden = false; input.setAttribute('aria-expanded', 'true');
+      box.querySelectorAll('[data-i]').forEach(li => { li.onpointerdown = ev => { ev.preventDefault(); }; li.onclick = () => pick(+li.dataset.i); });
+    };
+    const pick = i => { const r = rows[i]; if (!r) return; input.value = r.name + (r.country && r.src !== 'cs' ? ', ' + (r.region && rows.filter(x => fold(x.name) === fold(r.name)).length > 1 ? r.region + ', ' : '') + r.country : ''); close(); try { onPick({ lat: r.lat, lon: r.lon, label: input.value, name: r.name, local: r.local, country: r.country, cc: r.cc, kind: r.kind }); } catch (e) {} };
+    const run = async q => {
+      const my = ++seq; const mine = local(q); rows = mine.slice(0, 6); act = -1; paint();
+      if (q.length < 3 || /^-?\d/.test(q)) return;
+      try { if (ctl) ctl.abort(); } catch (e) {} ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      try { const [en, loc] = await Promise.all([photon(q, 'en', ctl && ctl.signal), photon(q, '', ctl && ctl.signal).catch(() => [])]);
+        if (my !== seq) return; rows = merge(en, loc, mine); paint(rows.length ? '' : 'No place found - try the local spelling or coordinates like 59.94, 30.31.'); }
+      catch (e) { if (my !== seq || (e && e.name === 'AbortError')) return; if (!rows.length) paint('Place search is not answering - use My location or coordinates.'); }
+    };
+    input.addEventListener('input', () => { clearTimeout(t); const q = input.value.trim(); if (q.length < 2) { rows = []; close(); return; } t = setTimeout(() => run(q), 320); });
+    input.addEventListener('keydown', ev => {
+      if (box.hidden || !rows.length) return;
+      if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') { ev.preventDefault(); act = (act + (ev.key === 'ArrowDown' ? 1 : -1) + rows.length) % rows.length; paint(); input.setAttribute('aria-activedescendant', box.id + act); }
+      else if (ev.key === 'Enter' && act >= 0) { ev.preventDefault(); pick(act); }
+      else if (ev.key === 'Escape') close();
+    });
+    input.addEventListener('blur', () => setTimeout(close, 150));
+  }
+  /* the first good answer for a typed name, for a form submitted without picking (gazetteer first, then Photon) */
+  async function resolve(q) {
+    const mine = local(q); if (mine.length && fold(mine[0].name) === fold(q)) return { lat: mine[0].lat, lon: mine[0].lon, label: mine[0].name };
+    try { const en = await photon(q, 'en'); const r = en.find(x => x.place) || en[0]; if (r) return { lat: r.lat, lon: r.lon, label: r.name + (r.country ? ', ' + r.country : '') }; } catch (e) {}
+    return mine[0] ? { lat: mine[0].lat, lon: mine[0].lon, label: mine[0].name } : null;
+  }
+  return { attach, resolve, merge, sub, _local: local };
+})();
+if (typeof window !== 'undefined') window.CS_SUGGEST = CS_SUGGEST;
+
+/* ---- MY ROAD ATLAS (owner 2026-10-13: "vom Routenplaner zum persönlichen Road Atlas") ----
+ * CurveScout plans the next ride; this module remembers the rides behind you. First version, as agreed:
+ *   - a status on every ride and road: ridden, want to ride, favourite (favourite is the existing ★ Save, not a copy)
+ *   - the visited map: ridden roads in gold and wish-list roads in blue on the atlas
+ *   - the Road Passport: countries, passes, regions, special roads, kilometres, highest point
+ *   - collections with progress and badges, including the Big Five of Switzerland and of Italy
+ *   - a shareable passport picture, drawn in the browser
+ *   - storage on this device (decided "device now, server later"), with an export file and a restore code
+ *   - points, levels and badges for the things a rider actually does (owner 2026-10-13: "gamification based on cookies")
+ * Everything lives in localStorage under cs_atlas (erased with every other cs_ key by "Erase my data"). Nothing is sent
+ * anywhere and there is no public leaderboard.
+ */
+const CS_RA = (() => {
+  const KEY = 'cs_atlas';
+  const fold = t => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  const now = () => Date.now();
+  const today = () => new Date().toISOString().slice(0, 10);
+  let D = null;
+  function load() {
+    if (D) return D;
+    try { D = JSON.parse(store.get(KEY) || 'null'); } catch (e) { D = null; }
+    if (!D || D.v !== 1) D = { v: 1, rides: {}, passes: {}, earned: {}, days: [], opened: {}, since: today() };
+    D.rides = D.rides || {}; D.passes = D.passes || {}; D.earned = D.earned || {}; D.days = D.days || []; D.opened = D.opened || {};
+    return D;
+  }
+  const save = () => { try { store.set(KEY, JSON.stringify(D)); } catch (e) {} };
+
+  /* ---- COLLECTIONS ----
+     Each item matches a ridden ride by name (title or its named roads) or a pass marked directly. The Big Five are
+     the owner's choice of "I pick": the five passes riders cross a country for. */
+  const COLLECTIONS = [
+    { id: 'big5-ch', flag: '🇨🇭', name: 'Big Five Switzerland', blurb: 'The five Swiss passes riders cross the Alps for.',
+      items: [['Furka', ['furka']], ['Grimsel', ['grimsel']], ['Susten', ['susten']], ['Klausen', ['klausen']], ['Gotthard Tremola', ['tremola', 'gotthard', 'gottardo']]] },
+    { id: 'big5-it', flag: '🇮🇹', name: 'Big Five Italy', blurb: 'Stelvio, Gavia, Giau, the Sella ring and the Mortirolo.',
+      items: [['Stelvio', ['stelvio', 'stilfser']], ['Gavia', ['gavia']], ['Giau', ['giau']], ['Sella and Pordoi', ['sella', 'pordoi']], ['Mortirolo', ['mortirolo']]] },
+    { id: 'grandes-alpes', flag: '🇫🇷', name: 'Grandes Alpes classics', blurb: 'The giants of the French Alps.',
+      items: [['Iseran', ['iseran']], ['Galibier', ['galibier']], ['Izoard', ['izoard']], ['Bonette', ['bonette']], ['Col de la Madeleine', ['madeleine']]] },
+    { id: 'austria-high', flag: '🇦🇹', name: 'Austria up high', blurb: 'Grossglockner and its neighbours.',
+      items: [['Grossglockner', ['grossglockner', 'glockner']], ['Timmelsjoch', ['timmelsjoch', 'rombo']], ['Silvretta', ['silvretta']], ['Nockalm', ['nockalm']], ['Kaunertal', ['kaunertal']]] },
+    { id: 'dolomites', flag: '⛰', name: 'Dolomites ring', blurb: 'The four passes around the Sella and their friends.',
+      items: [['Gardena', ['gardena', 'grodner']], ['Campolongo', ['campolongo']], ['Falzarego', ['falzarego']], ['Fedaia', ['fedaia']], ['Valparola', ['valparola']]] },
+  ];
+  /* ---- BADGES: what a rider did, never what they bought ---- */
+  const BADGES = [
+    { id: 'first', icon: '🏁', name: 'First road', test: s => s.ridden >= 1, how: 'Mark your first ride as ridden.' },
+    { id: 'five', icon: '🖐', name: 'Five roads', test: s => s.ridden >= 5, how: 'Ride five CurveScout roads.' },
+    { id: 'twenty', icon: '🛣', name: 'Twenty roads', test: s => s.ridden >= 20, how: 'Ride twenty.' },
+    { id: 'k1', icon: '🔢', name: '1,000 km', test: s => s.km >= 1000, how: 'Ride 1,000 km of CurveScout roads.' },
+    { id: 'k5', icon: '🧭', name: '5,000 km', test: s => s.km >= 5000, how: 'Ride 5,000 km.' },
+    { id: 'c3', icon: '🛂', name: 'Three flags', test: s => s.countries.length >= 3, how: 'Ride in three countries.' },
+    { id: 'c7', icon: '🌍', name: 'Seven flags', test: s => s.countries.length >= 7, how: 'Ride in seven countries.' },
+    { id: 'p2000', icon: '🏔', name: '2,000 m club', test: s => s.high >= 2000, how: 'Ride a road over 2,000 m.' },
+    { id: 'p2500', icon: '❄', name: 'Above 2,500 m', test: s => s.high >= 2500, how: 'Ride a road over 2,500 m (Stelvio, Iseran, Bonette).' },
+    { id: 'passes10', icon: '⛰', name: 'Ten passes', test: s => s.passes.length >= 10, how: 'Cross ten named passes.' },
+    { id: 'big5-ch', icon: '🇨🇭', name: 'Swiss Big Five', test: s => s.col['big5-ch'] && s.col['big5-ch'].done === 5, how: 'Ride all five Swiss Big Five passes.' },
+    { id: 'big5-it', icon: '🇮🇹', name: 'Italian Big Five', test: s => s.col['big5-it'] && s.col['big5-it'].done === 5, how: 'Ride all five Italian Big Five passes.' },
+    { id: 'dream10', icon: '✨', name: 'Dreamer', test: s => s.want >= 10, how: 'Put ten roads on your wish list.' },
+    { id: 'scout25', icon: '🔍', name: 'Scout', test: s => s.opened >= 25, how: 'Look at 25 rides closely.' },
+    { id: 'streak3', icon: '🔥', name: 'Three days running', test: s => s.streak >= 3, how: 'Open CurveScout three days in a row.' },
+  ];
+  const LEVELS = [[0, 'Rookie'], [60, 'Rider'], [200, 'Tourer'], [500, 'Pass hunter'], [1000, 'Road legend'], [2000, 'Atlas master']];
+
+  function snapshot(r) {
+    if (!r) return null;
+    const ic = (Array.isArray(r.ic) ? r.ic.map(x => x && x.n) : Array.isArray(r.namedRoads) ? r.namedRoads : []).filter(Boolean).slice(0, 8);
+    return { t: String(r.t || r.title || r.i || r.id || '').slice(0, 120), km: Math.round(+r.km || 0), cc: String(r.cc || r.country || r.c || '').slice(0, 3).toUpperCase(),
+      al: Math.round(+(r.al || r.high || r.hi || 0) || 0), rg: String(r.rg || r.region || '').slice(0, 60), ic, la: +(+r.la || (r.waypoints && r.waypoints[0] && r.waypoints[0].lat) || 0).toFixed(3), lo: +(+r.lo || (r.waypoints && r.waypoints[0] && r.waypoints[0].lon) || 0).toFixed(3) };
+  }
+  function ccOf(r, snap) {
+    if (snap && /^[A-Z]{2}$/.test(snap.cc)) return snap.cc;
+    try { if (typeof gazetteer === 'function' && snap && snap.la) { let best = null, bd = 60; for (const t of gazetteer()) { if (Math.abs(t.la - snap.la) > 0.6 || Math.abs(t.lo - snap.lo) > 0.9) continue; const k = Math.hypot(t.la - snap.la, (t.lo - snap.lo) * Math.cos(snap.la * Math.PI / 180)) * 111; if (k < bd) { bd = k; best = t; } } if (best && best.cc) return String(best.cc).toUpperCase(); } } catch (e) {}
+    return '';
+  }
+  const passWords = snap => fold((snap.t || '') + ' ' + (snap.ic || []).join(' '));
+  /* the named passes a ride crosses, from the app's pass list (title and named roads) */
+  function passesOf(snap) {
+    const txt = ' ' + passWords(snap) + ' ', out = [];
+    try { for (const p of (typeof tripPasses === 'function' ? tripPasses() : [])) { const core = fold(p.n).replace(/\b(pass|passo|col|colle|de|du|des|del|della|di|la|le|joch|sattel|puerto|paso|passhohe)\b/g, ' ').replace(/\s+/g, ' ').trim();
+      if (core.length >= 4 && txt.indexOf(' ' + core + ' ') >= 0 && !out.includes(p.n)) out.push(p.n); } } catch (e) {}
+    return out.slice(0, 12);
+  }
+
+  function status(id) { const x = load().rides[id]; return x ? x.s : ''; }
+  function isFav(id) { try { return S.favs.has(id); } catch (e) { return false; } }
+  function setStatus(r, s) {
+    const d = load(), id = String(r.i || r.id || '').split('#')[0]; if (!id) return;
+    const before = stats();
+    if (!s || (d.rides[id] && d.rides[id].s === s)) delete d.rides[id];
+    else { const snap = snapshot(r); snap.cc = ccOf(r, snap); d.rides[id] = Object.assign({ s, at: now() }, snap, { ps: passesOf(snap) }); }
+    save(); reward(before);
+    try { if (S.atlas && S.atlas.lines) { const rec = S.atlas.lines.find(l => l.id === id || (l.r && l.r.i === id)); if (rec) styleRec(rec); } } catch (e) {}
+    return status(id);
+  }
+  function toggleFav(r) { const id = String(r.i || r.id || '').split('#')[0]; try { if (S.favs.has(id)) S.favs.delete(id); else S.favs.add(id); saveFavs(); } catch (e) {} return isFav(id); }
+  function setPass(name, s) { const d = load(), k = fold(name), before = stats(); if (!s || (d.passes[k] && d.passes[k].s === s)) delete d.passes[k]; else d.passes[k] = { s, n: name, at: now() }; save(); reward(before); }
+
+  /* the day-streak: one mark per calendar day the app is opened */
+  function checkIn() { const d = load(), t = today(); if (d.days[d.days.length - 1] !== t) { const before = stats(); d.days.push(t); if (d.days.length > 60) d.days = d.days.slice(-60); save(); reward(before, true); } }
+  function opened(id) { const d = load(); if (!id || d.opened[id]) return; const before = stats(); d.opened[id] = 1; const ks = Object.keys(d.opened); if (ks.length > 400) delete d.opened[ks[0]]; save(); reward(before, true); }
+  function streak() { const d = load(); let n = 0; const t = new Date(today() + 'T12:00:00'); for (let k = d.days.length - 1; k >= 0; k--) { const want = new Date(t.getTime() - n * 864e5).toISOString().slice(0, 10); if (d.days[k] === want) n++; else break; } return n; }
+
+  function stats() {
+    const d = load(), rides = Object.entries(d.rides);
+    const ridden = rides.filter(([, x]) => x.s === 'r'), want = rides.filter(([, x]) => x.s === 'w');
+    const countries = [...new Set(ridden.map(([, x]) => x.cc).filter(c => /^[A-Z]{2}$/.test(c)))];
+    const passes = [...new Set(ridden.flatMap(([, x]) => x.ps || []).concat(Object.values(d.passes).filter(p => p.s === 'r').map(p => p.n)))];
+    const regions = [...new Set(ridden.map(([, x]) => x.rg).filter(Boolean))];
+    const km = ridden.reduce((a, [, x]) => a + (+x.km || 0), 0), high = ridden.reduce((a, [, x]) => Math.max(a, +x.al || 0), 0);
+    const special = [...new Set(ridden.flatMap(([, x]) => x.ic || []))];
+    const col = {};
+    for (const c of COLLECTIONS) {
+      const got = c.items.map(([n, keys]) => {
+        const passHit = Object.values(d.passes).find(p => keys.some(k => fold(p.n).indexOf(k) >= 0));
+        const rideHit = rides.find(([, x]) => keys.some(k => (' ' + passWords(x) + ' ').indexOf(k) >= 0) && x.s);
+        const s = (passHit && passHit.s === 'r') || (rideHit && rideHit[1].s === 'r') ? 'r' : (passHit && passHit.s === 'w') || (rideHit && rideHit[1].s === 'w') ? 'w' : '';
+        return { n, s, ride: rideHit ? rideHit[0] : null };
+      });
+      col[c.id] = { got, done: got.filter(g => g.s === 'r').length, of: c.items.length };
+    }
+    const s = { ridden: ridden.length, want: want.length, fav: (() => { try { return S.favs.size; } catch (e) { return 0; } })(), km, high, countries, passes, regions, special, col,
+      opened: Object.keys(d.opened).length, streak: streak() };
+    s.xp = ridden.length * 10 + Math.round(km / 25) + passes.length * 15 + countries.length * 25 + want.length + Math.min(50, s.opened) + Object.values(col).reduce((a, c) => a + (c.done === c.of ? 100 : 0), 0) + Math.min(30, s.streak * 2);
+    let lv = LEVELS[0]; for (const L of LEVELS) if (s.xp >= L[0]) lv = L; s.level = lv[1];
+    const nx = LEVELS.find(L => L[0] > s.xp); s.nextAt = nx ? nx[0] : null; s.nextName = nx ? nx[1] : null; s.levelAt = lv[0];
+    s.badges = BADGES.map(b => ({ id: b.id, icon: b.icon, name: b.name, how: b.how, got: !!d.earned[b.id] || b.test(s) }));
+    return s;
+  }
+  /* a new badge or level is announced once, quietly */
+  function reward(before, quiet) {
+    try { const d = load(), s = stats(); const fresh = s.badges.filter(b => b.got && !d.earned[b.id]);
+      fresh.forEach(b => { d.earned[b.id] = now(); }); if (fresh.length) save();
+      const msg = fresh.length ? fresh.map(b => b.icon + ' ' + b.name).join(' · ') + ' - new in your Road Atlas' : (before && before.level !== s.level ? 'Level up: ' + s.level : '');
+      if (msg && !(quiet && !fresh.length)) toast(msg);
+    } catch (e) {}
+  }
+  function toast(msg) { try { let t = document.getElementById('raToast'); if (!t) { t = document.createElement('div'); t.id = 'raToast'; t.className = 'raToast'; t.setAttribute('role', 'status'); document.body.appendChild(t); }
+    t.innerHTML = '<a href="#/passport">' + esc(msg) + ' →</a>'; t.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('on'), 4200); } catch (e) {} }
+
+  /* ---- ON THE RIDE PAGE AND THE ATLAS CARD: three buttons ---- */
+  function stripHtml(id, compact) {
+    const s = status(id), f = isFav(id);
+    return '<div class="raStrip' + (compact ? ' raSm' : '') + '" data-ra="' + esc(id) + '" role="group" aria-label="My Road Atlas">' +
+      '<button type="button" class="raB' + (s === 'r' ? ' on' : '') + '" data-ras="r" aria-pressed="' + (s === 'r') + '">' + (s === 'r' ? '✓ Ridden' : '✓ I rode it') + '</button>' +
+      '<button type="button" class="raB' + (s === 'w' ? ' on' : '') + '" data-ras="w" aria-pressed="' + (s === 'w') + '">◎ ' + (s === 'w' ? 'On my wish list' : 'Want to ride') + '</button>' +
+      '<button type="button" class="raB' + (f ? ' on' : '') + '" data-raf="1" aria-pressed="' + f + '">♥ Favourite</button>' +
+      (compact ? '' : '<a class="raLink" href="#/passport">My Road Atlas</a>') + '</div>';
+  }
+  function wireStrip(host, r) {
+    if (!host) return; const id = String(r.i || r.id || '').split('#')[0];
+    host.querySelectorAll('[data-ras]').forEach(b => b.onclick = ev => { ev.stopPropagation(); setStatus(r, b.dataset.ras); const fresh = stripHtml(id, host.classList.contains('raSm')); host.outerHTML = fresh; const el = document.querySelector('[data-ra="' + CSS.escape(id) + '"]'); if (el) wireStrip(el, r); });
+    host.querySelectorAll('[data-raf]').forEach(b => b.onclick = ev => { ev.stopPropagation(); toggleFav(r); const fresh = stripHtml(id, host.classList.contains('raSm')); host.outerHTML = fresh; const el = document.querySelector('[data-ra="' + CSS.escape(id) + '"]'); if (el) wireStrip(el, r);
+      try { const fb = document.getElementById('favBtn'); if (fb) fb.classList.toggle('on', isFav(id)); } catch (e) {} });
+  }
+  /* the visited map: a ridden road is cased in gold, a wished one in blue */
+  const CASE = { r: '#ffd166', w: '#6cb8ff' };
+  function styleRec(rec) {
+    try { const s = status(rec.r && rec.r.i); rec.caseCol = CASE[s] || '#0b0c0e';
+      if (!rec.pending) rec.casing.setStyle({ color: rec.caseCol, opacity: s ? .95 : rec.caseBase.o, weight: s ? rec.caseBase.w + 2 : rec.caseBase.w });
+      if (rec.pin) rec.pin.setStyle({ color: s ? rec.caseCol : '#0b0c0e', weight: s ? 3 : 1.5 }); } catch (e) {}
+  }
+
+  /* ---- EXPORT AND RESTORE ---- */
+  function exportData() { const d = load(); return JSON.stringify({ app: 'curvescout-road-atlas', v: 1, at: new Date().toISOString(), data: { rides: d.rides, passes: d.passes, earned: d.earned, since: d.since }, favs: (() => { try { return [...S.favs]; } catch (e) { return []; } })() }); }
+  function exportFile() { try { const blob = new Blob([exportData()], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'curvescout-road-atlas-' + today() + '.json'; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 800); return true; } catch (e) { return false; } }
+  /* the restore code: the statuses only (id and one letter), compact enough to copy into a note or a message */
+  function restoreCode() { const d = load(); const parts = Object.entries(d.rides).map(([id, x]) => x.s + ':' + id).concat(Object.values(d.passes).map(p => 'p' + p.s + ':' + p.n)).concat((() => { try { return [...S.favs].map(id => 'f:' + id); } catch (e) { return []; } })());
+    try { return 'CSRA1.' + btoa(unescape(encodeURIComponent(parts.join('|')))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); } catch (e) { return ''; } }
+  function restore(text) {
+    const t = String(text || '').trim(); const d = load(); let n = 0;
+    try {
+      if (/^CSRA1\./.test(t)) { const raw = decodeURIComponent(escape(atob(t.slice(6).replace(/-/g, '+').replace(/_/g, '/'))));
+        const byId = new Map(((typeof S !== 'undefined' && S.routes) || []).map(r => [r.i, r]));
+        raw.split('|').forEach(p => { const k = p.indexOf(':'); if (k < 1) return; const tag = p.slice(0, k), v = p.slice(k + 1);
+          if (tag === 'r' || tag === 'w') { const r = byId.get(v); const snap = r ? snapshot(r) : { t: v, km: 0, cc: '', al: 0, rg: '', ic: [] }; if (r) snap.cc = ccOf(r, snap); d.rides[v] = Object.assign({ s: tag, at: now() }, snap, { ps: passesOf(snap) }); n++; }
+          else if (tag === 'pr' || tag === 'pw') { d.passes[fold(v)] = { s: tag[1], n: v, at: now() }; n++; }
+          else if (tag === 'f') { try { S.favs.add(v); n++; } catch (e) {} } });
+      } else { const j = JSON.parse(t); if (!j || j.app !== 'curvescout-road-atlas') throw new Error('not an atlas file');
+        Object.assign(d.rides, j.data.rides || {}); Object.assign(d.passes, j.data.passes || {}); Object.assign(d.earned, j.data.earned || {}); n = Object.keys(j.data.rides || {}).length + Object.keys(j.data.passes || {}).length;
+        try { (j.favs || []).forEach(id => S.favs.add(id)); } catch (e) {} }
+      save(); try { saveFavs(); } catch (e) {} return n;
+    } catch (e) { return -1; }
+  }
+
+  /* ---- THE PASSPORT PICTURE: 1080 x 1350, drawn here, nothing uploaded ---- */
+  async function card() {
+    const s = stats(), W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+    const F = (w, px) => w + ' ' + px + 'px "Barlow Condensed", "Arial Narrow", Arial, sans-serif';
+    try { if (document.fonts && document.fonts.load) await Promise.race([document.fonts.load(F('800', 60)), new Promise(r => setTimeout(r, 1200))]); } catch (e) {}
+    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#15171b'); g.addColorStop(1, '#0b0c0e'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+    /* the ridden roads as a constellation: every ridden ride's start, projected */
+    const pts = Object.values(load().rides).filter(r => r.s === 'r' && r.la).map(r => [r.la, r.lo]);
+    if (pts.length) { let a = 90, b = -90, cc = 180, dd = -180; pts.forEach(p => { a = Math.min(a, p[0]); b = Math.max(b, p[0]); cc = Math.min(cc, p[1]); dd = Math.max(dd, p[1]); });
+      const pad = 1.5, sx = 900 / Math.max(2, (dd - cc + pad) * Math.cos((a + b) / 2 * Math.PI / 180)), sy = 380 / Math.max(1.5, b - a + pad), sc = Math.min(sx, sy);
+      const P = p => [W / 2 + (p[1] - (cc + dd) / 2) * Math.cos((a + b) / 2 * Math.PI / 180) * sc, 420 - (p[0] - (a + b) / 2) * sc];
+      x.strokeStyle = 'rgba(255,209,102,.25)'; x.lineWidth = 2; x.beginPath(); pts.forEach((p, k) => { const q = P(p); k ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]); }); x.stroke();
+      pts.forEach(p => { const q = P(p); x.beginPath(); x.arc(q[0], q[1], 9, 0, 7); x.fillStyle = '#ffd166'; x.fill(); x.beginPath(); x.arc(q[0], q[1], 16, 0, 7); x.strokeStyle = 'rgba(255,209,102,.35)'; x.lineWidth = 3; x.stroke(); }); }
+    x.textBaseline = 'alphabetic'; x.textAlign = 'left'; x.font = F('800 italic', 42); x.fillStyle = '#fff'; x.fillText('CURVE', 60, 100); const wC = x.measureText('CURVE').width; x.fillStyle = '#e11b2b'; x.fillText('SCOUT', 60 + wC, 100);
+    x.font = F('600', 30); x.fillStyle = '#c9c6bf'; x.fillText('MY ROAD ATLAS', 60, 140);
+    x.fillStyle = '#e11b2b'; x.fillRect(60, 680, 80, 6); x.font = F('800 italic', 86); x.fillStyle = '#fff'; x.fillText(s.level.toUpperCase(), 56, 780);
+    x.font = F('600', 32); x.fillStyle = '#d9d6cf'; x.fillText(s.xp + ' points' + (s.nextName ? ' · ' + (s.nextAt - s.xp) + ' to ' + s.nextName : ''), 60, 828);
+    const tiles = [[s.ridden, s.ridden === 1 ? 'road ridden' : 'roads ridden'], [s.km.toLocaleString('en-GB'), 'km'], [s.passes.length, s.passes.length === 1 ? 'pass' : 'passes'], [s.countries.length, s.countries.length === 1 ? 'country' : 'countries']];
+    tiles.forEach((t, k) => { const tx = 60 + k * 245; x.fillStyle = '#1b1e23'; x.fillRect(tx, 870, 225, 130); x.fillStyle = '#fff'; x.font = F('800', 58); x.fillText(String(t[0]), tx + 20, 945); x.fillStyle = '#9a968e'; x.font = F('600', 24); x.fillText(t[1].toUpperCase(), tx + 20, 982); });
+    const flags = s.countries.map(cc => cc.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0)))).join(' ');
+    if (flags) { x.font = '48px sans-serif'; x.fillText(flags.slice(0, 40), 60, 1080); }
+    const got = s.badges.filter(b => b.got).slice(0, 10); x.font = '52px sans-serif'; got.forEach((b, k) => x.fillText(b.icon, 60 + k * 96, 1170));
+    x.fillStyle = '#e11b2b'; x.fillRect(0, H - 80, W, 80); x.fillStyle = '#fff'; x.font = F('800', 34); x.textAlign = 'center'; x.fillText('START YOURS ON CURVESCOUT.COM', W / 2, H - 28);
+    return c;
+  }
+
+  /* ---- THE PASSPORT PAGE (#/passport) ---- */
+  function flag(cc) { return /^[A-Z]{2}$/.test(cc) ? cc.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0))) : ''; }
+  function render() {
+    show('passport'); const host = document.getElementById('view-passport'); if (!host) return;
+    const s = stats(), d = load(); const pct = s.nextAt ? Math.round((s.xp - s.levelAt) / (s.nextAt - s.levelAt) * 100) : 100;
+    const list = st => Object.entries(d.rides).filter(([, x]) => x.s === st).sort((a, b) => b[1].at - a[1].at);
+    const row = ([id, x]) => '<li><a href="#/ride/' + encodeURIComponent(id) + '"><b>' + esc(x.t) + '</b><span>' + (x.cc ? flag(x.cc) + ' ' : '') + (x.km ? x.km + ' km' : '') + (x.al ? ' · ' + x.al + ' m' : '') + '</span></a></li>';
+    host.innerHTML = '<div class="raWrap">' +
+      '<header class="raHead"><p class="raKick">My Road Atlas</p><h1>' + esc(s.level) + '</h1><div class="raXp"><div class="raXpBar"><i style="width:' + pct + '%"></i></div><span><b>' + s.xp + '</b> points' + (s.nextName ? ' · ' + (s.nextAt - s.xp) + ' to <b>' + esc(s.nextName) + '</b>' : '') + (s.streak > 1 ? ' · 🔥 ' + s.streak + ' days running' : '') + '</span></div></header>' +
+      (s.ridden || s.want ? '' : '<p class="raEmpty">Your atlas is empty so far. On any ride, tap <b>✓ I rode it</b> for the roads behind you and <b>◎ Want to ride</b> for the ones ahead - they appear here, in gold and blue on the <a href="#/atlas">map</a>, and fill your collections.</p>') +
+      '<section class="raPass"><h2>Road Passport</h2><div class="raTiles">' +
+        [[s.ridden, 'roads ridden'], [s.km.toLocaleString('en-GB'), 'km ridden'], [s.passes.length, 'passes'], [s.countries.length, 'countries'], [s.regions.length, 'regions'], [s.high ? s.high + ' m' : '-', 'highest point']].map(t => '<div class="raTile"><b>' + t[0] + '</b><span>' + t[1] + '</span></div>').join('') + '</div>' +
+        (s.countries.length ? '<p class="raFlags">' + s.countries.map(cc => '<span title="' + esc(cc) + '">' + flag(cc) + '</span>').join(' ') + '</p>' : '') +
+        (s.passes.length ? '<p class="raPassList"><b>Passes:</b> ' + s.passes.slice(0, 40).map(esc).join(' · ') + '</p>' : '') +
+        (s.special.length ? '<p class="raPassList"><b>Special roads:</b> ' + s.special.slice(0, 30).map(esc).join(' · ') + '</p>' : '') + '</section>' +
+      '<section><h2>Collections</h2><div class="raCols">' + COLLECTIONS.map(c => { const g = s.col[c.id]; return '<article class="raCol' + (g.done === g.of ? ' done' : '') + '"><h3>' + c.flag + ' ' + esc(c.name) + '</h3><p>' + esc(c.blurb) + '</p><div class="raBar"><i style="width:' + Math.round(g.done / g.of * 100) + '%"></i></div><span class="raOf">' + g.done + ' of ' + g.of + (g.done === g.of ? ' · complete 🏆' : '') + '</span><ul>' +
+        g.got.map(it => '<li class="' + (it.s === 'r' ? 'r' : it.s === 'w' ? 'w' : '') + '"><span>' + (it.s === 'r' ? '✓' : it.s === 'w' ? '◎' : '○') + '</span>' + esc(it.n) + '<button type="button" class="raPassB" data-pass="' + esc(it.n) + '" data-ps="' + (it.s === 'r' ? '' : 'r') + '">' + (it.s === 'r' ? 'undo' : 'I rode it') + '</button></li>').join('') + '</ul></article>'; }).join('') + '</div></section>' +
+      '<section><h2>Badges</h2><div class="raBadges">' + s.badges.map(b => '<div class="raBadge' + (b.got ? ' got' : '') + '" title="' + esc(b.how) + '"><i>' + b.icon + '</i><b>' + esc(b.name) + '</b><span>' + (b.got ? 'earned' : esc(b.how)) + '</span></div>').join('') + '</div></section>' +
+      '<section class="raLists"><div><h2>Ridden</h2>' + (list('r').length ? '<ul class="raList">' + list('r').map(row).join('') + '</ul>' : '<p class="raMut">None yet.</p>') + '</div>' +
+        '<div><h2>Wish list</h2>' + (list('w').length ? '<ul class="raList">' + list('w').map(row).join('') + '</ul>' : '<p class="raMut">None yet - tap ◎ Want to ride on a ride.</p>') + '</div></section>' +
+      '<section class="raShare"><h2>Share and keep</h2><div class="raBtns"><button type="button" class="primary" id="raCard">Share my atlas picture</button><button type="button" class="ghost2" id="raExport">⬇ Export file</button><button type="button" class="ghost2" id="raCode">Copy restore code</button><button type="button" class="ghost2" id="raRestore">Restore</button></div>' +
+        '<p class="raMut">Your atlas lives on this device only - nothing is uploaded and there is no public ranking. Keep the export file or the restore code somewhere safe: clearing the browser or "Erase my data" removes the atlas too. On another phone or computer, Restore puts it back.</p><div id="raOut"></div></section></div>';
+    host.querySelectorAll('[data-pass]').forEach(b => b.onclick = () => { setPass(b.dataset.pass, b.dataset.ps); render(); });
+    const out = document.getElementById('raOut');
+    document.getElementById('raExport').onclick = () => { out.textContent = exportFile() ? 'Saved as a file in your downloads.' : 'Downloading is blocked here - use the restore code.'; };
+    document.getElementById('raCode').onclick = async () => { const code = restoreCode(); let ok = false; try { await navigator.clipboard.writeText(code); ok = true; } catch (e) {}
+      out.innerHTML = (ok ? 'Copied. ' : '') + 'Your restore code:<textarea class="raCodeBox" readonly rows="3">' + esc(code) + '</textarea>'; const ta = out.querySelector('textarea'); if (ta && !ok) { ta.focus(); ta.select(); } };
+    document.getElementById('raRestore').onclick = () => { out.innerHTML = '<label class="raMut">Paste a restore code or the contents of an export file:<textarea id="raIn" class="raCodeBox" rows="4"></textarea></label><input type="file" id="raFile" accept="application/json,.json"><button type="button" class="primary" id="raDo">Restore</button>';
+      document.getElementById('raFile').onchange = ev => { const f = ev.target.files && ev.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => { document.getElementById('raIn').value = String(rd.result || ''); }; rd.readAsText(f); };
+      document.getElementById('raDo').onclick = () => { const n = restore(document.getElementById('raIn').value); if (n < 0) { out.insertAdjacentHTML('beforeend', '<p class="whWarn">That is not a CurveScout atlas code or file.</p>'); return; } render(); toast('Restored ' + n + ' entries'); }; };
+    document.getElementById('raCard').onclick = async () => { const btn = document.getElementById('raCard'); btn.disabled = true; btn.textContent = 'Drawing…';
+      try { const c = await card(); const blob = await new Promise(r => c.toBlob(r, 'image/png')); const file = new File([blob], 'my-road-atlas.png', { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: 'My Road Atlas', text: 'My Road Atlas on CurveScout: ' + s.ridden + ' roads, ' + s.km + ' km, ' + s.passes.length + ' passes. https://curvescout.com/' }); } catch (e) {} }
+        else { const url = URL.createObjectURL(blob); out.innerHTML = '<img class="raCardImg" src="' + url + '" alt="My Road Atlas picture"><a class="ghost2" download="my-road-atlas.png" href="' + url + '">⬇ Save the picture</a>'; } }
+      catch (e) { out.textContent = 'The picture could not be drawn in this browser.'; }
+      btn.disabled = false; btn.textContent = 'Share my atlas picture'; };
+  }
+  return { status, setStatus, toggleFav, setPass, stats, stripHtml, wireStrip, styleRec, checkIn, opened, render, exportData, restoreCode, restore, COLLECTIONS, BADGES, _load: load, _reset: () => { D = null; } };
+})();
+if (typeof window !== 'undefined') window.CS_RA = CS_RA;
 
 /* ---- TRIPS: weekend planner and holiday planner (owner 2026-10-10) ----
  * One view (#/trip) on top of the trip engine (trips-engine.js). Everything a day shows comes from the ride
@@ -5960,6 +6470,8 @@ function tripDayLabel(d) { try { return d.toLocaleDateString('en-GB', { weekday:
 function tripEncode(plan) {
   const o = plan.opts, p = { v: 1, s: [+(+o.start[0]).toFixed(4), +(+o.start[1]).toFixed(4), o.label || ''], m: o.mode, k: o.kmKey, st: o.style, f: o.from || '', ids: plan.days.map(d => d.id) };
   if (o.end === 'return') p.e = 'r';
+  if (o.mode === 'a2b' && o.dest) p.d = [+(+o.dest[0]).toFixed(4), +(+o.dest[1]).toFixed(4), o.dest[2] || ''];
+  if (plan.days.some(d => d.rev)) p.r = plan.days.map(d => d.rev ? 1 : 0);
   if (o.to) p.t = o.to;
   if (o.nights && Object.keys(o.nights).length) p.n = o.nights;
   return btoa(unescape(encodeURIComponent(JSON.stringify(p)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -6008,9 +6520,14 @@ function tripPlaceList() { if (document.getElementById('tripPlaces')) return;
   document.querySelectorAll('#townList option').forEach(o => { if (o.value && !seen.has(o.value)) { seen.add(o.value); names.push(o.value); } });
   tripPasses().forEach(p => { if (!seen.has(p.n)) { seen.add(p.n); names.push(p.n); } });
   dl.innerHTML = names.slice(0, 3000).map(n => '<option value="' + esc(n) + '">').join(''); document.body.appendChild(dl); }
+function tripKindHelp(m) {
+  return m === 'base' ? 'One place to stay. Every day is a ride out and back to it - the transfers to and from each ride are on the schedule.'
+    : m === 'a2b' ? 'Start in A, finish in B. Each day moves you closer, with a bed where the riding ends and the transfers on the schedule.'
+    : 'A new bed every night, wherever the riding takes you - or back home at the end.';
+}
 function tripOpts(f) {
   return { start: f.start, label: f.label, days: f.days, dayKm: TRIP_KM[f.kmKey] || TRIP_KM.day, kmKey: f.kmKey, style: f.style, mode: f.mode,
-    radius: f.mode === 'base' ? 60 : 80, from: f.from || '', to: f.to || '', month: f.from ? new Date(f.from + 'T12:00:00').getMonth() : undefined, must: f.with ? [f.with] : [], altOf: tripPassAlt, end: f.mode === 'tour' && f.end === 'return' ? 'return' : 'onward', nights: f.nights || {}, styleBias: typeof styleBias === 'function' ? styleBias : null };
+    radius: f.mode === 'base' ? 60 : f.mode === 'a2b' ? 100 : 80, dest: f.mode === 'a2b' && f.dest ? f.dest : null, rev: Array.isArray(f.rev) ? f.rev : undefined, from: f.from || '', to: f.to || '', month: f.from ? new Date(f.from + 'T12:00:00').getMonth() : undefined, must: f.with ? [f.with] : [], altOf: tripPassAlt, end: f.mode === 'tour' && f.end === 'return' ? 'return' : 'onward', nights: f.nights || {}, styleBias: typeof styleBias === 'function' ? styleBias : null };
 }
 async function renderTrip(h) {
   show('trip');
@@ -6019,7 +6536,8 @@ async function renderTrip(h) {
   const shared = p ? tripDecode(p) : null;
   if (!tripRoutes().length) { host.innerHTML = '<div class="tripWrap"><p class="tripNote">Loading the ride inventory…</p></div>'; try { await (window.__CS_READY || Promise.resolve()); } catch (e) {} }
   if (shared) {
-    const f = { start: [shared.s[0], shared.s[1]], label: shared.s[2] || 'Start', days: shared.ids.length, kmKey: shared.k || 'day', style: shared.st || 'touring', mode: shared.m || 'base', from: shared.f || '', to: shared.t || '', end: shared.e === 'r' ? 'return' : 'onward', nights: shared.n && typeof shared.n === 'object' ? shared.n : {} };
+    const f = { start: [shared.s[0], shared.s[1]], label: shared.s[2] || 'Start', days: shared.ids.length, kmKey: shared.k || 'day', style: shared.st || 'touring', mode: shared.m || 'base', from: shared.f || '', to: shared.t || '', end: shared.e === 'r' ? 'return' : 'onward', nights: shared.n && typeof shared.n === 'object' ? shared.n : {},
+      dest: Array.isArray(shared.d) ? shared.d : null, destLabel: Array.isArray(shared.d) ? shared.d[2] || '' : '', rev: Array.isArray(shared.r) ? shared.r : undefined };
     TRIP.opts = tripOpts(f); TRIP.plan = CS_TRIPS.fromIds(tripRoutes(), TRIP.opts, shared.ids); TRIP.form = f;
     /* audit 2026-10-11: opening a saved or shared trip kept the start typed for the previous one ("Milan" over a Zurich
        trip), and Plan then replaced the trip. A trip that arrives by link brings its own start. */
@@ -6039,13 +6557,15 @@ function tripFormHtml(f) {
   const chip = (name, val, label, on) => '<button type="button" class="chip' + (on ? ' on' : '') + '" data-' + name + '="' + val + '">' + label + '</button>';
   return '<form class="tripForm" id="tripForm" autocomplete="off">' +
     '<h1 class="tripH">Plan a trip</h1><p class="tripLead">A weekend or a whole holiday, put together from CurveScout’s scouted rides: different roads every day, sensible starts, places to stay.</p>' +
-    '<label class="tripL">Start or base<div class="tripRow"><input id="tripStart" type="text" list="tripPlaces" autocomplete="off" placeholder="Town, pass or coordinates" value="' + esc(f.label || '') + '"><button type="button" class="ghost2" id="tripGeo">◉ My location</button></div></label>' +
+    '<div class="tripL">What kind of trip<div class="chips tripKind" id="tripMode">' + chip('m', 'base', '⌂ Around one base', f.mode === 'base') + chip('m', 'a2b', 'A → B', f.mode === 'a2b') + chip('m', 'tour', '↻ Move on each day', f.mode === 'tour') + '</div>' +
+      '<p class="tripKindHelp" id="tripKindHelp">' + tripKindHelp(f.mode) + '</p></div>' +
+    '<label class="tripL"><span id="tripStartL">' + (f.mode === 'base' ? 'Your base' : 'Start (A)') + '</span><div class="tripRow"><input id="tripStart" type="text" autocomplete="off" placeholder="Town, pass or coordinates - in any language" value="' + esc(f.label || '') + '"><button type="button" class="ghost2" id="tripGeo">◉ My location</button></div></label>' +
+    '<label class="tripL" id="tripDestRow"' + (f.mode === 'a2b' ? '' : ' hidden') + '>Destination (B)<div class="tripRow"><input id="tripDest" type="text" autocomplete="off" placeholder="Where the trip ends" value="' + esc(f.destLabel || '') + '"></div></label>' +
     (f.with ? (() => { const r = tripRoutes().find(x => x.i === f.with); return r ? '<p class="tripWith">Built around <b>' + esc(r.t) + '</b> <button type="button" class="tripWithX" id="tripWithX" aria-label="Plan without this ride">× remove</button></p>' : ''; })() : '') +
     '<div class="tripL">Dates <span class="tripOpt">optional - leave empty to plan any weekend</span><div class="tripRow tripDates"><label class="tripDL">From<input id="tripFrom" type="date" min="' + tripIso(new Date()) + '" value="' + esc(f.from || '') + '"></label><label class="tripDL">To<input id="tripTo" type="date" min="' + tripIso(new Date()) + '" value="' + esc(f.to || '') + '"></label></div></div>' +
     '<div class="tripL">Riding days<div class="chips" id="tripDays">' + TRIP_DAYS.concat(TRIP_DAYS.includes(f.days) ? [] : [f.days]).sort((a, b) => a - b).map(d => chip('d', d, d === 1 ? '1 day' : d === 2 ? '2 · weekend' : d === 3 ? '3 · long weekend' : d + ' days', d === f.days)).join('') + '</div></div>' +
     '<div class="tripL">Riding per day<div class="chips" id="tripKm">' + chip('k', 'short', '100–200 km', f.kmKey === 'short') + chip('k', 'day', '150–300 km', f.kmKey === 'day') + chip('k', 'long', '250–420 km', f.kmKey === 'long') + '</div></div>' +
     '<div class="tripL">Style<div class="chips" id="tripStyle">' + TRIP_STYLES.map(([v, l]) => chip('s', v, l, f.style === v)).join('') + '</div></div>' +
-    '<div class="tripL">Nights<div class="chips" id="tripMode">' + chip('m', 'base', 'One base, ride loops', f.mode === 'base') + chip('m', 'tour', 'Move on each day', f.mode === 'tour') + '</div></div>' +
     '<div class="tripL" id="tripEndRow"' + (f.mode === 'tour' ? '' : ' hidden') + '>Finish<div class="chips" id="tripEnd">' + chip('e', 'onward', 'Somewhere new', f.end !== 'return') + chip('e', 'return', 'Back home', f.end === 'return') + '</div></div>' +
     '<button type="submit" class="primary tripGo">Plan my trip</button><p class="tripNote" id="tripMsg" aria-live="polite"></p>' + tripSavedHtml() + '</form>';
 }
@@ -6073,7 +6593,10 @@ function tripPaint() {
   $('tripDays').addEventListener('click', ev => { if (!ev.target.closest('[data-d]') || !f.from) return;
     const end = tripDate(f.from, f.days - 1); if (end) { f.to = tripIso(end); $('tripTo').value = f.to; $('tripMsg').textContent = f.days + ' riding days: ' + tripDayLabel(tripDate(f.from, 0)) + ' – ' + tripDayLabel(end) + '.'; } });
   pick($('tripKm'), 'k', 'kmKey'); pick($('tripStyle'), 's', 'style'); pick($('tripMode'), 'm', 'mode'); pick($('tripEnd'), 'e', 'end');
-  $('tripMode').addEventListener('click', () => { $('tripEndRow').hidden = f.mode !== 'tour'; });
+  $('tripMode').addEventListener('click', () => { $('tripEndRow').hidden = f.mode !== 'tour'; $('tripDestRow').hidden = f.mode !== 'a2b'; $('tripStartL').textContent = f.mode === 'base' ? 'Your base' : 'Start (A)'; $('tripKindHelp').innerHTML = tripKindHelp(f.mode); if (f.mode === 'a2b' && !f.destLabel) setTimeout(() => { try { $('tripDest').focus(); } catch (e) {} }, 30); });
+  /* owner 2026-10-13: suggestions with local names and region/country, so two places of one name are told apart */
+  try { CS_SUGGEST.attach($('tripStart'), g => { f.start = [g.lat, g.lon]; f.label = g.label; f.with = f.with || ''; $('tripMsg').textContent = ''; });
+    CS_SUGGEST.attach($('tripDest'), g => { f.dest = [g.lat, g.lon, g.label]; f.destLabel = g.label; $('tripMsg').textContent = ''; }); } catch (e) {}
   host.querySelectorAll('[data-unsave]').forEach(b => b.onclick = () => { try { const l = tripSaved(); l.splice(+b.dataset.unsave, 1); localStorage.setItem('cs_trips', JSON.stringify(l)); } catch (e) {} const box = host.querySelector('.tripSaved'); if (box) box.outerHTML = tripSavedHtml(); tripPaint(); });
   /* dates set the number of riding days when both are given */
   const syncDates = () => { f.from = $('tripFrom').value; f.to = $('tripTo').value;
@@ -6094,7 +6617,8 @@ function tripPaint() {
     if (!typed) { msg.textContent = 'Choose a start: type a town or a pass, or use My location.'; $('tripStart').focus(); return; }
     if (f.from && f.to && f.to < f.from) { msg.textContent = 'The end date is before the start date.'; return; }
     if (typed !== f.label) { msg.textContent = 'Looking up ' + typed + '…';
-      try { let g = tripFindPlace(typed); if (!g) { g = await geocode(typed); if (Array.isArray(g)) g = g[0] ? { lat: +g[0].lat, lon: +g[0].lon, label: g[0].display_name } : null; }
+      try { let g = tripFindPlace(typed); if (!g) { try { g = await geocode(typed); } catch (e) { g = null; } if (Array.isArray(g)) g = g[0] ? { lat: +g[0].lat, lon: +g[0].lon, label: g[0].display_name } : null; }
+        if (!g) { try { g = await CS_SUGGEST.resolve(typed); } catch (e) { g = null; } }
         if (!g || !Number.isFinite(+g.lat) || !Number.isFinite(+g.lon)) throw new Error('not found'); f.start = [+g.lat, +g.lon]; f.label = g.label || typed; $('tripStart').value = f.label;
         /* audit 2026-10-11: a start typed as a pass ("Stelvio") never put that pass in the trip. The best scouted ride
            that rides it becomes day 1, as "Plan a trip with this ride" does - shown and removable on the form. */
@@ -6102,10 +6626,18 @@ function tripPaint() {
             tripFold(String(r.t || '') + ' ' + (Array.isArray(r.ic) ? r.ic.map(x => x && x.n).join(' ') : '')).includes(w) && CS_TRIPS._dist(f.start, CS_TRIPS._startOf(r) || f.start) <= 90)
             .sort((a, b) => (+b.s || 0) - (+a.s || 0))[0];
           if (cand) f.with = cand.i; } catch (e) {} } }
-      catch (e) { msg.textContent = typed + ' is not in CurveScout’s town list. Pick a town from the suggestions as you type, use My location, or enter coordinates like 47.37, 8.54.';
+      catch (e) { msg.textContent = 'No place called ' + typed + ' was found. Pick one from the suggestions as you type (they show the region and country), use My location, or enter coordinates like 47.37, 8.54.';
         /* audit 2026-10-11: the old trip stayed below the error and read as the answer for the new start */
         const out0 = $('tripOut'); if (out0) out0.innerHTML = ''; return; } }
     if (!f.start) { msg.textContent = 'Choose a start: type a town or use your location.'; return; }
+    if (f.mode === 'a2b') { const dt = ($('tripDest').value || '').trim();
+      if (!dt) { msg.textContent = 'Where does the trip end? Type the destination (B).'; $('tripDest').focus(); return; }
+      if (dt !== f.destLabel || !f.dest) { msg.textContent = 'Looking up ' + dt + '…';
+        let g = null; try { g = tripFindPlace(dt) || await CS_SUGGEST.resolve(dt); } catch (e) {}
+        if (!g) { msg.textContent = 'No place called ' + dt + ' was found. Pick the destination from the suggestions as you type.'; return; }
+        f.dest = [+g.lat, +g.lon, g.label || dt]; f.destLabel = g.label || dt; $('tripDest').value = f.destLabel; }
+      if (CS_TRIPS._dist(f.start, f.dest) < 25) { msg.textContent = 'A and B are only ' + Math.round(CS_TRIPS._dist(f.start, f.dest)) + ' km apart - choose "Around one base" for loops from one place.'; return; } }
+    f.rev = undefined;
     msg.textContent = 'Putting the days together…';
     f.nights = {}; TRIP.opts = tripOpts(f);
     await new Promise(r => setTimeout(r, 20));
@@ -6118,10 +6650,11 @@ function tripPaint() {
   if (TRIP.plan) tripResult();
 }
 /* the riding to and from the starts: one way on a moving tour, there and back from one base (estimate) */
-function tripApproachKm(plan) { const o = plan.opts || TRIP.opts || {}; const ap = plan.days.reduce((a, d) => a + (d.approachKm || 0), 0); return Math.round(o.mode === 'base' ? ap * 2 : ap); }
+function tripApproachKm(plan) { if (Number.isFinite(plan.transferKm)) return Math.round(plan.transferKm); const o = plan.opts || TRIP.opts || {}; const ap = plan.days.reduce((a, d) => a + (d.approachKm || 0), 0); return Math.round(o.mode === 'base' ? ap * 2 : ap); }
 function tripScrollTo(el) { if (!el) return; scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + scrollY - 72), behavior: 'auto' }); }
 function tripResult() {
   const out = $('tripOut'), plan = TRIP.plan, o = TRIP.opts; if (!out || !plan) return;
+  try { csNeedCards(plan.days.map(d => d.route), () => { if (TRIP.plan === plan && $('tripOut')) tripResult(); }); } catch (e) {}
   /* fewer days than asked: offer the change that gives more, if there is one */
   TRIP.partialFix = null;
   if (plan.days.length && plan.days.length < o.days && o.mode === 'base') { const t = CS_TRIPS.compose(tripRoutes(), Object.assign({}, o, { mode: 'tour', radius: 80 }));
@@ -6159,16 +6692,19 @@ function tripResult() {
   const n = plan.days.length, title = n === 1 ? 'Your day ride' : n === 2 ? 'Your weekend ride' : n === 3 ? 'Your long weekend' : 'Your ' + n + '-day tour';
   const from = o.from ? tripDate(o.from, 0) : null, to = o.from ? tripDate(o.from, n - 1) : null;
   out.innerHTML = '<section class="tripRes"><h2 class="tripH2">' + title + '</h2>' +
-    '<p class="tripSum"><b>' + plan.totalKm + ' km</b> · <b>' + tripFmtMin(plan.totalMin) + '</b> of riding' +
-      (() => { const ap = tripApproachKm(plan); return ap > 10 ? ' (plus about ' + ap + ' km to reach the starts' + (o.mode === 'base' ? ' and back' : '') + ')' : ''; })() + ' · ' + (o.mode === 'base' ? 'from one base: ' : 'moving on from ') + esc(o.label || 'your start') +
-      (from ? ' · ' + esc(tripDayLabel(from)) + (to && n > 1 ? ' – ' + esc(tripDayLabel(to)) : '') : '') + '</p>' +
+    /* the distance and riding time are the tiles right below - the line says what the tiles do not */
+    '<p class="tripSum">' + (o.mode === 'base' ? 'From one base: <b>' + esc(o.label || 'your start') + '</b>' : o.mode === 'a2b' && o.dest ? '<b>' + esc(o.label || 'A') + ' → ' + esc(o.dest[2] || 'B') + '</b>' : 'Moving on each day from <b>' + esc(o.label || 'your start') + '</b>') +
+      (from ? ' · ' + esc(tripDayLabel(from)) + (to && n > 1 ? ' – ' + esc(tripDayLabel(to)) : '') : '') +
+      (plan.transferKm > 10 ? ' · plus <b id="tripXTot">about ' + plan.transferKm + ' km</b> of transfers' : '') + '</p>' +
     (plan.warnings.length ? '<p class="tripWarn">' + esc(plan.warnings[0]) + (TRIP.partialFix ? ' <button type="button" class="tripWarnBtn" id="tripPartialFix">' + esc(TRIP.partialFix.label) + '</button>' : '') + '</p>' : '') +
     tripStatsHtml(plan) + tripRibbonHtml(plan) +
     '<div class="tripBody"><div class="tripMapWrap"><div class="tripMap" id="tripMap"></div><button type="button" class="tripPlay" id="tripPlay" aria-label="Play the trip on the map">▶ Play trip</button><div class="tripCap" id="tripCap" hidden></div></div>' +
     '<div class="tripDays">' + plan.days.map((d, i) => tripDayCard(d, i)).join('') + '</div></div>' +
     '<div class="tripActs"><button type="button" class="primary" id="tripShare">Share this trip</button><a class="ghost2" id="tripMail" href="#">✉ Email to a friend</a><button type="button" class="ghost2" id="tripGpx">⬇ GPX, all days</button><button type="button" class="ghost2" id="tripSave">☆ Save trip</button></div>' +
-    '<p class="tripFine">Routes, distances and riding times come from CurveScout’s scouted rides. The way from one night to the next start is a straight-line estimate and is marked "about". Places to stay and eat are from OpenStreetMap: no prices, availability or opening hours are promised - check before you go. Road and pass conditions change; posted signs and official closures always win.</p></section>';
+    '<details class="tripFineD"><summary>How the times, distances and stops are worked out</summary><p class="tripFine">Routes, distances and riding times come from CurveScout’s scouted rides. Transfers (from your bed to where a ride begins, and from where it ends to the next bed) start as estimates marked "about" and are replaced by the routed road when the router answers. Clock times assume a 09:00 start and short stops. Places to stay and eat are from OpenStreetMap: no prices, availability or opening hours are promised - check before you go. Road and pass conditions change; posted signs and official closures always win. Per stop: heights and passes come from the ride’s checkpoints and the app’s pass list; a town named beside a stop is a GeoNames place of 1,000 people or more (a name to find on the map, not a promise of fuel - the stations actually mapped are on each ride page); World Heritage text is UNESCO’s own description; rider meets are listed with their published dates or, where none are published, the month they usually run; sunset is calculated for the date and place; what is around each stop is Wikipedia’s own list of articles nearby, linked to the article (CC BY-SA) and fetched only when you open that day.</p></details></section>';
   tripWire(); tripDrawMap(); tripDayPhotos(plan);
+  /* the stops of each day: the open day first, the rest one after another (their rides are the ones the map loads anyway) */
+  (async () => { const order = plan.days.map((_, i) => i); for (const i of order) { if (TRIP.plan !== plan) return; try { await tripBookFill(i); } catch (e) {} } })();
 }
 /* the trip at a glance: counted from the rides themselves */
 function tripStatsHtml(plan) {
@@ -6194,37 +6730,265 @@ function tripRibbonHtml(plan) {
     return '<button type="button" role="listitem" class="tripSeg" data-seg="' + i + '" style="flex-grow:' + Math.max(1, Math.round(d.km)) + ';--c:' + TRIP_COL[i % TRIP_COL.length] + '"><i class="tripSegBar"><i class="tripSegFill" id="tripFill' + i + '"></i></i>' +
       '<span class="tripSegT">' + (date ? esc(short(date)) : 'Day ' + (i + 1)) + '</span><span class="tripSegK">' + Math.round(d.km) + ' km</span></button>'; }).join('') + '</div>';
 }
+/* ---- THE DAY CARD, REWRITTEN (owner 2026-10-17: "clean and neat but with much more great text per waypoint and with
+   less redundancies and crisper, especially on the mobile ... we bore them with scrolling for nothing") ----
+   One card per day says each thing once:
+     head      the date, the ride, one line of figures (distance, riding time, highest point, shape);
+     lead      the ride's own line, plus why it was chosen when that adds something the stops do not;
+     path      the day in one line, start to finish through its passes and sights - readable without opening anything;
+     the day   stop by stop, folded: clock time, km mark, height, and a few sentences of real facts per stop (the climb
+               that got you there, how much cooler the top is, the last town before a long empty stretch, a World Heritage
+               site or a sight within a few km, a rider meet on your dates, where lunch falls, sunset). Transfers sit in
+               the same list, so there is no separate schedule repeating the ride.
+   On a phone one day is open at a time; the others stay a three-line card. */
 function tripDayCard(d, i) {
   const o = TRIP.opts, r = d.route, date = o.from ? tripDate(o.from, i) : null;
-  const roads = (r.ic || []).slice(0, 3).map(x => '<li><b>' + esc(x.n) + '</b>' + (x.km ? ' · ' + Math.round(x.km) + ' km of it' : '') + '</li>').join('');
-  const approach = d.approachKm > 3 ? '<p class="tripApp">Start is about ' + d.approachKm + ' km from ' + (i === 0 || o.mode === 'base' ? esc(o.label || 'your start') : 'last night’s stop') + ' (estimate).</p>' : '';
   const last = i === TRIP.plan.days.length - 1;
-  const home = o.mode !== 'base' && o.end === 'return' && last ? Math.round(CS_TRIPS._dist(d.night, o.start) * 1.35) : 0;
-  const back = o.mode === 'base' && !d.loop ? Math.round(CS_TRIPS._dist(d.end, o.start) * 1.35) : 0;
-  const backP = back > 3 ? '<p class="tripApp">This ride ends away from your base: about ' + back + ' km back (estimate).</p>' : '';
-  const homeP = home > 3 ? '<p class="tripApp">From the last stop home: about ' + home + ' km (estimate).</p>' : '';
   /* audit 2026-10-11: a night had no name until it was moved; it says which town it is near */
   const ownN = o.mode !== 'base' && o.nights && o.nights[i] && o.nights[i][2] ? ' · ' + esc(o.nights[i][2])
     : (o.mode !== 'base' ? (() => { const t = tripTownNear(d.night, 15); return t ? ' · near ' + esc(t) : ''; })() : '');
   /* a high road out of season: say so on the card - dates are known, conditions are not */
-  const month = o.from ? tripDate(o.from, i) : null;
   const hi = CS_TRIPS.altOf(r, o);
-  const seasonNote = month && hi >= 1800 && CS_TRIPS.seasonFit(hi, month.getMonth(), +r.la || 0) < 0.6
-    ? '<p class="tripSeason">⚠ Up to ' + Math.round(hi) + ' m in ' + month.toLocaleDateString('en-GB', { month: 'long' }) + ': roads this high often close outside June–September. Check the pass status before you set off.</p>' : '';
+  const seasonNote = date && hi >= 1800 && CS_TRIPS.seasonFit(hi, date.getMonth(), +r.la || 0) < 0.6
+    ? '<p class="tripSeason">⚠ Up to ' + Math.round(hi) + ' m in ' + date.toLocaleDateString('en-GB', { month: 'long' }) + ': roads this high often close outside June–September. Check the pass status before you set off.</p>' : '';
   /* one base = one place to stay: the options are shown once, on day 1, for all nights */
   const hideStay = (o.mode !== 'base' && o.end === 'return' && last) || (o.mode === 'base' && i > 0);
-  const nightLabel = o.mode === 'base' ? (TRIP.plan.days.length > 1 ? 'Your base for ' + (TRIP.plan.days.length - 1) + (TRIP.plan.days.length === 2 ? ' night' : ' nights') : 'Your base') : (i === TRIP.plan.days.length - 1 ? 'Last night' : 'Night ' + (i + 1));
-  return '<article class="tripDay" data-i="' + i + '"><div class="tripDayHead"><span class="tripNum" style="background:' + TRIP_COL[i % TRIP_COL.length] + '">' + (i + 1) + '</span><div><h3>' +
-    (date ? '<span class="tripDate">' + esc(tripDayLabel(date)) + '</span>' : 'Day ' + (i + 1) + ' · ') + esc(r.t) + '</h3>' +
-    '<p class="tripMeta"><b>' + Math.round(d.km) + ' km</b> · <b>' + tripFmtMin(d.minutes) + '</b> riding' + (CS_TRIPS.altOf(r, o) ? ' · up to <b>' + Math.round(CS_TRIPS.altOf(r, o)) + ' m</b>' : '') + (r.k ? ' · ' + esc(r.k) : '') + (d.loop ? ' · loop' : ' · point to point') + '</p></div></div>' +
-    (r.sl ? '<p class="tripSl">' + esc(window.csSloganTrue ? window.csSloganTrue(r) : r.sl) + '</p>' : '') +
-    (roads ? '<ul class="tripRoads">' + roads + '</ul>' : '') +
-    (d.reasons.length ? '<p class="tripWhy">Why this day: ' + esc(d.reasons.join('; ')) + '.</p>' : '') + seasonNote + approach + backP + homeP +
+  const nightLabel = o.mode === 'base' ? (TRIP.plan.days.length > 1 ? 'Your base for ' + (TRIP.plan.days.length - 1) + (TRIP.plan.days.length === 2 ? ' night' : ' nights') : 'Your base') : (last ? 'Last night' : 'Night ' + (i + 1));
+  const shape = d.loop ? 'loop' : d.rev ? 'ridden from its far end' : 'point to point';
+  const roads = (r.ic || []).filter(x => x && x.n);
+  return '<article class="tripDay" data-i="' + i + '"><div class="tripDayHead"><span class="tripNum" style="background:' + TRIP_COL[i % TRIP_COL.length] + '">' + (i + 1) + '</span><div class="tripDayT">' +
+    '<p class="tripKick"><small>' + (date ? esc(tripDayLabel(date)) + ' · ' : '') + 'Day ' + (i + 1) + '</small></p><h3>' + esc(r.t) + '</h3>' +
+    '<p class="tripMeta"><b>' + Math.round(d.km) + ' km</b> · <b>' + tripFmtMin(d.minutes) + '</b> riding' + (hi ? ' · up to <b>' + Math.round(hi) + ' m</b>' : csAltSlot(r, 'trip')) + ' · ' + shape + '</p></div></div>' +
+    tripLeadHtml(d) + seasonNote +
+    '<p class="tripPath" id="tripPath' + i + '">' + (roads.length ? roads.slice(0, 4).map(x => esc(x.n)).join(' <i>→</i> ') : '&nbsp;') + '</p>' +
     '<figure class="tripPic" id="tripPic' + i + '" hidden></figure>' +
+    '<details class="tripBook" data-book="' + i + '"' + (i === 0 ? ' open' : '') + '><summary><span class="tbT">Stop by stop</span><span class="tbS" id="tripBookSum' + i + '">' + tripClock(9 * 60) + ' →</span></summary>' +
+      tripSchedHtml(d, i, null) + '<p class="tripRoads" id="tripRoadsLeft' + i + '" hidden></p></details>' +
     '<p class="tripRoadSt" id="tripRoad' + i + '">Loading the road line…</p>' +
-    '<div class="tripBtns"><a class="ghost2" href="#/ride/' + encodeURIComponent(d.id) + '">View ride</a><button type="button" class="ghost2" data-rep="' + i + '">⇄ Replace day</button><button type="button" class="ghost2" data-gpx="' + i + '">⬇ GPX</button></div>' +
+    '<div class="tripBtns"><a class="ghost2" href="#/ride/' + encodeURIComponent(d.id) + '">View ride</a><button type="button" class="ghost2" data-rep="' + i + '">⇄ Replace</button><button type="button" class="ghost2" data-gpx="' + i + '">⬇ GPX</button></div>' +
     '<div class="tripAlt" id="tripAlt' + i + '" hidden></div>' +
     (hideStay ? '' : '<details class="tripStay" data-stay="' + i + '"><summary>🛏 ' + nightLabel + ownN + ': places to stay and eat</summary><div class="tripStayBody">Opening…</div></details>') + '</article>';
+}
+/* the ride's own line, and the reason it was picked only where the stops do not already say it ("rides Furka Pass and
+   Susten Pass" is what the stop list shows a few lines down) */
+function tripLeadHtml(d) {
+  const r = d.route, sl = r.sl ? String(window.csSloganTrue ? window.csSloganTrue(r) : r.sl).trim() : '';
+  const why = (d.reasons || []).filter(x => /^a different character/.test(x)).map(x => String(x).trim()).filter(Boolean);
+  const parts = []; if (sl) parts.push(sl.replace(/[.\s]+$/, '') + '.');
+  if (why.length) parts.push(why.map(x => x.charAt(0).toUpperCase() + x.slice(1)).join('; ').replace(/[.\s]+$/, '') + '.');
+  return parts.length ? '<p class="tripLead">' + esc(parts.join(' ')) + '</p>' : '';
+}
+/* ---- THE DAY'S SCHEDULE: transfer in, every stop of the ride, transfer out (owner 2026-10-13, 2026-10-17) ----
+   Times from a 09:00 departure; stops are 15 minutes per 90 minutes of riding and a 45 minute lunch on days over four
+   hours, spread along the day in proportion to the distance. Transfer figures start as estimates and are replaced in
+   place when the routed transfer arrives. Before the ride's stops have loaded, the ride is one row. */
+function tripStops(min) { return Math.round(min / 90) * 15 + (min > 240 ? 45 : 0); }
+function tripClock(m) { m = Math.round(m); return String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); }
+function tripPlaceName(at, fallback) { const t = at ? tripTownNear(at, 12) : ''; return t ? (CS_TRIPS._dist(at, tripPlacePt(t) || at) < 2 ? t : 'near ' + t) : fallback; }
+function tripPlacePt(name) { try { const g = gazetteer().find(x => x.name === name); return g ? [g.la, g.lo] : null; } catch (e) { return null; } }
+function tripDur(m) { m = Math.round(+m || 0); return m < 60 ? m + ' min' : tripFmtMin(m); }
+function tripXfText(x) { return x.km ? (x.routed ? x.km + ' km · ' + tripDur(x.min) + ' (routed)' : 'about ' + x.km + ' km · ' + tripDur(x.min)) : 'right there'; }
+function tripSchedHtml(d, i, stops) {
+  const o = TRIP.opts, plan = TRIP.plan, last = i === plan.days.length - 1;
+  const tin = d.transferIn || { km: 0, min: 0 }, tout = d.transferOut || { km: 0, min: 0 };
+  const from = o.mode === 'base' || i === 0 ? (o.label || 'your start') : (o.nights && o.nights[i - 1] && o.nights[i - 1][2]) || tripPlaceName(plan.days[i - 1].night, 'last night’s stop');
+  const bed = o.mode === 'base' ? (o.label || 'your base') : (o.nights && o.nights[i] && o.nights[i][2]) || (last && o.mode === 'a2b' && o.dest ? o.dest[2] || 'B' : last && o.end === 'return' ? (o.label || 'home') : tripPlaceName(d.night, 'tonight’s stop'));
+  const t0 = 9 * 60, tRide = t0 + tin.min, tEnd = tRide + d.minutes + tripStops(d.minutes), tBed = tEnd + tout.min;
+  const xf = (t, k, x, txt) => '<li class="tsX" data-x="' + k + i + '"><time>' + tripClock(t) + '</time><div class="tsB"><p class="tsH">' + txt + '</p><p class="tsKmL"><b class="tsKm">' + tripXfText(x) + '</b></p></div></li>';
+  const rideRow = '<li class="tsR"><time>' + tripClock(tRide) + '</time><div class="tsB"><p class="tsH">Ride <b>' + esc(d.route.t) + '</b>' + (d.rev ? ' from its far end (on the ride page tap <b>⇄ Reverse</b>)' : '') + '</p><p class="tsT">' + Math.round(d.km) + ' km, ' + tripFmtMin(d.minutes) + ' riding + about ' + tripDur(tripStops(d.minutes)) + ' of stops' + (stops === null ? ' · <span class="tsWait">the stops are loading…</span>' : '') + '</p></div></li>';
+  const sum = $('tripBookSum' + i); if (sum) sum.textContent = (stops && stops.length ? stops.length + ' stops · ' : '') + tripClock(t0) + ' → ' + tripClock(tBed);
+  return '<ol class="tripSched" id="tripSched' + i + '" aria-label="Day ' + (i + 1) + ' schedule">' +
+    (tin.km ? xf(t0, 'in', tin, 'Transfer from <b>' + esc(from) + '</b> to the start') : '<li class="tsX"><time>' + tripClock(t0) + '</time><div class="tsB"><p class="tsH">Leave <b>' + esc(from) + '</b> - the ride starts at the door</p></div></li>') +
+    (stops && stops.length ? (() => { /* lunch falls where today's clock says, at the stop best placed for it */
+      let lunch = -1; if (d.minutes > 240) { const cand = stops.map((s, k) => ({ s, k, t: tRide + s.at })).filter(x => x.k > 0 && x.k < stops.length - 1 && x.t >= 11 * 60 + 30 && x.t <= 14 * 60);
+        cand.sort((a, b) => (Math.abs(a.t - 765) - (/food|town/.test(a.s.kind) || /Food|Coffee/.test(a.s.role) ? 40 : 0)) - (Math.abs(b.t - 765) - (/food|town/.test(b.s.kind) || /Food|Coffee/.test(b.s.role) ? 40 : 0)));
+        if (cand[0]) lunch = cand[0].k; }
+      return stops.map((s, k) => tripStopRow(s, tRide, k === lunch)).join(''); })() : rideRow) +
+    (tout.km ? xf(tEnd, 'out', tout, 'Transfer to <b>' + esc(bed) + '</b>') : '') +
+    '<li class="tsN"><time>' + tripClock(tBed) + '</time><div class="tsB"><p class="tsH">' + (o.mode === 'base' ? 'Back at ' : last && o.mode === 'a2b' ? 'Arrive in ' : 'Bed in ') + '<b>' + esc(bed) + '</b></p></div></li></ol>';
+}
+const TRIP_KIND_ICON = { start: '●', finish: '◉', pass: '▲', high: '▲', fuel: '⛽', food: '🍴', sight: '★', photo: '📷', view: '👁', swim: '🏊', water: '💧', coast: '🌊', town: '⌂', ferry: '⛴', border: '⛳' };
+function tripStopRow(s, tRide, lunch) {
+  const tags = (lunch ? [{ h: '🍴 Lunch fits here', c: 'meal' }] : []).concat(s.tags).map(t => '<small class="tsTag' + (t.c ? ' ' + t.c : '') + '">' + t.h + '</small>').join('');
+  return '<li class="tsW k-' + esc(s.kind) + '"><time>' + tripClock(tRide + s.at) + '</time><div class="tsB"><p class="tsH"><span class="tsI" aria-hidden="true">' + (TRIP_KIND_ICON[s.kind] || '•') + '</span><b>' + esc(s.name) + '</b>' +
+    (s.alt ? ' <span class="tsAlt">' + Math.round(s.alt).toLocaleString('en-GB') + ' m</span>' : '') + ' <small class="tsMk">km ' + Math.round(s.km) + '</small></p>' +
+    (s.text.length ? '<p class="tsT">' + s.text.join(' ') + '</p>' : '') + '<p class="tsWiki" data-w="' + s.k + '" hidden></p>' + (tags ? '<p class="tsTags">' + tags + '</p>' : '') +
+    (s.next && s.next.km >= 3 ? '<p class="tsNext"><small>Next: ' + esc(s.next.name) + ' · ' + Math.round(s.next.km) + ' km · about ' + tripDur(Math.max(5, s.next.min)) + '</small></p>' : '') + '</div></li>';
+}
+/* sunset in minutes after local midnight at the place (NOAA approximation, good to a few minutes); the clock in the
+   schedule is the rider's local time, so the comparison is made in the place's own solar time zone, rounded to the hour */
+function tripSunset(lat, lon, date) {
+  try { const rad = Math.PI / 180, start = new Date(date.getFullYear(), 0, 0), n = Math.floor((date - start) / 864e5);
+    const decl = 23.44 * rad * Math.sin(2 * Math.PI * (284 + n) / 365), cosH = (Math.sin(-0.833 * rad) - Math.sin(lat * rad) * Math.sin(decl)) / (Math.cos(lat * rad) * Math.cos(decl));
+    if (cosH <= -1 || cosH >= 1) return null; const H = Math.acos(cosH) / rad;
+    const B = 2 * Math.PI * (n - 81) / 364, eot = 9.87 * Math.sin(2 * B) - 7.53 * Math.cos(B) - 1.5 * Math.sin(B);
+    const tz = -date.getTimezoneOffset() / 60, solarNoon = 720 - 4 * lon - eot + tz * 60;
+    /* the visitor's own zone only stands for the place when the place is near it; otherwise its longitude decides */
+    const zone = Math.abs(lon / 15 - tz) <= 2.5 ? tz : Math.round(lon / 15);
+    return solarNoon - (tz - zone) * 60 + H * 4; } catch (e) { return null; }
+}
+/* the scouting labels ("Altdorf fuel gate", "Innertkirchen food reset") are working names: the place is shown, the role
+   becomes a tag */
+const TRIP_ROLE = [[/\s+(fuel gate|fuel check|fuel stop|fuel)$/i, '⛽ Planned fuel stop'], [/\s+(food reset|food stop|lunch stop|lunch)$/i, '🍴 Food and a rest'], [/\s+(dome )?coffee( stop)?$/i, '☕ Coffee'],
+  [/\s+(water stop|swim stop)$/i, '💧 Water'], [/\s+(border gate|border return|border)$/i, '⛳ Border'], [/\s+(return|exit|entry|gate)$/i, '']];
+function tripStopLabel(n) { let name = String(n || '').trim(), role = '';
+  for (let g = 0; g < 2; g++) for (const [re, r] of TRIP_ROLE) if (re.test(name) && name.replace(re, '').trim().length >= 3) { name = name.replace(re, '').trim(); role = role || r; }
+  return { name, role }; }
+const TRIP_BOOK = new Map();
+/* ---- WHAT IS AROUND EACH STOP: Wikipedia's articles within a few km (owner 2026-10-17: "much more great text per
+   waypoint") ----
+   One request per stop, only when its day is opened: the articles Wikipedia has within 4 km, with their one-line
+   descriptions and a link to read on. Shown live and linked to the article (CC BY-SA), never stored in the repository;
+   remembered in this browser for a month so a reopened trip costs nothing. Places a rider does not stop for (stations,
+   schools, constituencies) are left out. */
+const TRIP_WIKI = new Map();
+const TRIP_WIKI_SKIP = /\b(railway|train|tram|metro|bus|subway) (station|stop|line)\b|\bstation\b|\bschool\b|\bcollege\b|\bhospital\b|\bstadium\b|\bconstituency\b|\belectoral\b|\bcemetery\b|\bcompany\b|\bfootball\b|\bclub\b|\bairport\b|\bprison\b|\bpower (station|plant)\b|\bsubstation\b|\bdisambiguation\b|\bwastewater\b|\bbusiness park\b|\bindustrial (park|estate)\b/i;
+function tripWikiNear(at) {
+  const key = (+at[0]).toFixed(3) + ',' + (+at[1]).toFixed(3);
+  if (TRIP_WIKI.has(key)) return TRIP_WIKI.get(key);
+  let store = {}; try { store = JSON.parse(localStorage.getItem('cs_wikinear') || '{}') || {}; } catch (e) {}
+  const hit = store[key]; if (hit && Date.now() - hit.t < 30 * 864e5) { const pr = Promise.resolve(hit.v); TRIP_WIKI.set(key, pr); return pr; }
+  const pics = !!(typeof NET !== 'undefined' && NET.photosEnabled);
+  const pr = jget('https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=geosearch&ggscoord=' + (+at[0]).toFixed(5) + '%7C' + (+at[1]).toFixed(5) +
+    '&ggsradius=4000&ggslimit=10&prop=description%7Ccoordinates' + (pics ? '%7Cpageimages&piprop=thumbnail&pithumbsize=160&pilimit=10' : '') + '&colimit=10', 12000)
+    .then(js => { const pages = Object.values((js && js.query && js.query.pages) || {});
+      const v = pages.map(pg => ({ t: pg.title, d: String(pg.description || '').trim(), la: pg.coordinates && pg.coordinates[0] ? +pg.coordinates[0].lat : null, lo: pg.coordinates && pg.coordinates[0] ? +pg.coordinates[0].lon : null, img: pg.thumbnail && pg.thumbnail.source ? pg.thumbnail.source : null }))
+        .filter(x => x.t && x.d && !TRIP_WIKI_SKIP.test(x.d) && !TRIP_WIKI_SKIP.test(x.t))
+        .map(x => Object.assign(x, { km: Number.isFinite(x.la) ? CS_TRIPS._dist([+at[0], +at[1]], [x.la, x.lo]) : 4 })).sort((a, b) => a.km - b.km).slice(0, 6);
+      try { store[key] = { t: Date.now(), v }; const ks = Object.keys(store); if (ks.length > 400) ks.sort((a, b) => store[a].t - store[b].t).slice(0, ks.length - 400).forEach(k => delete store[k]); localStorage.setItem('cs_wikinear', JSON.stringify(store)); } catch (e) {}
+      return v; })
+    .catch(() => { TRIP_WIKI.delete(key); return []; });
+  TRIP_WIKI.set(key, pr); return pr;
+}
+/* a transfer that has just been routed moves every clock after it: the day's list is drawn again from the same stops */
+function tripReSched(i) { const plan = TRIP.plan, d = plan && plan.days[i], ol = $('tripSched' + i); if (!d || !ol) return;
+  const e = [...TRIP_BOOK.entries()].find(([k]) => k.indexOf(d.id + '|') === 0 && k.endsWith('|' + i));
+  ol.outerHTML = tripSchedHtml(d, i, e && e[1].length ? e[1] : null);
+  const bk = document.querySelector('.tripBook[data-book="' + i + '"]'); if (bk && bk.open) tripBookWiki(i); }
+async function tripBookWiki(i) {
+  const plan = TRIP.plan, d = plan && plan.days[i]; if (!d) return;
+  const stops = [...TRIP_BOOK.entries()].find(([k]) => k.indexOf(d.id + '|') === 0 && k.endsWith('|' + i));
+  if (!stops || !stops[1].length) return; const list = stops[1];
+  const said = new Set();
+  for (let n = 0; n < list.length; n += 2) {
+    await Promise.all(list.slice(n, n + 2).map(async s => {
+      if (!s.at0) return; const v = await tripWikiNear(s.at0); if (TRIP.plan !== plan) return;
+      const el = document.querySelector('#tripSched' + i + ' .tsWiki[data-w="' + s.k + '"]'); if (!el || !v.length) return;
+      const core = tripFold(s.name).replace(TRIP_GENERIC, ' ').replace(/\s+/g, ' ').trim();
+      /* the article that is this stop first, then what else is close */
+      const own = v.find(x => { const t = tripFold(x.t).replace(/\s*\(.*$/, ''); return core && (t === core || t.indexOf(core) === 0 || core.indexOf(t) === 0) && t.length >= 4; });
+      const rest = v.filter(x => x !== own && !said.has(x.t)).slice(0, own ? 2 : 3);
+      const link = x => '<a href="https://en.wikipedia.org/wiki/' + encodeURIComponent(x.t.replace(/ /g, '_')) + '" target="_blank" rel="noopener">' + esc(x.t) + '</a>';
+      const desc = x => esc(x.d.charAt(0).toLowerCase() + x.d.slice(1));
+      const parts = [];
+      if (own) { said.add(own.t); parts.push(link(own) + ': ' + desc(own) + '.'); }
+      if (rest.length) { rest.forEach(x => said.add(x.t)); parts.push((own ? 'Also close: ' : 'Close by: ') + rest.map(x => link(x) + ' (' + desc(x) + (x.km >= 1 ? ', ' + Math.round(x.km) + ' km' : '') + ')').join('; ') + '.'); }
+      if (!parts.length) return;
+      const img = (own && own.img) || (rest[0] && rest[0].img);
+      el.innerHTML = (img ? '<img class="tsPic" src="' + esc(img) + '" alt="" loading="lazy" referrerpolicy="no-referrer">' : '') + parts.join(' ') + ' <small class="tsSrc">Wikipedia</small>';
+      el.hidden = false; }));
+  }
+}
+/* the stops of one day, with what is worth knowing at each - built once the ride's own checkpoints have loaded */
+async function tripBookFill(i) {
+  const plan = TRIP.plan, o = TRIP.opts, d = plan && plan.days[i]; if (!d) return;
+  const key = d.id + '|' + (d.rev ? 1 : 0) + '|' + (o.from || '') + '|' + i;
+  let stops = TRIP_BOOK.get(key);
+  if (!stops) { try { stops = await tripBookStops(d, i); } catch (e) { stops = []; } TRIP_BOOK.set(key, stops); }
+  if (TRIP.plan !== plan) return;
+  const ol = $('tripSched' + i); if (!ol || !stops.length) { const w = ol && ol.querySelector('.tsWait'); if (w) w.remove(); return; }
+  ol.outerHTML = tripSchedHtml(d, i, stops);
+  const bk = document.querySelector('.tripBook[data-book="' + i + '"]'); if (bk && bk.open) tripBookWiki(i);
+  const path = $('tripPath' + i), key2 = stops.filter(s => s.key);
+  if (path && key2.length >= 2) path.innerHTML = key2.slice(0, 6).map(s => esc(s.name) + (s.alt >= 1000 && (s.kind === 'pass' || s.kind === 'high') ? ' <small>' + Math.round(s.alt) + ' m</small>' : '')).join(' <i>→</i> ');
+  /* named roads the stops do not already name */
+  const left = (d.route.ic || []).filter(x => x && x.n && !stops.some(s => tripFold(s.name).indexOf(tripFold(x.n).replace(TRIP_GENERIC, ' ').trim().split(' ')[0]) >= 0));
+  const lb = $('tripRoadsLeft' + i); if (lb && left.length) { lb.hidden = false; lb.innerHTML = 'Named roads on the way: ' + left.slice(0, 4).map(x => '<b>' + esc(x.n) + '</b>' + (x.km ? ' (' + Math.round(x.km) + ' km)' : '')).join(', '); }
+}
+async function tripBookStops(d, i) {
+  const o = TRIP.opts, full = await loadFull(d.id); if (!full || !Array.isArray(full.waypoints)) return [];
+  const date = o.from ? tripDate(o.from, i) : null;
+  /* the checkpoints a rider stops at: not routing turns, not "back through" repeats, not the same place twice running */
+  let w = full.waypoints.filter(p => p && Number.isFinite(+p.lat) && Number.isFinite(+p.lon) && p.name && !/^(turn|bend|via|shape)$/.test(p.kind || ''));
+  if (d.rev) w = w.slice().reverse();
+  /* "back through X" in the middle is a repeat; "Back to X" at the end is where the loop closes - it stays, as the finish */
+  w = w.filter((p, k) => !/^back (through|to|via)\b/i.test(p.name) || k === w.length - 1);
+  w = w.filter((p, k) => !k || tripFold(p.name) !== tripFold(w[k - 1].name));
+  if (w.length < 2) return [];
+  const pts = w.map(p => [+p.lat, +p.lon]);
+  let cum = [0]; for (let k = 1; k < pts.length; k++) cum.push(cum[k - 1] + CS_TRIPS._dist(pts[k - 1], pts[k]));
+  const f = cum[cum.length - 1] > 0 ? d.km / cum[cum.length - 1] : 1; cum = cum.map(x => x * f);
+  const passes = tripPasses();
+  const passAt = p => { let best = null, bd = 3; for (const q of passes) { if (Math.abs(q.at[0] - p[0]) > 0.05 || Math.abs(q.at[1] - p[1]) > 0.08) continue; const k = CS_TRIPS._dist(p, q.at); if (k < bd) { bd = k; best = q; } } return best; };
+  const alt = w.map((p, k) => { const a = +p.alt; if (a > 0) return a; const q = passAt(pts[k]); return q && +q.alt > 0 ? +q.alt : null; });
+  const lows = alt.filter(a => a != null); const low = lows.length ? Math.min(...lows) : null;
+  /* towns of 1,000+ along the day (GeoNames), for "last town for N km" */
+  const dense = []; for (let k = 1; k < pts.length; k++) { const n = Math.max(1, Math.round(CS_TRIPS._dist(pts[k - 1], pts[k]) / 3)); for (let s = 0; s < n; s++) dense.push({ lat: pts[k - 1][0] + (pts[k][0] - pts[k - 1][0]) * s / n, lon: pts[k - 1][1] + (pts[k][1] - pts[k - 1][1]) * s / n, km: cum[k - 1] + (cum[k] - cum[k - 1]) * s / n }); }
+  dense.push({ lat: pts[pts.length - 1][0], lon: pts[pts.length - 1][1], km: cum[cum.length - 1] });
+  /* towns along the real road when the router has drawn it (the same cached call as the map), else along the checkpoints
+     with a wider corridor and a higher bar - a "last town" warning that is not true is worse than none (owner 2026-10-17) */
+  let road = null; try { const g = await Promise.race([osrmGeometry(full), new Promise(r => setTimeout(() => r(null), 9000))]); if (Array.isArray(g) && g.length >= 10 && !g.approximate) road = g.map(q => Array.isArray(q) ? [+q[0], +q[1]] : [+q.lat, +q.lon]).filter(q => Number.isFinite(q[0])); } catch (e) {}
+  let along = dense, corridor = 6;
+  if (road && road.length >= 10) { if (d.rev) road = road.slice().reverse(); const st = Math.max(1, Math.floor(road.length / 400)); along = []; let acc = 0;
+    for (let k = 0; k < road.length; k += st) { const q = { lat: road[k][0], lon: road[k][1] }; if (along.length) acc += CS_TRIPS._dist([along[along.length - 1].lat, along[along.length - 1].lon], road[k]); q.km = acc; along.push(q); }
+    const fr = acc > 0 ? d.km / acc : 1; along.forEach(q => { q.km *= fr; }); corridor = 3; }
+  let towns = []; try { towns = await csTownsAlong(along, corridor); } catch (e) {}
+  let heritage = []; try { if (typeof loadHeritage === 'function' && window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.heritage) heritage = heritageNear(pts, 4); } catch (e) {}
+  let events = []; try { if (date && window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.events) events = eventsNear(pts, date, 20, 3); } catch (e) {}
+  const ride = d.minutes + tripStops(d.minutes), total = cum[cum.length - 1] || 1, tRide = 9 * 60 + ((d.transferIn && d.transferIn.min) || 0);
+  const stops = [];
+  for (let k = 0; k < w.length; k++) {
+    const p = w[k], at = pts[k], km = cum[k];
+    let kind = String(p.kind || 'checkpoint'); if (d.rev && kind === 'start') kind = 'finish'; else if (d.rev && kind === 'finish') kind = 'start';
+    if (k === 0 && kind !== 'start') kind = kind === 'checkpoint' ? 'start' : kind; if (k === w.length - 1 && kind === 'checkpoint') kind = 'finish';
+    const pass = passAt(at); if (pass && kind === 'checkpoint') kind = 'pass';
+    const lab = tripStopLabel(String(p.name).replace(/^back (to|through|via)\s+/i, ''));
+    const s = { name: lab.name, raw: String(p.name), role: lab.role, wiki: p.wiki || '', kind, km, alt: alt[k], at: ride * km / total, text: [], tags: [], key: k === 0 || k === w.length - 1 || kind === 'pass' || kind === 'high' || kind === 'sight' };
+    if (lab.role) s.tags.push({ h: lab.role });
+    const h = [...s.name].reduce((n, c) => (n * 31 + c.charCodeAt(0)) >>> 0, 7), pick = a => a[h % a.length];
+    /* the leg that got you here, from the heights both ends carry */
+    if (k > 0) { const leg = km - cum[k - 1], a0 = alt[k - 1], a1 = alt[k], prev = esc(tripStopLabel(w[k - 1].name).name);
+      if (a0 != null && a1 != null && leg >= 4) { const dz = a1 - a0, pct = Math.abs(dz) / (leg * 10);
+        if (dz >= 300) s.text.push(pick(['<b>' + Math.round(dz).toLocaleString('en-GB') + ' m</b> up from ' + prev + ' over <b>' + Math.round(leg) + ' km</b>' + (pct >= 3 ? ', about ' + pct.toFixed(1) + '% on average' : '') + '.',
+          'The climb from ' + prev + ': <b>' + Math.round(leg) + ' km</b> for <b>' + Math.round(dz).toLocaleString('en-GB') + ' m</b>' + (pct >= 3 ? ' (about ' + pct.toFixed(1) + '%)' : '') + '.']));
+        else if (dz <= -300) { const steep = pct >= 6 && !stops.some(x => x._brakes); if (steep) s._brakes = 1;
+          s.text.push('Down <b>' + Math.round(-dz).toLocaleString('en-GB') + ' m</b> in <b>' + Math.round(leg) + ' km</b> from ' + prev + (steep ? ' - about ' + pct.toFixed(1) + '%: use the engine and arrive with cool brakes.' : '.')); } } }
+    if (pass) { const sea = String(pass.season || ''); s.text.push('<b>' + esc(pass.n) + '</b>' + (+pass.alt ? ' tops out at <b>' + Math.round(+pass.alt).toLocaleString('en-GB') + ' m</b>' : '') + (pass.ref ? ' on the ' + esc(pass.ref) : '') + '.' + (/seasonal|closure|winter/i.test(sea) ? ' ' + esc(sea.charAt(0).toUpperCase() + sea.slice(1)) + ' - check it is open before you set off.' : '')); }
+    if (s.alt != null && low != null && s.alt - low >= 800) s.text.push('Up here it is about <b>' + Math.round((s.alt - low) * 0.0065) + ' °C</b> cooler than the lowest point of the day - a layer within reach pays off.');
+    /* towns: the stop itself, and the last one before a long empty stretch */
+    const here = towns.filter(t => Math.abs(t.atKm - km) <= 6 && t.d <= corridor).sort((a, b) => b.pop - a.pop)[0];
+    /* a town near the stop is named; it is NOT turned into a fuel claim - a town of 1,000 people is no proof of an open
+       station, and its absence no proof of none (the Susten-Grimsel-Furka loop has fuel at Wassen, Innertkirchen and
+       Realp, all villages under 1,000). Fuel itself is on the ride page, from the stations actually mapped. */
+    if (here && tripFold(here.name) !== tripFold(s.name) && here.pop >= 1000) s.tags.push({ h: '⌂ ' + esc(here.name) + (here.d >= 1 ? ' (' + Math.round(here.d) + ' km)' : '') });
+    /* a World Heritage site within a few km: UNESCO’s own description, shortened */
+    const wh = heritage.filter(x => CS_TRIPS._dist(at, [x.lat, x.lon]) <= 4).sort((a, b) => CS_TRIPS._dist(at, [a.lat, a.lon]) - CS_TRIPS._dist(at, [b.lat, b.lon]))[0];
+    if (wh && !stops.some(x => x._wh === wh.name)) { s._wh = wh.name; const why = wh.why ? String(wh.why).replace(/\s+/g, ' ').trim() : ''; const short = why.length > 170 ? why.slice(0, why.lastIndexOf(' ', 165)) + '…' : why;
+      s.text.push('World Heritage within ' + Math.max(1, Math.round(CS_TRIPS._dist(at, [wh.lat, wh.lon]))) + ' km: <b>' + esc(wh.name) + '</b>' + (short ? ' - ' + esc(short) : '.') + (typeof heritageStay === 'function' ? ' Allow ' + esc(heritageStay(wh).txt) + '.' : '')); s.key = true; }
+    /* other sights close by, from the app's own places list */
+    try { const js = await placesNear(at[0], at[1], 3000); const seen = new Set([tripFold(s.name)]);
+      const near = ((js.results && js.results.bindings) || []).map(b => ({ n: b.itemLabel.value, k: b.instLabel.value })).filter(x => /sight|view|photo|castle|church|museum|lake|waterfall/.test(x.k) && !/^back /i.test(x.n) && x.n.length < 48)
+        .filter(x => { const f2 = tripFold(x.n); if (seen.has(f2) || [...seen].some(y => y.indexOf(f2) >= 0 || f2.indexOf(y) >= 0)) return false; seen.add(f2); return true; }).slice(0, 2);
+      if (near.length) s.text.push('Close by: ' + near.map(x => '<b>' + esc(x.n) + '</b>').join(' and ') + '.'); } catch (e) {}
+    /* a rider meet on these dates, near this stop */
+    const ev = events.filter(e => CS_TRIPS._dist(at, [+e.lat, +e.lon]) <= 20)[0];
+    if (ev && !stops.some(x => x._ev === ev.name)) { s._ev = ev.name; s.tags.push({ h: '🏁 ' + esc(ev.name) + ' · ' + esc(typeof eventWhen === 'function' ? eventWhen(ev) : eventStamp(ev)), c: 'ev' }); }
+    /* the stored note, sentence by sentence: what it says about the place stays (the top, the cold, the snow gates); its
+       distances and "next is" pointers go - the km marks and the next-stop line carry those, from today's figures */
+    const adv = String(p.advice || '').replace(/\s+/g, ' ').trim();
+    if (adv) { const keep = adv.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(x => x && !/\d[\d,.]*\s*km\b|\bnext is\b|\bnext fuel\b|\bcomes up\b|\bsits at\b|\b(early|late) in the day\b|\ba break here\b|\bcloses the day\b|\bis the fuel stop\b/i.test(x));
+      const climbSaid = s.text.length && /( up from | climb from |^Down )/.test(s.text[0].replace(/<[^>]*>/g, ''));
+      for (const x of keep) { if (/°C/.test(x) && !(s.alt >= 1200)) continue; if (pass && /\b(top(s)? out|tops the climb|high point of|\d{3,4} m up)\b/i.test(x)) continue; if (climbSaid && /\b(climbs|lose|losing|drop)\b/i.test(x)) continue; if (/°C/.test(x)) s.text = s.text.filter(t => !/°C/.test(t)); if (!s.text.some(t => t.replace(/<[^>]*>/g, '').indexOf(x.slice(0, 28)) >= 0)) s.text.push(esc(x)); } }
+    /* what the next leg asks of you */
+    if (k < w.length - 1) { const leg = cum[k + 1] - km, mins = Math.round(d.minutes * leg / (total || 1)); s.next = { km: leg, min: mins, name: tripStopLabel(w[k + 1].name).name }; }
+    if (kind === 'start' && !s.text.length) s.text.push(k === 0 && d.transferIn && d.transferIn.km ? 'The ride begins here. Check tyres and fuel before the first corner - the transfer warmed the engine, not the tyres.' : 'The ride begins here - the first twenty minutes are for warming tyres, not for pace.');
+    if (kind === 'fuel' && !s.tags.some(t => /⛽/.test(t.h))) s.tags.push({ h: '⛽ Planned fuel stop' });
+    s.k = stops.length; s.at0 = at; stops.push(s);
+  }
+  /* sunset on the date, where the day ends after it */
+  if (date) { const lastS = stops[stops.length - 1], ss = tripSunset(pts[pts.length - 1][0], pts[pts.length - 1][1], date);
+    if (ss && tRide + lastS.at > ss - 20) lastS.tags.push({ h: '🌇 Sunset about ' + tripClock(ss) + ' - start earlier or shorten the day', c: 'warn' }); }
+  return stops;
 }
 const TRIP_COL = ['#e11b2b', '#ffb000', '#2f9e5e', '#3d8bfd', '#c05bf0', '#f06292', '#26c6da', '#ff8a3d', '#9ccc65', '#b39ddb'];
 function tripWire() {
@@ -6253,12 +7017,18 @@ function tripWire() {
   });
   document.querySelectorAll('[data-gpx]').forEach(b => b.onclick = async () => { const d = plan.days[+b.dataset.gpx];
     try { const full = await loadFull(d.id); downloadGPX(full); } catch (e) { flash('This ride could not be loaded for the GPX.'); } });
+  /* a phone shows one day's stops at a time: opening one folds the others, and the opened day comes to the top */
+  TRIP.bookArmed = Date.now() + 700;
+  document.querySelectorAll('.tripBook').forEach(dt => dt.addEventListener('toggle', () => { if (!dt.open || Date.now() < TRIP.bookArmed) return; const i = +dt.dataset.book;
+    if (innerWidth < 760) { document.querySelectorAll('.tripBook[open]').forEach(x => { if (x !== dt) x.open = false; }); const card = dt.closest('.tripDay'); if (card && card.getBoundingClientRect().top < 0) tripScrollTo(card); }
+    try { if (TRIP.map) tripFocus(i, false); } catch (e) {} }));
+  document.querySelectorAll('.tripBook').forEach(dt => dt.addEventListener('toggle', () => { if (dt.open) tripBookWiki(+dt.dataset.book); }));
   document.querySelectorAll('[data-stay]').forEach(dt => dt.addEventListener('toggle', () => { if (dt.open && !dt.dataset.done) { dt.dataset.done = '1'; tripStays(+dt.dataset.stay, dt.querySelector('.tripStayBody')); } }));
   /* email: a ready-to-send message with the days and the link that opens the same trip - no account needed */
   if ($('tripMail')) { const o = TRIP.opts, url = location.origin + location.pathname + '#/trip?p=' + tripEncode(plan);
     const days = plan.days.map((d, i) => (o.from ? tripDayLabel(tripDate(o.from, i)) : 'Day ' + (i + 1)) + ': ' + d.route.t + ' - ' + Math.round(d.km) + ' km, ' + tripFmtMin(d.minutes) + ' riding');
     const subject = (plan.days.length === 2 ? 'Motorcycle weekend' : plan.days.length + '-day motorcycle trip') + ' from ' + (o.label || 'CurveScout') + (o.from ? ', ' + tripDayLabel(tripDate(o.from, 0)) : '') + ' - are you in?';
-    const body = 'I planned this on CurveScout:\n\n' + days.join('\n') + '\n\nTotal: ' + plan.totalKm + ' km, ' + tripFmtMin(plan.totalMin) + ' of riding' + (tripApproachKm(plan) > 10 ? ' (plus about ' + tripApproachKm(plan) + ' km to reach the starts)' : '') + (o.mode === 'base' ? ', one base' : ', moving on each day') + '.\n\nOpen the trip (map, every day, places to stay, GPX):\n' + url + '\n';
+    const body = 'I planned this on CurveScout:\n\n' + days.join('\n') + '\n\nTotal: ' + plan.totalKm + ' km, ' + tripFmtMin(plan.totalMin) + ' of riding' + (tripApproachKm(plan) > 10 ? ' (plus about ' + tripApproachKm(plan) + ' km of transfers)' : '') + (o.mode === 'base' ? ', one base' : o.mode === 'a2b' && o.dest ? ', from ' + (o.label || 'A') + ' to ' + (o.dest[2] || 'B') : ', moving on each day') + '.\n\nOpen the trip (map, every day, places to stay, GPX):\n' + url + '\n';
     /* owner 2026-10-12: "the emails must have some sort of multimedia that adds excitement and looks appealing and not
        like spam junk". The button opens the email composer of this page: a picture of the trip (map with the four day
        lines, the days, photographs where Commons has them), sent through the share sheet with the picture attached, or
@@ -6316,12 +7086,14 @@ async function tripDrawMap() {
     const w = (() => { let x = d.route.wp; if (typeof x === 'string') { try { x = JSON.parse(x); } catch (e) { x = []; } } return (Array.isArray(x) ? x : []).filter(p => Array.isArray(p)).map(p => [+p[0], +p[1]]); })();
     const col = TRIP_COL[i % TRIP_COL.length];
     TRIP.lines[i] = w;
-    const outline = L.polyline(w, { color: col, weight: 3, opacity: .85, dashArray: '8 6' }).addTo(g); w.forEach(p => all.push(p));
+    /* owner 2026-10-13: "no more crap vector rides" - until the real road arrives the day is its numbered pin only; the
+       chord line exists (for framing and taps) but is invisible */
+    const outline = L.polyline(w, { color: col, weight: 3, opacity: 0, interactive: false }).addTo(g); w.forEach(p => all.push(p));
     TRIP.polys[i] = [outline];
     outline.on('click', () => tripFocus(i, true));
     L.marker(d.start, { icon: L.divIcon({ className: '', iconSize: [24, 24], iconAnchor: [12, 12], html: '<div class="tripPin" style="background:' + col + '">' + (i + 1) + '</div>' }) }).addTo(g).on('click', () => tripFocus(i, true));
     /* moving tour: the way from last night's stop to this start, as a thin dotted line - an estimate, not a route */
-    if (o.mode !== 'base' && i > 0 && d.approachKm > 3) { const prevN = TRIP.plan.days[i - 1].night; L.polyline([prevN, d.start], { color: '#c9c6bf', weight: 2, opacity: .7, dashArray: '2 7' }).addTo(g).bindTooltip('About ' + d.approachKm + ' km from last night (estimate)'); }
+    /* transfers are drawn only as routed roads (tripTransfers below) - never as a straight line */
     if (o.mode !== 'base') L.marker(d.night, { icon: L.divIcon({ className: '', iconSize: [22, 22], iconAnchor: [11, 11], html: '<div class="tripBed">🛏</div>' }) }).addTo(g).bindTooltip('Night ' + (i + 1));
     /* the real road, from the same cached router call the ride page makes */
     tripRoadStatus(i, 'loading');
@@ -6340,10 +7112,44 @@ async function tripDrawMap() {
       if (TRIP.focus != null) tripFocus(TRIP.focus, false);
     }).catch(() => { if (TRIP.map === m) tripRoadStatus(i, 'none'); });
   });
+  if (o.mode === 'a2b' && o.dest) { all.push([+o.dest[0], +o.dest[1]]); L.marker([+o.dest[0], +o.dest[1]], { icon: L.divIcon({ className: '', iconSize: [26, 26], iconAnchor: [13, 13], html: '<div class="tripDest">B</div>' }) }).addTo(g).bindTooltip(esc(o.dest[2] || 'Destination')); }
+  tripTransfers(m, g);
   TRIP.allBounds = all;
   try { m.fitBounds(L.latLngBounds(all).pad(0.12)); } catch (e) { m.setView(base, 8); }
   /* the result is laid out after the map is created (grid on desktop, fonts on phones): measure again, then frame the trip */
   setTimeout(() => { if (TRIP.map !== m) return; try { m.invalidateSize(false); if (TRIP.focus == null && !TRIP.anim) m.fitBounds(L.latLngBounds(all).pad(0.12)); } catch (e) {} }, 260);
+}
+/* ---- TRANSFERS ON THE MAP AND IN THE SCHEDULE (owner 2026-10-13: "add transfers to the schedule and map") ----
+   Each transfer is asked of the router once (two points, motorways allowed - getting there is the point of a transfer).
+   The answer draws a grey road under the day lines and replaces the estimate in the schedule and the trip total. No
+   answer: nothing is drawn and the estimate stays, marked "about". */
+const TRIP_XCACHE = new Map();
+async function tripRouteXfer(a, b) {
+  const k = a.map(x => (+x).toFixed(4)).join(',') + ';' + b.map(x => (+x).toFixed(4)).join(',');
+  if (TRIP_XCACHE.has(k)) return TRIP_XCACHE.get(k);
+  const p = (async () => { const js = await OSRM.run(NET.router + '/route/v1/driving/' + (+a[1]).toFixed(5) + ',' + (+a[0]).toFixed(5) + ';' + (+b[1]).toFixed(5) + ',' + (+b[0]).toFixed(5) + '?overview=full&geometries=geojson', 15000, 10);
+    const rt = js && js.routes && js.routes[0]; if (!rt || !rt.geometry || !Array.isArray(rt.geometry.coordinates) || rt.geometry.coordinates.length < 2) return null;
+    return { line: rt.geometry.coordinates.map(c => [c[1], c[0]]), km: Math.round((+rt.distance || 0) / 1000), min: Math.round((+rt.duration || 0) / 60 * 1.1) }; })().catch(() => null);
+  TRIP_XCACHE.set(k, p); const v = await p; if (!v) TRIP_XCACHE.delete(k); return v;
+}
+function tripTransfers(m, g) {
+  const plan = TRIP.plan; if (!plan) return;
+  const jobs = [];
+  plan.days.forEach((d, i) => [['in', d.transferIn], ['out', d.transferOut]].forEach(([k, x]) => { if (x && x.km > 0 && x.from && x.to) jobs.push({ i, k, x }); }));
+  let n = 0; const next = async () => { const j = jobs[n++]; if (!j) return; const v = await tripRouteXfer(j.x.from, j.x.to);
+    if (v && TRIP.map === m && TRIP.plan === plan) {
+      try { const top = L.polyline(v.line, { color: '#5f6875', weight: 3, opacity: .95, dashArray: '1 6', lineCap: 'round', interactive: false }).addTo(g), cas = L.polyline(v.line, { color: '#ffffff', weight: 6, opacity: .9, interactive: false }).addTo(g);
+        top.bringToBack(); cas.bringToBack();
+        L.polyline(v.line, { color: '#5f6875', weight: 14, opacity: 0 }).addTo(g).bindTooltip('Transfer · ' + v.km + ' km · ' + tripFmtMin(v.min), { sticky: true }); } catch (e) {}
+      j.x.km = v.km; j.x.min = v.min; j.x.estimate = false; j.x.routed = true;
+      const li = document.querySelector('[data-x="' + j.k + j.i + '"] .tsKm'); if (li) li.textContent = tripXfText(j.x); try { tripReSched(j.i); } catch (e) {}
+      plan.transferKm = plan.days.reduce((a, d) => a + (d.transferIn ? d.transferIn.km : 0) + (d.transferOut ? d.transferOut.km : 0), 0);
+      plan.transferMin = plan.days.reduce((a, d) => a + (d.transferIn ? d.transferIn.min : 0) + (d.transferOut ? d.transferOut.min : 0), 0);
+      const tot = $('tripXTot'); if (tot) tot.textContent = (plan.days.every(d => [d.transferIn, d.transferOut].every(x => !x || !x.km || x.routed)) ? '' : 'about ') + plan.transferKm + ' km';
+    }
+    await next(); };
+  /* two at a time: the routers' fair-use rate, and the day lines (asked first) keep priority */
+  setTimeout(() => { next(); next(); }, 900);
 }
 /* the road behind a day: loading, the real road (with its scenic share from the ride's own sections), or not loaded */
 function tripRoadStatus(i, st, full) {
@@ -6364,7 +7170,7 @@ function tripRoadStatus(i, st, full) {
 function tripFocus(i, fit) {
   if (!TRIP.map) return;
   const same = TRIP.focus === i && fit; TRIP.focus = same ? null : i;
-  (TRIP.polys || []).forEach((ps, k) => (ps || []).forEach((pl, n) => { try { const on = TRIP.focus == null || k === TRIP.focus;
+  (TRIP.polys || []).forEach((ps, k) => (ps || []).forEach((pl, n) => { try { if (ps.length === 1) return; /* a day without its road has no line to show */ const on = TRIP.focus == null || k === TRIP.focus;
     const casing = ps.length === 2 && n === 0; pl.setStyle({ opacity: on ? (casing ? .5 : .95) : (casing ? .08 : .22), weight: casing ? (on && TRIP.focus != null ? 9 : 7) : (on && TRIP.focus != null ? 5.5 : (ps.length === 1 ? 3 : 4)) });
     if (on && !casing) pl.bringToFront(); } catch (e) {} }));
   document.querySelectorAll('.tripSeg').forEach(b => b.classList.toggle('on', TRIP.focus != null && +b.dataset.seg === TRIP.focus));
@@ -6390,7 +7196,7 @@ function tripPlay() {
   const calm = tripCalm();
   (async () => {
     for (let i = 0; i < plan.days.length && !anim.stop; i++) {
-      const d = plan.days[i], line = (TRIP.lines[i] || []).filter(p => p && Number.isFinite(p[0])); if (line.length < 2) continue;
+      const d = plan.days[i], line = (TRIP.lines[i] || []).filter(p => p && Number.isFinite(p[0])); if (line.length < 2 || (TRIP.roadSt || [])[i] !== 'ok') continue;
       const col = TRIP_COL[i % TRIP_COL.length], date = o.from ? tripDate(o.from, i) : null;
       try { if (TRIP.trail) TRIP.trail.remove(); if (TRIP.bike) TRIP.bike.remove(); } catch (e) {} TRIP.trail = TRIP.bike = null;
       tripFocus(i, false); document.querySelectorAll('.tripSegFill').forEach((x, k) => x.style.width = k < i ? '100%' : '0');
@@ -6543,7 +7349,7 @@ async function tripCardCanvas(plan) {
     /* calm the map so the roads read: a dark wash over the tiles */
     x.fillStyle = drawn ? 'rgba(11,12,14,0.28)' : '#16191e'; x.fillRect(MX, MY, MW, MH);
     const P = (p) => { const q = px(p[0], p[1], z); return [q[0] - ox, q[1] - oy]; };
-    plan.days.forEach((d, i) => { const l = (TRIP.lines || [])[i]; if (!l || l.length < 2) return; const col = TRIP_COL[i % TRIP_COL.length];
+    plan.days.forEach((d, i) => { const l = (TRIP.lines || [])[i]; if (!l || l.length < 2 || (TRIP.roadSt || [])[i] !== 'ok') return; const col = TRIP_COL[i % TRIP_COL.length];
       for (const [w, cl] of [[13, 'rgba(255,255,255,0.95)'], [8, col]]) { x.beginPath(); l.forEach((p, k) => { const q = P(p); k ? x.lineTo(q[0], q[1]) : x.moveTo(q[0], q[1]); });
         x.lineWidth = w; x.lineJoin = 'round'; x.lineCap = 'round'; x.strokeStyle = cl; x.stroke(); } });
     plan.days.forEach((d, i) => { if (!d.start) return; const q = P(d.start), col = TRIP_COL[i % TRIP_COL.length];
@@ -6609,25 +7415,32 @@ async function tripCardFile(plan) {
    text and link (Mail shows the picture in the message). On a computer the email is copied with the picture in it and
    the mail program opens: paste, add your friend, send. The picture can also be saved and attached, and the old
    plain-text email is kept as the last option. */
+/* owner 2026-10-13: "I received an email that did not load from the server". The copied email carried the trip picture
+   inline as a data: URI - a 300-600 kB base64 blob that iCloud Mail and others refuse to fetch or display ("could not be
+   loaded from the server"). The email now carries only ordinary web images (the day photographs, hosted on Wikimedia
+   Commons, credited) and plain HTML; the trip picture travels as an attachment (share sheet / Save the picture). */
 function tripMailHtml(plan, m, img) {
   const o = TRIP.opts || {}, e = esc;
-  const rows = plan.days.map((d, i) => '<tr><td style="padding:8px 12px 8px 0;vertical-align:top"><span style="display:inline-block;width:28px;height:28px;line-height:28px;border-radius:14px;background:' + TRIP_COL[i % TRIP_COL.length] + ';color:#fff;font-weight:bold;text-align:center;font-family:Arial,sans-serif">' + (i + 1) + '</span></td>' +
+  if (img && !/^https:\/\//.test(String(img))) img = '';
+  const thumb = d => { const ph = TRIP.photos && TRIP.photos[d.id]; return ph && /^https:\/\//.test(ph.url || '') ? ph : null; };
+  const rows = plan.days.map((d, i) => '<tr><td style="padding:8px 12px 8px 0;vertical-align:top;width:88px">' + (thumb(d) ? '<img src="' + e(thumb(d).url) + '" width="80" height="56" alt="" style="display:block;width:80px;height:56px;object-fit:cover;border-radius:6px;border:0">' : '') + '</td><td style="padding:8px 12px 8px 0;vertical-align:top"><span style="display:inline-block;width:28px;height:28px;line-height:28px;border-radius:14px;background:' + TRIP_COL[i % TRIP_COL.length] + ';color:#fff;font-weight:bold;text-align:center;font-family:Arial,sans-serif">' + (i + 1) + '</span></td>' +
     '<td style="padding:8px 0;font-family:Arial,sans-serif;font-size:15px;color:#1b1b1b"><b>' + e((o.from ? tripDayLabel(tripDate(o.from, i)) + ' · ' : '') + d.route.t) + '</b><br><span style="color:#666">' + Math.round(d.km) + ' km · ' + tripFmtMin(d.minutes) + ' riding' + (d.route.ic && d.route.ic[0] && d.route.ic[0].n ? ' · ' + e(d.route.ic[0].n) : '') + '</span></td></tr>').join('');
   return '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#1b1b1b">' +
     '<p style="margin:0 0 14px">I planned this on CurveScout - are you in?</p>' +
     '<table cellpadding="0" cellspacing="0" border="0" width="600" style="max-width:600px;border-collapse:collapse;background:#ffffff;border:1px solid #e6e3dd;border-radius:12px">' +
-    (img ? '<tr><td><a href="' + e(m.url) + '"><img src="' + img + '" width="600" alt="The trip on a map, with every day" style="display:block;width:100%;max-width:600px;height:auto;border:0;border-radius:12px 12px 0 0"></a></td></tr>' : '') +
+    (img ? '<tr><td><a href="' + e(m.url) + '"><img src="' + e(img) + '" width="600" alt="' + e((plan.days[0] && plan.days[0].route.t) || 'The first day') + '" style="display:block;width:100%;max-width:600px;height:auto;border:0;border-radius:12px 12px 0 0"></a></td></tr>' : '<tr><td style="background:#0b0c0e;border-radius:12px 12px 0 0;padding:18px 24px;color:#ffffff;font-family:Arial,sans-serif;font-size:20px;font-weight:bold;font-style:italic;letter-spacing:.5px">CURVE<span style="color:#e11b2b">SCOUT</span></td></tr>') +
     '<tr><td style="padding:20px 24px 8px"><div style="font-size:22px;font-weight:bold;margin:0 0 4px">' + e(m.subject.replace(/ - are you in\?$/, '')) + '</div>' +
     '<div style="color:#666;margin:0 0 10px">' + plan.totalKm.toLocaleString('en-GB') + ' km · ' + tripFmtMin(plan.totalMin) + ' of riding · ' + (o.mode === 'base' ? 'one base' : 'moving on each day') + '</div>' +
     '<table cellpadding="0" cellspacing="0" border="0">' + rows + '</table></td></tr>' +
     '<tr><td style="padding:12px 24px 24px"><a href="' + e(m.url) + '" style="display:inline-block;background:#e11b2b;color:#ffffff;font-weight:bold;text-decoration:none;padding:13px 24px;border-radius:999px">Open the trip →</a>' +
-    '<div style="color:#888;font-size:12px;margin-top:12px">Map, every day, places to stay and GPX for your navigation. No account needed.</div></td></tr></table></div>';
+    '<div style="color:#888;font-size:12px;margin-top:12px">Map, every day, places to stay and GPX for your navigation. No account needed.' +
+    (() => { const cr = plan.days.map(thumb).filter(p => p && p.by).map(p => p.by + (p.lic ? ' (' + p.lic + ')' : '')).filter((v, k, a) => a.indexOf(v) === k).slice(0, 3); return cr.length ? '<br>Photos: ' + e(cr.join(', ')) + ' · Wikimedia Commons' : ''; })() + '</div></td></tr></table></div>';
 }
 async function tripMailBox(plan, m) {
   let box = $('tripMailBox');
   if (!box) { box = document.createElement('div'); box.id = 'tripMailBox'; box.className = 'tripMailBox'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Email this trip'); document.body.appendChild(box); }
   box.innerHTML = '<div class="tmbIn"><button type="button" class="tmbX" aria-label="Close">×</button><h3>Email this trip</h3>' +
-    '<p class="tmbLead">Your friend gets a picture of the trip, every day of it and a button that opens it on CurveScout.</p>' +
+    '<p class="tmbLead">Your friend gets every day with a photograph and a button that opens the trip on CurveScout. On a phone the trip picture goes along; on a computer save it below and attach it - pasted pictures are what made some mail servers refuse the message.</p>' +
     '<div class="tmbPrev" id="tmbPrev"><span class="tmbWait">Drawing the trip picture…</span></div>' +
     '<div class="tmbActs" id="tmbActs"></div>' +
     '<p class="tmbFine"><a href="' + esc(m.plain) + '" id="tmbPlain">Plain-text email instead</a></p></div>';
@@ -6641,7 +7454,8 @@ async function tripMailBox(plan, m) {
   const prev = $('tmbPrev'); if (prev) prev.innerHTML = data ? '<img src="' + data + '" alt="The trip picture">' : '<span class="tmbWait">The picture could not be drawn here; the email still carries every day and the link.</span>';
   const acts = $('tmbActs'); if (!acts) return;
   const canFiles = !!(file && navigator.canShare && (() => { try { return navigator.canShare({ files: [file] }); } catch (e) { return false; } })());
-  const html = tripMailHtml(plan, m, data);
+  const hero = (() => { for (const d of plan.days) { const ph = TRIP.photos && TRIP.photos[d.id]; if (ph && /^https:\/\//.test(ph.url || '')) return ph.url; } return ''; })();
+  const html = tripMailHtml(plan, m, hero);
   const text = m.body;
   acts.innerHTML = (canFiles ? '<button type="button" class="primary" id="tmbShare">Send with the picture</button>' : '') +
     '<button type="button" class="' + (canFiles ? 'ghost2' : 'primary') + '" id="tmbCopy">1 · Copy the email</button>' +
@@ -6973,7 +7787,7 @@ function renderLegal() {
 /* `legal` was missing here, so show('legal') never gave the view its `on` class and the
    terms page rendered its content into a container that stays display:none. The page has
    been unreachable for as long as this list has existed. */
-const VIEWS = ['home', 'rides', 'ride', 'explore', 'swipe', 'legal', 'trip', 'about', 'atlas'];
+const VIEWS = ['home', 'rides', 'ride', 'explore', 'swipe', 'legal', 'trip', 'about', 'passport', 'atlas'];
 function show(v) {
   /* 2026-10-11 audit: going back from a ride always landed at the top of a long board (or trip, or Explore list).
      The scroll position of the view being left is remembered, and restored when the rider comes back to it
@@ -7226,6 +8040,8 @@ function route() {
   if (h.indexOf('#/trip') === 0) { renderTrip(h); return; }
   if (h === '#/legal') { renderLegal(); return; }
   if (h === '#/about') { renderAbout(); return; }
+  /* owner 2026-10-13: My Road Atlas - the rides behind you, passport, collections, badges */
+  if (h === '#/passport') { try { CS_RA.render(); } catch (e) { console.warn(e); } return; }
   const m = h.match(/^#\/ride\/(.+)$/);
   if (m) { renderRide(decodeURIComponent(m[1])); return; }
   /* audit 2026-10-11 re-check: Saved had no address of its own, so its state stuck - the desktop "Saved" button stayed lit
@@ -10562,6 +11378,8 @@ const NET = {
      Fiord. A dead config entry is worse than none: it reads as a live raster dependency to
      anyone auditing the file, which is exactly what happened. */
   get geocoder() { return this.get('geocoder', 'https://nominatim.openstreetmap.org'); },
+  /* place suggestions as you type: Photon (OpenStreetMap data, made for autocomplete; Nominatim forbids it) */
+  get suggest() { return this.get('suggest', 'https://photon.komoot.io'); },
   /* OFF by default. One switch turns the whole public-Nominatim dependency off for the entire
      application, which is what a policy applying to the whole application requires. */
   get geocoderEnabled() { return this.cfg ? this.cfg.geocoderEnabled === true : false; },
@@ -12151,6 +12969,8 @@ function renderRides() {
     }
   }
   show('rides');
+  /* Saved lists rides from anywhere: their descriptions too (split index) */
+  if (S.showSaved) csNeedCards([...S.favs].map(id => S.byId && S.byId.get(id)).filter(Boolean), () => { if (S.view === 'rides' && S.showSaved) renderRides(); });
   const nLocal = S.ranked.filter(x => x.tier === 'local').length;
   const nTrip = S.ranked.filter(x => x.tier === 'trip').length;
   const anyReal = S.ranked.some(x => x.approachKnown);
@@ -12162,7 +12982,8 @@ function renderRides() {
   document.body.classList.toggle('savedMode', !!S.showSaved);
   try { const h2 = document.querySelector('#view-rides .resHead h2'); if (h2) h2.textContent = S.showSaved ? 'Saved' : 'Your ride board'; } catch (e) {}
   $('resSummary').innerHTML = S.showSaved
-    ? (S.favs.size ? '<b>' + S.favs.size + '</b> saved ride' + (S.favs.size === 1 ? '' : 's') : '') +
+    ? ((() => { try { const st = CS_RA.stats(); return '<a class="raSavedLink" href="#/passport"><b>🗺 My Road Atlas</b><span>' + esc(st.level) + ' · ' + st.ridden + ' ridden · ' + st.want + ' on the wish list · ' + st.xp + ' points</span></a>'; } catch (e) { return ''; } })()) +
+      (S.favs.size ? '<b>' + S.favs.size + '</b> saved ride' + (S.favs.size === 1 ? '' : 's') : '') +
       (savedTrips.length ? (S.favs.size ? ' · ' : '') + '<b>' + savedTrips.length + '</b> saved trip' + (savedTrips.length === 1 ? '' : 's') +
         '<span class="savedTripList">' + savedTrips.slice(0, 12).map(t => '<a class="savedTripRow" href="#/trip?p=' + esc(t.p) + '"><b>' + esc(t.label || 'Trip') + '</b><span>Open trip →</span></a>').join('') + '</span>' : '')
     : esc(S.start.label) + ' · ' + S.range + ' km ' + esc(S.style) + ' · <b>' + nLocal + '</b> ride' +
@@ -12439,7 +13260,7 @@ function renderRides() {
           '</div>';
         })() +
         '<div class="meta num"><span><b>' + fmtKm(r.km) + '</b></span><span><b>' + fmtH(r.mn) + '</b> riding</span>' +
-        (r.al ? '<span>up to <b>' + r.al + ' m</b></span>' : '') + /* name where the riding is, not the village the file was written from */
+        (r.al ? '<span>up to <b>' + r.al + ' m</b></span>' : '<span>' + csAltSlot(r, 'upto') + '</span>') + /* name where the riding is, not the village the file was written from */
         '<span>' + (r.cc ? (flagSvg(r.cc, r.ra || r.r) || esc(r.cc.toUpperCase()) + ' ') : '') +
           esc(r.ra || r.r) +
           /* the canton or Bundesland, once the nightly geocoder has one. He asked for
@@ -13374,13 +14195,29 @@ function briefingCards(r, wxStart, wxHigh) {
     let st = CS_FUEL_KM.has(r.id) && sv ? CS_FUEL_KM.get(r.id) : null;
     /* a stored scan from an earlier visit: its complete station list (the listed 40 are not all of them) */
     if (!st && sv && Array.isArray(sv._fuelKm)) st = sv._fuelKm;
+    const towns = (sv && Array.isArray(sv._towns) && sv._towns.length) ? sv._towns : (csRideTownsNow(r) || (csRideTowns(r), []));
+    const big = towns.filter(t => t.pop >= 1000);
+    const tnames = big.slice().sort((a, b) => b.pop - a.pop).slice(0, 4).sort((a, b) => a.atKm - b.atKm).map(t => esc(t.name) + ' (km ' + t.atKm + ')');
+    const planned = fuelNames.length ? ' Planned stop: <b>' + esc(fuelNames[0]) + '</b>.' : '';
     if (st && total > 0) {
-      let prev = 0, worst = 0; for (const k of st) { worst = Math.max(worst, k - prev); prev = k; } worst = Math.max(worst, total - prev);
+      /* owner 2026-10-17: stations listed in OpenStreetMap AND the towns the road runs through - a town of 1,000+ people
+         without a listed station is a gap in the map far more often than a gap in fuel */
+      let prev = 0, onlySt = 0; for (const k of st) { onlySt = Math.max(onlySt, k - prev); prev = k; } onlySt = Math.max(onlySt, total - prev);
+      const worst = csFuelGap(total, st, big);
       const n = st.length;
       roadFuel = { sev: worst > 180 ? 'warn' : 'ok', icon: '⛽', title: 'Fuel plan',
-        text: n ? ('<b>' + n + '</b> fuel station' + (n === 1 ? '' : 's') + ' within 3 km of the road. Longest stretch between them ≈ <b>' + Math.round(worst) + ' km</b>' +
-          (worst > 180 ? ' - tight for small tanks; fill at every chance.' : '.') + (fuelNames.length ? ' Planned stop: <b>' + esc(fuelNames[0]) + '</b>.' : ''))
-          : 'No fuel station is mapped within 3 km of this road. Fill up before you set off and carry a reserve.' };
+        text: (n ? '<b>' + n + '</b> fuel station' + (n === 1 ? '' : 's') + ' listed within 3 km of the road' : 'No station is listed in OpenStreetMap within 3 km of this road') +
+          (big.length ? ', and it runs through <b>' + big.length + '</b> town' + (big.length === 1 ? '' : 's') + ' of 1,000+ people where fuel is usual (' + tnames.join(', ') + ')' : '') + '. ' +
+          (worst > 180 ? 'Longest stretch with neither ≈ <b>' + Math.round(worst) + ' km</b> - fill at every chance and carry a reserve.'
+            : onlySt > worst + 20 && n ? 'Longest stretch between chances ≈ <b>' + Math.round(worst) + ' km</b> (between listed stations alone ' + Math.round(onlySt) + ' km - check the towns).'
+            : 'Longest stretch between chances ≈ <b>' + Math.round(worst) + ' km</b>.') + planned };
+    } else if (big.length && total > 0 && (!sv || sv._fuelOk === false || sv._onRoad === false || !st)) {
+      /* the station lookup is missing or partial: the towns still answer the question that matters */
+      const worst = csFuelGap(total, [], big);
+      roadFuel = { sev: worst > 180 ? 'warn' : 'info', icon: '⛽', title: 'Fuel plan',
+        text: 'The road runs through <b>' + big.length + '</b> town' + (big.length === 1 ? '' : 's') + ' of 1,000+ people where fuel is usual: ' + tnames.join(', ') + '. ' +
+          (worst > 180 ? 'Longest stretch without a town ≈ <b>' + Math.round(worst) + ' km</b> - fill up before it.' : 'Longest stretch without a town ≈ ' + Math.round(worst) + ' km.') +
+          (!sv ? (S.svcError ? ' OpenStreetMap did not answer the station lookup just now.' : ' Looking up the stations themselves…') : sv._fuelOk === false ? ' The station lookup did not answer in full just now.' : '') + planned };
     }
   } catch (e) { roadFuel = null; }
   /* no complete answer yet: never a warning built on missing data */
@@ -13390,6 +14227,8 @@ function briefingCards(r, wxStart, wxHigh) {
       (S.svcNow._fuelOk === false ? 'The fuel lookup did not answer in full just now' : 'The road line did not load') + ', so no distance between stations is given. Reload the ride in a minute for the full picture.' + (fuelNames.length ? ' Planned stop: <b>' + esc(fuelNames[0]) + '</b>.' : '') };
   }
   if (!roadFuel && !S.svcNow) roadFuel = { sev: 'info', icon: '⛽', title: 'Fuel plan', text: (S.svcError ? 'OpenStreetMap did not answer the fuel lookup just now - reload the ride in a minute.' : 'Looking up the fuel stations along the road…') + (fuelNames.length ? ' Planned stop: <b>' + esc(fuelNames[0]) + '</b>.' : '') };
+  /* a planned checkpoint count is not a fuel survey: without any lookup the plan is never stated as a gap */
+  if (!roadFuel) roadFuel = { sev: 'info', icon: '⛽', title: 'Fuel plan', text: (fuelNames.length ? 'Planned fuel: <b>' + esc(fuelNames.slice(0, 2).join(', ')) + '</b>. ' : '') + 'Fill before the scenic core, not after.' };
   if (roadFuel) cards.push(roadFuel); else
   cards.push({ sev: maxGap > 180 ? 'warn' : 'ok', icon: '⛽', title: 'Fuel plan',
     text: fuelNames.length
@@ -13626,7 +14465,7 @@ function butlerVerdict(r, wxS, wxH, pass, svc) {
        as open right now" showed on almost every ride. It is said only when some stations have known hours and none of
        those is open; "no station mapped" only when the fuel lookup answered in full. EV chargers are not fuel. */
     const fuelOnly = svc.fuel.filter(f => !f.ev);
-    if (!fuelOnly.length && r.km > 150 && svc._fuelOk !== false) caution.push('no fuel station is mapped anywhere near this route');
+    if (!fuelOnly.length && r.km > 150 && svc._fuelOk !== false && !((svc._towns || []).length)) caution.push('no fuel station and no town are on this route - carry a reserve');
     else if (fuelOnly.length) {
       const known = fuelOnly.filter(f => f.open247 || f.state === 'open' || f.state === 'closed');
       const openFuel = known.filter(f => f.state === 'open' || f.open247).length;
@@ -14521,11 +15360,15 @@ async function overpass(query, attempt) {
   let lastErr;
   for (const url of OVERPASS) {
     try {
-      return await jget(url, 42000, {
+      const js = await jget(url, 42000, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: 'data=' + encodeURIComponent(query),
       });
+      /* owner 2026-10-17: a busy Overpass answers 200 with no elements and a remark ("runtime error: Query timed out").
+         That is a refusal, not "nothing here" - reading it as an answer is how 200 km without fuel appeared. */
+      if (js && js.remark && /error|timed out|timeout|out of memory|too busy|rate/i.test(String(js.remark)) && !(js.elements && js.elements.length)) throw new Error('overpass: ' + String(js.remark).slice(0, 80));
+      return js;
     } catch (e) { lastErr = e; }
   }
   /* Every mirror busy at the same moment is common at weekends. One patient retry costs
@@ -14544,6 +15387,54 @@ function sampleAlong(pts, max) {
 }
 const CS_FUEL_KM = new Map();
 function csSvcReady(id) { try { const b = window.csBriefRepaint; if (b && b.id === id && location.hash.indexOf('#/ride/') === 0) setTimeout(b.fn, 50); } catch (e) {} }
+/* ---- TOWNS ALONG THE ROAD (owner 2026-10-17: "you have no fuel data, man. you warn of 200 km stretches without fuel in
+   western countries. audit and redo") ----
+   OpenStreetMap's station lookup is often refused, times out or answers in part, and its absence was read as "no fuel".
+   Every place of 1,000+ inhabitants (GeoNames, data/towns, loaded for the ride's own area) is the second witness: where a
+   station is not listed but the road runs through a town, the page says fuel is usual there - and a long-range warning is
+   kept for roads with neither a station nor a town on them (tools/audit-fuel-towns.mjs). */
+const CS_TOWNS = { idx: undefined, cells: new Map() };
+async function csTownsAlong(pts, km) {
+  if (!pts || !pts.length) return [];
+  if (CS_TOWNS.idx === undefined) CS_TOWNS.idx = (async () => { try { return await jget('towns-index.json', 9000); } catch (e) { return null; } })();
+  const idx = await CS_TOWNS.idx; if (!idx || !idx.cells) return [];
+  const cellOf = (la, lo) => (Math.floor(la / 20) + 5) + '_' + (Math.floor(lo / 20) + 9);
+  const need = [...new Set(pts.map(p => cellOf(p.lat, p.lon)))].filter(c => idx.cells[c]);
+  const all = [];
+  for (const c of need) { if (!CS_TOWNS.cells.has(c)) CS_TOWNS.cells.set(c, (async () => { try { const j = await jget('data/towns/towns-' + c + '.json', 12000); return (j && j.t) || []; } catch (e) { return []; } })());
+    all.push(...(await CS_TOWNS.cells.get(c))); }
+  if (!all.length) return [];
+  let la0 = 90, la1 = -90, lo0 = 180, lo1 = -180; for (const p of pts) { la0 = Math.min(la0, p.lat); la1 = Math.max(la1, p.lat); lo0 = Math.min(lo0, p.lon); lo1 = Math.max(lo1, p.lon); }
+  const pad = km / 100 + 0.02, out = [];
+  for (const t of all) { const la = t[1] / 1000, lo = t[2] / 1000; if (la < la0 - pad || la > la1 + pad || lo < lo0 - pad * 1.6 || lo > lo1 + pad * 1.6) continue;
+    let bd = Infinity, bk = 0; for (const p of pts) { if (Math.abs(p.lat - la) > pad || Math.abs(p.lon - lo) > pad * 1.6) continue; const d = hav(p, { lat: la, lon: lo }); if (d < bd) { bd = d; bk = p.km || 0; } }
+    if (bd <= km) out.push({ name: t[0], lat: la, lon: lo, pop: t[3] * 100, atKm: Math.round(bk), d: Math.round(bd * 10) / 10 }); }
+  return out.sort((a, b) => a.atKm - b.atKm);
+}
+/* the towns of one ride, whether or not OpenStreetMap answers: along the drawn road when there is one, else along the
+   checkpoints (wider search). Cached per ride; the briefing and What's here repaint when they arrive. */
+const CS_RIDE_TOWNS = new Map();
+function csRideTowns(r) {
+  const id = r && r.id; if (!id) return Promise.resolve([]);
+  if (CS_RIDE_TOWNS.has(id)) return CS_RIDE_TOWNS.get(id);
+  const p = (async () => {
+    const road = S.routeLine && S.routeLine.length > 20 && !S.routeLine.approximate ? S.routeLine : null;
+    let pts = road ? road.filter((_, i) => i % Math.max(1, Math.floor(road.length / 300)) === 0).map(q => ({ lat: +q[0], lon: +q[1] })) : (r.waypoints || []).map(w => ({ lat: +w.lat, lon: +w.lon })).filter(q => Number.isFinite(q.lat));
+    if (!road && pts.length > 1) { const dense = []; for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i], n = Math.max(1, Math.round(hav(a, b) / 2)); for (let k = 0; k < n; k++) dense.push({ lat: a.lat + (b.lat - a.lat) * k / n, lon: a.lon + (b.lon - a.lon) * k / n }); } dense.push(pts[pts.length - 1]); pts = dense; }
+    let acc = 0; pts.forEach((q, i) => { if (i) acc += hav(pts[i - 1], q); q.km = acc; }); const f = acc > 0 && +r.km > 0 ? +r.km / acc : 1; pts.forEach(q => { q.km *= f; });
+    const t = await csTownsAlong(pts, road ? 3 : 5);
+    setTimeout(() => { try { csSvcReady(id); if (wireRoadbookExtras._paintNear) wireRoadbookExtras._paintNear(); } catch (e) {} }, 0);
+    return t;
+  })().catch(() => []);
+  CS_RIDE_TOWNS.set(id, p); p.then(t => { p.value = t; });
+  return p;
+}
+const csRideTownsNow = r => { const p = r && CS_RIDE_TOWNS.get(r.id); return (p && p.value) || null; };
+/* the longest stretch between fuel chances along a ride: stations (confirmed) and towns (likely) */
+function csFuelGap(totalKm, stationsKm, towns) {
+  const pts = [...(stationsKm || []), ...((towns || []).map(t => t.atKm))].filter(Number.isFinite).sort((a, b) => a - b);
+  let prev = 0, worst = 0; for (const k of pts) { worst = Math.max(worst, k - prev); prev = k; } return Math.max(worst, (+totalKm || 0) - prev);
+}
 async function scanServices(r) {
   if (S.svcCache.has(r.id)) { setTimeout(() => csSvcReady(r.id), 0); return S.svcCache.get(r.id); }
   /* THE NIGHTLY ALREADY ASKED. READ ITS ANSWER FIRST.
@@ -14790,6 +15681,13 @@ async function scanServices(r) {
      assumed: my first version read this flag and nothing ever set it, which is the same
      mistake as S.keepMapOpen and ALL_WAYPOINTS earlier in this project. */
   out._askedOk = (js.got || 0) > 0;
+  try {
+    /* positions along the road for the towns: the routed road's own km, else the checkpoint chain scaled to the ride */
+    let tp = (roadPts || routePts).map(p => ({ lat: +p.lat, lon: +p.lon, km: Number.isFinite(+p.km) ? +p.km : null }));
+    if (tp.some(p => p.km == null)) { let a2 = 0; tp.forEach((p, i) => { if (i) a2 += hav(tp[i - 1], p); p.km = a2; }); const f = a2 > 0 && +r.km > 0 ? +r.km / a2 : 1; tp.forEach(p => { p.km *= f; }); }
+    out._towns = await csTownsAlong(tp, roadPts ? 3 : 5);
+    if (!out._towns.length) out._towns = (await csRideTowns(r)) || [];
+  } catch (e) { out._towns = []; }
   out._peaks = peaks.slice(0, 40);
   out._partial = !!js.partial;
   out._got = js.got; out._groups = js.groups;
@@ -15524,14 +16422,39 @@ function rideFromImport(parsed) {
    When no router answered, the ride map drew straight chords between checkpoints in the normal road colours and the
    GPX exported them as a track. Now the chords are drawn grey and dashed, a banner on the map says the road is not
    loaded and offers to try again, and the GPX carries the checkpoints as a route for the navigator to calculate. */
+/* hide every line on a ride map (not the stops, not area shapes) - used while only the checkpoint chain is known */
+/* a line dense enough to follow the road (points under 1.5 km apart on average) may be drawn; anything coarser is a
+   chord between checkpoints and stays invisible until the routed road arrives (owner 2026-10-13) */
+function csDense(pts, minN) { try { const P = (pts || []).map(p => Array.isArray(p) ? p : [+p.lat, +p.lon]).filter(p => Number.isFinite(+p[0]));
+  if (P.length < (minN || 20)) return false; let t = 0; for (let i = 1; i < P.length; i++) t += hav({ lat: P[i - 1][0], lon: P[i - 1][1] }, { lat: P[i][0], lon: P[i][1] }); return t / (P.length - 1) < 1.5; } catch (e) { return false; } }
+/* a line that lies on the ride's straight outline (its checkpoints joined), or is too coarse to follow a road, is a chord */
+function csIsChord(l) { try {
+  let ll = l.getLatLngs() || []; if (Array.isArray(ll[0])) ll = ll.flat(); const P = ll.map(x => [x.lat, x.lng]); if (P.length < 2) return false;
+  if (!csDense(P, 3)) return true;
+  const o = S.routeLine && S.routeLine.approximate ? S.routeLine : null; if (!o || o.length < 2) return false;
+  const k = 111.32, cos = Math.cos(P[0][0] * Math.PI / 180);
+  const dSeg = (q, a, b) => { const ax = a[1] * k * cos, ay = a[0] * k, bx = b[1] * k * cos, by = b[0] * k, qx = q[1] * k * cos, qy = q[0] * k; const dx = bx - ax, dy = by - ay, l2 = dx * dx + dy * dy || 1e-9; let t = ((qx - ax) * dx + (qy - ay) * dy) / l2; t = Math.max(0, Math.min(1, t)); return Math.hypot(qx - ax - t * dx, qy - ay - t * dy); };
+  let on = 0; const step = Math.max(1, Math.floor(P.length / 40)), n = Math.ceil(P.length / step);
+  for (let i = 0; i < P.length; i += step) { let best = 1e9; for (let j = 1; j < o.length; j++) { const d = dSeg(P[i], o[j - 1], o[j]); if (d < best) best = d; if (best < 0.06) break; } if (best < 0.06) on++; }
+  return on >= n * 0.8;
+} catch (e) { return false; } }
+function csHideChords(map) { try { if (!map || !map.eachLayer) return;
+  map.eachLayer(l => { try { if (l && l.setStyle && l.getLatLngs && !(L.Polygon && l instanceof L.Polygon) && !(L.CircleMarker && l instanceof L.CircleMarker) && (l.getLatLngs() || []).length > 1 && csIsChord(l)) { l.setStyle({ opacity: 0, fillOpacity: 0 }); l._csHid = true; } } catch (e) {} });
+  (S.drawnLayers || []).forEach(l => { try { if (l && l.setStyle && l.getLatLngs && !(L.CircleMarker && l instanceof L.CircleMarker) && csIsChord(l)) l.setStyle({ opacity: 0 }); } catch (e) {} });
+  /* and anything drawn after this moment (famous-road context, highlights) while the ride still has no real road: a
+     famous road with its own real geometry stays - only chords are hidden */
+  if (!map._csNoRoadHook) { map._csNoRoadHook = true;
+    map.on('layeradd', ev => { try { const l = ev.layer; if (!l || !l.setStyle || !l.getLatLngs || (L.Polygon && l instanceof L.Polygon) || (L.CircleMarker && l instanceof L.CircleMarker)) return;
+      if (S.routeLine && !S.routeLine.approximate && S.routeLine.length > 20) return;
+      if ((l.getLatLngs() || []).length > 1 && csIsChord(l)) { l.setStyle({ opacity: 0, fillOpacity: 0 }); l._csHid = true; } } catch (e) {} }); }
+} catch (e) {} }
 function csRoadHonesty(line) { try {
   const box = document.querySelector('#view-ride .mapBox') || (S.map && S.map._container && S.map._container.parentNode);
   let ban = document.getElementById('csRoadBan');
   if (!line || !line.approximate) { if (ban) ban.remove(); try { const nt = document.getElementById('mapNote'); if (nt && nt.dataset.csBan) { nt.hidden = false; delete nt.dataset.csBan; } } catch (e) {} return; }
-  /* every road-coloured line on the ride map turns into grey dashes - grading a straight line would be invented */
-  const grey = l => { try { if (l && l.setStyle && l.getLatLngs && !(L.Polygon && l instanceof L.Polygon)) l.setStyle({ color: '#8d99a6', dashArray: '6 9', weight: 3, opacity: .9 }); } catch (e) {} };
-  (S.drawnLayers || []).forEach(grey);
-  try { if (S.map && S.map.eachLayer) S.map.eachLayer(l => { if (l && l.getLatLngs && (l.getLatLngs() || []).length > 1) grey(l); }); } catch (e) {}
+  /* owner 2026-10-13: "no more crap vector rides". A straight line between checkpoints is not drawn at all - not grey,
+     not dashed. The stops stay on the map; the road appears when it is known. */
+  csHideChords(S.map); csHideChords(S.mini);
   /* owner 2026-10-12 (screenshot): the banner lay across the map under the legend note, the Whole route and Expand
      buttons - three boxes saying the same thing on top of each other. One message now, ABOVE the map, in the page flow;
      the legend note steps aside while it shows. */
@@ -15539,7 +16462,7 @@ function csRoadHonesty(line) { try {
   if (!box) return;
   if (!ban) { ban = document.createElement('div'); ban.id = 'csRoadBan'; ban.className = 'csRoadBan'; }
   if (ban.nextElementSibling !== box) box.insertAdjacentElement('beforebegin', ban);
-  ban.innerHTML = '<b>Road not loaded.</b> The routing services did not answer, so grey dashes join the checkpoints - they are not the road. <button type="button" id="csRoadRetry">Try again</button>';
+  ban.innerHTML = '<b>Road not loaded yet.</b> The routing services did not answer, so only the stops are shown - no straight lines pretending to be the road. <button type="button" id="csRoadRetry">Try again</button>';
   const b = document.getElementById('csRoadRetry');
   if (b) b.onclick = () => { try { OSRM.openUntil = 0; OSRM.fails = 0; } catch (e) {} ban.innerHTML = 'Loading the road…'; try { if (S._redrawRoute) S._redrawRoute(); } catch (e) {} };
 } catch (e) {} }
@@ -16360,6 +17283,33 @@ function csAvoidUi(r) { try {
     note.textContent = t; note.hidden = false;
   }
 } catch (e) {} }
+/* ---- THE ROAD CATALOGUE (tools/route-catalogue.mjs, run in a Codespace) ----
+   roads-index.json lists the 3 x 3 degree cells that hold stored roads; roads-<cell>.json holds, per ride id, the road as
+   an encoded polyline with its length and time. One index per visit, one small file per area, cached by the worker. A
+   stored road is used only when it still fits the ride: both ends within 8 km of the ride's ends and a sane length. */
+const CS_ROADS = { idx: undefined, cells: new Map() };
+function csPolyDecode(s) { const out = []; let i = 0, la = 0, lo = 0; s = String(s || ''); while (i < s.length) { for (let k = 0; k < 2; k++) { let r = 0, sh = 0, b; do { b = s.charCodeAt(i++) - 63; r |= (b & 0x1f) << sh; sh += 5; } while (b >= 0x20 && i < s.length + 1); const d = r & 1 ? ~(r >> 1) : r >> 1; if (k) lo += d; else la += d; } out.push([la / 1e5, lo / 1e5]); } return out; }
+const csRoadCell = (la, lo) => (Math.floor(la / 3) + 30) + '-' + (Math.floor(lo / 3) + 60);
+async function csRoadsIndex() {
+  if (CS_ROADS.idx === undefined) CS_ROADS.idx = (async () => { try { if (location.protocol === 'file:') return null; return await jget('roads-index.json', 8000); } catch (e) { return null; } })();
+  return CS_ROADS.idx;
+}
+async function csStoredRoad(id, pts, km) {
+  id = String(id || '').split('#')[0]; if (!id || !pts || pts.length < 2) return null;
+  const P = pts.map(p => Array.isArray(p) ? { lat: +p[0], lon: +p[1] } : { lat: +p.lat, lon: +p.lon });
+  const idx = await csRoadsIndex(); if (!idx || !idx.cells) return null;
+  const a = P[0], z = P[P.length - 1];
+  const tries = [...new Set([[0, 0], [0.01, 0.01], [-0.01, -0.01], [0.01, -0.01], [-0.01, 0.01]].map(([d, e]) => csRoadCell(a.lat + d, a.lon + e)))].filter(c => idx.cells[c]);
+  for (const c of tries) {
+    if (!CS_ROADS.cells.has(c)) CS_ROADS.cells.set(c, (async () => { try { return await jget('data/roads/roads-' + c + '.json', 12000); } catch (e) { return null; } })());
+    const j = await CS_ROADS.cells.get(c); const v = j && j.roads && j.roads[id]; if (!v) continue;
+    const line = csPolyDecode(v[0]); if (line.length < 2) return null;
+    const okEnds = hav({ lat: line[0][0], lon: line[0][1] }, a) < 8 && hav({ lat: line[line.length - 1][0], lon: line[line.length - 1][1] }, z) < 8;
+    if (!okEnds || (km && +v[1] && (+v[1] < km * 0.5 || +v[1] > km * 2.4))) return null;
+    line.km = +v[1] || 0; line.min = +v[2] || 0; line.stored = true; return line;
+  }
+  return null;
+}
 async function osrmGeometry(r) {
   /* If the nightly has already routed this ride, use it: the map draws instantly, the
      minimaps get their road immediately and the routing service is left alone. It is the
@@ -16521,6 +17471,33 @@ async function osrmGeometry(r) {
      when the routers are busy (owner 2026-10-12: "Road not loaded" on a ride opened from the atlas) */
   const memoOrOutline = () => { const m = csRoadMemoGet(key) || (!avoid.length && !(S.fromMe && S.start) && (() => { try { const a = csAtlasStoreGet(r.id); if (Array.isArray(a) && a.length > 10) { a.fromMemo = true; return a; } } catch (e) {} return null; })());
     if (m) { S.geomCache.set(key, m); return m; } return outline(); };
+  /* owner 2026-10-13: "make all of them part of the catalogue with their curves". The Codespace road job has routed the
+     catalogue once on its own router; a ride with a stored road is drawn from it at once, without asking a public router
+     at all. Not when the rider changed the ride (avoid switches, start from my location, an edit): those need the router. */
+  if (!js && !avoid.length && !extra && !r.reversed) {
+    try {
+      /* with "start from my location" the line begins at the rider's door: the stored road is the ride itself, and only
+         the short way to its start is asked of the router. If the router is busy the ride is still drawn on its real road
+         and the way to it is simply not drawn - never a straight line from the door. */
+      const fm = !!(S.fromMe && S.start && pts.length > 2 && Math.abs(+pts[0].lat - +S.start.lat) < 1e-6 && Math.abs(+pts[0].lon - +S.start.lon) < 1e-6);
+      const st = await csStoredRoad(r.id, fm ? pts.slice(1) : pts, +r.km || 0);
+      if (st) {
+        let out = st, km = st.km, min = st.min, complete = true;
+        if (fm) {
+          try { const a0 = pts[0], b0 = st[0];
+            const j2 = await OSRM.run(NET.router + '/route/v1/driving/' + (+a0.lon).toFixed(5) + ',' + (+a0.lat).toFixed(5) + ';' + (+b0[1]).toFixed(5) + ',' + (+b0[0]).toFixed(5) + '?overview=full&geometries=geojson', 15000, 10);
+            const leg = j2 && j2.routes && j2.routes[0] && j2.routes[0].geometry && j2.routes[0].geometry.coordinates;
+            if (Array.isArray(leg) && leg.length > 1) { out = leg.map(c => [c[1], c[0]]).concat(st); km += (+j2.routes[0].distance || 0) / 1000; min += (+j2.routes[0].duration || 0) / 60; }
+            else { out = st.slice(); out.noApproach = true; complete = false; } }
+          catch (e) { out = st.slice(); out.noApproach = true; complete = false; }
+        }
+        out.stored = true; out.km = Math.round(km); out.min = Math.round(min);
+        if (complete) S.geomCache.set(key, out);
+        try { S.routeMeta = S.routeMeta || {}; S.routeMeta[key] = { km: out.km, min: out.min }; } catch (e) {}
+        S.speedCache.delete(r.id); return out;
+      }
+    } catch (e) {}
+  }
   if (!js) try {
     js = await OSRM.run(base + extra, 15000, 10);
   } catch (e) {
@@ -18971,7 +19948,7 @@ function drawMap(r) {
   /* and never build the line from a waypoint that has no coordinate in the first place */
   const pts = wps.filter(w => Number.isFinite(+w.lat) && Number.isFinite(+w.lon))
                  .map(w => [+w.lat, +w.lon]);
-  const fallback = L.polyline(pts, { color: '#e11b2b', weight: 3, dashArray: '6 8', opacity: .85 }).addTo(map);
+  const fallback = L.polyline(pts, { color: '#e11b2b', weight: 3, dashArray: '6 8', opacity: csDense(pts) ? .85 : 0, interactive: false }).addTo(map);   /* owner 2026-10-13: no straight chords - pins until the road */
   /* ---- KEEP THE MARKERS OFF THE ROAD ----
      Eight thumbnails sitting exactly on the line covered the road they describe, and where
      two waypoints are close together they covered each other as well. So each marker is
@@ -19612,12 +20589,14 @@ function drawMap(r) {
        picture, related to nothing visible. Measured in the harness: casing 7 points,
        route 301. */
     miniCase = L.polyline(pts, { color: '#12151a', weight: 4.2, opacity: .75 });
+    if (!csDense(pts)) miniCase.setStyle({ opacity: 0 });   /* owner 2026-10-13: no chords - shown once the road arrives */
     S.miniLayers.addLayer(miniCase);
     /* NOT a colour from the grade palette. #ff2d55 is "tight and twisty", so a minimap line
        in that colour is indistinguishable from a graded segment to anything counting what is
        drawn - and it made a uniform route report two grades. The thumbnail needs contrast,
        not a meaning it does not have. */
     miniLine = L.polyline(pts, { color: '#ff5a1f', weight: 2.6, opacity: 1 });
+    if (!csDense(pts)) miniLine.setStyle({ opacity: 0 });
     S.miniLayers.addLayer(miniLine);
     if (pts.length > 1) mini.fitBounds(L.latLngBounds(pts).pad(0.18));
     else mini.setView(pts[0] || [46.8, 8.2], 9);
@@ -20142,7 +21121,7 @@ function drawMap(r) {
       /* audit 2026-10-11: "Fuel spacing very high · about every 294 km" (km divided by planned fuel checkpoints) sat beside
          the measured "longest stretch ≈ 167 km". Only the measured longest gap between stations along the road is shown. */
       const fuelGap = (() => { try { const st = (CS_FUEL_KM.has(r.id) && CS_FUEL_KM.get(r.id)) || (S.svcNow && Array.isArray(S.svcNow._fuelKm) && S.svcNow._fuelKm);
-        if (!st || !st.length || !KM) return null; let prev = 0, worst = 0; for (const k of st) { worst = Math.max(worst, k - prev); prev = k; } return Math.max(worst, KM - prev); } catch (e) { return null; } })();
+        if (!st || !KM) return null; return csFuelGap(KM, st, ((S.svcNow && S.svcNow._towns) || []).filter(t => t.pop >= 1000)); } catch (e) { return null; } })();
       const DIMS = [
         ['Scenic share', scenicShare, scenicShare == null ? null : Math.round(scenicShare * 100) + '% of the distance',
          'from the route\u2019s own section types'],
@@ -20155,7 +21134,7 @@ function drawMap(r) {
         ['Technicality', kmh == null ? null : 1 - Math.min(1, Math.max(0, (kmh - 30) / 60)),
          kmh == null ? null : Math.round(kmh) + ' km/h average', 'a lower average means tighter, slower work'],
         ['Longest fuel gap', fuelGap == null ? null : Math.min(1, fuelGap / 200),
-         fuelGap == null ? null : 'about ' + Math.round(fuelGap) + ' km', 'between fuel stations found along the road'],
+         fuelGap == null ? null : 'about ' + Math.round(fuelGap) + ' km', 'between fuel stations and towns along the road'],
         ['Road width', null, null, 'not recorded for most of these roads'],
         ['Surface', null, null, 'not recorded for most of these roads'],
       ];
@@ -21297,8 +22276,11 @@ function hardBorder(a, b) {
       });
     }
     try { csAvoidUi(r); } catch (e) {}
+    const lineReal = !(line && line.approximate) && line && line.length > 20;
     if (miniLine) miniLine.setLatLngs(line);
     if (miniCase) miniCase.setLatLngs(line);   // or the casing keeps the old coarse shape
+    if (miniLine) miniLine.setStyle({ opacity: lineReal ? 1 : 0 });
+    if (miniCase) miniCase.setStyle({ opacity: lineReal ? .75 : 0 });   // or the casing keeps the old coarse shape
     /* Fit the map to the line that is actually drawn. Fitting the checkpoints once at
        load and never again is how the view ended up hundreds of kilometres from the
        route after "start from my location" prepended a leg. */
@@ -21849,7 +22831,9 @@ function hardBorder(a, b) {
            ride" claim. Verified shared sections (above) and nearby context stay separate. */
         const context = (!snapped && (st === 'anchored' || st === 'drawn')) ? legendContextSpans(g, line) : null;
         if (context) {
-          context.spans.forEach(function (seg) {
+          /* owner 2026-10-13: the famous road's own stretches near the ride stay (R-01), but only where its stored line is
+             fine enough to follow the road - a coarse stretch would be another straight vector */
+          context.spans.filter(seg => csDense(seg, 3)).forEach(function (seg) {
             Object.assign(L.polyline(seg, { color: '#6b7280', weight: 2.4, opacity: .9, interactive: false,
                               dashArray: '2 8', lineCap: 'round' }), { _csRoad: g.name, _csW: 2.4, _csContext: true })
               .addTo(S.legendLayer)
@@ -21954,7 +22938,8 @@ function hardBorder(a, b) {
                 else if (run.length) { runs.push(run); run = []; }
               }
               if (run.length) runs.push(run);
-              const keep = runs.filter(rn => rn.length >= 8);
+              /* owner 2026-10-13: only runs dense enough to follow the road - a coarse famous-road line is a straight vector */
+              const keep = runs.filter(rn => rn.length >= 8).filter(rn => csDense(rn, 8));
               if (!keep.length) { g._routed = false; return; }
 
               /* DOTTED AND GREY, as asked. A famous road is context, not the ride: it must
@@ -22214,6 +23199,9 @@ function hardBorder(a, b) {
           drawLine = keep2.reduce((a2, b2) => (b2.length > a2.length ? b2 : a2));
         }
         if (S.labelRoad) { try { S.labelRoad(g); } catch (e) {} }
+        /* owner 2026-10-13: "no more crap vector rides". A famous road whose stored line is too coarse to follow the road
+           (points more than 1.5 km apart on average) is named on the map and in the panel, not drawn as straight lines. */
+        if (!csDense(drawLine, 8)) return;
         L.polyline(drawLine, {
           color: '#0b0c0e', weight: used ? 11 : 7, opacity: .35, interactive: false,
         }).addTo(S.legendLayer).bringToBack();
@@ -22359,6 +23347,7 @@ function hardBorder(a, b) {
       });
       (S._legendsDraw || found).forEach(function (g) {
         if (!g.line || g.line.length < 2) return;
+        if ((line && line.approximate) || !csDense(g.line)) return;   /* owner 2026-10-13: no highlight along a straight outline */
         let run = [];
         const flush = function () {
           if (run.length > 3) {
@@ -23026,8 +24015,10 @@ function hardBorder(a, b) {
        broken map. Say plainly that this is not the road yet, and keep trying in the
        background - when the geometry arrives the line is redrawn without a reload. */
     const note = $('mapNote');
-    if (note) note.innerHTML = '<b>Not the road yet.</b> The routing service is busy, so this is the ' +
-      'checkpoint order in a straight line. Still trying…';
+    if (note) note.innerHTML = '<b>Loading the road.</b> The routing service is busy - the stops are shown and the road ' +
+      'appears as soon as it answers. Still trying…';
+    /* no straight-line preview (owner 2026-10-13): whatever the fallback draws below, its lines stay hidden */
+    [0, 400, 1500].forEach(t => setTimeout(() => { try { if (S.map && !(S.geomCache.get(geomKey(r)) && !S.geomCache.get(geomKey(r)).approximate)) csHideChords(S.map); } catch (e) {} }, t));
     /* WITHOUT ROUTING, THE MODE SWITCH NEVER APPEARED - so Conditions was unreachable on a
        bad day, even though passes, hazards and cameras do not depend on routing at all.
        Offer it here too, drawn on the straight-line preview. */
@@ -24348,6 +25339,71 @@ function fuelGateHtml(w, svc, cum, i, wps) {
   '</div>';
 }
 
+/* ---- WHAT'S HERE, AT EVERY STOP (owner 2026-10-13: "what can be seen there, what can be done there, fuel there? food
+   there? swimming there? any attractions? if so, which? otherwise the whole text section is useless") ----
+   Composed from what CurveScout holds or has just looked up for this ride - nothing invented:
+     see   catalogued places within 4 km (our own places index: castles, churches, museums, peaks, lakes), then mapped
+           viewpoints
+     do    the concrete things those places allow: a swim, a viewpoint walk, a visit, a coffee with a terrace
+     fuel  the nearest station within 6 km with its opening state; else the last and the next fuel along the ride
+     food  the two best places to eat within 6 km, with the reason they were picked
+     swim  mapped swimming spots within 8 km (lake beaches, bathing places, pools)
+     on    dated events within 30 km in the next four weeks, from the events calendar
+   Each line names places. A line with nothing to name says so plainly and says what to do instead. */
+const WH_KIND = { castle: 'castle', fort: 'fort', fortress: 'fortress', church: 'church', abbey: 'abbey', monastery: 'monastery', cathedral: 'cathedral', museum: 'museum',
+  lake: 'lake', waterfall: 'waterfall', gorge: 'gorge', glacier: 'glacier', peak: 'peak', mountain: 'mountain', viewpoint: 'viewpoint', bridge: 'bridge', dam: 'dam', ruin: 'ruin', ruins: 'ruins', palace: 'palace', village: 'village', town: 'town' };
+function whKind(k) { const t = String(k || '').toLowerCase(); for (const w of Object.keys(WH_KIND)) if (t.indexOf(w) >= 0) return WH_KIND[w]; return t.replace(/_/g, ' ').slice(0, 28); }
+function whKm(km) { return km < 0.95 ? Math.max(100, Math.round(km * 10) * 100) + ' m' : (km < 9.5 ? km.toFixed(1).replace(/\.0$/, '') : Math.round(km)) + ' km'; }
+function whatsHereHtml(w, i, ctx) {
+  const here = { lat: +w.lat, lon: +w.lon }; if (!Number.isFinite(here.lat)) return '';
+  const svc = ctx.svc || {}, picks = ctx.picks || {}, atr = ctx.atr || [], cumKm = ctx.cumKm || 0;
+  const name = esc(String(w.name || 'This stop').replace(/\s+(fuel gate|fuel stop|food stop|coffee stop|photo stop|checkpoint)$/i, ''));
+  const rows = [];
+  /* see */
+  const sights = atr.map(a => ({ n: a.n, k: whKind(a.k), km: hav(here, a) })).filter(a => a.km <= 4 && a.n && !/^(Q\d+|unnamed)$/i.test(a.n) && a.n.toLowerCase() !== String(w.name || '').toLowerCase())
+    .sort((a, b) => a.km - b.km).filter((a, k, arr) => arr.findIndex(b => b.n === a.n) === k).slice(0, 4);
+  const views = (svc.view || []).filter(x => Number.isFinite(+x.lat)).map(x => ({ n: x.name, km: hav(here, x) })).filter(x => x.km <= 3 && x.n && !/^viewpoint$/i.test(x.n)).sort((a, b) => a.km - b.km).slice(0, 2);
+  if (sights.length) rows.push(['👀', 'See', sights.map(a => '<b>' + esc(a.n) + '</b> (' + esc(a.k) + ', ' + whKm(a.km) + ')').join(' · ')]);
+  else if (views.length) rows.push(['👀', 'See', views.map(v => '<b>' + esc(v.n) + '</b> (viewpoint, ' + whKm(v.km) + ')').join(' · ')]);
+  else if (w.kind === 'pass' || (+w.alt || 0) >= 1500) rows.push(['👀', 'See', 'The view is the attraction here: ' + (+w.alt ? Math.round(+w.alt) + ' m up, ' : '') + 'nothing catalogued to visit within 4 km.']);
+  else rows.push(['👀', 'See', 'Nothing catalogued to visit within 4 km - the road is the sight on this stretch.']);
+  /* do */
+  const swim = (svc.swim || []).filter(x => Number.isFinite(+x.lat)).map(x => ({ n: x.name, km: hav(here, x), t: x.tags || {} })).filter(x => x.km <= 8).sort((a, b) => a.km - b.km);
+  const dos = [];
+  if (swim[0]) dos.push('swim at <b>' + esc(swim[0].n || 'the bathing spot') + '</b> (' + whKm(swim[0].km) + ')');
+  const visit = sights.find(a => /museum|castle|fortress|abbey|monastery|palace|cathedral|church|ruin/.test(a.k)); if (visit) dos.push('visit <b>' + esc(visit.n) + '</b>');
+  const walk = sights.find(a => /waterfall|gorge|glacier|lake|viewpoint|peak/.test(a.k)) || views[0]; if (walk) dos.push('walk to <b>' + esc(walk.n) + '</b>');
+  const cafe = (picks.food || []).find(f => /terrace|outdoor|view/i.test(String(f.why || '') + JSON.stringify(f.tags || {}))); if (cafe) dos.push('coffee on the terrace at <b>' + esc(cafe.name) + '</b>');
+  if (w.kind === 'pass' || (+w.alt || 0) >= 1800) dos.push('the summit photo - park off the line');
+  if (dos.length) rows.push(['🎯', 'Do', dos.slice(0, 3).join(' · ')]);
+  /* fuel */
+  const fuels = (svc.fuel || []).filter(f => !f.ev && Number.isFinite(+f.lat)).map(f => ({ f, km: hav(here, f) }));
+  const nf = fuels.filter(x => x.km <= 6).sort((a, b) => a.km - b.km)[0];
+  if (nf) { const st = (() => { try { return nf.f.hours ? openNow(nf.f.hours) : 'unknown'; } catch (e) { return 'unknown'; } })();
+    rows.push(['⛽', 'Fuel', '<b>' + esc(nf.f.name) + '</b>, ' + whKm(nf.km) + (st === 'open' ? ' · open now' : st === 'closed' ? ' · <span class="whWarn">closed right now</span>' : nf.f.open247 ? ' · 24/7' : ' · hours not mapped') + (nf.f.diesel ? '' : '')]); }
+  else if ((() => { const t = ((svc._towns && svc._towns.length ? svc._towns : (S.svcNow && S.svcNow._towns && S.svcNow._towns.length ? S.svcNow._towns : (ctx.towns || [])))).map(t => ({ t, km: hav(here, t) })).filter(x => x.km <= 4 && x.t.pop >= 1000).sort((a, b) => b.t.pop - a.t.pop)[0]; if (t) { rows.push(['⛽', 'Fuel', '<b>' + esc(t.t.name) + '</b>, ' + whKm(t.km) + ' - a town of ' + (t.t.pop >= 10000 ? Math.round(t.t.pop / 1000) + ',000' : 'about ' + (Math.round(t.t.pop / 100) * 100).toLocaleString('en-GB')) + ' people, where fuel is usual' + (svc._fuelOk === false || !svc.fuel ? ' (the station lookup did not answer)' : ' (no station listed in OpenStreetMap)')]); return true; } return false; })()) {}
+  else if (svc._fuelOk === false || !Array.isArray(svc.fuel)) rows.push(['⛽', 'Fuel', 'The station lookup did not answer just now - no town of 1,000+ people within 4 km.'])
+  else { const TW = ((svc._towns && svc._towns.length ? svc._towns : (S.svcNow && S.svcNow._towns && S.svcNow._towns.length ? S.svcNow._towns : (ctx.towns || [])))).filter(t => t.pop >= 1000);
+    /* the last and next chance along the ride: a listed station, or a town where fuel is usual */
+    const ch = fuels.map(x => ({ n: x.f.name, at: x.f.atKm, town: false })).concat(TW.map(t => ({ n: t.name, at: t.atKm, town: true }))).filter(c => Number.isFinite(c.at));
+    const before = ch.filter(c => c.at < cumKm - 1).sort((a, b) => b.at - a.at)[0], after = ch.filter(c => c.at > cumKm + 1).sort((a, b) => a.at - b.at)[0];
+    const lab = c => '<b>' + esc(c.n) + '</b>' + (c.town ? ' (town)' : '');
+    rows.push(['⛽', 'Fuel', 'None within 6 km.' + (before ? ' Last chance: ' + lab(before) + ', ' + Math.max(1, Math.round(cumKm - before.at)) + ' km back.' : '') + (after ? ' Next: ' + lab(after) + ' in ' + Math.max(1, Math.round(after.at - cumKm)) + ' km.' : (before ? '' : ' Fill up before this stretch.'))]); }
+  /* food */
+  const food = (picks.food || []).slice(0, 2);
+  if (food.length) rows.push(['🍽', 'Food', food.map(f => '<b>' + esc(f.name) + '</b> (' + whKm(f.km) + (f.why ? ', ' + esc(String(f.why).split(/[;.]/)[0]).toLowerCase() : '') + ')').join(' · ')]);
+  else if (svc.food) rows.push(['🍽', 'Food', 'Nothing mapped within 6 km - carry something.']);
+  /* swim */
+  if (swim.length) rows.push(['🏊', 'Swim', swim.slice(0, 2).map(x => '<b>' + esc(x.n || 'Bathing spot') + '</b> (' + whKm(x.km) + ')').join(' · ')]);
+  else if (svc.swim) rows.push(['🏊', 'Swim', 'No mapped bathing spot within 8 km.']);
+  /* on */
+  const evs = (ctx.events || []).map(e => ({ e, km: hav(here, e) })).filter(x => x.km <= 30).sort((a, b) => a.km - b.km).slice(0, 2);
+  if (evs.length) rows.push(['🎉', 'On', evs.map(x => '<b>' + esc(x.e.name) + '</b> - ' + esc(x.e.exact ? eventWhen(x.e) : eventStamp(x.e) + ' (dates not yet published)') + ', ' + whKm(x.km) + (x.e.url ? ' · <a href="' + esc(x.e.url) + '" target="_blank" rel="noopener">details</a>' : '')).join(' · ')]);
+  const lead = (() => { const bits = []; if (sights.length) bits.push(sights.length + ' sight' + (sights.length > 1 ? 's' : ''));
+    if (nf) bits.push('fuel'); if (food.length) bits.push('food'); if (swim.length) bits.push('a swim');
+    return bits.length ? name + ' has ' + bits.join(', ').replace(/, ([^,]*)$/, ' and $1') + ' within reach.' : name + ': little mapped right here - plan this stop around the road.'; })();
+  return '<div class="wh"><p class="whLead">' + lead + '</p><ul class="whList">' + rows.map(([ic, k, v]) => '<li><span class="whIc" aria-hidden="true">' + ic + '</span><span class="whK">' + k + '</span><span class="whV">' + v + '</span></li>').join('') + '</ul></div>';
+}
 function wireRoadbookExtras(r, host, getSvc) {
   const wps = rideWaypoints(r), legs = legKms(r);
   const cum = []; { let a = 0; wps.forEach((w, i) => { a += legs[i] || 0; cum.push(a); }); }
@@ -24395,8 +25451,14 @@ function wireRoadbookExtras(r, host, getSvc) {
 
   // what sits within a few km of each checkpoint
   const CH = { fuel: '⛽', food: '🍽️', rest: '☕', camera: '📷', view: '🌄', swim: '🏊', moto: '🏍️', police: '🚓' };
+  const WH_ATR = new Map();
+  try { csRideTowns(r); } catch (e) {}
   const paintNear = () => {
-    const svc = getSvc(); if (!svc) return;
+    const svc = getSvc();
+    if (!svc) { /* before the services scan answers: the sights and events we already hold */
+      wps.forEach((w, i) => { const slot = host.querySelector('[data-near="' + i + '"]'); if (!slot || !WH_ATR.has(i)) return;
+        slot.innerHTML = whatsHereHtml(w, i, { svc: {}, picks: {}, atr: WH_ATR.get(i) || [], cumKm: cum[i] || 0, events: [], towns: csRideTownsNow(r) || [] }).replace(/<li><span class="whIc"[^>]*>⛽(?:(?!<\/li>)[\s\S])*?did not answer[\s\S]*?<\/li>/, ''); });
+      return; }
     wps.forEach((w, i) => {
       const slot = host.querySelector('[data-near="' + i + '"]');
       if (!slot) return;
@@ -24425,7 +25487,11 @@ function wireRoadbookExtras(r, host, getSvc) {
          under the roadbook. The card source is retained in git history; nothing is lost that
          the dots do not already say better. */
       const shown = Object.entries(picks).filter(([, v]) => (v || []).length);
-      slot.innerHTML = (shown.length
+      const whEvents = (() => { try { const now = Date.now(), day = 864e5, m0 = new Date().getMonth(); return loadEvents().filter(e => e.exact ? (e.from && new Date(e.to || e.from).getTime() + day >= now && new Date(e.from).getTime() <= now + 28 * day)
+        /* a series held every year in a known month: this month or next, said as "usually", never as a date */
+        : (() => { const em = Number.isFinite(+e.month) && +e.month ? +e.month - 1 : (e.from ? new Date(e.from).getMonth() : -1); return em >= 0 && ((em - m0 + 12) % 12) <= 1; })()); } catch (e) { return []; } })();
+      const whBlock = whatsHereHtml(w, i, { svc, picks, atr: WH_ATR.get(i) || [], cumKm: cum[i] || 0, events: whEvents, towns: csRideTownsNow(r) || [] });
+      slot.innerHTML = whBlock + (shown.length
           ? '<div class="stopSummary"><b>' +
               shown.reduce((n, [, v]) => n + v.length, 0) + ' places along this road</b>' +
               '<span>' + shown.map(([k, v]) =>
@@ -24445,6 +25511,11 @@ function wireRoadbookExtras(r, host, getSvc) {
       }));
     });
   };
+  /* the catalogued places around every stop, from our own places index (one file, cached), then paint again */
+  (async () => { try { for (let i = 0; i < wps.length; i++) { const w = wps[i]; if (!Number.isFinite(+w.lat)) continue;
+      const js = await placesNear(+w.lat, +w.lon, 4000);
+      WH_ATR.set(i, ((js.results && js.results.bindings) || []).map(b => ({ n: b.itemLabel && b.itemLabel.value, k: b.instLabel && b.instLabel.value, lat: +(b.lat && b.lat.value), lon: +(b.lon && b.lon.value) })).filter(a => Number.isFinite(a.lat))); }
+    paintNear(); } catch (e) {} })();
   paintNear();
   hydrateRotators(host);
   /* ---- SHOW THIS STRETCH ON THE MAP ----
@@ -24901,6 +25972,7 @@ async function renderRide(id) {
          prints the record's own figure so the page never states two distances for one ride */
       '<h1>' + esc(r.title) + '</h1><p>' + esc(sloganTrue({ sl: r.slogan, km: r.km, t: r.title })) + '</p></div>' + dialSVG(r.score || 0) +
     '</div>' +
+    ((() => { try { return CS_RA.stripHtml(String(r.id).split('#')[0], false); } catch (e) { return ''; } })()) +
     '<div class="statRow num">' +
       '<div class="stat stKm"><b>' + fmtKm(r.km) + '</b><span>Distance</span></div>' +
       '<div class="stat stMin"><b>' + fmtH(r.minutes) + '</b><span>Riding time</span></div>' +
@@ -25834,6 +26906,7 @@ async function renderRide(id) {
       } catch (e2) { flash('Copy failed - the address bar has the link.'); }
     }
   };
+  try { const ra = document.querySelector('.raStrip[data-ra]'); if (ra) CS_RA.wireStrip(ra, Object.assign({ i: String(r.id).split('#')[0] }, r)); CS_RA.opened(String(r.id).split('#')[0]); } catch (e) {}
   $('favBtn').onclick = () => {
     S.favs.has(r.id) ? S.favs.delete(r.id) : S.favs.add(r.id);
     saveFavs(); $('favBtn').classList.toggle('on');
@@ -27418,6 +28491,8 @@ async function boot() {
     }
   });
   window.addEventListener('hashchange', route);
+  /* My Road Atlas: one mark per day the app is opened (the streak badge) */
+  setTimeout(() => { try { CS_RA.checkIn(); } catch (e) {} }, 2500);
 
   /* ---- ITEM 2: back to the top ----
      Wired once at boot rather than per view, so it survives every navigation, and hidden
@@ -27528,6 +28603,8 @@ try {
   window.showCandidate = showCandidate;
   window.VIEW = VIEW;
   window.S = S;
+  /* handles for the browser checks (tools/test-owner-1013.mjs) */
+  try { window.CS_TRIP_STATE = TRIP; window.csTripMailHtml = tripMailHtml; window.csPickLine = pickLine; window.csStoredRoad = csStoredRoad; window.csRoadsIndex = csRoadsIndex; } catch (e) {}
   window.CACHE = CACHE;
   window.scanServices = scanServices;
 } catch (e) {}

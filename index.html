@@ -361,6 +361,8 @@
 <main class="view" id="view-trip"></main>
 <!-- ABOUT: founder interview (owner 2026-10-11) -->
 <main class="view" id="view-about"></main>
+<!-- MY ROAD ATLAS: passport, collections, badges (owner 2026-10-13) -->
+<main class="view" id="view-passport"></main>
 
 <!-- EXPLORER -->
 <!-- ---- THE WHOLE INVENTORY, ON ONE MAP ----
@@ -373,17 +375,18 @@
     <input id="atlasSearch" type="search" placeholder="Anywhere - a town, a pass, a country" autocomplete="off">
     <button class="tbtn" id="atlasGo" type="button">Search</button>
     <button class="tbtn" id="atlasHere" type="button">Where I am</button>
+    <a class="tbtn" id="atlasMine" href="#/passport" title="My Road Atlas: the roads you have ridden and want to ride">My atlas</a>
     <span id="atlasCount" class="atlasCount"></span>
   </div>
   <div class="atlasLegend">
     <span><i class="lgW lgHi"></i>88 and over</span>
     <span><i class="lgW lgMid"></i>78 to 87</span>
     <span><i class="lgW lgLow"></i>under 78</span>
-    <span><i class="lgW lgDash"></i>outline only</span>
+    <span><i class="lgPin"></i>road loading</span>
+    <span><i class="lgW lgRid"></i>ridden by you</span>
+    <span><i class="lgW lgWant"></i>your wish list</span>
     <button type="button" class="lgMoreBtn">What the lines mean</button>
-    <span class="lgNote">Colour and weight are the curve score - the best roads are drawn thickest and brightest, so the good riding shows before you read anything. A solid line is the road as routed; a
-      dashed line is the ride's outline between its checkpoints, drawn before the road
-      itself has been measured. Clusters appear when the world is too wide for a shape.</span>
+    <span class="lgNote">Colour and weight are the curve score - the best roads are drawn thickest and brightest, so the good riding shows before you read anything. Every line is the road itself. A ride whose road is still being fetched is a dot at its start - never a straight line pretending to be a road. Clusters appear when the world is too wide for a shape.</span>
   </div>
   <div id="atlasMap" class="atlasMap"><div id="atlasHover" class="atHover" hidden></div></div>
   <div id="atlasList" class="atlasList"></div>
