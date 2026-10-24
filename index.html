@@ -93,9 +93,11 @@
       <button class="tbtn" id="atlasBtnTop" data-view="atlas" type="button" title="The whole inventory on one map">Atlas</button>
       <button class="tbtn" id="exploreBtn" data-view="explore" type="button" title="Explore alternatives">Explore</button>
       <button class="tbtn" id="tripBtnTop" data-view="trip" type="button" title="Plan a weekend or a holiday">Trips</button>
+      <a class="tbtn" id="passBtnTop" href="#/passport" title="My Road Atlas: your roads, passes, collections, badges and level">Passport</a>
       <button class="tbtn" id="savedBtn" type="button" title="Your saved rides">Saved</button>
       <button class="tbtn ghostBtn" id="newSearchBtn" type="button" title="Start a new search">New search</button>
     </nav>
+    <a class="raHud" id="raHud" href="#/passport" aria-label="My Road Atlas"></a>
   </div>
 </header>
 
@@ -123,6 +125,7 @@
 <nav class="bottomNav" id="bottomNav" aria-label="Main">
   <button type="button" data-go="#/explore" aria-label="Rides"><span>Rides</span></button>
   <button type="button" data-go="#/trip" aria-label="Plan a trip"><span>Trips</span></button>
+  <button type="button" data-go="#/passport" aria-label="My Road Atlas: level, badges, passport"><span>Passport</span></button>
   <button type="button" data-go="#/saved" aria-label="Saved"><span>Saved</span></button>
 </nav>
 <div class="mModes" id="mModes" role="tablist" aria-label="How to show the rides" hidden>
@@ -448,7 +451,7 @@
   <!-- social:start -->
  <div class="footSocial"></div>
  <!-- social:end -->
-  <p class="legalRow"><a href="https://curvescout.com/rides.html">All rides by country</a> · <a href="#/legal">Impressum</a> · <a href="#/legal">Terms, privacy, cookies and licences</a><span class="csPcSep" hidden> · </span><a href="#" id="csPrivacyChoices" hidden>Privacy choices</a> · <a href="about.html">About</a> · <span id="csFootNote">No account. No advertising. No cookies set by CurveScout. Saved rides stay in your browser. The welcome photographs come from Unsplash; maps, road lines, weather, places and photographs are fetched from the services named on the Terms page as you use them.</span></p>
+  <p class="legalRow"><a href="https://curvescout.com/rides.html">All rides by country</a> · <a href="#/legal">Impressum</a> · <a href="#/legal">Terms, privacy, cookies and licences</a><span class="csPcSep" hidden> · </span><a href="#" id="csPrivacyChoices" hidden>Privacy choices</a> · <a href="about.html">About</a> · <span id="csFootNote">No account. Any ads (Google AdSense) load only after your choice in the consent dialog; CurveScout itself sets no tracking cookies. Town names near stops: <a href="https://www.geonames.org" rel="noopener">GeoNames</a> (CC BY 4.0). Saved rides stay in your browser. The welcome photographs come from Unsplash; maps, road lines, weather, places and photographs are fetched from the services named on the Terms page as you use them.</span></p>
   <div class="srcRow" style="margin-bottom:14px">
     <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>
     <a href="https://project-osrm.org/" target="_blank" rel="noopener">OSRM</a>
