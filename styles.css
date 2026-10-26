@@ -4761,7 +4761,7 @@ body:not(.csWelcome) #view-home .heroIn h1 b { font-size: inherit !important; }
   #rideDetail[data-ptabs="briefing"] > [data-ptab]:not([data-ptab="briefing"]):not([data-ptab="top"]),
   #rideDetail[data-ptabs="tools"] > [data-ptab]:not([data-ptab="tools"]):not([data-ptab="top"]){display:none!important}
   /* a stop: essentials open, the rest one tap away */
-  #rideDetail[data-ptabs] #rbBox .rbi:not(.phOpen) :is(.rbPlace,.csPresenter,.rbMore,.rbWx,.rbMedia,.wpLinks){display:none!important}
+  #rideDetail[data-ptabs] #rbBox .rbi:not(.phOpen) :is(.rbPlace,.csPresenter,.rbMore,.rbWx,.wpLinks){display:none!important}
   #rideDetail[data-ptabs] #rbBox .rbi .phMore{display:block;width:100%;min-height:44px;margin:10px 0 0;border:1px solid var(--edge);border-radius:12px;background:#14161a;color:#e9e6df;font:700 14px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
   #rideDetail[data-ptabs] #rbBox .rbLeg:not(.phOpen) > p{display:none}
   #rideDetail[data-ptabs] #rbBox .rbLeg{cursor:pointer}
@@ -5016,3 +5016,34 @@ body.mapOpen .bottomNav{display:none!important}
 @media(max-width:767px){
 .csAsk{padding:12px;place-items:end center}.csAskBox{max-width:none;width:100%;margin-bottom:calc(8px + env(safe-area-inset-bottom))}
 }
+/* ---- QUIETER, MORE PROFESSIONAL GAMIFICATION (owner 2026-10-25: "the badges look ugly", Passport underlined) ---- */
+header a.tbtn, header a.tbtn:visited, a.tbtn{text-decoration:none!important}
+.raChip{background:transparent!important;border:1px solid rgba(255,255,255,.16)!important;color:#e9e6df!important;font-weight:600;letter-spacing:.01em;padding:4px 12px 4px 10px!important;gap:7px!important}
+.raChip::before{content:'';width:7px;height:7px;border-radius:50%;background:#f2b33d;flex:none}
+.raChip.raR{color:#bfe8cf!important}.raChip.raR::before{background:#3fbf7f}
+.raChip.raW{color:#bcd7f3!important}.raChip.raW::before{background:#4c9be8}
+.tripRode{background:transparent!important;border:1px solid rgba(255,255,255,.22)!important;color:#e9e6df!important;border-radius:999px!important;min-height:40px;padding:6px 14px!important;font:600 16px/1.2 var(--display)!important;letter-spacing:.02em!important;text-transform:none!important}
+.tripRode.on{border-color:#3fbf7f!important;color:#bfe8cf!important}
+.tripRa{background:var(--card)!important;border:1px solid var(--edge)!important;border-left:3px solid #f2b33d!important;border-radius:12px!important}
+.tripRa .tripRaI{display:none}
+.tripRa b{color:#f4e3b5!important}
+.tripTravel,.tripCut{margin:8px 0 0;color:#c9c6bf;font-size:16px;line-height:1.5}
+.tripCut{border-left:3px solid #4c9be8;padding-left:10px}.tripTravel{border-left:3px solid #8a93a3;padding-left:10px}
+
+/* r25 ride page: each stop opens with its photo and its map; empty boxes are not drawn */
+#rbBox .rbWx:empty,#rbBox .rbNear:empty,#rbBox .rbPlace:empty,#rbBox .poi:empty{display:none}
+#rbBox .rbFacts + .rbMedia{margin:10px 0 12px}
+@media(max-width:767px){#rideDetail #rbBox .rbMedia{display:flex!important;flex-wrap:nowrap;gap:8px}#rideDetail #rbBox .rbMedia>*{flex:1 1 50%!important;height:150px!important;min-height:150px!important}}
+
+/* r25: the ride minimap belonged to the ride view only, but a desktop display:flex rule beat [hidden] - an empty "Route overview" box floated over the trip page */
+.miniDock[hidden],.miniShow[hidden]{display:none!important}
+/* r25: phone day ribbon read "DA..." - each day keeps its width and the ribbon scrolls */
+@media(max-width:767px){.tripRibbon{display:flex;overflow-x:auto}.tripRibbon .tripSeg{flex:0 0 92px!important;min-width:92px!important}.tripRibbon .tripSegK{display:block!important}}
+/* r25 (owner: "the passport (why is it underlined)"): inline links in the passport and the ride head read as links by colour, not underline */
+#view-passport a:not(.tbtn):not([class*="Btn"]),.raLink,.raEmpty a{text-decoration:none!important;color:#ff8a6b;font-weight:600}
+#view-passport a:not(.tbtn):hover,.raLink:hover,.raEmpty a:hover{text-decoration:underline!important}
+/* r25 audit: the floating stop panel covered the right edge of the roadbook on desktop - the page keeps clear of it */
+@media(min-width:1200px) and (max-width:1760px){body[data-view="ride"] #rideDetail{max-width:min(1024px, calc(100vw - 2 * 290px));margin-left:auto;margin-right:auto}}
+/* r25 audit: on a phone the "checkpoints only" note ran off the map and under a marker */
+@media(max-width:767px){.chordNote span{white-space:normal!important;width:150px;text-align:center;line-height:1.25}}
+.chordNote{z-index:400!important}

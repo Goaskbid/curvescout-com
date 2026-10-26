@@ -25,11 +25,17 @@
     const F = k => fam[k] || (fam[k] = { fails: 0, openUntil: 0, pause: 60000, probing: false, blocked: 0, sent: 0 });
     const paused = () => { const e = new TypeError('CurveScout: this service is paused after repeated failures'); e.csPaused = true; return e; };
     const ok = (f) => { f.fails = 0; f.pause = 60000; f.openUntil = 0; f.probing = false; };
-    const bad = (f) => { f.fails++; f.probing = false; if (f.fails >= 3) { f.openUntil = Date.now() + f.pause; f.pause = Math.min(600000, f.pause * 2); } };
+    const bad = (f) => { f.fails++; f.probing = false; if (f.fails >= (f === fam.photos ? 6 : 3)) { f.openUntil = Date.now() + (f === fam.photos ? 15000 : f.pause); f.pause = Math.min(600000, f.pause * 2); } };
     const guarded = function (input, init) {
       let url; try { url = new URL(typeof input === 'string' ? input : (input && input.url) || String(input), location.href); } catch (e) { return raw(input, init); }
       if (url.origin === location.origin || !/^https?:$/.test(url.protocol)) return raw(input, init);
+      /* ---- MAP TILES ARE NOT GUARDED (owner 2026-10-25: "the map is killed") ----
+         The basemap (MapLibre style, sprites, glyphs, vector and raster tiles) fires dozens of requests per view and has
+         its own retry. Counted here, three failed tiles paused the whole tile host for minutes and the map went blank,
+         and the in-flight sharing handed MapLibre cloned responses. Tiles go straight through, untouched. */
+      if (/openfreemap|opentopomap|tile|basemap|arcgisonline|cartocdn|stadiamaps|maptiler|openmaptiles|\.osm\.org$|openstreetmap\.(org|fr|de)$/i.test(url.host) || /\/(styles|tiles|fonts|sprites?)\//i.test(url.pathname)) return raw(input, init);
       const method = String((init && init.method) || (input && input.method) || 'GET').toUpperCase();
+      if (famOf(url.host) === 'photos' && !guarded._q) return photoQ(input, init);
       const k = famOf(url.host), f = F(k), now = Date.now(), key = method + ' ' + url.href;
       if (f.openUntil > now) { f.blocked++; return Promise.reject(paused()); }
       if (f.openUntil && f.openUntil <= now) { if (f.probing) { f.blocked++; return Promise.reject(paused()); } f.probing = true; }
@@ -46,11 +52,21 @@
       if (method === 'GET') inflight.set(key, pr);
       return method === 'GET' ? pr.then(r => r.clone()) : pr;
     };
+    /* ---- PHOTOS WAIT THEIR TURN INSTEAD OF BEING PAUSED (owner 2026-10-25: "no rotating pics") ----
+       A roadbook asks Commons once per stop. Fired together they drew 429s, three 429s paused every photograph for
+       minutes. Now at most two Commons calls run at once; a 429 waits and retries once; the family pause is 15 s. */
+    const pq = []; let pr0 = 0;
+    const pump = () => { while (pr0 < 2 && pq.length) { const job = pq.shift(); pr0++; job().finally(() => { pr0--; pump(); }); } };
+    const photoQ = (input, init) => new Promise((res, rej) => { pq.push(() => {
+      const once = () => { guarded._q = true; try { return guarded(input, init); } finally { guarded._q = false; } };
+      return once().then(r => r.status === 429 ? new Promise(w => setTimeout(w, 1500)).then(() => { const f = F('photos'); f.openUntil = 0; f.fails = 0; return once(); }) : r)
+        .then(res, rej); }); pump(); });
     guarded._csGuard = true;
     window.fetch = guarded;
     window.addEventListener('hashchange', () => { for (const c of views) { try { c.abort(); } catch (e) {} } views.clear(); }, true);
-    window.CS_NET = { state: () => { const o = {}; const now = Date.now(); for (const [k, f] of Object.entries(fam)) o[k] = { open: f.openUntil > now, until: f.openUntil > now ? new Date(f.openUntil).toISOString() : null, fails: f.fails, sent: f.sent, blocked: f.blocked }; return o; },
-      reset: () => { for (const f of Object.values(fam)) ok(f); failedUrl.clear(); } };
+    /* keep the build's network settings (contact, router, tiles...): the guard only adds its two functions */
+    window.CS_NET = Object.assign((window.CS_NET && typeof window.CS_NET === 'object') ? window.CS_NET : {}, { state: () => { const o = {}; const now = Date.now(); for (const [k, f] of Object.entries(fam)) o[k] = { open: f.openUntil > now, until: f.openUntil > now ? new Date(f.openUntil).toISOString() : null, fails: f.fails, sent: f.sent, blocked: f.blocked }; return o; },
+      reset: () => { for (const f of Object.values(fam)) ok(f); failedUrl.clear(); } });
   } catch (e) {}
 })();
 
@@ -3207,7 +3223,38 @@ function reconcileLegDistances(r) {
 }
 window.csReconcileLegs = reconcileLegDistances;
 window.csLoadFull = (id) => loadFull(id);   /* read-only hook for the regression tests */
+/* ---- A TRIP'S OWN DAYS: SECTIONS OF RIDES AND TRAVEL DAYS (owner 2026-10-25) ----
+   cut:<ride>:<start>.<step>.<count> is a section of a scouted ride (entered and left where the journey needs it) and
+   travel:<lat,lon>:<lat,lon> a travel day on main roads. Both are rebuilt here from their id, so the ride page, the map,
+   the roadbook and the GPX of a trip day work exactly as for a whole ride. */
+async function csSyntheticFull(id) {
+  if (String(id).startsWith('travel:')) {
+    const rt = CS_TRIPS.travelRoute(String(id)); if (!rt) throw new Error('bad travel day ' + id);
+    const [a, b] = rt.wp, near = p => { let best = null, bd = 40; try { for (const g of gazetteer()) { const d = CS_TRIPS._dist(p, [g.la, g.lo]); if (d < bd) { bd = d; best = g.name; } } } catch (e) {} return best; };
+    const na = near(a) || 'Last night', nb = near(b) || 'Tonight';
+    let via = []; try { via = (typeof tripVia === 'function') ? tripVia({ from: a, to: b, km: rt.km }) : []; } catch (e) {}
+    const W = [{ name: na, lat: a[0], lon: a[1], kind: 'start', advice: '' }].concat(via.map(p => ({ name: p.n, lat: +p.at[0], lon: +p.at[1], kind: 'pass', alt: p.alt, advice: 'A scenic option on the way.' })), [{ name: nb, lat: b[0], lon: b[1], kind: 'finish', advice: '' }]);
+    let cum = [0]; for (let k = 1; k < W.length; k++) cum.push(+(cum[k - 1] + CS_TRIPS._dist([W[k - 1].lat, W[k - 1].lon], [W[k].lat, W[k].lon]) * 1.35).toFixed(1));
+    return { id, title: 'Travel day: ' + na + ' to ' + nb, region: nb, slogan: rt.sl, story: 'No scouted riding lies on this stretch, so this is a travel day on main roads: about ' + rt.km + ' km. ' + (via.length ? 'For more riding, go via ' + via.map(p => p.n).join(' and ') + '.' : ''),
+      km: rt.km, minutes: rt.mn, waypoints: W, wpKm: cum, shape: 'point-to-point', geometryStatus: 'CORRIDOR', sections: [], kmBasis: 'planning estimate (travel day)', travel: true };
+  }
+  const m = String(id).match(/^cut:(.+):(\d+)\.(-?1)\.(\d+)$/); if (!m) throw new Error('bad section ' + id);
+  const parent = await loadFull(m[1]); const row = (S.routes || []).find(r => r.i === m[1]);
+  const W0 = (parent.waypoints || []).filter(w => Number.isFinite(+w.lat)); const loop = row ? CS_TRIPS._isLoop(row) : false;
+  const closes = W0.length > 2 && CS_TRIPS._dist([+W0[0].lat, +W0[0].lon], [+W0[W0.length - 1].lat, +W0[W0.length - 1].lon]) < 3;
+  const W = loop && closes ? W0.slice(0, -1) : W0, n = W.length, start = +m[2], step = +m[3], count = +m[4], seq = [];
+  for (let k = 0; k < count; k++) { let ix = start + k * step; if (loop) ix = ((ix % n) + n) % n; if (ix < 0 || ix >= n) break; seq.push(ix); }
+  const cr = row ? CS_TRIPS.cutRoute(row, start, step, count) : null;
+  const WS = seq.map((ix, k) => Object.assign({}, W[ix], { kind: k === 0 ? 'start' : k === seq.length - 1 ? 'finish' : (W[ix].kind === 'start' || W[ix].kind === 'finish' ? 'checkpoint' : W[ix].kind) }));
+  const km = cr ? cr.km : Math.round((+parent.km || 0) * seq.length / Math.max(1, n)), mins = cr ? cr.mn : Math.round((+parent.minutes || 0) * seq.length / Math.max(1, n));
+  let raw = [0]; for (let k = 1; k < WS.length; k++) raw.push(raw[k - 1] + CS_TRIPS._dist([+WS[k - 1].lat, +WS[k - 1].lon], [+WS[k].lat, +WS[k].lon]));
+  const sc = raw[raw.length - 1] ? km / raw[raw.length - 1] : 1, cum = raw.map(x => +(x * sc).toFixed(1));
+  const a = WS[0] && WS[0].name, b = WS[WS.length - 1] && WS[WS.length - 1].name;
+  return Object.assign({}, parent, { id, title: parent.title + ' · ' + a + ' to ' + b, waypoints: WS, km, minutes: mins, wpKm: cum, sections: [], scenicChapters: [], navPoints: undefined, shape: 'point-to-point',
+    story: 'This day rides the section of "' + parent.title + '" from ' + a + ' to ' + b + ' (about ' + km + ' km), the part that takes the trip on towards its goal. ' + String(parent.story || ''), cutOf: m[1] });
+}
 async function loadFull(id) {
+  if (/^(cut|travel):/.test(String(id))) { if (S.fullCache.has(id)) return S.fullCache.get(id); const rec = await csSyntheticFull(String(id)); S.fullCache.set(id, rec); return rec; }
   /* AN IMPORTED RIDE LIVES IN MEMORY AND NOWHERE ELSE. It is resolved first, so every part
      of the page that asks for a ride by id gets it - and because it is only ever in
      S.imported, closing the tab is all it takes to be rid of it. */
@@ -6011,15 +6058,10 @@ async function csPhotoWall() { try {
     '<div class="csHeroText"><div class="csHeroKicker"><span class="csHeroWhere"></span></div>' +
     '<h1 class="csHeroH">Find the road<br>worth the ride.</h1>' +
     '<p class="csHeroP">Motorcycle roads chosen for their curves, with the weather on the way, stops and a roadbook.</p>' +
-    /* audit 2026-10-18 (CS-017): the start is typed right here - no account, no location permission, one field and Go -
-       and the three ways in say what each is */
-    '<form class="csHeroStart" id="csHeroStart" role="search" aria-label="Where does the ride start?"><label for="csHeroIn" class="csHeroLbl">Where do you start?</label>' +
-    '<div class="csHeroRow"><input id="csHeroIn" type="text" inputmode="search" autocomplete="off" enterkeyhint="go" placeholder="Town, pass or coordinates"><button type="submit" class="csHeroGo">Find rides</button></div></form>' +
-    '<div class="csHeroCta"><button type="button" class="csHeroAlt" data-hero="find">More options</button><button type="button" class="csHeroAlt" data-hero="trip">Plan a trip</button><button type="button" class="csHeroAlt" data-hero="atlas">Open the Atlas</button></div></div>' +
+    /* owner 2026-10-25: "you killed the nice intro" - the audit's start field (CS-017) is gone again; the intro is the
+       original: the photo, the line, and three clear ways in */
+    '<div class="csHeroCta"><button type="button" class="csHeroGo" data-hero="find">Find a ride</button><button type="button" class="csHeroAlt" data-hero="trip">Plan a trip</button><button type="button" class="csHeroAlt" data-hero="atlas">Open the Atlas</button></div></div>' +
     '<div class="csHeroDots" aria-hidden="true">' + csWallPool.map(() => '<i></i>').join('') + '</div>';
-  try { const f = wall.querySelector('#csHeroStart'); if (f) f.addEventListener('submit', ev => { ev.preventDefault(); const v = (wall.querySelector('#csHeroIn').value || '').trim();
-    csShowWall(false); if (location.hash && location.hash !== '#/') location.hash = '#/';
-    const si = document.getElementById('startIn'); if (si) { si.value = v; if (v) { const g = document.getElementById('goBtn'); if (g) g.click(); } else si.focus(); } }); } catch (e) {}
   wall.addEventListener('click', ev => { const b = ev.target.closest && ev.target.closest('[data-hero]'); if (!b) return;
     if (b.dataset.hero === 'find') { csShowWall(false); if (location.hash && location.hash !== '#/') location.hash = '#/'; try { scrollTo(0, 0); } catch (e) {} }
     else if (b.dataset.hero === 'trip') location.hash = '#/trip';
@@ -6099,7 +6141,7 @@ const CS_TRIPS = (() => {
   const isPlaces = r => /^places-/.test(String(r.i || ''));
   /* a day needs a ride defined well enough to be routed as a road: at least five checkpoints (3 or 4 points let the
      router choose almost any road between them) */
-  const usable = (r, o) => !SENSITIVE.test(String(r.t || '') + ' ' + String(r.i || '')) && (o.allowPlaces || !isPlaces(r)) && wps(r).length >= 5;
+  const usable = (r, o) => !SENSITIVE.test(String(r.t || '') + ' ' + String(r.i || '')) && (o.allowPlaces || !isPlaces(r)) && wps(r).length >= (o.minWp && r.tier === 'VERIFIED_CURATED' ? o.minWp : 5);   /* a journey may use a famous byway stored with 3-4 checkpoints (audit 2026-10-25: Flaming Gorge-Uintas, 4) */
 
   function seasonFit(alt, month, lat) {
     const m = (lat < 0) ? (month + 6) % 12 : month, summer = m >= 5 && m <= 8, shoulder = m === 4 || m === 9;
@@ -6150,7 +6192,7 @@ const CS_TRIPS = (() => {
      the beam then only asks "which of these start near here", with a cheap box test before the great-circle one */
   const POOL = new WeakMap();
   function fitted(routes, o) {
-    const key = [o.dayKm[0], o.dayKm[1], o.style, o.allowPlaces ? 1 : 0, Number.isInteger(o.month) ? o.month : ''].join('|');
+    const key = [o.dayKm[0], o.dayKm[1], o.style, o.allowPlaces ? 1 : 0, Number.isInteger(o.month) ? o.month : '', o.minWp || 5].join('|');
     let byKey = POOL.get(routes); if (!byKey) { byKey = new Map(); POOL.set(routes, byKey); }
     if (byKey.has(key)) return byKey.get(key);
     const out = [];
@@ -6199,6 +6241,13 @@ const CS_TRIPS = (() => {
   }
   /* beam search over the days: keeps the best partial trips, scores the whole combination */
   function compose(routes, opts) {
+    if (opts && opts.mode === 'a2b' && opts.dest && Number.isFinite(+opts.dest[0]) && !(opts.must && opts.must.length)) {
+      const a = composeJourney(routes, Object.assign({}, opts, { allowPlaces: false }));
+      if (a.days.length >= (opts.days || 2) && a.assessment && a.assessment.verdict !== 'Not feasible with these settings') return a;
+      const b = composeJourney(routes, Object.assign({}, opts, { allowPlaces: true }));
+      const rank = p => (p.days.length * 10) - ({ 'Realistic': 0, 'Ambitious': 1, 'Not verified': 2, 'Not feasible with these settings': 5 }[p.assessment && p.assessment.verdict] || 0);
+      return rank(b) > rank(a) ? b : a;
+    }
     const first = composeOnce(routes, Object.assign({}, opts || {}, { allowPlaces: false }));
     if (first.days.length >= ((opts && opts.days) || 2)) return first;
     const wider = composeOnce(routes, Object.assign({}, opts || {}, { allowPlaces: true }));
@@ -6259,6 +6308,148 @@ const CS_TRIPS = (() => {
     if (o.mode === 'a2b' && o.dest && days.length) { const last = days[days.length - 1]; const off = dist(last.finish, [+o.dest[0], +o.dest[1]]);
       if (off > Math.max(60, +o.radius || 80)) warnings.push('The last day finishes about ' + Math.round(off * ROAD) + ' km from ' + (o.dest[2] || 'your destination') + '; that transfer is on the schedule. More days or longer days bring the riding closer.'); }
     return withTotals({ ok: days.length > 0, days, warnings, opts: o });
+  }
+  /* ---- TRAVEL DAYS (owner 2026-10-25: "we are a global player") ----
+     Outside the Alps the scouted rides cluster around cities, with hundreds of kilometres between clusters (San Francisco
+     to Los Angeles, Sydney to Melbourne, Bangkok to Chiang Mai). Dumping that distance onto one day made 18-hour days.
+     A planner makes it a travel day: up to about 8 hours on main roads to the next cluster or to B, said plainly. A travel
+     day is a ride-shaped record whose id carries its own ends, so links, the map, the roadbook and the GPX all work. */
+  const travelId = (a, b) => 'travel:' + (+a[0]).toFixed(3) + ',' + (+a[1]).toFixed(3) + ':' + (+b[0]).toFixed(3) + ',' + (+b[1]).toFixed(3);
+  function travelRoute(a, b) {
+    if (typeof a === 'string') { const m = a.match(/^travel:(-?[\d.]+),(-?[\d.]+):(-?[\d.]+),(-?[\d.]+)$/); if (!m) return null; b = [+m[3], +m[4]]; a = [+m[1], +m[2]]; }
+    const km = Math.round(dist(a, b) * ROAD), mn = Math.round(km / TRANSFER_KMH * 60);
+    return { i: travelId(a, b), t: 'Travel day', travel: true, km, mn, wp: [[+a[0], +a[1]], [+b[0], +b[1]]], la: +a[0], lo: +a[1], s: 0, tier: 'VERIFIED_CURATED', sh: 'a2b', sl: 'A travel day on main roads - ' + km + ' km, about ' + Math.floor(mn / 60) + ' h ' + String(mn % 60).padStart(2, '0') + '.', k: 'travel', tg: [] };
+  }
+  /* ---- CUT A DAY RIDE (owner 2026-10-24/25: "you can cut daytrips", "where to in and out of scenic routes with an eye
+     towards logistics for the next day", "take them in a way that uses the trip to get closer to the target") ----
+     A section of a scouted ride: a run of its own checkpoints, entered near last night and left where tomorrow is closest,
+     ridden in the direction of travel. Loops may be cut into an arc. The id carries the recipe: cut:<ride>:<start>.<step>.<count>
+     (step +1/-1, count checkpoints, wrapping round for a loop), so links, map, roadbook and GPX rebuild the same section. */
+  const chain = r => { const w = wps(r), loop = isLoop(r), closes = w.length > 2 && dist(w[0], w[w.length - 1]) < 3; return { w: loop && closes ? w.slice(0, -1) : w, loop }; };
+  function cutSeq(r, start, step, count) { const { w, loop } = chain(r), n = w.length, out = [];
+    for (let k = 0; k < count; k++) { let ix = start + k * step; if (loop) ix = ((ix % n) + n) % n; else if (ix < 0 || ix >= n) return null; out.push(ix); } return out; }
+  function cutRoute(r, start, step, count) {
+    if (typeof r === 'string') return null;
+    const { w, loop } = chain(r), seq = cutSeq(r, start, step, count); if (!seq || seq.length < 2) return null;
+    let full = 0; for (let k = 1; k < w.length; k++) full += dist(w[k - 1], w[k]); if (loop) full += dist(w[w.length - 1], w[0]);
+    let part = 0; for (let k = 1; k < seq.length; k++) part += dist(w[seq[k - 1]], w[seq[k]]);
+    const frac = full ? Math.min(1, part / full) : 1, km = Math.round((+r.km || 0) * frac), mn = Math.round((+r.mn || 0) * frac);
+    return Object.assign({}, r, { i: 'cut:' + r.i + ':' + start + '.' + step + '.' + count, t: r.t, km, mn, wp: seq.map(ix => w[ix]), cut: { parent: r.i, start, step, count, frac: +frac.toFixed(3), seq } });
+  }
+  function cutFromId(routes, id) { const m = String(id).match(/^cut:(.+):(\d+)\.(-?1)\.(\d+)$/); if (!m) return null; const r = routes.find(x => x && x.i === m[1]); return r ? cutRoute(r, +m[2], +m[3], +m[4]) : null; }
+  /* ---- A TO B AS A PLANNER WOULD DO IT (owner 2026-10-25: "optimize logistics, optimise ins and outs, think like a
+     planner"; Zurich to Venice in a week gave six days around Zurich and a 1,000 km last-day transfer) ----
+     1. The journey: direct road distance D. The week allows N days at the middle of the rider's daily range; what is left
+        over (spare) may be spent on a scenic arc, never more.
+     2. The corridor: only rides whose start and end lie inside the ellipse with foci A and B whose size is the direct
+        distance plus that spare. Zurich to Venice in seven days reaches Graubuenden, the Engadin, Stelvio and the
+        Dolomites - not the Black Forest, not Bavaria.
+     3. Days are chosen by beam search with HARD limits, not penalties: a day is the transfer from last night, the ride and,
+        on the last day, the way into B, and it must fit in about 9 h with stops; a plan that can no longer reach B in the
+        days left is dropped. Every night lands near its share of the journey (progress), never back towards A.
+     4. Ins and outs: a one-way ride is ridden in the direction that moves towards B, a loop is joined at its checkpoint
+        nearest to last night, and every transfer kilometre costs score, so short hand-overs win. */
+  function composeJourney(routes, opts) {
+    const o = Object.assign({ days: 3, dayKm: [150, 300], style: 'touring', beam: 48, exclude: [] }, opts || {});
+    const A = [+o.start[0], +o.start[1]], B = [+o.dest[0], +o.dest[1]], N = Math.max(1, o.days | 0);
+    const lineKm = dist(A, B), D = lineKm * ROAD, mid = (o.dayKm[0] + o.dayKm[1]) / 2, hi = o.dayKm[1];
+    const spare = Math.max(0, N * mid - D);
+    /* the arc a spare week may bend through: wide enough for the Alps between Zurich and Venice, never Bavaria */
+    const major = lineKm + Math.min(spare / ROAD * 0.35, 170, Math.max(80, lineKm * 0.45)) + 30;   /* ellipse: dist(A,x)+dist(x,B) <= major */
+    const inCorr = p => dist(A, p) + dist(p, B) <= major;
+    const kx = Math.cos(rad((A[0] + B[0]) / 2)), ax = [(B[1] - A[1]) * kx, B[0] - A[0]], L2 = ax[0] * ax[0] + ax[1] * ax[1] || 1;
+    const prog = p => Math.max(-0.2, Math.min(1.2, (((p[1] - A[1]) * kx) * ax[0] + (p[0] - A[0]) * ax[1]) / L2));
+    const lateral = p => { const x = (p[1] - A[1]) * kx, y = p[0] - A[0]; const t = Math.max(0, Math.min(1, (x * ax[0] + y * ax[1]) / L2)); return Math.hypot(x - t * ax[0], y - t * ax[1]) * 111; };
+    const ex = new Set(o.exclude || []);
+    /* a day on a journey is the hand-over plus the ride, so a short great road (Giau and Falzarego, 54 km) is a fine day:
+       the ride may be as short as a third of the daily range, the transfers make up the rest */
+    const oFit = Object.assign({}, o, { minWp: 3, dayKm: [Math.max(30, o.dayKm[0] * 0.3), o.dayKm[1] * 1.1] });
+    const pool = fitted(routes.filter(r => r && r.i && !ex.has(r.i)), oFit).filter(f => { const s0 = startOf(f.r), e0 = endOf(f.r); return s0 && e0 && inCorr(s0) && inCorr(e0); });
+    /* CAP: what one day can still close of the way to B - a travel day covers about 8 h of main roads */
+    const DAYMAX = 9 * 60, CAP = Math.max(hi * 1.25, 8 * TRANSFER_KMH);
+    const tmin = km => km / TRANSFER_KMH * 60;
+    let beam = [{ days: [], at: A, p: 0, score: 0, used: new Set() }];
+    for (let d = 0; d < N; d++) {
+      const last = d === N - 1, next = [];
+      for (const st of beam) {
+        /* the nearest rides to tonight's bed first - a planner looks at what is close before what is famous */
+        const near = pool.filter(f => !st.used.has(f.r.i) && !st.days.some(x => samePlace(x.c.r, f.r)))
+          .map(f => ({ f, dd: Math.min(dist(st.at, startOf(f.r)), dist(st.at, endOf(f.r))) })).filter(x => x.dd <= 220)
+          .sort((x, y) => x.dd - y.dd).slice(0, 70);
+        for (const { f } of near) {
+          const r = f.r, loop = isLoop(r), opts2 = [];
+          if (loop) { let bp = startOf(r), bd = Infinity; for (const q of wps(r)) { const dq = dist(st.at, q); if (dq < bd) { bd = dq; bp = q; } } opts2.push({ rev: false, begin: bp, finish: bp, join: bp }); }
+          else { opts2.push({ rev: false, begin: startOf(r), finish: endOf(r) }); opts2.push({ rev: true, begin: endOf(r), finish: startOf(r) }); }
+          /* sections: enter at the checkpoint nearest to last night, ride towards B, leave where the journey gains most */
+          { const { w } = chain(r), n = w.length;
+            if (n >= 4 && !isPlaces(r)) {
+              let k0 = 0, bd = Infinity; w.forEach((q, k) => { const dq = dist(st.at, q); if (dq < bd) { bd = dq; k0 = k; } });
+              const cands = [];
+              for (const step of [1, -1]) for (let cnt = 3; cnt <= (loop ? n : n); cnt++) {
+                const cr = cutRoute(r, k0, step, cnt); if (!cr) break; if (cr.cut.frac >= 0.97) continue;
+                if (cr.km < Math.max(40, (+r.km || 0) * 0.3)) continue;
+                const fin = cr.wp[cr.wp.length - 1]; cands.push({ cr, fin, gain: prog(fin) - prog(cr.wp[0]) });
+              }
+              cands.sort((x, y) => y.gain - x.gain || y.cr.km - x.cr.km);
+              for (const c0 of cands.slice(0, 3)) if (c0.gain > 0.01) opts2.push({ rev: false, begin: c0.cr.wp[0], finish: c0.fin, cut: c0.cr });
+            } }
+          for (const v of opts2) {
+            const xinKm = dist(st.at, v.begin) < 1.5 ? 0 : dist(st.at, v.begin) * ROAD;
+            const xoutKm = last ? (dist(v.finish, B) < 1.5 ? 0 : dist(v.finish, B) * ROAD) : 0;
+            const fm = v.cut ? v.cut.mn : (+f.mn || 0), fk = v.cut ? v.cut.km : (+f.km || 0);
+            const load = fm + tmin(xinKm) + tmin(xoutKm), tot = load + stopsMin(load);
+            if (tot > DAYMAX) continue;                                                      /* hard: a day that cannot be ridden */
+            const remKm = dist(v.finish, B) * ROAD, left = N - 1 - d;
+            if (!last && remKm > left * CAP) continue;                                         /* hard: B out of reach in the days left */
+            const p = prog(v.finish); if (p < st.p - 0.03 || (d === 0 && p < -0.02)) continue;  /* hard: never back towards A */
+            if (dist(v.finish, B) > dist(st.at, B) + 40) continue;                             /* hard: no night further from B than the last by more than 40 km (audit 2026-10-25: 14 days Zurich->Venice went back to the Grossglockner) */
+            const target = (d + 1) / N;
+            let sc = st.score + (v.cut ? f.score * (0.78 + 0.22 * v.cut.cut.frac) : f.score)
+              - 0.0045 * xinKm - 0.0045 * xoutKm                                                /* every transfer km costs */
+              - (p < target ? 4.0 : 1.0) * Math.max(0, Math.abs(p - target) - (p < target ? 0.05 : 0.1))   /* nights spread along the way; falling behind costs most */
+              - (tot > 8 * 60 ? 0.3 : 0)
+              - 0.004 * Math.max(0, o.dayKm[0] - (fk + xinKm + xoutKm))                         /* a day still has to be a day: riding the rider asked for */                    /* a day still has to be a day */
+              - 0.004 * Math.max(0, lateral(v.finish) - 50);                                     /* near the line unless the riding is worth it */
+            for (const x of st.days) sc -= clash(x.c.r, r);
+            const used = new Set(st.used); used.add(r.i);
+            const cc = v.cut ? Object.assign({}, f, { r: v.cut, km: v.cut.km, mn: v.cut.mn, join: undefined }) : Object.assign({}, f, { join: v.join });
+            next.push({ days: st.days.concat([{ c: cc, rev: v.rev }]), at: v.finish, p, score: sc, used });
+          }
+        }
+        /* travel day: to B on the last day (or when B is within a day), else to the start of a ride cluster further on */
+        { const TRAVEL_MAX = 8 * 60, targets = [];
+          if (dist(st.at, B) * ROAD <= TRAVEL_MAX / 60 * TRANSFER_KMH) targets.push(B);
+          /* or simply a good day's travel along the way, to a point the next days can work from */
+          if (!last) { const rem = dist(st.at, B); for (const kmGo of [300, 400, 480]) { const frac = kmGo / ROAD / rem; if (frac >= 0.95 || frac <= 0) continue;
+              targets.push([st.at[0] + (B[0] - st.at[0]) * frac, st.at[1] + (B[1] - st.at[1]) * frac]); } }
+          /* the best rides ahead within a day's travel, by their own score - not the first ones in storage order */
+          if (!last) { const ahead = []; for (const f of pool) { if (st.used.has(f.r.i)) continue; for (const q of [startOf(f.r), endOf(f.r)]) { if (!q) continue; const pq = prog(q); if (pq <= st.p + 0.06) continue;
+              const km0 = dist(st.at, q) * ROAD; if (km0 < 120 || km0 > TRAVEL_MAX / 60 * TRANSFER_KMH) continue; ahead.push([f.score, q]); } }
+            ahead.sort((x, y) => y[0] - x[0]); for (const [, q] of ahead.slice(0, 12)) targets.push(q); }
+          for (const q of targets) {
+            const isB = q === B; if (last && !isB) continue; if (!last && isB && N - 1 - d > 0) continue;   /* arrive early only by riding */
+            const rt = travelRoute(st.at, q), load = rt.mn + stopsMin(rt.mn); if (load > TRAVEL_MAX + 45) continue;
+            const remKm = dist(q, B) * ROAD, left = N - 1 - d; if (!last && remKm > left * CAP) continue;
+            const p = prog(q); if (p < st.p - 0.02) continue; if (dist(q, B) > dist(st.at, B) + 40) continue;
+            const used = new Set(st.used); used.add(rt.i);
+            next.push({ days: st.days.concat([{ c: { r: rt, km: rt.km, mn: rt.mn, score: 0, why: ['a travel day to where the riding is'] }, rev: false }]), at: q, p, used,
+              score: st.score - 0.95 - 0.0022 * rt.km - 1.4 * Math.max(0, Math.abs(p - (d + 1) / N) - 0.12) });
+          } }
+      }
+      if (!next.length) break;
+      next.sort((x, y) => y.score - x.score || x.days.map(z => z.c.r.i).join().localeCompare(y.days.map(z => z.c.r.i).join()));
+      /* keep variety in the beam: at most four states ending on the same ride */
+      const seen = new Map(); beam = [];
+      for (const n of next) { const k = n.days[n.days.length - 1].c.r.i; const c = seen.get(k) || 0; if (c >= 4) continue; seen.set(k, c + 1); beam.push(n); if (beam.length >= o.beam) break; }
+    }
+    const best = beam.filter(b => b.days.length === N)[0] || beam.sort((x, y) => y.days.length - x.days.length || y.score - x.score)[0];
+    const chosen = best ? best.days.map(x => x.c) : [];
+    const o2 = Object.assign({}, o, { rev: best ? best.days.map(x => x.rev) : [] });
+    const days = buildDays(chosen, o2);
+    const warnings = [];
+    if (!days.length) warnings.push('No scouted ride lies in the corridor from ' + (o.label || 'A') + ' to ' + (o.dest[2] || 'B') + ' with these settings.');
+    else if (days.length < N) warnings.push('Only ' + days.length + ' riding day' + (days.length === 1 ? '' : 's') + ' fit the corridor at a sane daily load; the rest of the way is transfer. More days at a longer daily distance, or fewer days, may fit better.');
+    return withTotals({ ok: days.length > 0, days, warnings, opts: o2, corridor: { lineKm: Math.round(lineKm), spareKm: Math.round(spare), pool: pool.length } });
   }
   /* ---- THE DAYS, WITH THEIR TRANSFERS (owner 2026-10-13: "consider the transfers to the overnight") ----
      Every day is: transfer in (from the base or last night to where the ride begins), the ride, transfer out (from where
@@ -6442,7 +6633,7 @@ const CS_TRIPS = (() => {
        prefixed "places-"): exact first, then the same words with filler and spelling variants folded */
     const fold = s => String(s || '').toLowerCase().replace(/^places-/, '').split('-').filter(w => w && !/^(and|of|the|a)$/.test(w)).join('').replace(/ss/g, '').replace(/[^a-z0-9]/g, '');
     let folded = null;
-    const find = id => by.get(id) || by.get('places-' + id) || (() => { if (!folded) { folded = new Map(); routes.forEach(r => { const k = fold(r.i); if (!folded.has(k)) folded.set(k, r); }); } return folded.get(fold(id)); })();
+    const find = id => (String(id).startsWith('travel:') ? travelRoute(String(id)) : String(id).startsWith('cut:') ? cutFromId(routes, id) : null) || by.get(id) || by.get('places-' + id) || (() => { if (!folded) { folded = new Map(); routes.forEach(r => { const k = fold(r.i); if (!folded.has(k)) folded.set(k, r); }); } return folded.get(fold(id)); })();
     const chosen = ids.map(find).filter(Boolean).map(r => fit(r, Object.assign({}, o, { dayKm: [0, 1e6] })) || { r, km: +r.km || 0, mn: +r.mn || 0, score: 0, why: [] });
     const plan = { opts: o };
     plan.days = buildDays(chosen, o);
@@ -6478,7 +6669,7 @@ const CS_TRIPS = (() => {
     for (const r of routes) { if (!r || !TIER[r.tier] || !usable(r, {})) continue; const s = startOf(r); if (!s) continue; out.push({ r, d: dist(start, s), s }); }
     return out.sort((a, b) => a.d - b.d).slice(0, n || 3);
   }
-  return { buildDays, compose, variants, assess, baseline, repetition, itinerary, refresh: withTotals, alternatives, nearest, seasonFit, altOf, replaceDay, fromIds, setNight, nightOptions, sensitive: r => SENSITIVE.test(String(r.t || '') + ' ' + String(r.i || '')), _dist: dist, _isLoop: isLoop, _startOf: startOf };
+  return { _journey: composeJourney, travelRoute, cutRoute, cutFromId, buildDays, compose, variants, assess, baseline, repetition, itinerary, refresh: withTotals, alternatives, nearest, seasonFit, altOf, replaceDay, fromIds, setNight, nightOptions, sensitive: r => SENSITIVE.test(String(r.t || '') + ' ' + String(r.i || '')), _dist: dist, _isLoop: isLoop, _startOf: startOf };
 })();
 if (typeof window !== 'undefined') window.CS_TRIPS = CS_TRIPS;
 
@@ -6628,6 +6819,28 @@ const CS_RA = (() => {
       items: [['Grossglockner', ['grossglockner', 'glockner']], ['Timmelsjoch', ['timmelsjoch', 'rombo']], ['Silvretta', ['silvretta']], ['Nockalm', ['nockalm']], ['Kaunertal', ['kaunertal']]] },
     { id: 'dolomites', flag: '⛰', name: 'Dolomites ring', blurb: 'The four passes around the Sella and their friends.',
       items: [['Gardena', ['gardena', 'grodner']], ['Campolongo', ['campolongo']], ['Falzarego', ['falzarego']], ['Fedaia', ['fedaia']], ['Valparola', ['valparola']]] },
+    /* ---- THE WORLD, NOT ONLY THE ALPS (owner 2026-10-25: "it is only european and we are a global player") ----
+       Every item below matches at least one ride in the inventory (checked with the same matching on summary.json). */
+    { id: "usa-icons", flag: "🇺🇸", name: "American icons", blurb: "The roads riders fly to America for.",
+      items: [["Blue Ridge Parkway", ["blue ridge"]], ["Tail of the Dragon", ["tail of the dragon", "deals gap"]], ["Beartooth Highway", ["beartooth"]], ["Going-to-the-Sun Road", ["going to the sun"]], ["Pacific Coast Highway / Big Sur", ["big sur", "pacific coast"]], ["Trail Ridge Road", ["trail ridge"]]] },
+    { id: "canada", flag: "🇨🇦", name: "Canada coast to Rockies", blurb: "Icefields to the Cabot Trail.",
+      items: [["Icefields Parkway", ["icefields"]], ["Sea to Sky", ["sea to sky"]], ["Cabot Trail", ["cabot"]], ["Gaspé", ["gaspe"]], ["Duffey Lake Road", ["duffey"]]] },
+    { id: "oceania", flag: "🇦🇺", name: "Down Under", blurb: "Great Ocean Road to Milford Sound.",
+      items: [["Great Ocean Road", ["great ocean"]], ["Crown Range", ["crown range"]], ["Milford Road", ["milford"]], ["Haast Pass", ["haast"]], ["Lewis Pass", ["lewis pass"]], ["Oxley Highway", ["oxley"]]] },
+    { id: "asia-high", flag: "🌏", name: "Asia's great roads", blurb: "From the Karakoram to Ha Giang.",
+      items: [["Karakoram Highway", ["karakoram"]], ["Manali-Leh", ["manali", " leh "]], ["Irohazaka / Nikko", ["irohazaka", "nikko"]], ["Hakone", ["hakone"]], ["Mae Hong Son loop", ["mae hong son"]], ["Ha Giang loop", ["ha giang"]]] },
+    { id: "south-america", flag: "🌎", name: "South America", blurb: "Carretera Austral to the Yungas.",
+      items: [["Carretera Austral", ["carretera austral"]], ["Atacama", ["atacama"]], ["Paso Los Libertadores", ["libertadores"]], ["Serra do Rio do Rastro", ["rio do rastro"]], ["Yungas Road", ["yungas"]], ["Ruta 40", ["ruta 40"]]] },
+    { id: "africa", flag: "🌍", name: "Africa's best", blurb: "The Cape's passes to the Atlas.",
+      items: [["Chapman's Peak", ["chapman"]], ["Garden Route", ["garden route"]], ["Route 62", ["route 62"]], ["Swartberg Pass", ["swartberg"]], ["Sani Pass", ["sani pass"]], ["Atlas passes (Tizi n')", ["tizi n"]]] },
+    { id: "nordic", flag: "🇳🇴", name: "Nordic fjords", blurb: "Trollstigen, the Atlantic Road and the Ring Road.",
+      items: [["Trollstigen", ["trollstigen"]], ["Atlantic Road", ["atlantic road", "atlanterhavs"]], ["Geiranger", ["geiranger"]], ["Sognefjellet", ["sognefjell"]], ["Lofoten", ["lofoten"]], ["Iceland Ring Road", ["iceland ring", "westfjords"]]] },
+    { id: "balkans", flag: "🇷🇴", name: "Balkans and Carpathians", blurb: "Transfăgărășan to the Bay of Kotor.",
+      items: [["Transfagarasan", ["transfagarasan"]], ["Transalpina", ["transalpina"]], ["Bay of Kotor", ["kotor"]], ["Durmitor", ["durmitor"]], ["Vrsic Pass", ["vrsic"]], ["Adriatic Highway", ["adriatic"]]] },
+    { id: "uk", flag: "🇬🇧", name: "Britain's best", blurb: "North Coast 500 to Hardknott.",
+      items: [["North Coast 500", ["north coast 500", "nc500"]], ["Glencoe / A82", ["glencoe", "a82"]], ["Bealach na Ba", ["bealach", "applecross"]], ["Hardknott Pass", ["hardknott"]], ["Black Mountain Pass", ["black mountain pass", "black mountain road"]], ["Snowdonia", ["snowdonia", "eryri"]]] },
+    { id: "iberia", flag: "🇪🇸", name: "Iberia", blurb: "Picos de Europa to the Douro.",
+      items: [["Picos de Europa", ["picos de europa"]], ["Douro valley", ["douro"]], ["Serra da Estrela", ["estrela"]], ["N-260 Pyrenees", ["n 260", "n260"]], ["Montserrat", ["montserrat"]], ["Alpujarras and Sierra Nevada", ["alpujarra", "veleta"]]] },
   ];
   /* ---- BADGES: what a rider did, never what they bought ---- */
   const BADGES = [
@@ -6643,10 +6856,17 @@ const CS_RA = (() => {
     { id: 'passes10', icon: '⛰', name: 'Ten passes', test: s => s.passes.length >= 10, how: 'Cross ten named passes.' },
     { id: 'big5-ch', icon: '🇨🇭', name: 'Swiss Big Five', test: s => s.col['big5-ch'] && s.col['big5-ch'].done === 5, how: 'Ride all five Swiss Big Five passes.' },
     { id: 'big5-it', icon: '🇮🇹', name: 'Italian Big Five', test: s => s.col['big5-it'] && s.col['big5-it'].done === 5, how: 'Ride all five Italian Big Five passes.' },
+    { id: 'cont2', icon: '✈', name: 'Two continents', test: s => continents(s.countries).length >= 2, how: 'Ride on two continents.' },
+    { id: 'cont4', icon: '🌐', name: 'Four continents', test: s => continents(s.countries).length >= 4, how: 'Ride on four continents.' },
+    { id: 'worldcol', icon: '🗺', name: 'World collector', test: s => Object.entries(s.col).some(([k, c]) => !/^(big5|grandes|austria|dolomites)/.test(k) && c.done === c.of), how: 'Complete one collection outside the Alps.' },
     { id: 'dream10', icon: '✨', name: 'Dreamer', test: s => s.want >= 10, how: 'Put ten roads on your wish list.' },
     { id: 'scout25', icon: '🔍', name: 'Scout', test: s => s.opened >= 25, how: 'Look at 25 rides closely.' },
     { id: 'streak3', icon: '🔥', name: 'Three days running', test: s => s.streak >= 3, how: 'Open CurveScout three days in a row.' },
   ];
+  /* continent of a country code - enough for the badges, not a gazetteer */
+  const CONT = { NA: 'US CA MX GT BZ HN SV NI CR PA CU DO JM HT PR BS', SA: 'BR AR CL PE BO EC CO VE UY PY GY SR', AF: 'ZA NA BW ZW ZM MZ TZ KE UG RW ET MA DZ TN EG LY SN GH NG CM AO MG MU LS SZ NE ML',
+    AS: 'JP CN KR TW HK IN NP BT PK LK BD TH VN LA KH MM MY SG ID PH MN KZ KG UZ TJ TM AF IR IQ IL JO LB SA AE OM YE GE AM AZ TR', OC: 'AU NZ PG FJ NC PF' };
+  const continents = ccs => [...new Set((ccs || []).map(c => Object.keys(CONT).find(k => (' ' + CONT[k] + ' ').indexOf(' ' + c + ' ') >= 0) || 'EU'))];
   const LEVELS = [[0, 'Rookie'], [60, 'Rider'], [200, 'Tourer'], [500, 'Pass hunter'], [1000, 'Road legend'], [2000, 'Atlas master']];
 
   function snapshot(r) {
@@ -7076,7 +7296,7 @@ function tripApproachKm(plan) { if (Number.isFinite(plan.transferKm)) return Mat
 function tripScrollTo(el) { if (!el) return; scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + scrollY - 72), behavior: 'auto' }); }
 function tripResult() {
   const out = $('tripOut'), plan = TRIP.plan, o = TRIP.opts; if (!out || !plan) return;
-  try { csNeedCards(plan.days.map(d => d.route), () => { if (TRIP.plan === plan && $('tripOut')) tripResult(); }); } catch (e) {}
+  try { csNeedCards(tripRealRoutes(plan), () => { if (TRIP.plan === plan && $('tripOut')) tripResult(); }); } catch (e) {}
   /* fewer days than asked: offer the change that gives more, if there is one */
   TRIP.partialFix = null;
   if (plan.days.length && plan.days.length < o.days && o.mode === 'base') { const t = CS_TRIPS.compose(tripRoutes(), Object.assign({}, o, { mode: 'tour', radius: 80 }));
@@ -7153,8 +7373,10 @@ function tripVariantsHtml(plan) {
     const on = p.days.map(d => d.id).join('|') === plan.days.map(d => d.id).join('|'), a = p.assessment;
     return '<button type="button" class="chip' + (on ? ' on' : '') + '" data-tvar="' + k + '" aria-pressed="' + on + '">' + String.fromCharCode(65 + k) + ' · ' + p.totalKm + ' km' + (a ? ' · ' + esc(a.verdict.replace(' with these settings', '')) : '') + '</button>'; }).join('') + '</div>';
 }
+/* the scouted rides behind a plan: a section counts as its ride, a travel day as nothing */
+function tripRealRoutes(plan) { return plan.days.map(d => d.route).filter(r => r && !r.travel).map(r => r.cut ? (tripRoutes().find(x => x.i === r.cut.parent) || r) : r); }
 function tripRaHtml(plan) {
-  try { const g = CS_RA.tripGain(plan.days.map(d => d.route)); const flag = c => c.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0)));
+  try { const g = CS_RA.tripGain(tripRealRoutes(plan)); const flag = c => c.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0)));
     const bits = []; if (g.passes) bits.push(g.passes + (g.passes === 1 ? ' new pass' : ' new passes')); if (g.countries.length) bits.push(g.countries.map(flag).join(' ') + ' new ' + (g.countries.length === 1 ? 'country' : 'countries'));
     if (g.done) bits.push(g.done + ' of ' + plan.days.length + ' days ridden');
     return '<a class="tripRa" id="tripRa" href="#/passport"><span class="tripRaI" aria-hidden="true">🏅</span><span><b>' + (g.xp ? '+' + g.xp + ' points' : 'All ridden') + '</b> for your Road Atlas' + (bits.length ? ' · ' + esc(bits.join(' · ')) : '') +
@@ -7208,19 +7430,26 @@ function tripDayCard(d, i) {
   /* one base = one place to stay: the options are shown once, on day 1, for all nights */
   const hideStay = (o.mode !== 'base' && o.end === 'return' && last) || (o.mode === 'base' && i > 0);
   const nightLabel = o.mode === 'base' ? (TRIP.plan.days.length > 1 ? 'Your base for ' + (TRIP.plan.days.length - 1) + (TRIP.plan.days.length === 2 ? ' night' : ' nights') : 'Your base') : (last ? 'Last night' : 'Night ' + (i + 1));
-  const shape = d.loop ? (d.entry > 0 ? 'loop, joined part way round' : 'loop') : d.rev ? 'ridden from its far end' : 'point to point';
+  const cut = r.cut, travel = !!r.travel;
+  const shape = travel ? 'travel day on main roads' : cut ? ('section, ' + Math.round(cut.frac * 100) + '% of the ride') : d.loop ? (d.entry > 0 ? 'loop, joined part way round' : 'loop') : d.rev ? 'ridden from its far end' : 'point to point';
+  const nm = (p, fb) => { const t = p ? tripTownNear(p, 12) : ''; if (t) return t; const t2 = p ? tripTownNear(p, 45) : ''; return t2 ? 'near ' + t2 : fb; };
+  const fromTo = (a, b) => nm(a, 'last night') + ' → ' + nm(b, 'tonight');
+  const title = travel ? 'Travel day: ' + fromTo(d.start, d.finish) : cut ? r.t + ' · ' + fromTo(d.start, d.finish) : r.t;
+  const parentId = cut ? cut.parent : d.id;
   const roads = (r.ic || []).filter(x => x && x.n);
   return '<article class="tripDay" data-i="' + i + '"><div class="tripDayHead"><span class="tripNum" style="background:' + TRIP_COL[i % TRIP_COL.length] + '">' + (i + 1) + '</span><div class="tripDayT">' +
-    '<p class="tripKick"><small>' + (date ? esc(tripDayLabel(date)) + ' · ' : '') + 'Day ' + (i + 1) + '</small></p><h3>' + esc(r.t) + '</h3>' +
+    '<p class="tripKick"><small>' + (date ? esc(tripDayLabel(date)) + ' · ' : '') + 'Day ' + (i + 1) + '</small></p><h3>' + esc(title) + '</h3>' +
     '<p class="tripMeta"><b>' + Math.round(d.km) + ' km</b> · <b>' + tripFmtMin(d.minutes) + '</b> riding' + (hi ? ' · up to <b>' + Math.round(hi) + ' m</b>' : csAltSlot(r, 'trip')) + ' · ' + shape + '</p></div></div>' +
     tripLeadHtml(d) + seasonNote +
-    ((() => { try { const rid = CS_RA.status(d.id) === 'r'; return '<p class="tripDayRa">' + CS_RA.cardBadge(r) + '<button type="button" class="tripRode' + (rid ? ' on' : '') + '" data-rode="' + i + '" aria-pressed="' + rid + '">' + (rid ? '✓ Ridden' : '✓ I rode this day') + '</button></p>'; } catch (e) { return ''; } })()) +
+    (travel ? '<p class="tripTravel">No scouted riding lies on this stretch, so it is a travel day: about ' + Math.round(d.km) + ' km on main roads, planned at 62 km/h with stops. ' + (tripVia({ from: d.start, to: d.finish, km: d.km }).length ? '' : 'Tomorrow the riding starts again.') + '</p>' + tripViaHtml({ from: d.start, to: d.finish, km: d.km }) : '') +
+    (cut ? '<p class="tripCut">This day rides the part of the ride that takes you on towards ' + esc((o.dest && o.dest[2]) || 'your goal') + ': in at ' + esc(tripPlaceName(d.start, 'its first stop')) + ', out at ' + esc(tripPlaceName(d.finish, 'its last stop')) + '. The rest of the ride stays for another trip.</p>' : '') +
+    (travel ? '' : (() => { try { const rid = CS_RA.status(parentId) === 'r'; return '<p class="tripDayRa">' + CS_RA.cardBadge(r) + '<button type="button" class="tripRode' + (rid ? ' on' : '') + '" data-rode="' + i + '" aria-pressed="' + rid + '">' + (rid ? '✓ Ridden' : '✓ I rode this day') + '</button></p>'; } catch (e) { return ''; } })()) +
     '<p class="tripPath" id="tripPath' + i + '">' + (roads.length ? roads.slice(0, 4).map(x => esc(x.n)).join(' <i>→</i> ') : '&nbsp;') + '</p>' +
     '<figure class="tripPic" id="tripPic' + i + '" hidden></figure>' +
     '<details class="tripBook" data-book="' + i + '"' + (i === 0 ? ' open' : '') + '><summary><span class="tbT">Stop by stop</span><span class="tbS" id="tripBookSum' + i + '">' + tripClock(9 * 60) + ' →</span></summary>' +
       tripSchedHtml(d, i, null) + '<p class="tripRoads" id="tripRoadsLeft' + i + '" hidden></p></details>' +
     '<p class="tripRoadSt" id="tripRoad' + i + '">Loading the road line…</p>' +
-    '<div class="tripBtns"><a class="ghost2" href="#/ride/' + encodeURIComponent(d.id) + '">View ride</a><button type="button" class="ghost2" data-rep="' + i + '">⇄ Replace</button><button type="button" class="ghost2" data-gpx="' + i + '">⬇ GPX</button></div>' +
+    '<div class="tripBtns">' + (travel ? '' : '<a class="ghost2" href="#/ride/' + encodeURIComponent(parentId) + '">' + (cut ? 'View the whole ride' : 'View ride') + '</a>') + '<button type="button" class="ghost2" data-rep="' + i + '">⇄ Replace</button><button type="button" class="ghost2" data-gpx="' + i + '">⬇ GPX</button></div>' +
     '<div class="tripAlt" id="tripAlt' + i + '" hidden></div>' +
     (hideStay ? '' : '<details class="tripStay" data-stay="' + i + '"><summary>🛏 ' + nightLabel + ownN + ': places to stay and eat</summary><div class="tripStayBody">Opening…</div></details>') + '</article>';
 }
@@ -7501,7 +7730,7 @@ function tripWire() {
   /* ticking a day off: one delegated handler, so the redrawn button keeps working */
   { const tOut = $('tripOut'); if (tOut && !tOut._rodeWired) { tOut._rodeWired = true; tOut.addEventListener('click', ev => { const b = ev.target.closest && ev.target.closest('[data-rode]'); if (!b) return;
       const pl = TRIP.plan, i = +b.dataset.rode, d = pl && pl.days[i]; if (!d) return;
-      try { CS_RA.setStatus(d.route, 'r'); } catch (e) {}
+      try { const pr = d.route && d.route.cut ? (tripRoutes().find(x => x.i === d.route.cut.parent) || d.route) : d.route; if (!(d.route && d.route.travel)) CS_RA.setStatus(pr, 'r'); } catch (e) {}
       const host = b.closest('.tripDayRa'); try { const rid = CS_RA.status(d.id) === 'r'; host.innerHTML = CS_RA.cardBadge(d.route) + '<button type="button" class="tripRode' + (rid ? ' on' : '') + '" data-rode="' + i + '" aria-pressed="' + rid + '">' + (rid ? '✓ Ridden' : '✓ I rode this day') + '</button>'; } catch (e) {}
       const bar = $('tripRa'); if (bar) bar.outerHTML = tripRaHtml(pl); }); } }
   document.querySelectorAll('[data-gpx]').forEach(b => b.onclick = async () => { const d = plan.days[+b.dataset.gpx];
@@ -8024,7 +8253,7 @@ const csProseFold = t => String(t || '').toLowerCase().normalize('NFD').replace(
 const CS_PROSE_ROLE = /\s+(fuel gate|fuel check|fuel stop|fuel|food reset|food stop|lunch stop|lunch|dome coffee|coffee stop|coffee|water stop|swim stop|border gate|border return|border|return|exit|entry|gate|start|finish|descent|reset|break|stop|check)$/i;
 /* the same key tools/prose-places.mjs writes: the name without the scouting role words, on a 0.1 degree cell */
 function csPlaceKey(name, lat, lon) {
-  let n = String(name || '').replace(/^back (to|through|via)\s+/i, '').trim();
+  let n = String(name || '').replace(/^back (to|through|via)\s+/i, '').replace(/^(fuel stop|food stop|photo stop|high point|scenic stretch|swim stop) in\s+/i, '').replace(/^(fuel stop|food stop|photo stop|high point|scenic stretch|swim stop) near\s+/i, 'near ').trim();
   for (let g = 0; g < 3; g++) { const m = n.replace(CS_PROSE_ROLE, '').trim(); if (m.length >= 3) n = m; }
   return csProseFold(n) + '@' + (Math.round(lat * 10) / 10).toFixed(1) + ',' + (Math.round(lon * 10) / 10).toFixed(1);
 }
@@ -8058,7 +8287,7 @@ async function csFillPlaceTexts() {
          stations are (owner 2026-10-10 fuel rule) */
       const fuelNote = /\b(fuel|petrol|filling station|gas station|fill up|refuel)\b/i.test(t) ? '<span class="ptP ptMore ptFuel">Fuel and opening details above are general guidance - the stations actually found along this road are in the briefing.</span>' : '';
       el.innerHTML = ps.map((x, i) => '<span class="ptP' + (i ? ' ptMore' : '') + '">' + esc(x) + '</span>').join('') + fuelNote + (ps.length > 1 || fuelNote ? '<button type="button" class="ptRead">Read on</button>' : '');
-      el.hidden = false; el.dataset.ptshown = '1';
+      el.hidden = false; el.dataset.ptshown = '1'; { const st = el.closest('.rbMain'); if (st) st.querySelectorAll('.rbGeneric, .rbLead').forEach(g => { g.hidden = true; }); }
       const rb = el.querySelector('.ptRead'); if (rb) rb.addEventListener('click', ev => { ev.stopPropagation(); const open = el.classList.toggle('ptOpen'); rb.textContent = open ? 'Show less' : 'Read on'; }); } }
   catch (e) {} finally { CS_PROSE_BUSY = false; }
   if (document.querySelector('[data-ptk]:not([data-ptdone])')) setTimeout(csFillPlaceTexts, 50);
@@ -8110,8 +8339,8 @@ function csPtabGo(tab, scroll) {
 /* each roadbook stop on a phone: the essentials open, the rest behind "More at this stop" */
 function csPhoneStops(host) {
   host.querySelectorAll('#rbBox .rbi:not([data-phs])').forEach(rbi => { rbi.dataset.phs = '1'; const main = rbi.querySelector('.rbMain'); if (!main) return;
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'phMore'; b.textContent = 'More at this stop: weather, photos, links';
-    b.addEventListener('click', ev => { ev.stopPropagation(); const open = rbi.classList.toggle('phOpen'); b.textContent = open ? 'Less' : 'More at this stop: weather, photos, links'; });
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'phMore'; b.textContent = 'More at this stop: weather, links, what is near';
+    b.addEventListener('click', ev => { ev.stopPropagation(); const open = rbi.classList.toggle('phOpen'); b.textContent = open ? 'Less' : 'More at this stop: weather, links, what is near'; });
     main.appendChild(b); });
   /* on a phone the "nothing here" lines (no sight catalogued, no bathing spot, nothing mapped) are not printed stop
      after stop - what IS there stays */
@@ -9919,7 +10148,9 @@ function csBasemap(map, kind, attach = true) {
   /* MAP-INIT-01 (audit 4312f23): without WebGL the vector map threw 18 bridge errors and the route
      page lost its main map. Support is tested once, before the vector map is attached; without it
      the raster street map is used - bounded, no repeated errors, overlays unaffected. */
-  if (csWebGL() && OFM.ready() && kind !== 'terrain') {
+  /* 'mini' (roadbook stops, dock, cards): raster, never a WebGL context each - browsers keep ~8-16 live contexts and
+     a page of GL minimaps evicted the main map's context (owner 2026-10-25: "the map is killed", "not a single waypoint with map") */
+  if (csWebGL() && OFM.ready() && kind !== 'terrain' && kind !== 'mini') {
     try {
       const layer = L.maplibreGL({ style, attribution: OFM.credit, interactive: false, csKind: kind });
       add(layer);
@@ -10722,7 +10953,7 @@ function sceneHtml(r, i) {
         '<div class="rbSceneType">Scenic stretch \u00b7 ' + ((() => { const wk = Array.isArray(r.wpKm) ? r.wpKm : null, a = wk && +wk[c.startLineIndex];
           return (!wk || !Number.isFinite(a) || Math.abs(a - (+c.startKm || 0)) <= 5) ? '<span class="num">km ' + c.startKm + ' to ' + c.endKm + '</span> \u00b7 ' : ''; })()) + esc(c.chapterType) + '</div>' +
         '<h4 class="rbSceneTitle">' + esc(c.title) + '</h4>' +
-        '<p class="rbSceneText">' + esc(c.narrative) + '</p>' +
+        (c.narrative ? '<p class="rbSceneText">' + esc(c.narrative) + '</p>' : '') +
         (c.riderNote ? '<p class="rbSceneNote">' + esc(c.riderNote) + '</p>' : '') +
         '<div class="rbSceneFacts">' + facts + '</div>' +
         '<button type="button" class="rbSceneMapAction" data-scene-show="' + esc(c.id) + '">' +
@@ -11100,118 +11331,31 @@ function rbSees(w) {
 }
 
 function stopProse(w, ctx) {
-  /* ---- AND NOT WHAT AN EARLIER CHECKPOINT ALREADY SAID ----
-     notAlreadySaid compares each line against the ROUTE's advice, which is right and not
-     enough: two checkpoints on one derived route both read "The 196 km in from the last stop
-     is close to level, which usually means faster time" word for word, because neither knew
-     what the other had written. ctx.said is what this page has already shown. Same rule as
-     the roadbook headings, the sight cards and the add-a-stop rows. */
+  /* ---- ONLY WHAT IS TRUE OF THIS STOP (owner 2026-10-25: "you used this as an excuse to write crap ai shit") ----
+     This used to stack eight stock sentences per stop ("level, so faster traffic", "high
+     enough for the air to change", "a long run in", "still early", ...) chosen by a hash of the name. They read the
+     same on every ride because they ARE the same on every ride. What stays is what the numbers of this leg say, and
+     one practical line for a stop whose job is practical (fuel, food, water) - and that line steps back as soon as the
+     written text for the place arrives (csFillPlaceTexts hides .rbGeneric in the same stop). */
   const said = (ctx && ctx.said) || null;
   const out = [];
-  const B = (t, v) => '<b>' + v + '</b>' + t;
   const kind = w.kind || 'checkpoint';
-  const alt = Number.isFinite(+w.alt) ? +w.alt : null;
+  const alt = Number.isFinite(+w.alt) && +w.alt > 0 ? +w.alt : null;
   const leg = Math.round(ctx.legKm || 0), climb = Math.round(ctx.climb || 0);
   const grad = ctx.grad || 0;
-
-  /* the leg you just rode to get here */
-  if (leg >= 3) {
-    if (climb >= 250) out.push('The <b>' + leg + ' km</b> up to here gains <b>' + climb + ' m</b>' +
-      (grad ? ' at about <b>' + Math.abs(grad).toFixed(1) + '%</b>' : '') +
-      ' - steady climbing, so expect to be a gear lower than the road looks and to arrive warmer than you left.');
-    else if (climb <= -250) out.push('You drop <b>' + Math.abs(climb) + ' m</b> over the <b>' + leg + ' km</b> into here' +
-      (grad ? ' at about <b>' + Math.abs(grad).toFixed(1) + '%</b>' : '') +
-      '. Long descents cook brakes and cool hands - use the engine, and stop before you need to.');
-    else out.push('The <b>' + leg + ' km</b> in from the last stop is close to level, which usually ' +
-      'means faster traffic and less to look at. A good stretch to make time on.');
-  }
-  /* what this place is, in riding terms */
-  const byKind = {
-    pass: 'This is the high point of the section. Wind at the top comes from a different direction ' +
-          'than in the valley and the surface stays damp in the shade long after the sun is out.',
-    high: 'Open ground with nothing to break the wind. Worth stopping simply to look back down the road.',
-    view: 'Pull fully off the carriageway - this is a place people brake for suddenly.',
-    photo: 'Somewhere to actually stop rather than slow down. Park off the road; the shot is worth two minutes.',
-    fuel: 'Fill here rather than gambling on the next one. Opening hours thin out sharply above the treeline ' +
-          'and on Sundays.',
-    food: 'Real food and a chance to take the helmet off. In season, expect a queue at the obvious hour.',
-    water: 'Drinking water and shade. Dehydration on a hot day feels exactly like fatigue.',
-    swim: 'Somewhere to get in the water. Boots off, ten minutes, then back on the road cooler than you were.',
-    coast: 'Sea air means salt on the bike and grip that changes with the spray. Damp early, dry by midday.',
-    town: 'Slow right down. Cobbles, pedestrians, one-way systems and cameras all live here.',
-    start: 'Set off with everything sorted: tyres, chain, fuel and where the day is going. ' +
-           'The first twenty minutes are when riders make cold-tyre mistakes.',
-    finish: 'The last stretch home is where concentration goes: the road is familiar and the day is ' +
-            'done in your head before it is done under the wheels. Ride it as deliberately as the first hour.',
+  if (leg >= 3 && climb >= 250) out.push('The <b>' + leg + ' km</b> up to here gain <b>' + climb + ' m</b>' +
+    (grad ? ' at about <b>' + Math.abs(grad).toFixed(1) + '%</b>' : '') + '.');
+  else if (leg >= 3 && climb <= -250) out.push('You drop <b>' + Math.abs(climb) + ' m</b> over the <b>' + leg + ' km</b> into here' +
+    (grad ? ' at about <b>' + Math.abs(grad).toFixed(1) + '%</b>' : '') + ' - use the engine to save the brakes.');
+  const job = {
+    fuel: 'Fill here: the next fuel on the plan is further on, and stations thin out on the high roads and on Sundays.',
+    food: 'Planned as the meal stop of the day.',
+    water: 'Drinking water and shade.',
+    swim: 'A place to get in the water on a hot day.',
   };
-  if (byKind[kind]) out.push(byKind[kind]);
-  /* ---- WRITE MORE, AND MAKE IT WORTH READING ----
-     One line per stop read like a caption. These add what the archive actually knows: what the
-     leg to here cost in distance and height, what the place is called after, and what that means
-     for the next half hour. Variants are chosen from the name, so two stops on one page do not
-     open the same way, and notAlreadySaid below still drops anything said earlier. */
-  {
-    const h = [...String(w.name || kind)].reduce((n, c) => (n * 31 + c.charCodeAt(0)) >>> 0, 7);
-    const pick = arr => arr[h % arr.length];
-    if (leg >= 6 && climb >= 150) {
-      out.push(pick([
-        'The leg to here is <b>' + leg + ' km</b> for <b>' + climb + ' m</b> of climbing: enough that ' +
-          'the engine note changes and you stop thinking about anything except the next corner.',
-        'You earn this one: <b>' + climb + ' m</b> up over <b>' + leg + ' km</b>. Second and third gear ' +
-          'work, brakes cool on the way up and complain on the way down.',
-        '<b>' + leg + ' km</b> and <b>' + climb + ' m</b> of height since the last stop - the kind of ' +
-          'stretch that is over before you notice how long it took.']));
-    } else if (leg >= 25) {
-      out.push(pick([
-        '<b>' + leg + ' km</b> of open road to get here. Long enough to settle into a rhythm, long ' +
-          'enough that a stop is worth more than it feels like it should be.',
-        'A long run in - <b>' + leg + ' km</b>. Fuel, water and a look at the sky are all cheaper here ' +
-          'than halfway up whatever comes next.']));
-    }
-    if (alt !== null && alt >= 2000) {
-      out.push(pick([
-        'Above <b>2000 m</b> the air is thin enough to notice: the bike is down on power, and so are you.',
-        'This is high ground. Snow patches survive here into the summer and the light is harder than ' +
-          'anywhere in the valley.']));
-    } else if (alt !== null && alt >= 900 && alt < 1500) {
-      out.push(pick([
-        'Around the treeline, where the corners open out and the view starts doing the work.',
-        'High enough for the air to change, low enough that everything is still open in the shoulder season.']));
-    }
-    if (/\b(see|lake|lac|lago|stausee|reservoir)\b/i.test(w.name || '')) {
-      out.push('There is water here: flat light in the morning, wind off it by the afternoon, and a ' +
-        'shoreline road that is nearly always worth the extra minutes.');
-    }
-    if (/gletscher|glacier|ghiacciaio/i.test(w.name || '')) {
-      out.push('Ice in sight. It pulls the temperature down long before you reach it, and the tarmac ' +
-        'in its shadow stays cold all day.');
-    }
-    if (/burg|schloss|castle|castello|ch\u00e2teau|kloster|abbey/i.test(w.name || '')) {
-      out.push('Somebody built something here for the same reason you are stopping: this is the spot ' +
-        'with the view of everything below.');
-    }
-  }
-  /* altitude, said usefully */
-  if (alt !== null && alt >= 1500) {
-    out.push('At <b>' + alt + ' m</b> it is roughly <b>' + Math.round((alt - 400) * 0.0065) +
-      '°C</b> colder than the valley floor, and weather here can be entirely different from the forecast ' +
-      'you read at breakfast.');
-  }
-  /* ---- SAID ONCE, WHERE IT MATTERS ----
-     Every checkpoint past 72% of the day carried the identical "you are into the last third"
-     sentence, and every one before 20% the identical "still early" - eight and five copies
-     of the same two paragraphs on one page. A thing worth saying is worth saying at the
-     point it becomes true, and nowhere after. S._saidOnce is cleared per ride render. */
-  S._saidOnce = S._saidOnce || {};
-  if (ctx.frac >= 0.72 && kind !== 'finish' && !S._saidOnce.lastThird) {
-    S._saidOnce.lastThird = 1;
-    out.push('From here you are into the last third of the day. This is where concentration ' +
-      'goes first, so if a stop is going to help, make it this one.');
-  } else if (ctx.frac <= 0.2 && kind !== 'start' && !S._saidOnce.early) {
-    S._saidOnce.early = 1;
-    out.push('Still early. Tyres and brakes are only now up to temperature, and the road ahead is the ' +
-      'part you came for.');
-  }
+  if (job[kind]) out.push('<!--g-->' + job[kind]);
+  if (alt !== null && alt >= 1500) out.push('At <b>' + Math.round(alt) + ' m</b> it is roughly <b>' + Math.round((alt - 400) * 0.0065) +
+    '°C</b> colder than the valley floor.');
   const fresh = notAlreadySaid(ctx.advice, out);
   if (!said) return fresh;
   /* drop anything an earlier checkpoint on this page already said, and remember the rest */
@@ -16727,7 +16871,7 @@ function buildMiniMap(el, r) {
     /* the card maps stay on the street layer: a board draws dozens of them, and that load does not
        belong on OpenTopoMap, which is a volunteer service. The relief is on the route map, where a
        rider is deciding about a pass. */
-    csBasemap(m, 'street');
+    csBasemap(m, 'mini');
   } catch (e) { el.dataset.built = ''; return null; }
   /* A stubbed or failed L.map() can hand back nothing useful. Everything below assumes a
      real map object, so check once here rather than throwing inside a paint loop. */
@@ -26348,8 +26492,12 @@ function whatsHereHtml(w, i, ctx) {
   const views = (svc.view || []).filter(x => Number.isFinite(+x.lat)).map(x => ({ n: x.name, km: hav(here, x) })).filter(x => x.km <= 3 && x.n && !/^viewpoint$/i.test(x.n)).sort((a, b) => a.km - b.km).slice(0, 2);
   if (sights.length) rows.push(['👀', 'See', sights.map(a => '<b>' + esc(a.n) + '</b> (' + esc(a.k) + ', ' + whKm(a.km) + ')').join(' · ')]);
   else if (views.length) rows.push(['👀', 'See', views.map(v => '<b>' + esc(v.n) + '</b> (viewpoint, ' + whKm(v.km) + ')').join(' · ')]);
-  else if (w.kind === 'pass' || (+w.alt || 0) >= 1500) rows.push(['👀', 'See', 'The view is the attraction here: ' + (+w.alt ? Math.round(+w.alt) + ' m up, ' : '') + 'nothing catalogued to visit within 4 km.']);
-  else rows.push(['👀', 'See', 'Nothing catalogued to visit within 4 km - the road is the sight on this stretch.']);
+  /* audit 2026-10-25: "nothing catalogued" at every stop is not information. Where no sight is catalogued the row says
+     where the stop actually is - the nearest town and how far - which a rider can use (and What's here stays at every
+     stop, owner 2026-10-13) */
+  else { const TWS = ((svc._towns && svc._towns.length ? svc._towns : (S.svcNow && S.svcNow._towns && S.svcNow._towns.length ? S.svcNow._towns : (ctx.towns || []))))
+      .filter(t => Number.isFinite(+t.lat) && t.name).map(t => ({ t, km: hav(here, t) })).sort((a, b) => a.km - b.km)[0];
+    if (TWS && TWS.km <= 25) rows.push(['👀', 'See', (TWS.km < 1.5 ? 'In <b>' + esc(TWS.t.name) + '</b>' : '<b>' + esc(TWS.t.name) + '</b> is ' + whKm(TWS.km) + ' away') + (TWS.t.pop >= 1000 ? ' - a town of ' + Number(TWS.t.pop).toLocaleString('en-GB') + ' people' : '') + '.']); }
   /* do */
   const swim = (svc.swim || []).filter(x => Number.isFinite(+x.lat)).map(x => ({ n: x.name, km: hav(here, x), t: x.tags || {} })).filter(x => x.km <= 8).sort((a, b) => a.km - b.km);
   const dos = [];
@@ -26357,7 +26505,6 @@ function whatsHereHtml(w, i, ctx) {
   const visit = sights.find(a => /museum|castle|fortress|abbey|monastery|palace|cathedral|church|ruin/.test(a.k)); if (visit) dos.push('visit <b>' + esc(visit.n) + '</b>');
   const walk = sights.find(a => /waterfall|gorge|glacier|lake|viewpoint|peak/.test(a.k)) || views[0]; if (walk) dos.push('walk to <b>' + esc(walk.n) + '</b>');
   const cafe = (picks.food || []).find(f => /terrace|outdoor|view/i.test(String(f.why || '') + JSON.stringify(f.tags || {}))); if (cafe) dos.push('coffee on the terrace at <b>' + esc(cafe.name) + '</b>');
-  if (w.kind === 'pass' || (+w.alt || 0) >= 1800) dos.push('the summit photo - park off the line');
   if (dos.length) rows.push(['🎯', 'Do', dos.slice(0, 3).join(' · ')]);
   /* fuel */
   const fuels = (svc.fuel || []).filter(f => !f.ev && Number.isFinite(+f.lat)).map(f => ({ f, km: hav(here, f) }));
@@ -26371,7 +26518,7 @@ function whatsHereHtml(w, i, ctx) {
     const ch = fuels.map(x => ({ n: x.f.name, at: x.f.atKm, town: false })).concat(TW.map(t => ({ n: t.name, at: t.atKm, town: true }))).filter(c => Number.isFinite(c.at));
     const before = ch.filter(c => c.at < cumKm - 1).sort((a, b) => b.at - a.at)[0], after = ch.filter(c => c.at > cumKm + 1).sort((a, b) => a.at - b.at)[0];
     const lab = c => '<b>' + esc(c.n) + '</b>' + (c.town ? ' (town)' : '');
-    rows.push(['⛽', 'Fuel', 'None within 6 km.' + (before ? ' Last chance: ' + lab(before) + ', ' + Math.max(1, Math.round(cumKm - before.at)) + ' km back.' : '') + (after ? ' Next: ' + lab(after) + ' in ' + Math.max(1, Math.round(after.at - cumKm)) + ' km.' : (before ? '' : ' Fill up before this stretch.'))]); }
+    rows.push(['⛽', 'Fuel', 'No station mapped within 6 km.' + (before ? ' Last chance along the ride: ' + lab(before) + ', ' + Math.max(1, Math.round(cumKm - before.at)) + ' km back.' : '') + (after ? ' Next along the ride: ' + lab(after) + ', ' + Math.max(1, Math.round(after.at - cumKm)) + ' km on.' : (before ? '' : ' Fill up before this stretch.'))]); }
   /* food */
   const food = (picks.food || []).slice(0, 2);
   if (food.length) rows.push(['🍽', 'Food', food.map(f => '<b>' + esc(f.name) + '</b> (' + whKm(f.km) + (f.why ? ', ' + esc(String(f.why).split(/[;.]/)[0]).toLowerCase() : '') + ')').join(' · ')]);
@@ -26384,8 +26531,14 @@ function whatsHereHtml(w, i, ctx) {
   if (evs.length) rows.push(['🎉', 'On', evs.map(x => '<b>' + esc(x.e.name) + '</b> - ' + esc(x.e.exact ? eventWhen(x.e) : eventStamp(x.e) + ' (dates not yet published)') + ', ' + whKm(x.km) + (x.e.url ? ' · <a href="' + esc(x.e.url) + '" target="_blank" rel="noopener">details</a>' : '')).join(' · ')]);
   const lead = (() => { const bits = []; if (sights.length) bits.push(sights.length + ' sight' + (sights.length > 1 ? 's' : ''));
     if (nf) bits.push('fuel'); if (food.length) bits.push('food'); if (swim.length) bits.push('a swim');
-    return bits.length ? name + ' has ' + bits.join(', ').replace(/, ([^,]*)$/, ' and $1') + ' within reach.' : name + ': little mapped right here - plan this stop around the road.'; })();
-  return '<div class="wh"><p class="whLead">' + lead + '</p><ul class="whList">' + rows.map(([ic, k, v]) => '<li><span class="whIc" aria-hidden="true">' + ic + '</span><span class="whK">' + k + '</span><span class="whV">' + v + '</span></li>').join('') + '</ul></div>';
+    return bits.length ? name + ' has ' + bits.join(', ').replace(/, ([^,]*)$/, ' and $1') + ' within reach.' : ''; })();
+  /* owner 2026-10-25 ("a lot of crap redundant info"): a box that only says nothing is here is not printed at every stop.
+     Rows with a real answer stay - the fuel row always ("none within 6 km" is an answer a rider needs, and keeps What's here at
+     every stop, owner 2026-10-13); "nothing catalogued / nothing mapped" rows go. */
+  { const empty = v => /^(nothing (catalogued|mapped)|no mapped|no bathing)/i.test(String(v).replace(/<[^>]*>/g, '').trim());
+    for (let q = rows.length - 1; q >= 0; q--) if (empty(rows[q][2])) rows.splice(q, 1); }
+  if (!lead && !rows.length) return '';
+  return '<div class="wh">' + (lead ? '<p class="whLead">' + lead + '</p>' : '') + '<ul class="whList">' + rows.map(([ic, k, v]) => '<li><span class="whIc" aria-hidden="true">' + ic + '</span><span class="whK">' + k + '</span><span class="whV">' + v + '</span></li>').join('') + '</ul></div>';
 }
 function wireRoadbookExtras(r, host, getSvc) {
   const wps = rideWaypoints(r), legs = legKms(r);
@@ -26481,8 +26634,8 @@ function wireRoadbookExtras(r, host, getSvc) {
                 esc((STOP_KINDS[k] || {}).label || k) + ' \u00d7 ' + v.length).join(' \u00b7 ') +
               '</span><span class="stopHint">they are the coloured dots on the map above - ' +
               'hover or tap one for the detour, the hours and why it is worth it</span></div>'
-          : '<span class="nearLbl">nothing mapped within a few kilometres - carry what you need</span>') +
-        (missing.length && cards
+          : '') +
+        (false && missing.length && cards
           ? '<p class="stopNone">Nothing mapped nearby for: ' + esc(missing.join(', ')) +
             '. Absence in OpenStreetMap is not proof there is nothing there.</p>' : '') +
         (bits.length ? '<div class="nearRow"><span class="nearLbl">everything within 6 km:</span>' +
@@ -26686,6 +26839,26 @@ function csRideMissing(host, id, e) {
     '<a href="#/rides">See rides near you</a> \u00b7 <a href="#/explore">Explore all rides</a> \u00b7 <a href="#/">New search</a></div>';
   try { document.title = 'Ride not found | CurveScout'; } catch (e2) {}
   return true;
+}
+/* ---- THE STOPS COME RIGHT AFTER THE MAP (owner 2026-10-25: "a lot of crap redundant info but not a single waypoint
+   with map and rotating pics") ----  The roadbook sat 2.5 screens down, under the character bars, border rules, the
+   curated note, famous roads, the climb, the tools, the briefing and the story. Nothing is removed: the roadbook block
+   moves up under the map, each stop shows its photo and its map first, and the background sections follow the story. */
+function csRideReorder(host) {
+  try {
+    const kid = sel => host.querySelector(':scope > ' + sel);
+    const head = kid('#rbHead'), box = kid('#rbBox'), after = kid('#startFrom') || kid('.mapBox');
+    if (head && box && after) {
+      const block = []; for (let n = head; n; n = n.nextElementSibling) { block.push(n); if (n === box) break; }
+      const dw = box.nextElementSibling; if (dw && dw.id === 'dayWarn') block.push(dw);
+      if (block[block.length - 1] === box || block.includes(box)) { let ref = after; for (const n of block) { ref.after(n); ref = n; } }
+    }
+    { const bx = kid('#rbBox'); if (bx) { let ref = bx; for (const c of ['.rbHowTo', '.rbConf']) { const e = kid(c); if (e) { ref.after(e); ref = e; } } } }
+    const story = kid('.story');
+    if (story) { let ref = story; for (const id of ['rideChar', 'borderBox', 'provBox', 'famousBox']) { const e = kid('#' + id); if (e) { ref.after(e); ref = e; } } }
+    host.querySelectorAll('#rbBox .rbMain').forEach(m => { const media = m.querySelector(':scope > .rbMedia'); const meta = m.querySelector(':scope > .rbFacts');
+      if (media && meta) meta.after(media); });
+  } catch (e) {}
 }
 async function renderRide(id) {
   await editorialSettled();
@@ -27432,7 +27605,7 @@ async function renderRide(id) {
                 extra.filter(t => adviceAgrees(t, {
                   nextKm: (legs && Number.isFinite(+legs[i + 1])) ? Math.round(+legs[i + 1]) : null,
                   alt: +w.alt, routeHigh: +(r.al ?? r.hi ?? r.high)
-                })).map(t => '<p class="rbMore">' + t + '</p>').join('') + gStop;
+                })).map(t => /^<!--g-->/.test(t) ? '<p class="rbMore rbGeneric">' + t.slice(8) + '</p>' : '<p class="rbMore">' + t + '</p>').join('') + gStop;
             })() +
             '<div class="rbNear" data-near="' + i + '"></div>' +
             '<div class="rbWx" data-wx="' + i + '"></div>' +
@@ -27628,6 +27801,7 @@ async function renderRide(id) {
       '<div class="chev"><h2>Road status</h2><div class="band"></div></div>' +
       '<div class="srcRow">' + r.roadStatus.map(s => '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + ' ↗</a>').join('') + '</div>' : '');
 
+  csRideReorder(host);
   requestAnimationFrame(() => {
     const fg = host.querySelector('.fgc');
     if (fg) requestAnimationFrame(() => fg.style.strokeDashoffset = fg.dataset.off);
