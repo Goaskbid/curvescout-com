@@ -5047,3 +5047,74 @@ header a.tbtn, header a.tbtn:visited, a.tbtn{text-decoration:none!important}
 /* r25 audit: on a phone the "checkpoints only" note ran off the map and under a marker */
 @media(max-width:767px){.chordNote span{white-space:normal!important;width:150px;text-align:center;line-height:1.25}}
 .chordNote{z-index:400!important}
+/* r25.1: the action bar never floats over the roadbook */
+.actionBar[data-nostick]{position:static!important;bottom:auto!important;box-shadow:none!important}
+/* r25.1 startup: no footer in the empty first screen (it jumped down when the view filled); the intro's own title leaves
+   before the overlay fades, so two titles never sit on top of each other */
+body:not(.csBooted) > footer{visibility:hidden;animation:csFootIn 0s linear 4s forwards}
+@keyframes csFootIn{to{visibility:visible}}
+#csIntro.out .ciTitle,#csIntro.out .ciTag,#csIntro.out .ciPresents{opacity:0!important;transition:opacity .25s ease 0s!important}
+#csIntro.out{transition:opacity .7s ease .2s}
+/* r25.1 (owner 2026-10-26, screenshot: "no more crazy crap layouts"): on a wide screen the expanded map takes the whole
+   height; the legend, the mode bar and the note sit in a side column instead of eating 40% of the height below it */
+@media (min-width:900px){
+  .mapBox.expanded{grid-template-columns:auto auto 1fr auto minmax(300px,340px)!important;grid-template-rows:auto repeat(4,auto) minmax(0,1fr)!important}
+  .mapBox.expanded > #map,#rideDetail[data-ptabs] .mapBox.expanded > #map{grid-column:1 / 5!important;grid-row:2 / -1!important}
+  .mapBox.expanded > .mapExpand{grid-column:5!important;justify-self:end}
+  .mapBox.expanded > .speedKey.inMap,.mapBox.expanded > .mapBar,.mapBox.expanded > .mapNote,.mapBox.expanded > .csMapCredit{grid-column:5!important;max-height:none!important;border-left:1px solid #23272e!important}
+  .mapBox.expanded > .speedKey.inMap{grid-row:2!important}
+  .mapBox.expanded > .mapBar{grid-row:3!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important;padding:10px!important}
+  .mapBox.expanded > .mapBar *{max-width:100%}
+  .mapBox.expanded > .mapNote{grid-row:4!important}
+  .mapBox.expanded > .csMapCredit{grid-row:5!important}
+  /* r26: the layer switches join the side column instead of taking a row under the map */
+  .mapBox.expanded > .mapLayers{grid-column:5!important;grid-row:6!important;position:static!important;inset:auto!important;transform:none!important;margin:0!important;flex-direction:row!important;flex-wrap:wrap!important;align-self:start;gap:8px;padding:10px;border-left:1px solid #23272e}
+}
+/* decluttered map labels: a lower-priority label that would sit on a stop marker or another label waits for more zoom */
+.leaflet-marker-icon.csDecl{visibility:hidden!important}
+/* r25.1 (audit: the expanded map on a phone was 420 of 844 px): legend to one scrollable strip, the mode bar to one
+   swipeable row - the map keeps about three quarters of the screen */
+@media (max-width:899px){
+  .mapBox.expanded > .speedKey.inMap{max-height:64px!important;overflow:auto!important;font-size:14px!important;padding:6px 10px!important}
+  .mapBox.expanded > .mapBar{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;gap:6px!important;padding:6px!important;scrollbar-width:none}
+  .mapBox.expanded > .mapBar::-webkit-scrollbar{display:none}
+  .mapBox.expanded > .mapBar > *,.mapBox.expanded > .mapBar .lineMode,.mapBox.expanded > .mapBar .mapBarRight{flex:0 0 auto!important;display:flex!important;flex-wrap:nowrap!important;gap:6px!important;white-space:nowrap}
+}
+@media (max-width:899px){
+  .mapBox.expanded > .mapBar{flex-direction:row!important;grid-auto-flow:column!important;align-items:center!important}
+  .mapBox.expanded > .csMapCredit{font-size:11px!important;line-height:1.3!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;padding:3px 8px!important;max-height:20px}
+  .mapBox.expanded > .csMapCredit br{display:none}
+}
+
+/* ---- r26 owner 2026-10-29: "you have clear instructions re overlaps in the map" ----
+   While the ride map is NOT expanded, nothing floats over it. The road summary and the
+   map buttons sit in a row above the canvas, the layer switches and the mode, avoid and
+   preview bar sit below it. The expanded map keeps its own layout (side column). */
+body #rideDetail .mapBox:not(.expanded){display:flex!important;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;padding:8px}
+body #rideDetail .mapBox:not(.expanded)>.csMapCredit{order:5;flex:0 0 100%}
+body #rideDetail .mapBox:not(.expanded)>#map{order:2;flex:0 0 100%;border-radius:10px}
+body #rideDetail .mapBox:not(.expanded)>:is(.mapNote,.mapEdit,.mapHome,.mapBase,.mapExpand,.mapLayers,.mapBar){position:relative!important;inset:auto!important;transform:none!important;margin:0!important;z-index:auto!important}
+body #rideDetail .mapBox:not(.expanded)>.mapNote{order:0;flex:1 1 220px;max-width:none!important;align-self:flex-start}
+body #rideDetail .mapBox:not(.expanded)>:is(.mapEdit,.mapHome,.mapBase,.mapExpand){order:1;width:auto!important;height:auto!important;flex:0 0 auto}
+body #rideDetail .mapBox:not(.expanded)>.mapLayers{order:3;flex:0 0 100%;display:flex;flex-direction:row!important;flex-wrap:wrap;gap:8px}
+body #rideDetail .mapBox:not(.expanded)>.mapLayers[hidden]{display:none!important}
+body #rideDetail .mapBox:not(.expanded)>.mapBar{order:4;flex:0 0 100%;flex-wrap:wrap!important;background:none!important;border:0!important;padding:0!important;overflow:visible!important}
+body #rideDetail .mapBox:not(.expanded)>#mapBar #lineMode{flex-wrap:wrap!important;width:100%!important;box-sizing:border-box}
+body #rideDetail .mapBox:not(.expanded)>#mapBar #lineMode button{flex:1 1 auto!important;min-width:0}
+@media (max-width:360px){body #rideDetail .mapBox:not(.expanded)>#mapBar{padding-left:0!important;padding-right:0!important}body #rideDetail .mapBox:not(.expanded)>#mapBar #lineMode button{padding-left:4px!important;padding-right:4px!important}}
+/* r26: on a phone the expanded map's layer switches are one swipeable row, not a 250 px column */
+@media (max-width:899px){
+  .mapBox.expanded > .mapLayers{position:static!important;inset:auto!important;transform:none!important;margin:0!important;flex-direction:row!important;flex-wrap:nowrap!important;overflow-x:auto;gap:8px;padding:6px 8px 2px;scrollbar-width:none}
+}
+/* ---- r26 Co-Pilot / PREVIEW: one tab beside the ride map (owner 2026-10-30) ---- */
+.cpHost{margin-top:16px}
+.cpTabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cpTabs button{min-height:44px;padding:8px 16px;border-radius:22px;border:1px solid var(--edge);background:#14161a;color:var(--ink);font:600 16px/1.2 var(--display);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.cpTabs button[aria-selected="true"]{border-color:var(--red);background:rgba(225,27,43,.18)}
+.cpTabs button small{font-size:12px;letter-spacing:.08em;color:#f2b134;margin-left:6px}
+.cpTabs button.busy{opacity:.6;cursor:progress}
+#cpPanels{--cs-copilot-host-offset:120px}
+#cpPanels > section:not([hidden]){margin-top:10px;border:1px solid var(--edge);border-radius:var(--rad);overflow:hidden;background:#0d0f12}
+#cpPanels .cpSummary p{margin:6px 22px}
+body #rideDetail.cpOn > .mapBox,body #rideDetail.cpOn > .speedKey{display:none!important}
+#rideDetail:not(.cpOn) #cpPanels > section{display:none}
