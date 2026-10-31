@@ -1,0 +1,15 @@
+CurveScout Wingman - studio voice components and their licences
+
+cs-studio-worker.js is a separate program that runs in its own worker. It bundles:
+  - ONNX Runtime Web 1.22.0 (Microsoft) - MIT licence - https://github.com/microsoft/onnxruntime
+  - phonemizer 1.2.1 (npm) - published as Apache-2.0; built from eSpeak NG (GPL-3.0-or-later) -
+    https://www.npmjs.com/package/phonemizer , https://github.com/espeak-ng/espeak-ng
+  - CurveScout's own worker code (text clean-up adapted from kokoro-js 1.2.1, Apache-2.0, Joshua Lochner;
+    local place-name pronunciation rules written for CurveScout)
+Because eSpeak NG is GPL-3.0, cs-studio-worker.js as a whole is offered under GPL-3.0-or-later. Its complete
+corresponding source is published next to it: cs-studio-worker.src.mjs and cs-g2p-local.src.mjs in this folder, plus the
+npm packages named above at the stated versions (bundled with esbuild, see tools/build-copilot.mjs).
+cs-ort-1.bin + cs-ort-2.bin: ONNX Runtime Web 1.22.0 WebAssembly, MIT. cs-ort-glue.js: ONNX Runtime Web, MIT.
+cs-voice-bella.bin, cs-voice-heart.bin: Kokoro-82M v1.0 voice tables (hexgrad), Apache-2.0, via kokoro-js 1.2.1.
+The model (Kokoro-82M v1.0, 8-bit ONNX by onnx-community, Apache-2.0) is downloaded by the browser from
+cdn.jsdelivr.net/npm/kokoro-q8-shards@1.0.0 or huggingface.co and checked against its SHA-256; it is not stored here.

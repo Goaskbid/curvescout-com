@@ -1,6 +1,6 @@
 {
- "build_id": "b1444e4",
- "build_date": "2026-10-31T14:11:29.275Z",
+ "build_id": "58b30f8",
+ "build_date": "2026-10-31T19:34:00.688Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -53,8 +53,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 2156583,
-   "sha256": "bde2d6a22fcc32f524d168e235f680d3bf9ed813531b4aa4c1fe8ec00cd04595"
+   "bytes": 2162448,
+   "sha256": "213220ea94d7a5d69e5eb3a98d32fc1e50dfc7d3c05b0a891caa850344a8d234"
   },
   {
    "path": "archive.js",
@@ -87,9 +87,29 @@
    "sha256": "df507afa4be233b61aefde8fa9317857ddc4d851b4f23f55126b76b833c35503"
   },
   {
+   "path": "assets/copilot/STUDIO-VOICE-LICENSES.txt",
+   "bytes": 1374,
+   "sha256": "0a544b4271721f2c08551aa5a7d2d9e48253361eaae27e53e212195f9d9a7a8e"
+  },
+  {
    "path": "assets/copilot/copilot-runtime.js",
-   "bytes": 95271,
-   "sha256": "f7340b90980fca781b3ff764ff032478dad3e7511a0c6f0e28b446f942eb48c8"
+   "bytes": 130331,
+   "sha256": "44069cf32db5727cdd586a52bcde9b06d5790f85f7849e20e2622d40317e7315"
+  },
+  {
+   "path": "assets/copilot/cs-g2p-local.src.mjs",
+   "bytes": 9405,
+   "sha256": "61faa86f1595057114ac5260a60e07a3fefb7140e515bfa851ce333e2e71a8a8"
+  },
+  {
+   "path": "assets/copilot/cs-ort-1.bin",
+   "bytes": 5605127,
+   "sha256": "850213a6a37ddb9ca8f766f9bda86f8423b888d91fa3aa8c8b744830da438d66"
+  },
+  {
+   "path": "assets/copilot/cs-ort-2.bin",
+   "bytes": 5605127,
+   "sha256": "6e3c371594243eb145852bd488cb265df4af6068ce17f7f9781669d0920d3a3e"
   },
   {
    "path": "assets/copilot/cs-ort-glue.js",
@@ -97,14 +117,14 @@
    "sha256": "30dd851d9c00622940500f71ddd2ff8820c5cb65270816080175b958705385a8"
   },
   {
-   "path": "assets/copilot/cs-ort.wasm",
-   "bytes": 11210254,
-   "sha256": "71aef04959c5c1b6de461b6538e2058e306610034a85aad2742d0c7fd4533fe4"
+   "path": "assets/copilot/cs-studio-worker.js",
+   "bytes": 1384210,
+   "sha256": "6645bdcfdb5bba532098a48e33ef93ef2c05722d8570095be5dd8b8bcb7bb2b4"
   },
   {
-   "path": "assets/copilot/cs-studio-worker.js",
-   "bytes": 1377565,
-   "sha256": "dc2749f41481da64d4b47bdc767262bb96bf33569e332fa7627f96dfcedba68d"
+   "path": "assets/copilot/cs-studio-worker.src.mjs",
+   "bytes": 12661,
+   "sha256": "e64a5419b3928e5062565f19f6ef3a4e4d821ea6eeb553c42e44d45efa149015"
   },
   {
    "path": "assets/copilot/cs-voice-bella.bin",
@@ -1004,7 +1024,7 @@
   {
    "path": "config.js",
    "bytes": 161288,
-   "sha256": "3b671033c577d3f81ca2eb57932a02a6c540a55218b905d3177b1a58f17b9f33"
+   "sha256": "2579a876551609fbebb7a562213160fae2f18bfd29b519fb0ff56297648b0f5f"
   },
   {
    "path": "data/cities.txt",
@@ -4618,8 +4638,8 @@
   },
   {
    "path": "index.html",
-   "bytes": 30352,
-   "sha256": "a7891c7a788f120cd2d84016a888afda70c68f057e073d62d20dadf3c1cf3f3d"
+   "bytes": 30821,
+   "sha256": "8060bb6b62f8bb69da2c0fbd291e5a057ec21117e85ec9d999cdbbb659ee167b"
   },
   {
    "path": "manifest.webmanifest",
@@ -4638,13 +4658,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 366140,
-   "sha256": "e39852c8851ca906a478375c462a0574ee104f1d1fa1dba3bfec81ca87ac0e17"
+   "bytes": 369276,
+   "sha256": "c3e7f10760782f15af0bda015cfa3730f7e303cc197dd4021d3e763c0ed0a652"
   },
   {
    "path": "sw.js",
    "bytes": 8544,
-   "sha256": "b9e91e0937132cf1805ccd0c9214cae67286fa1ff4a9f4d07074054848d9f176"
+   "sha256": "42a1c7ccea6388be3e2f08fc77799995469f96da8abed1f1f364a4d9ec1b90d7"
   }
  ]
 }

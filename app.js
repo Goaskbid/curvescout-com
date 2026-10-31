@@ -6013,7 +6013,11 @@ const CS_HERO_START = (() => { let n = 0; try { n = (parseInt(localStorage.getIt
 const csHeroQuick = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 /* the cold open: black, letterbox, the first photograph pushes in, a red road draws itself, the title pulls focus */
 (function csIntro() { try {
+  /* owner 2026-10-31: "bring back the startup intro" - every time the app is opened on its start page (a refresh within
+     20 minutes does not replay it; a deep link to a ride or a trip never shows it) */
   if (sessionStorage.getItem('csIntroSeen')) return; sessionStorage.setItem('csIntroSeen', '1');
+  if (location.hash && !/^#\/?$/.test(location.hash)) return;
+  try { const last = +localStorage.getItem('csIntroAt') || 0; if (Date.now() - last < 20 * 60000) return; localStorage.setItem('csIntroAt', String(Date.now())); } catch (e) {}
   const p = CS_HERO[CS_HERO_START];
   const d = document.createElement('div'); d.id = 'csIntro'; d.setAttribute('aria-hidden', 'true');
   d.innerHTML = '<div class="ciPic"><img alt=""></div><div class="ciShade"></div>' +
@@ -6788,7 +6792,7 @@ const CS_PLACES = (() => {
       out.push({ r, best, hit: hit === r[0] ? '' : hit });
     }
     /* the name itself before a name it is also known by, then the bigger place - Greifswald before a hamlet of the same name */
-    out.sort((a, b) => b.best - a.best || (a.hit ? 1 : 0) - (b.hit ? 1 : 0) || b.r[5] - a.r[5]);
+    out.sort((a, b) => b.best - a.best || (a.hit ? 1 : 0) - (b.hit ? 1 : 0) || (a.r[7] === 'r' ? 1 : 0) - (b.r[7] === 'r' ? 1 : 0) || b.r[5] - a.r[5]);   /* a town before the region of the same name */
     const seen = new Set(), res = [];
     for (const x of out) { const id = x.r[0] + x.r[1] + Math.round(x.r[3] * 20) + Math.round(x.r[4] * 20); if (seen.has(id)) continue; seen.add(id); res.push(asPlace(x.r, x.hit)); if (res.length >= limit) break; }
     return res;
@@ -6863,7 +6867,7 @@ const CS_SUGGEST = (() => {
     /* places first (towns, cities, passes), then streets and things; the app's own towns lead when they are the same place */
     const out = [];
     for (const m of mine) { const twin = rows.find(x => Math.abs(x.lat - m.lat) < 0.08 && Math.abs(x.lon - m.lon) < 0.08);
-      if (twin && m.src === 'gn') { const k = rows.indexOf(twin); rows.splice(k, 1); if (!m.region && twin.region) m.region = twin.region; out.push(m); continue; }
+      if (twin && m.src === 'gn') { const k = rows.indexOf(twin); rows.splice(k, 1); if (!m.region && twin.region) m.region = twin.region; if (twin.local) m.local = twin.local; else if (fold(twin.name) !== fold(m.name) && !m.local) m.local = twin.name; out.push(m); continue; }
       if (twin) { twin.src = 'cs+osm'; continue; } out.push(m); }
     rows.sort((a, b) => (b.place ? 1 : 0) - (a.place ? 1 : 0));
     return out.slice(0, 6).concat(rows).slice(0, 8);
@@ -8837,7 +8841,9 @@ function csReportButton() { try {
 } catch (e) {} }
 setInterval(csReportButton, 1000);
 
-/* ---- CO-PILOT: LIVE NAVIGATION, OPENED FROM A RIDE OR FROM ANY ROAD (owner 2026-10-31) ----
+/* ---- WINGMAN (formerly "Co-Pilot"): LIVE NAVIGATION, OPENED FROM A RIDE OR FROM ANY ROAD (owner 2026-10-31) ----
+   Renamed: "CoPilot" is an established navigation-app brand (CoPilot GPS) and Copilot a Microsoft mark; Wingman fits the
+   radar look the owner asked for. The name lives in src/copilot-live/i18n.mjs (name) and here.
    "what i asked for is a switch to a navigation system. real time ... take out the sim." The 1.3.0 rehearsal tab is
    gone. A ride page has one button, "Ride with Co-Pilot", which opens the full-screen navigator on that ride's
    waypoints; the header has "Co-Pilot" for a free ride on any road. The navigator itself (src/copilot-live/nav.mjs,
@@ -8872,13 +8878,31 @@ function csCpHost() {
     placeText: async w => { try { return await csPlaceText(csPlaceKey(w.rawName || w.name, w.lat, w.lon)); } catch (e) { return ''; } },
     sunset: (lat, lon, date) => { try { const m = tripSunset(lat, lon, date); if (m == null) return null; const d0 = new Date(date); d0.setHours(0, 0, 0, 0); return new Date(d0.getTime() + m * 60000); } catch (e) { return null; } },
     shortName: n => String(n || '').split(/[·,(]/)[0].trim(), store: csCpStore,
+    /* destination navigation: Valhalla motorcycle routing (avoid motorways, tolls, ferries), the place index for "where to" */
+    valhallaUrl: (typeof NET !== 'undefined' && NET.valhalla) || 'https://valhalla1.openstreetmap.de',
+    attachSuggest: (input, onPick) => { try { CS_SUGGEST.attach(input, onPick); } catch (e) {} },
+    findPlace: async q => { try { return (await CS_PLACES.find(q)) || (await CS_SUGGEST.resolve(q)); } catch (e) { return null; } },
+    curvy: async (a, b) => csCpCurvy(a, b),
     /* road watch: the app's own Overpass hosts with their fail-over and the refusal check */
     overpass: typeof overpass === 'function' ? (q => overpass(q)) : null,
-    studio: (typeof Worker === 'function' && typeof WebAssembly === 'object') ? { worker: csCpAsset('cs-studio-worker.js'), files: { wasm: csCpAsset('cs-ort.wasm'), glue: csCpAsset('cs-ort-glue.js'), voices: { af_bella: csCpAsset('cs-voice-bella.bin'), af_heart: csCpAsset('cs-voice-heart.bin') } } } : null };
+    studio: (typeof Worker === 'function' && typeof WebAssembly === 'object') ? { worker: csCpAsset('cs-studio-worker.js'), files: { wasm: [csCpAsset('cs-ort-1.bin'), csCpAsset('cs-ort-2.bin')], glue: csCpAsset('cs-ort-glue.js'), voices: { af_bella: csCpAsset('cs-voice-bella.bin'), af_heart: csCpAsset('cs-voice-heart.bin') } } } : null };
 }
+/* "Curvy roads": the best scouted road that lies on the way from A to B (at most a quarter longer) - its checkpoints become
+   silent via points, so the navigator rides it instead of the fastest road */
+function csCpCurvy(a, b) { try {
+  const R = Math.PI / 180, dist = (p, q) => { const x = Math.sin((q[0] - p[0]) * R / 2) ** 2 + Math.cos(p[0] * R) * Math.cos(q[0] * R) * Math.sin((q[1] - p[1]) * R / 2) ** 2; return 12742 * Math.asin(Math.sqrt(x)); };
+  const D = dist(a, b); if (D < 15) return [];
+  const ok = p => dist(a, p) + dist(p, b) <= D * 1.25 + 15, prog = p => dist(a, p) / (dist(a, p) + dist(p, b));
+  const cands = (S.routes || []).filter(r => r && Array.isArray(r.wp) && r.wp.length >= 3 && (+r.s || 0) >= 75 && r.tier !== 'EXPERIMENTAL_CONCEPT' && r.wp.every(ok));
+  if (!cands.length) return []; cands.sort((x, y) => (+y.s || 0) - (+x.s || 0) || (+y.km || 0) - (+x.km || 0));
+  const r = cands[0]; let w = r.wp.map(q => [+q[0], +q[1]]); if (prog(w[0]) > prog(w[w.length - 1])) w = w.reverse();
+  const loop = dist(w[0], w[w.length - 1]) < 2; if (loop) w = w.slice(0, -1);
+  const step = Math.max(1, Math.ceil(w.length / 6)); w = w.filter((q, i) => i % step === 0 || i === w.length - 1);
+  return w.map(q => ({ lat: q[0], lon: q[1], name: 'via ' + String(r.t || '').split(' · ').pop() }));
+} catch (e) { return []; } }
 async function csNavOpen(mode, r) {
   if ((CS_CP.nav && window.CS_NAV) || CS_CP.opening) return; CS_CP.opening = true;
-  let M; try { M = await csCpLoad(); } catch (e) { CS_CP.opening = false; try { flash('The Co-Pilot could not load. Check the connection and try again.'); } catch (e2) {} return; } finally { CS_CP.opening = false; }
+  let M; try { M = await csCpLoad(); } catch (e) { CS_CP.opening = false; try { flash('Wingman could not load. Check the connection and try again.'); } catch (e2) {} return; } finally { CS_CP.opening = false; }
 
   const ride = mode === 'route' ? csCpRide(r) : null;
   if (mode === 'route' && (!ride || ride.waypoints.length < 2)) { try { flash('This ride has no waypoints to guide you through yet.'); } catch (e) {} return; }
@@ -8892,17 +8916,23 @@ function csCopilotMount(host, r) {
   const mb = host.querySelector(':scope > .mapBox'); if (!mb || !r) return;
   let box = host.querySelector(':scope > #cpHost');
   if (!box) { box = document.createElement('div'); box.id = 'cpHost'; box.className = 'cpHost'; mb.parentNode.insertBefore(box, mb); }
-  box.innerHTML = '<button type="button" class="cpGo" id="cpGo"><span class="cpGoI" aria-hidden="true">🧭</span><span><b>Ride with Co-Pilot</b><small>Live navigation: turn by turn, sights, stories, weather</small></span></button>';
+  box.innerHTML = '<button type="button" class="cpGo" id="cpGo"><span class="cpGoI" aria-hidden="true">◎</span><span><b>Ride it with Wingman</b><small>Our motorcycle navigator: turn by turn, radar, pace notes, sights and warnings</small></span></button>';
   box.querySelector('#cpGo').onclick = () => csNavOpen('route', r);
 }
 window.csCopilotMount = csCopilotMount;
 /* the header and the phone menu: Co-Pilot on any road */
 (function () { try {
   const add = () => { const top = document.querySelector('header.top .topIn'); if (!top || document.getElementById('cpFree')) return;
-    const b = document.createElement('button'); b.type = 'button'; b.id = 'cpFree'; b.className = 'tbtn cpFree'; b.title = 'Co-Pilot on any road'; b.setAttribute('aria-label', 'Co-Pilot: live navigation on any road');
-    b.innerHTML = '<span aria-hidden="true">🧭</span><span class="cpFreeT">Co-Pilot</span>'; b.onclick = () => csNavOpen('free');
+    const b = document.createElement('button'); b.type = 'button'; b.id = 'cpFree'; b.className = 'tbtn cpFree'; b.title = 'Wingman – our motorcycle navigator'; b.setAttribute('aria-label', 'Wingman: our motorcycle navigator');
+    b.innerHTML = '<span aria-hidden="true" class="cpFreeI">◎</span><span class="cpFreeT">Wingman</span>'; b.onclick = () => csNavOpen('free');
     const hud = document.getElementById('raHud'); if (hud) top.insertBefore(b, hud); else top.appendChild(b); };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add); else add();
+  /* and on the welcome screen, under the main buttons: what Wingman is, one tap to start it */
+  const hero = () => { const cta = document.querySelector('#csWall .csHeroCta'); if (!cta || document.getElementById('cpHero')) return;
+    const b = document.createElement('button'); b.type = 'button'; b.id = 'cpHero'; b.className = 'cpHero';
+    b.innerHTML = '<span class="cpHeroI" aria-hidden="true">◎</span><span><b>Wingman <small class="cpNew">New</small></b><small>Our motorcycle navigator: radar, rally pace notes for every bend, hazards and cameras where legal, stories on the way – in a natural voice.</small></span>';
+    b.onclick = () => { try { if (typeof csShowWall === 'function') csShowWall(false); } catch (e) {} csNavOpen('free'); }; cta.insertAdjacentElement('afterend', b); };
+  const both = () => { add(); hero(); setTimeout(hero, 1500); setTimeout(hero, 5000); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', both); else both();
 } catch (e) {} })();
 
 /* the week's road: a scouted ride that is in season this month, picked the same way for every visitor in an ISO week */
@@ -9384,6 +9414,8 @@ function route() {
      observers and its pending timers. Without this, moving between rides stacked them
      until the tab crawled. */
   const released = VIEW.release();
+  /* owner 2026-10-31: "all windows must start top ... when they open" - every view opens at its top */
+  try { scrollTo(0, 0); } catch (e) {}
   /* The expanded map locks body scroll. If the view changes any way other than the
      Close button - back, a link, a hash change - that lock survived and the page could
      never scroll again. The router owns the lock now. */
@@ -9532,6 +9564,8 @@ function heroShow(n) {
 /* the road needs no photograph, no network and no licence, so it is drawn whatever happens to the
    photo search - initHero returns early when photos are off, which is why it first never appeared */
 function drawHeroRoad() {
+  /* owner 2026-10-31: "removing the odd animated curve in the startup section above some pics" - the road is no longer drawn */
+  try { document.querySelectorAll('.heroRoad').forEach(e => e.remove()); } catch (e) {} return;
   const bg = $('heroBg'); if (!bg) return;
   /* ---- THE ROAD DRAWS ITSELF ----
      The one orchestrated moment on the site: a mountain road climbs through its switchbacks from
@@ -16480,6 +16514,10 @@ const SERVICE_REGISTRY = [
     sends: 'the coordinates of the route', trigger: 'only when the first routing server does not answer',
     licence: 'ODbL data, FOSSGIS usage policy', licenceUrl: 'https://routing.openstreetmap.de/about.html',
     mode: 'gateway', retention: 'their policy applies' },
+  { id: 'studiovoice', name: 'jsDelivr / Hugging Face (Wingman studio voice)', purpose: 'the natural voice model, downloaded once',
+    sends: 'nothing about you - a file download', trigger: 'only when the studio voice is switched on in Wingman',
+    licence: 'Kokoro-82M, Apache-2.0', licenceUrl: 'https://huggingface.co/hexgrad/Kokoro-82M',
+    mode: 'direct', retention: 'their policy applies' },
   { id: 'valhalla', name: 'FOSSGIS Valhalla', purpose: 'routes without motorways or toll roads',
     sends: 'the coordinates of the route', trigger: 'only when an avoid switch is on',
     licence: 'ODbL data, FOSSGIS usage policy', licenceUrl: 'https://valhalla1.openstreetmap.de/',
@@ -19672,6 +19710,13 @@ const SPEED_BANDS = [
   { max: 999, col: '#4a9fd8', label: 'over 100 - transfer / motorway' },
 ];
 const bandOf = v => SPEED_BANDS.find(b => v < b.max) || SPEED_BANDS[SPEED_BANDS.length - 1];
+/* the three keys of the ride map in one compact block under it: what the road is like, the speed, the marks */
+function csMapKeysHtml() { try {
+  const g = Object.values(GRADE).filter(x => x && x.label).map(x => '<span><i style="background:' + x.col + '"></i>' + esc(x.label) + '</span>').join('');
+  const sp = SPEED_BANDS.map(b => '<span><i style="background:' + b.col + '"></i>' + esc(b.label.split(' - ')[0]) + ' km/h</span>').join('');
+  const mk = [['\u{1F3CD}', 'Motorcycle gathering'], ['\u25b2', 'Pass summit'], ['\u{1F4F7}', 'Fixed speed camera'], ['zZ', 'Somewhere to stop'], ['\u2605', 'Famous road nearby'], ['\u26fd', 'Fuel'], ['\u{1F6A7}', 'Road works']].map(([i, t]) => '<span><b>' + i + '</b>' + esc(t) + '</span>').join('');
+  return '<div class="mapKeys" id="mapKeys"><div><h4>Road type</h4>' + g + '</div><div><h4>Expected speed</h4>' + sp + '</div><div><h4>Marks</h4>' + mk + '</div></div>';
+} catch (e) { return ''; } }
 /* ---------------- the conditions layer ----------------
    What the road is like underneath and what will stop you: rough surface, roadworks,
    passes, speed cameras, and the places a queue forms. Each mark is a fact from
@@ -27693,6 +27738,8 @@ async function renderRide(id) {
        the breakdown lives here, where it hides nothing. */
     '<div class="speedKey" id="speedKey" hidden></div>' +
     '<div class="mapJump" id="mapJump"></div>' +
+    /* owner 2026-10-31: "show below the chart the road type legend, speed legend and so on" - every key, always there */
+    csMapKeysHtml() +
     '<div class="startFrom" id="startFrom" hidden></div>' +
     /* THE OLD COPIES OF THREE CONTROLS, REMOVED.
        The mode switch, the ride button and the clock were moved into the map bar and these
@@ -29873,7 +29920,9 @@ const seedFromRoute = () => {
       $('svcChips').innerHTML = cats.map(k =>
         '<button class="chip' + (k === cur ? ' on' : '') + '" data-c="' + k + '">' + SVC_CATS[k].icon + ' ' + SVC_CATS[k].label +
         ' <span class="cnt num">' + svc[k].length + '</span></button>').join('');
-      $('svcChips').querySelectorAll('.chip').forEach(c => c.onclick = () => { cur = c.dataset.c; paint(); });
+      /* owner 2026-10-31: "bring back the buttons for fuel, etc." - the chips are shown again; a tap opens that list, a second tap folds it */
+      $('svcChips').hidden = !cats.length;
+      $('svcChips').querySelectorAll('.chip').forEach(c => c.onclick = () => { const same = cur === c.dataset.c && !$('svcBox').hidden; cur = c.dataset.c; paint(); $('svcBox').hidden = same; $('svcNote').hidden = same; });
       $('svcNote').innerHTML = '<span class="' + (cur === 'camera' ? 'noteWarn' : '') + '">' + esc(SVC_CATS[cur].note) + '</span>';
       $('svcBox').innerHTML = svc[cur].map(x => {
         const bits = [];
