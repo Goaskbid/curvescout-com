@@ -2,7 +2,7 @@
    App files: network first, cached copy offline. Pictures and libraries: cache-first.
    Ride shards: cached the moment a ride is opened, so it stays readable with no bars.
    Tiles / live APIs: never cached here (they go stale and they're big). */
-const V = 'curvescout-c6cc604';
+const V = 'curvescout-b1444e4';
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
    Route data was cached in the same versioned cache as the shell, and activation deletes every
    cache but the new version - so each app update silently wiped the routes a rider had taken
@@ -20,8 +20,8 @@ const ROUTES = 'curvescout-routes';
    works and nobody pays for it twice. */
 const SHELL = [
   './', './index.html', './styles.css', './app.js', './manifest.webmanifest',
-  './places.json',
-  './curvescout-mark-transparent.png', './cerebral-local.svg',
+  './data/places.json',
+  './assets/curvescout-mark-transparent.png', './assets/cerebral-local.svg',
 ];
 
 /* ---- THE WORKER HOLDS COPIES TOO ----

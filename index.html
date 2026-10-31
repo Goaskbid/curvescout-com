@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-<script>/* files are stored without folders: map assets/... data/... rides/... to the bare file name */(function(){var B=location.pathname.replace(/[^/]*$/,'');function m(u){try{if(typeof u!=='string')return u;var x=u;if(x.indexOf(location.origin)===0)x=x.slice(location.origin.length);else if(/^[a-z][a-z0-9+.-]*:/i.test(x))return u;if(x.indexOf(B)===0)x=x.slice(B.length);x=x.replace(/^\.?\//,'');if(!/^(assets|data|rides)\//.test(x))return u;var q=x.search(/[?#]/),p=q<0?x:x.slice(0,q),r=q<0?'':x.slice(q);return p.split('/').pop()+r}catch(e){return u}}window.CS_FLAT_URL=m;var F=window.fetch;window.fetch=function(i,o){try{if(typeof i==='string')i=m(i);else if(i&&i.url){var n=m(i.url);if(n!==i.url)i=new Request(n,i)}}catch(e){}return F.call(this,i,o)};var XO=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(){arguments[1]=m(arguments[1]);return XO.apply(this,arguments)};var D=Object.getOwnPropertyDescriptor(HTMLImageElement.prototype,'src');Object.defineProperty(HTMLImageElement.prototype,'src',{set:function(v){D.set.call(this,m(v))},get:D.get,configurable:true});var SA=Element.prototype.setAttribute;Element.prototype.setAttribute=function(k,v){if(k==='src'||k==='href'||k==='data-src')v=m(String(v));return SA.call(this,k,v)}})();</script>
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https:; img-src 'self' data: blob: https:; font-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com https://fundingchoicesmessages.google.com https://*.gstatic.com https://*.googleadservices.com https://*.doubleclick.net https://*.adtrafficquality.google; worker-src 'self' blob:; child-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src https://*.doubleclick.net https://*.googlesyndication.com https://*.google.com https://fundingchoicesmessages.google.com">
 <meta name="google-adsense-account" content="ca-pub-2870312071451207">
   <!-- AdSense site verification. A meta tag, deliberately: it proves ownership without
@@ -26,14 +25,14 @@
   <meta name="color-scheme" content="dark">
   <meta property="og:title" content="CurveScout.com - we scout the curves">
   <meta property="og:description" content="Find your line: ranked motorcycle road trips with rider briefings, roadbooks and GPX / Google handoff.">
-  <meta property="og:image" content="https://curvescout.com/og-default.png">
+  <meta property="og:image" content="https://curvescout.com/assets/og-default.png">
   <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
   <meta property="og:url" content="https://curvescout.com/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="CurveScout - find the road worth the ride">
   <meta name="twitter:description" content="Motorcycle roads ranked for their curves, with weather on the way, fuel, passes, a roadbook and GPX.">
-  <meta name="twitter:image" content="https://curvescout.com/og-default.png">
+  <meta name="twitter:image" content="https://curvescout.com/assets/og-default.png">
   <link rel="manifest" href="manifest.webmanifest">
 <!-- ---- THE ROUTE PAGES CARRY STRUCTURED DATA AND THE FRONT PAGE DID NOT ----
      Every one of the 32,437 route pages has a full TouristTrip block with its itinerary and
@@ -53,10 +52,10 @@
 "GPX export and Google Maps handoff"],
 "isAccessibleForFree":true,
 "provider":{"@type":"Organization","name":"CurveScout","url":"https://curvescout.com/"}}</script>
-  <link rel="icon" type="image/png" href="curvescout-mark-transparent.png">
-  <link rel="apple-touch-icon" href="curvescout-mark-192.png">
-  <link rel="stylesheet" href="fonts.css">
-  <link rel="stylesheet" href="leaflet.css">
+  <link rel="icon" type="image/png" href="assets/curvescout-mark-transparent.png">
+  <link rel="apple-touch-icon" href="assets/curvescout-mark-192.png">
+  <link rel="stylesheet" href="assets/vendor/fonts.css">
+  <link rel="stylesheet" href="assets/vendor/leaflet.css">
   <link rel="stylesheet" href="styles.css">
   <!-- Already preloaded, deliberately WITHOUT crossorigin: a preload only satisfies a
        request whose mode matches, and an anonymous-CORS preload of a same-origin file
@@ -67,7 +66,7 @@
 <body>
 
 <div id="boot" role="status" aria-live="polite">
-  <img src="curvescout-mark-transparent.png" alt="">
+  <img src="assets/curvescout-mark-transparent.png" alt="">
   <h2>Pre-ride check</h2>
   <p id="bootMsg">Loading the road index…</p>
   <div class="bar"><i id="bootBar"></i></div>
@@ -78,7 +77,7 @@
 
 <header class="top">
   <div class="topIn">
-    <img class="mark" src="curvescout-mark-transparent.png" alt="">
+    <img class="mark" src="assets/curvescout-mark-transparent.png" alt="">
     <a class="word" href="#/">Curve<b>Scout</b></a>
     <button class="tbtn back" id="backTo" type="button" aria-label="Back to the board" hidden></button>
     <span class="spacer"></span>
@@ -140,7 +139,7 @@
     <div class="heroBg" id="heroBg" aria-hidden="true"></div>
     <div class="heroGrain" aria-hidden="true"></div>
     <div class="heroIn">
-      <img class="big" src="curvescout-mark-transparent.png" alt="CurveScout">
+      <img class="big" src="assets/curvescout-mark-transparent.png" alt="CurveScout">
       <h1><span class="l1">Find the road</span><span class="l2">worth the <b>ride</b></span></h1>
       <p class="tag">Find · Map · Master</p>
       <p class="heroSub">Tell us where you start. We rank the best motorcycle roads in reach and brief you on each one: weather on the way, fuel, passes and a roadbook.</p>
@@ -272,7 +271,7 @@
   </section>
 
   <a class="friend" href="https://www.cerebral.ch/" target="_blank" rel="noopener">
-    <img src="cerebral-local.svg" alt="Stiftung Cerebral logo">
+    <img src="assets/cerebral-local.svg" alt="Stiftung Cerebral logo">
     <div><b>Friend window</b><span>Stiftung Cerebral · mobility matters.</span></div>
     <strong>Visit</strong>
   </a>
@@ -451,6 +450,7 @@
   <!-- social:start -->
  <div class="footSocial"></div>
  <!-- social:end -->
+  <nav class="seoHubs" aria-label="Motorcycle roads by country"><h2>Best motorcycle roads by country</h2><p><a href="/rides/motorcycle-roads-argentina.html">Argentina</a> · <a href="/rides/motorcycle-roads-australia.html">Australia</a> · <a href="/rides/motorcycle-roads-austria.html">Austria</a> · <a href="/rides/motorcycle-roads-belgium.html">Belgium</a> · <a href="/rides/motorcycle-roads-brazil.html">Brazil</a> · <a href="/rides/motorcycle-roads-canada.html">Canada</a> · <a href="/rides/motorcycle-roads-chile.html">Chile</a> · <a href="/rides/motorcycle-roads-colombia.html">Colombia</a> · <a href="/rides/motorcycle-roads-france.html">France</a> · <a href="/rides/motorcycle-roads-germany.html">Germany</a> · <a href="/rides/motorcycle-roads-iceland.html">Iceland</a> · <a href="/rides/motorcycle-roads-india.html">India</a> · <a href="/rides/motorcycle-roads-ireland.html">Ireland</a> · <a href="/rides/motorcycle-roads-italy.html">Italy</a> · <a href="/rides/motorcycle-roads-japan.html">Japan</a> · <a href="/rides/motorcycle-roads-malaysia.html">Malaysia</a> · <a href="/rides/motorcycle-roads-mexico.html">Mexico</a> · <a href="/rides/motorcycle-roads-morocco.html">Morocco</a> · <a href="/rides/motorcycle-roads-netherlands.html">Netherlands</a> · <a href="/rides/motorcycle-roads-new-zealand.html">New Zealand</a> · <a href="/rides/motorcycle-roads-norway.html">Norway</a> · <a href="/rides/motorcycle-roads-pakistan.html">Pakistan</a> · <a href="/rides/motorcycle-roads-poland.html">Poland</a> · <a href="/rides/motorcycle-roads-portugal.html">Portugal</a> · <a href="/rides/motorcycle-roads-russia.html">Russia</a> · <a href="/rides/motorcycle-roads-south-africa.html">South Africa</a> · <a href="/rides/motorcycle-roads-south-korea.html">South Korea</a> · <a href="/rides/motorcycle-roads-spain.html">Spain</a> · <a href="/rides/motorcycle-roads-switzerland.html">Switzerland</a> · <a href="/rides/motorcycle-roads-taiwan.html">Taiwan</a> · <a href="/rides/motorcycle-roads-tanzania.html">Tanzania</a> · <a href="/rides/motorcycle-roads-thailand.html">Thailand</a> · <a href="/rides/motorcycle-roads-turkiye.html">Türkiye</a> · <a href="/rides/motorcycle-roads-united-kingdom.html">United Kingdom</a> · <a href="/rides/motorcycle-roads-united-states.html">United States</a> · <a href="/rides/motorcycle-roads-vietnam.html">Vietnam</a></p></nav>
   <p class="legalRow"><a href="https://curvescout.com/rides.html">All rides by country</a> · <a href="#/legal">Impressum</a> · <a href="#/legal">Terms, privacy, cookies and licences</a><span class="csPcSep" hidden> · </span><a href="#" id="csPrivacyChoices" hidden>Privacy choices</a> · <a href="about.html">About</a> · <span id="csFootNote">No account. Any ads (Google AdSense) load only after your choice in the consent dialog; CurveScout itself sets no tracking cookies. Town names near stops: <a href="https://www.geonames.org" rel="noopener">GeoNames</a> (CC BY 4.0). Saved rides stay in your browser. The welcome photographs come from Unsplash; maps, road lines, weather, places and photographs are fetched from the services named on the Terms page as you use them.</span></p>
   <div class="srcRow" style="margin-bottom:14px">
     <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>
@@ -471,13 +471,13 @@
   CurveScout.com curates route intelligence for planning. The rider on the road decides: posted signs, official closures and live weather always win over any app. Ride your own ride.
 </footer>
 
-<script src="leaflet.js"></script>
+<script src="assets/vendor/leaflet.js"></script>
 <!-- MapLibre GL and its Leaflet binding, served from our own domain. The basemap is vector
      (OpenFreeMap); every marker, popup, route line and editing handler above it stays Leaflet,
      so nothing anchored had to be reimplemented to get off the raster providers. -->
-<link rel="stylesheet" href="maplibre-gl.css">
-<script src="maplibre-gl.js"></script>
-<script src="leaflet-maplibre-gl.js"></script>
+<link rel="stylesheet" href="assets/vendor/maplibre-gl.css">
+<script src="assets/vendor/maplibre-gl.js"></script>
+<script src="assets/vendor/leaflet-maplibre-gl.js"></script>
 <script src="route-flags.js"></script>
 <script>window.CS_MODE="live"</script>
 <script src="config.js"></script>

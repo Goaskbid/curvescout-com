@@ -1,5 +1,5 @@
 /* CurveScout v2 - reinvented app. Vanilla JS, no build step.
-   Data: data/summary.json (index) + places.json (geocode) + data/routes/<region>.json (lazy). */
+   Data: data/summary.json (index) + data/places.json (geocode) + data/routes/<region>.json (lazy). */
 (function () {
 'use strict';
 
@@ -930,7 +930,8 @@ function boardLine(r, f) {
     bank.push(['mara_line', 'It opens and closes on a pass', f.firstPass + ' first, ' + f.lastPass + ' last']);
     bank.push(['mara_line', 'Ride it in order', f.firstPass + ' warms you up, ' + f.lastPass + ' asks for what is left']);
   }
-  if (f.duration && f.km) bank.push(['noor_brief', 'Give it the day', f.km + ' km and about ' + f.duration + ' in the saddle before a single stop']);
+  /* owner 2026-10-31: "make her shut up when there is nothing to say" - Noor speaks only with a real warning (cold at the
+     top, a day that is mostly getting there); a ride's length and time are already in its figures */
   /* ---- EVERY CARD CAN CARRY SOMETHING TRUE ----
      The bank used to be empty for most routes, so three cards in sixty spoke. These lines rest on
      facts every record holds: the shape of the ride, its length, its stops and the ground it
@@ -944,9 +945,6 @@ function boardLine(r, f) {
   if (f.stops >= 2) bank.push(['elise_stop', 'Break it at the stops', f.stops + ' checkpoints are on the roadbook with arrival times, so plan the day around them rather than stopping when you notice you should have']);
   /* the phrase bank carried the same altitude-only claim: height is where the road goes, not where
      the views are. It states the height and leaves the viewpoint to Kenji, who needs a named place */
-  if (f.high >= 600 && f.km) bank.push(['noor_brief', 'The high ground decides the day',
-    'it reaches ' + f.high + ' m, where the valley forecast stops describing what you will ride in - check the pass page before you commit to the climb']);
-  if (f.km && f.duration) bank.push(['noor_brief', 'Work back from the return', f.km + ' km and about ' + f.duration + ' riding means the deadline decides the start, not the other way round']);
   if (!bank.length) return null;
   const start = guideHash(r.i) % bank.length;
   for (let n = 0; n < bank.length; n++) {
@@ -1154,7 +1152,7 @@ let TEASER_RANGE = [55, 90];
    pose and its source links - and fall back to the template only where nothing better exists. */
 function editorialFor(routeId, surface) {
   try {
-    /* the standalone carries it in its payload; the hosted site fetches editorial.json */
+    /* the standalone carries it in its payload; the hosted site fetches data/editorial.json */
     const ed = (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.editorial) || (window.S && S.editorial) || null;
     if (!ed || !Array.isArray(ed.drafts)) return null;
     /* EDITORIAL-STATE-01 (audit 4312f23): a REJECTED collection or draft is never selected */
@@ -1165,7 +1163,7 @@ function editorialFor(routeId, surface) {
     const links = (d.source_ids || []).map(id => ({ id, url: (ed.sources || {})[id] })).filter(x => x.url);
     /* audit 2026-10-18 (CS-040): an explicit editorial state per draft - DRAFT, REVIEWED, APPROVED, REJECTED. Bundled is not
        approved: a draft is APPROVED only when its own state says so or the owner's approval register lists it
-       (editorial-approvals.json, ids "route_id/surface"). Rejected never shows; unapproved text is labelled as a draft
+       (data/editorial-approvals.json, ids "route_id/surface"). Rejected never shows; unapproved text is labelled as a draft
        wherever the page has room to say so. Nothing here grants approval. */
     const key = d.route_id + '/' + d.surface;
     const reg = (window.S && S.editorialApprovals) || null;
@@ -1179,9 +1177,9 @@ window.csEditorial = editorialFor;
    arrives the writers use the template, and a later paint picks the sourced text up */
 try {
   if (!window.CURVESCOUT_INLINE && typeof fetch === 'function')
-    window.__csEditorialReady = fetch('editorial.json').then(r => r.ok ? r.json() : null).then(j => {
+    window.__csEditorialReady = fetch('data/editorial.json').then(r => r.ok ? r.json() : null).then(j => {
       if (j && window.S) S.editorial = j;
-      try { fetch('editorial-approvals.json').then(r => r.ok ? r.json() : null).then(a => { if (a && window.S) S.editorialApprovals = a; }).catch(() => {}); } catch (e) {}
+      try { fetch('data/editorial-approvals.json').then(r => r.ok ? r.json() : null).then(a => { if (a && window.S) S.editorialApprovals = a; }).catch(() => {}); } catch (e) {}
       /* a route page drawn before the file arrived showed the fallback; if the page on screen has a
          sourced contribution, draw it again once, now that the text is here */
       try {
@@ -1251,17 +1249,11 @@ function writeCardTeaser(r, size) {
       cl.shape, cl.time, cl.height, cl.stops, cl.country, cl.terrain], TEASER_RANGE[0], TEASER_RANGE[1])]);
   /* height and a long day are facts the record actually holds, and they separate rides that share
      a shape. They rank above the shape line because they change what a rider decides. */
-  if (f.high >= 1500)
+  if (f.high >= 1800)
     out.push([3, 'noor_brief', 'altitude_warning', assembleTeaser([
       cl.height, 'Check the pass page before you commit to the climb and keep a warm layer where you can reach it',
       cl.time, cl.shape, cl.stops, cl.country, cl.terrain], TEASER_RANGE[0], TEASER_RANGE[1])]);
-  if (f.duration && km >= 250)
-    out.push([3, 'noor_brief', 'return_time', assembleTeaser([
-      cl.time, 'That is a full day out, so set the return deadline first and decide afterwards how much of it fits',
-      cl.shape, cl.height, cl.stops, cl.country, cl.terrain], TEASER_RANGE[0], TEASER_RANGE[1])]);
-  if (f.duration && km)
-    out.push([1, 'noor_brief', 'return_time',
-      km + ' km and about ' + f.duration + ' of riding before stops. Set the return deadline first, then decide whether the whole loop fits.']);
+  /* the return-deadline line said what the figures already say (owner 2026-10-31: Noor only when there is something to say) */
   if (!out.length) return null;
   /* strongest first; a stable tie-break by route id keeps the choice deterministic */
   const key = (() => { try { return guideHash(String(r && r.i)); } catch (e) { return 0; } })();
@@ -2669,7 +2661,7 @@ function csEnrichAltitude() { try {
 } catch (e) {} }
 async function loadCore(onStep) {
   /* owner 2026-10-17 ("smaller first index: ok"): the hosted site's archive no longer carries the whole ride index - it
-     boots from the split index (core.json, the fields every list, ranking and the trip planner read) and the
+     boots from the split index (data/index/core.json, the fields every list, ranking and the trip planner read) and the
      descriptions arrive per area. The portable single file still carries everything inline. */
   if (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.summary) {
     const inl = window.CURVESCOUT_INLINE;
@@ -2751,9 +2743,9 @@ async function loadCore(onStep) {
   /* the sourced editorial file is small and the first screens read it, so it arrives with the
      index rather than racing the first paint */
   const [core, pl] = await Promise.all([
-    wantSplit ? jget('core.json', 20000).then(v => { onStep(1, 2); return v; }).catch(() => null)
+    wantSplit ? jget('data/index/core.json', 20000).then(v => { onStep(1, 2); return v; }).catch(() => null)
               : Promise.resolve(null),
-    (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.places) ? Promise.resolve(window.CURVESCOUT_INLINE.places) : jget('places.json', 20000),
+    (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.places) ? Promise.resolve(window.CURVESCOUT_INLINE.places) : jget('data/places.json', 20000),
   ]);
   let sum = null;
   if (core && Array.isArray(core.rows) && Array.isArray(core.fields)) {
@@ -2979,10 +2971,10 @@ async function derivedRecipes() {
   if (DERIVED.tried) return DERIVED.map;
   DERIVED.tried = true;
   try {
-    /* a hosted build ships the recipes as buckets + derived-index.json (the whole file is over
+    /* a hosted build ships the recipes as buckets + data/derived-index.json (the whole file is over
        the 10 MiB file budget and is not deployed): never request derived.json when the index exists */
     let viaIndex = false;
-    if (location.protocol !== 'file:') { try { viaIndex = !!(await jget('derived-index.json', 8000)); } catch (e) { viaIndex = false; } }
+    if (location.protocol !== 'file:') { try { viaIndex = !!(await jget('data/derived-index.json', 8000)); } catch (e) { viaIndex = false; } }
     const j = viaIndex ? null : await jget('data/derived.json', 20000);
     for (const x of (j && j.recipes) || []) DERIVED.map.set(x.i, x);
   } catch (e) { /* no recipes reachable: the scouted archive still works */ }
@@ -3026,7 +3018,7 @@ async function derivedBucketFor(id) {
   if (!DERIVED_SHARDS.tried) {
     DERIVED_SHARDS.tried = true;
     try { DERIVED_SHARDS.idx = (location.protocol === 'file:' || window.CURVESCOUT_INLINE) ? null
-      : await Promise.resolve(jget('derived-index.json', 8000)); }
+      : await Promise.resolve(jget('data/derived-index.json', 8000)); }
     catch (e) { DERIVED_SHARDS.idx = null; }
   }
   const meta = DERIVED_SHARDS.idx;
@@ -3446,7 +3438,7 @@ async function geocode(q) {
   if (/^\s*[-+]?(\d[\d.eE+\-]*|nan|infinity)\s*[,;\s]\s*[-+]?(\d[\d.eE+\-]*|nan|infinity)\s*$/i.test(q)) throw csCoordError();
   const loc = localPlace(q); if (loc) return loc;
   /* ---- THE LOCAL GAZETTEER ANSWERS FIRST, AND USUALLY ANSWERS ----
-     cities.txt carries several hundred towns worldwide with coordinates and ships inside
+     data/cities.txt carries several hundred towns worldwide with coordinates and ships inside
      the build, so the common case never touches anybody's server. Public Nominatim is a
      LAST resort, it is off unless NET.geocoderEnabled is true, every answer is cached so a
      query is never repeated, and nothing the product needs depends on it: the rider can
@@ -6753,6 +6745,76 @@ const CS_TRIPS = (() => {
 })();
 if (typeof window !== 'undefined') window.CS_TRIPS = CS_TRIPS;
 
+/* ---- PLACES: 121,285 TOWNS AND 2,739 REGIONS, IN THEIR OWN NAMES (owner 2026-10-31: "many more cities and areas to select
+ * from including in the local latin name. Where is Greifswald?") ----
+ * The index is built by tools/build-place-index.mjs from GeoNames (CC BY 4.0) into data/places/. Nothing loads until it is
+ * needed: typing "Gr" fetches the one file for "gr" (a few hundred KB at most); naming the town near a point fetches its
+ * map tile. Every file is fetched once per visit. Works without any outside service, so a busy or blocked search server
+ * no longer means "No place found".
+ *   search(q)      rows for a typed name: exact first, then names that begin with it, then a word inside the name;
+ *                  "Zurich", "Zürich" and "Zuerich" all find Zürich; "Milano" finds Milan and says so
+ *   find(q)        the best single place for a submitted name ("Greifswald", "Greifswald, Germany", "Paris, Texas")
+ *   near(p, km)    the nearest town to a point (after tilesFor() has loaded its tile); nearAsync loads it first */
+const CS_PLACES = (() => {
+  const base = 'data/places/';
+  const url = f => { try { return window.CS_FLAT_URL ? window.CS_FLAT_URL(base + f) : base + f; } catch (e) { return base + f; } };
+  const fold = t => String(t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ß/g, 'ss').replace(/[øØ]/g, 'o').replace(/[æÆ]/g, 'ae').replace(/[łŁ]/g, 'l').replace(/[đĐ]/g, 'd').replace(/[^a-z0-9]+/g, ' ').trim();
+  /* "Zuerich", "Muenchen": the German way of typing an umlaut on a keyboard without one */
+  const unUml = f => f.replace(/ae/g, 'a').replace(/oe/g, 'o').replace(/ue/g, 'u');
+  let man = null; const files = new Map();
+  const get = f => { if (!files.has(f)) files.set(f, fetch(url(f)).then(r => { if (!r.ok) throw new Error(f + ' ' + r.status); return r.json(); }).catch(e => { files.delete(f); throw e; })); return files.get(f); };
+  const manifest = () => man || (man = get('places-manifest.json').catch(e => { man = null; throw e; }));
+  let regionNames = null;
+  const country = cc => { try { if (!regionNames && typeof Intl !== 'undefined' && Intl.DisplayNames) regionNames = new Intl.DisplayNames(['en'], { type: 'region' }); return regionNames ? regionNames.of(String(cc).toUpperCase()) : cc; } catch (e) { return cc; } };
+  const key = f => { const s = f.replace(/ /g, ''); const a = s.charAt(0), b = s.charAt(1) || 'a'; return /[a-z]/.test(a) ? a + (/[a-z]/.test(b) ? b : 'a') : '0a'; };
+  /* row: [name, cc, region, lat, lon, pop/100, alternate names | 0, 'r' for a region] */
+  const asPlace = (r, matched) => ({ id: 'gn:' + r[0] + ':' + r[3] + ',' + r[4], name: r[0], local: matched && fold(matched) !== fold(r[0]) ? matched : '', region: r[2] || '', country: country(r[1]), cc: String(r[1] || '').toUpperCase(),
+    kind: r[7] === 'r' ? 'region' : r[5] >= 1000 ? 'city' : 'town', lat: r[3], lon: r[4], pop: r[5] * 100, src: 'gn', place: true });
+  async function search(q, limit = 8) {
+    const raw = String(q || '').split(',')[0], want = fold(raw); if (want.length < 2) return [];
+    const ctx = fold(String(q || '').split(',').slice(1).join(' '));
+    let m; try { m = await manifest(); } catch (e) { return []; }
+    const keys = new Set([key(want)]); const w2 = unUml(want); if (w2 !== want) keys.add(key(w2));
+    const rows = []; for (const k of keys) { const f = m.prefix[k]; if (!f) continue; try { rows.push(...await get(f)); } catch (e) {} }
+    const out = [];
+    for (const r of rows) {
+      const names = [r[0]].concat(r[6] || []); let best = 0, hit = '';
+      for (const n of names) { const f = fold(n), fu = unUml(f); let s = 0;
+        if (f === want || fu === w2) s = 3; else if (f.startsWith(want) || fu.startsWith(w2)) s = 2; else if (want.length >= 3 && (' ' + f).includes(' ' + want)) s = 1;
+        if (s > best) { best = s; hit = n; } if (best === 3) break; }
+      if (!best) continue;
+      /* "Paris, Texas" / "Greifswald, Germany": what follows the comma narrows by region or country */
+      if (ctx && !fold(r[2] + ' ' + country(r[1]) + ' ' + r[1]).includes(ctx)) continue;
+      out.push({ r, best, hit: hit === r[0] ? '' : hit });
+    }
+    /* the name itself before a name it is also known by, then the bigger place - Greifswald before a hamlet of the same name */
+    out.sort((a, b) => b.best - a.best || (a.hit ? 1 : 0) - (b.hit ? 1 : 0) || b.r[5] - a.r[5]);
+    const seen = new Set(), res = [];
+    for (const x of out) { const id = x.r[0] + x.r[1] + Math.round(x.r[3] * 20) + Math.round(x.r[4] * 20); if (seen.has(id)) continue; seen.add(id); res.push(asPlace(x.r, x.hit)); if (res.length >= limit) break; }
+    return res;
+  }
+  async function find(q) { const r = await search(q, 3); if (!r.length) return null; const p = r[0];
+    return { lat: p.lat, lon: p.lon, label: p.name + (p.region && p.kind !== 'region' ? ', ' + p.region : '') + (p.country ? ', ' + p.country : ''), name: p.name, cc: p.cc, kind: p.kind }; }
+  /* ---- the town near a point ---- */
+  const tileKey = (la, lo) => (la >= 30 && la < 70 && lo >= -20 && lo < 50) ? 't' + Math.floor(la / 10) + '_' + Math.floor(lo / 10) : 'w' + Math.floor(la / 30) + '_' + Math.floor(lo / 30);
+  const tileRows = new Map();
+  async function tilesFor(points) { let m; try { m = await manifest(); } catch (e) { return false; } const need = new Set();
+    for (const p of points || []) { if (!p || !Number.isFinite(+p[0])) continue; for (const dl of [-0.3, 0, 0.3]) for (const dn of [-0.4, 0, 0.4]) need.add(tileKey(+p[0] + dl, +p[1] + dn)); }
+    await Promise.all([...need].filter(k => m.tiles.includes(k) && !tileRows.has(k)).map(k => get('twn-' + k + '.json').then(rows => { tileRows.set(k, rows); }).catch(() => {})));
+    return true; }
+  const R = Math.PI / 180, dist = (a, b) => { const dLa = (b[0] - a[0]) * R, dLo = (b[1] - a[1]) * R, x = Math.sin(dLa / 2) ** 2 + Math.cos(a[0] * R) * Math.cos(b[0] * R) * Math.sin(dLo / 2) ** 2; return 12742 * Math.asin(Math.min(1, Math.sqrt(x))); };
+  /* the nearest place that a rider would call "the town": a bigger town a little further away beats a hamlet next door */
+  function near(p, maxKm = 25) { if (!p || !tileRows.size) return null; let best = null, bs = Infinity; const done = new Set();
+    for (const dl of [-0.3, 0, 0.3]) for (const dn of [-0.4, 0, 0.4]) { const tk = tileKey(+p[0] + dl, +p[1] + dn), rows = tileRows.get(tk); if (!rows || done.has(tk)) continue; done.add(tk);
+      for (const r of rows) { if (Math.abs(r[1] - p[0]) > maxKm / 100 || Math.abs(r[2] - p[1]) > maxKm / 60) continue; const d = dist(p, [r[1], r[2]]); if (d > maxKm) continue;
+        const s = d / (1 + Math.log10(Math.max(1, r[3]))); if (s < bs) { bs = s; best = { name: r[0], lat: r[1], lon: r[2], pop: r[3] * 100, km: d }; } } }
+    return best; }
+  function hasTile(p) { return !!p && tileRows.has(tileKey(+p[0], +p[1])); }
+  async function nearAsync(p, maxKm) { await tilesFor([p]); return near(p, maxKm); }
+  return { search, find, near, nearAsync, tilesFor, hasTile, fold, _tiles: tileRows };
+})();
+if (typeof window !== 'undefined') window.CS_PLACES = CS_PLACES;
+
 /* ---- PLACE SUGGESTIONS AS YOU TYPE (owner 2026-10-13: "have a location suggestion to help find places with their
  * local names and differentiate places with same names") ----
  * "St. Petersburg" is a city in Russia and a city in Florida; "Санкт-Петербург" is what the Russian sign says. The box
@@ -6800,9 +6862,11 @@ const CS_SUGGEST = (() => {
     for (const r of loc) { const e = by.get(r.id); if (e) { if (fold(r.name) !== fold(e.name)) e.local = r.name; } else if (!rows.some(x => Math.abs(x.lat - r.lat) < 0.02 && Math.abs(x.lon - r.lon) < 0.02)) { by.set(r.id, r); rows.push(r); } }
     /* places first (towns, cities, passes), then streets and things; the app's own towns lead when they are the same place */
     const out = [];
-    for (const m of mine) { const twin = rows.find(x => Math.abs(x.lat - m.lat) < 0.08 && Math.abs(x.lon - m.lon) < 0.08); if (twin) { twin.src = 'cs+osm'; continue; } out.push(m); }
+    for (const m of mine) { const twin = rows.find(x => Math.abs(x.lat - m.lat) < 0.08 && Math.abs(x.lon - m.lon) < 0.08);
+      if (twin && m.src === 'gn') { const k = rows.indexOf(twin); rows.splice(k, 1); if (!m.region && twin.region) m.region = twin.region; out.push(m); continue; }
+      if (twin) { twin.src = 'cs+osm'; continue; } out.push(m); }
     rows.sort((a, b) => (b.place ? 1 : 0) - (a.place ? 1 : 0));
-    return out.concat(rows).slice(0, 8);
+    return out.slice(0, 6).concat(rows).slice(0, 8);
   }
   /* two rows with the same name are told apart by region and country - and by the kind when even those agree */
   function sub(r, all) {
@@ -6826,18 +6890,23 @@ const CS_SUGGEST = (() => {
     const paint = (note) => {
       if (!rows.length) { if (note) { box.innerHTML = '<li class="csSugNote">' + esc(note) + '</li>'; box.hidden = false; } else close(); return; }
       box.innerHTML = rows.map((r, i) => '<li role="option" id="' + box.id + i + '" class="csSugRow' + (i === act ? ' on' : '') + '" data-i="' + i + '" aria-selected="' + (i === act) + '"><span class="csSugF">' + flag(r.cc) + '</span><span class="csSugT"><b>' + esc(r.name) + '</b><small>' + esc(sub(r, rows)) + '</small></span></li>').join('') +
-        (rows.some(r => r.src !== 'cs') ? '<li class="csSugCredit">Places © OpenStreetMap · search by Photon</li>' : '');
+        (rows.some(r => r.src === 'osm' || r.src === 'cs+osm') ? '<li class="csSugCredit">Places © OpenStreetMap · search by Photon</li>' : rows.some(r => r.src === 'gn') ? '<li class="csSugCredit">Places © GeoNames</li>' : '');
       box.hidden = false; input.setAttribute('aria-expanded', 'true');
       box.querySelectorAll('[data-i]').forEach(li => { li.onpointerdown = ev => { ev.preventDefault(); }; li.onclick = () => pick(+li.dataset.i); });
     };
     const pick = i => { const r = rows[i]; if (!r) return; input.value = r.name + (r.country && r.src !== 'cs' ? ', ' + (r.region && rows.filter(x => fold(x.name) === fold(r.name)).length > 1 ? r.region + ', ' : '') + r.country : ''); close(); try { onPick({ lat: r.lat, lon: r.lon, label: input.value, name: r.name, local: r.local, country: r.country, cc: r.cc, kind: r.kind }); } catch (e) {} };
     const run = async q => {
-      const my = ++seq; const mine = local(q); rows = mine.slice(0, 6); act = -1; paint();
+      const my = ++seq; let mine = local(q); rows = mine.slice(0, 6); act = -1; paint();
+      /* the place index (121,285 towns and the regions, in their own names) answers next, without any outside service */
+      try { if (typeof CS_PLACES !== 'undefined') { const gn = await CS_PLACES.search(q, 8); if (my !== seq) return;
+        const twin = (a, b) => Math.abs(a.lat - b.lat) < 0.05 && Math.abs(a.lon - b.lon) < 0.05;
+        mine = mine.filter(m => m.kind === 'pass' || !gn.some(g => twin(g, m))).concat(gn).slice(0, 10);
+        mine.sort((a, b) => (fold(b.name) === fold(q) ? 1 : 0) - (fold(a.name) === fold(q) ? 1 : 0)); rows = mine.slice(0, 8); paint(); } } catch (e) {}
       if (q.length < 3 || /^-?\d/.test(q)) return;
       try { if (ctl) ctl.abort(); } catch (e) {} ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
       try { const [en, loc] = await Promise.all([photon(q, 'en', ctl && ctl.signal), photon(q, '', ctl && ctl.signal).catch(() => [])]);
         if (my !== seq) return; rows = merge(en, loc, mine); paint(rows.length ? '' : 'No place found - try the local spelling or coordinates like 59.94, 30.31.'); }
-      catch (e) { if (my !== seq || (e && e.name === 'AbortError')) return; if (!rows.length) paint('Place search is not answering - use My location or coordinates.'); }
+      catch (e) { if (my !== seq || (e && e.name === 'AbortError')) return; if (!rows.length) paint('No place found - try the local spelling or coordinates like 59.94, 30.31.'); }
     };
     input.addEventListener('input', () => { clearTimeout(t); const q = input.value.trim(); if (q.length < 2) { rows = []; close(); return; } t = setTimeout(() => run(q), 320); });
     input.addEventListener('keydown', ev => {
@@ -6851,6 +6920,7 @@ const CS_SUGGEST = (() => {
   /* the first good answer for a typed name, for a form submitted without picking (gazetteer first, then Photon) */
   async function resolve(q) {
     const mine = local(q); if (mine.length && fold(mine[0].name) === fold(q)) return { lat: mine[0].lat, lon: mine[0].lon, label: mine[0].name };
+    try { if (typeof CS_PLACES !== 'undefined') { const g = await CS_PLACES.find(q); if (g) return g; } } catch (e) {}
     try { const en = await photon(q, 'en'); const r = en.find(x => x.place) || en[0]; if (r) return { lat: r.lat, lon: r.lon, label: r.name + (r.country ? ', ' + r.country : '') }; } catch (e) {}
     return mine[0] ? { lat: mine[0].lat, lon: mine[0].lon, label: mine[0].name } : null;
   }
@@ -7221,7 +7291,10 @@ function tripPassAlt(r) {
 /* audit 2026-10-11: "Stay somewhere else" offered Ägelmoos, Sumpf, Halbinsel, Seematte - field and marsh names, not places with beds */
 const TRIP_NOT_A_TOWN = /(see|weiher|strandbad|hörnle|hornle|horn|moos|matte|sumpf|tobel)$|strandbad|^(halbinsel|sumpf|moos|allmend)\b|\b(lake|lac|lago|loch|insel|island|isle|beach|strand|bay|bucht|falls?|wasserfall|gorge|glacier|gletscher|camping|lido|plage|spiaggia|playa|halbinsel|peninsula|parco|park|parc|parque|riserva|reserve|réserve|naturschutz|oasi|bosco|forest|forêt|museo|museum|castello|castle|abbazia|abbey|monastero|monastery|santuario|sanctuary|chiesa|church|stazione|station|aeroporto|airport)\b/i;
 function tripPinLabel(la, lo) { return 'your pin (' + (+la).toFixed(2) + ', ' + (+lo).toFixed(2) + ')'; }
-function tripTownNear(at, maxKm) { let best = null, bd = maxKm || 30; try { for (const t of gazetteer()) { if (TRIP_NOT_A_TOWN.test(t.name)) continue; if (Math.abs(t.la - at[0]) > 0.5 || Math.abs(t.lo - at[1]) > 0.8) continue; const k = CS_TRIPS._dist(at, [t.la, t.lo]); if (k < bd) { bd = k; best = t; } } } catch (e) {} return best ? best.name : ''; }
+/* the town near a point: the place index (121,285 towns) once its map tile is loaded, else the app's own town list */
+const TRIP_TOWN_PT = new Map();
+function tripTownNear(at, maxKm) { try { if (at && typeof CS_PLACES !== 'undefined' && CS_PLACES.hasTile(at)) { const n = CS_PLACES.near(at, maxKm || 30); if (n) { TRIP_TOWN_PT.set(n.name, [n.lat, n.lon]); return n.name; } } } catch (e) {}
+  let best = null, bd = maxKm || 30; try { for (const t of gazetteer()) { if (TRIP_NOT_A_TOWN.test(t.name)) continue; if (Math.abs(t.la - at[0]) > 0.5 || Math.abs(t.lo - at[1]) > 0.8) continue; const k = CS_TRIPS._dist(at, [t.la, t.lo]); if (k < bd) { bd = k; best = t; } } } catch (e) {} return best ? best.name : ''; }
 function tripFindPlace(q) {
   const co = String(q).match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/);
   if (co && Math.abs(+co[1]) <= 90 && Math.abs(+co[2]) <= 180) { const at = [+co[1], +co[2]]; const town = tripTownNear(at, 15); return { lat: at[0], lon: at[1], label: town ? 'near ' + town : tripPinLabel(at[0], at[1]) }; }
@@ -7232,7 +7305,7 @@ function tripFindPlace(q) {
   if (core.length >= 4) { const hit = tripPasses().find(p => { const pf = tripFold(p.n), pc = pf.replace(TRIP_GENERIC, ' ').replace(/\s+/g, ' ').trim();
       return pf === want || pc === core || pc.split(' ').includes(core) || pf.startsWith(want) || pc.startsWith(core); });
     if (hit) return { lat: +hit.at[0], lon: +hit.at[1], label: hit.n, pass: core || want }; }
-  if (want.length >= 3) { const pre = gz.find(t => tripFold(t.name).startsWith(want)); if (pre) return { lat: pre.la, lon: pre.lo, label: pre.name }; }
+  if (want.length >= 3) { const pre = gz.find(t => tripFold(t.name).startsWith(want)); if (pre) return { lat: pre.la, lon: pre.lo, label: pre.name, prefixOnly: true }; }
   return null;
 }
 function tripPlaceList() { if (document.getElementById('tripPlaces')) return;
@@ -7337,7 +7410,7 @@ function tripPaint() {
     if (!typed) { msg.textContent = 'Choose a start: type a town or a pass, or use My location.'; $('tripStart').focus(); return; }
     if (f.from && f.to && f.to < f.from) { msg.textContent = 'The end date is before the start date.'; return; }
     if (typed !== f.label) { msg.textContent = 'Looking up ' + typed + '…';
-      try { let g = tripFindPlace(typed); if (!g) { try { g = await geocode(typed); } catch (e) { g = null; } if (Array.isArray(g)) g = g[0] ? { lat: +g[0].lat, lon: +g[0].lon, label: g[0].display_name } : null; }
+      try { let g = tripFindPlace(typed); if (!g || g.prefixOnly) { try { const pi = await CS_PLACES.find(typed); if (pi) g = pi; } catch (e) {} } if (!g) { try { g = await geocode(typed); } catch (e) { g = null; } if (Array.isArray(g)) g = g[0] ? { lat: +g[0].lat, lon: +g[0].lon, label: g[0].display_name } : null; }
         if (!g) { try { g = await CS_SUGGEST.resolve(typed); } catch (e) { g = null; } }
         if (!g || !Number.isFinite(+g.lat) || !Number.isFinite(+g.lon)) throw new Error('not found'); f.start = [+g.lat, +g.lon]; f.label = g.label || typed; $('tripStart').value = f.label;
         /* audit 2026-10-11: a start typed as a pass ("Stelvio") never put that pass in the trip. The best scouted ride
@@ -7353,7 +7426,7 @@ function tripPaint() {
     if (f.mode === 'a2b') { const dt = ($('tripDest').value || '').trim();
       if (!dt) { msg.textContent = 'Where does the trip end? Type the destination (B).'; $('tripDest').focus(); return; }
       if (dt !== f.destLabel || !f.dest) { msg.textContent = 'Looking up ' + dt + '…';
-        let g = null; try { g = tripFindPlace(dt) || await CS_SUGGEST.resolve(dt); } catch (e) {}
+        let g = null; try { g = tripFindPlace(dt); if (!g || g.prefixOnly) g = (await CS_PLACES.find(dt)) || g || await CS_SUGGEST.resolve(dt); } catch (e) {}
         if (!g) { msg.textContent = 'No place called ' + dt + ' was found. Pick the destination from the suggestions as you type.'; return; }
         f.dest = [+g.lat, +g.lon, g.label || dt]; f.destLabel = g.label || dt; $('tripDest').value = f.destLabel; }
       if (CS_TRIPS._dist(f.start, f.dest) < 25) { msg.textContent = 'A and B are only ' + Math.round(CS_TRIPS._dist(f.start, f.dest)) + ' km apart - choose "Around one base" for loops from one place.'; return; } }
@@ -7378,6 +7451,8 @@ function tripScrollTo(el) { if (!el) return; scrollTo({ top: Math.max(0, el.getB
 function tripResult() {
   const out = $('tripOut'), plan = TRIP.plan, o = TRIP.opts; if (!out || !plan) return;
   try { csNeedCards(tripRealRoutes(plan), () => { if (TRIP.plan === plan && $('tripOut')) tripResult(); }); } catch (e) {}
+  /* the real town names: once the place tiles for this trip are in, the page is drawn again with them (once per plan) */
+  if (!plan._places) { plan._places = 1; tripPlacesReady(plan).then(() => { if (TRIP.plan === plan && $('tripOut')) { const y = scrollY; tripResult(); scrollTo(0, y); } }); }
   /* fewer days than asked: offer the change that gives more, if there is one */
   TRIP.partialFix = null;
   if (plan.days.length && plan.days.length < o.days && o.mode === 'base') { const t = CS_TRIPS.compose(tripRoutes(), Object.assign({}, o, { mode: 'tour', radius: 80 }));
@@ -7421,12 +7496,12 @@ function tripResult() {
       (plan.transferKm > 10 ? ' · plus <b id="tripXTot">about ' + plan.transferKm + ' km</b> of transfers' : '') + '</p>' +
     (plan.warnings.length ? '<p class="tripWarn">' + esc(plan.warnings[0]) + (TRIP.partialFix ? ' <button type="button" class="tripWarnBtn" id="tripPartialFix">' + esc(TRIP.partialFix.label) + '</button>' : '') + '</p>' : '') +
     tripVerdictHtml(plan) + tripVariantsHtml(plan) +
-    tripStatsHtml(plan) + tripRaHtml(plan) + tripRibbonHtml(plan) +
+    tripStatsHtml(plan) + tripRaHtml(plan) + tripRibbonHtml(plan) + tripOverviewHtml(plan) +
     '<div class="tripBody"><div class="tripMapWrap"><div class="tripMap" id="tripMap"></div><button type="button" class="tripPlay" id="tripPlay" aria-label="Play the trip on the map">▶ Play trip</button><div class="tripCap" id="tripCap" hidden></div></div>' +
     '<div class="tripDays">' + plan.days.map((d, i) => tripDayCard(d, i)).join('') + '</div></div>' +
     '<div class="tripActs"><button type="button" class="primary" id="tripShare">Share this trip</button><a class="ghost2" id="tripMail" href="#">✉ Email to a friend</a><button type="button" class="ghost2" id="tripGpx">⬇ GPX, all days</button><button type="button" class="ghost2" id="tripSave">☆ Save trip</button></div>' +
     '<details class="tripFineD"><summary>How the times, distances and stops are worked out</summary><p class="tripFine">Routes, distances and riding times come from CurveScout’s scouted rides. Transfers (from your bed to where a ride begins, and from where it ends to the next bed) start as estimates marked "about" and are replaced by the routed road when the router answers. Clock times assume a 09:00 start and short stops. Places to stay and eat are from OpenStreetMap: no prices, availability or opening hours are promised - check before you go. Road and pass conditions change; posted signs and official closures always win. Per stop: heights and passes come from the ride’s checkpoints and the app’s pass list; a town named beside a stop is a GeoNames place of 1,000 people or more (a name to find on the map, not a promise of fuel - the stations actually mapped are on each ride page); World Heritage text is UNESCO’s own description; rider meets are listed with their published dates or, where none are published, the month they usually run; sunset is calculated for the date and place; what is around each stop is Wikipedia’s own list of articles nearby, linked to the article (CC BY-SA) and fetched only when you open that day.</p></details></section>';
-  tripWire(); tripDrawMap(); tripDayPhotos(plan);
+  tripWire(); tripOvWire(); tripAddWire(); tripDrawMap(); tripDayPhotos(plan);
   /* the stops of each day: the open day first, the rest one after another (their rides are the ones the map loads anyway) */
   (async () => { const order = plan.days.map((_, i) => i); for (const i of order) { if (TRIP.plan !== plan) return; try { await tripBookFill(i); } catch (e) {} } })();
 }
@@ -7528,11 +7603,12 @@ function tripDayCard(d, i) {
     (travel ? '' : (() => { try { const rid = CS_RA.status(parentId) === 'r'; return '<p class="tripDayRa">' + CS_RA.cardBadge(r) + '<button type="button" class="tripRode' + (rid ? ' on' : '') + '" data-rode="' + i + '" aria-pressed="' + rid + '">' + (rid ? '✓ Ridden' : '✓ I rode this day') + '</button></p>'; } catch (e) { return ''; } })()) +
     '<p class="tripPath" id="tripPath' + i + '">' + (roads.length ? roads.slice(0, 4).map(x => esc(x.n)).join(' <i>→</i> ') : '&nbsp;') + '</p>' +
     '<figure class="tripPic" id="tripPic' + i + '" hidden></figure>' +
-    '<details class="tripBook" data-book="' + i + '"' + (i === 0 ? ' open' : '') + '><summary><span class="tbT">Stop by stop</span><span class="tbS" id="tripBookSum' + i + '">' + tripClock(9 * 60) + ' →</span></summary>' +
+    '<details class="tripBook" data-book="' + i + '"><summary><span class="tbT">Stop by stop</span><span class="tbS" id="tripBookSum' + i + '">' + tripClock(9 * 60) + ' →</span></summary>' +
       tripSchedHtml(d, i, null) + '<p class="tripRoads" id="tripRoadsLeft' + i + '" hidden></p></details>' +
     '<p class="tripRoadSt" id="tripRoad' + i + '">Loading the road line…</p>' +
     '<div class="tripBtns">' + (travel ? '' : combo ? combo.parents.map((id, k) => '<a class="ghost2" href="#/ride/' + encodeURIComponent(id) + '">' + (k ? 'View the second road' : 'View the first road') + '</a>').join('') : '<a class="ghost2" href="#/ride/' + encodeURIComponent(parentId) + '">' + (cut ? 'View the whole ride' : 'View ride') + '</a>') + '<button type="button" class="ghost2" data-rep="' + i + '">⇄ Replace</button><button type="button" class="ghost2" data-gpx="' + i + '">⬇ GPX</button></div>' +
     '<div class="tripAlt" id="tripAlt' + i + '" hidden></div>' +
+    (travel ? '' : '<details class="tripAdd" data-add="' + i + '"><summary>＋ Add to this day: passes, sights, short rides nearby</summary><div class="tripAddBody"></div></details>') +
     (hideStay ? '' : '<details class="tripStay" data-stay="' + i + '"><summary>🛏 ' + nightLabel + ownN + ': places to stay and eat</summary><div class="tripStayBody">Opening…</div></details>') + '</article>';
 }
 /* the ride's own line, and the reason it was picked only where the stops do not already say it ("rides Furka Pass and
@@ -7551,7 +7627,10 @@ function tripLeadHtml(d) {
 function tripStops(min) { return Math.round(min / 90) * 15 + (min > 240 ? 45 : 0); }
 function tripClock(m) { m = Math.round(m); return String(Math.floor(m / 60) % 24).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); }
 function tripPlaceName(at, fallback) { const t = at ? tripTownNear(at, 12) : ''; return t ? (CS_TRIPS._dist(at, tripPlacePt(t) || at) < 2 ? t : 'near ' + t) : fallback; }
-function tripPlacePt(name) { try { const g = gazetteer().find(x => x.name === name); return g ? [g.la, g.lo] : null; } catch (e) { return null; } }
+function tripPlacePt(name) { if (TRIP_TOWN_PT.has(name)) return TRIP_TOWN_PT.get(name); try { const g = gazetteer().find(x => x.name === name); return g ? [g.la, g.lo] : null; } catch (e) { return null; } }
+/* the map tiles of the place index for every point of a plan, so days and nights are named by their real towns */
+async function tripPlacesReady(plan) { try { if (typeof CS_PLACES === 'undefined' || !plan) return; const pts = []; (plan.days || []).forEach(d => { [d.start, d.finish, d.night].forEach(p => p && pts.push(p)); (d.route && d.route.wp || []).forEach(q => pts.push(Array.isArray(q) ? q : [q.a ?? q.lat, q.o ?? q.lon])); });
+  await Promise.race([CS_PLACES.tilesFor(pts), new Promise(r => setTimeout(r, 2500))]); } catch (e) {} }
 function tripDur(m) { m = Math.round(+m || 0); return m < 60 ? m + ' min' : tripFmtMin(m); }
 function tripXfText(x) { return x.km ? (x.routed ? x.km + ' km · ' + tripDur(x.min) + ' (routed)' : 'about ' + x.km + ' km · ' + tripDur(x.min)) : 'right there'; }
 /* ---- CORRIDOR WORKAROUND (owner 2026-10-24: the J3 corridor rides are not coming) ----
@@ -7816,7 +7895,7 @@ function tripWire() {
       const host = b.closest('.tripDayRa'); try { const rid = CS_RA.status(d.id) === 'r'; host.innerHTML = CS_RA.cardBadge(d.route) + '<button type="button" class="tripRode' + (rid ? ' on' : '') + '" data-rode="' + i + '" aria-pressed="' + rid + '">' + (rid ? '✓ Ridden' : '✓ I rode this day') + '</button>'; } catch (e) {}
       const bar = $('tripRa'); if (bar) bar.outerHTML = tripRaHtml(pl); }); } }
   document.querySelectorAll('[data-gpx]').forEach(b => b.onclick = async () => { const d = plan.days[+b.dataset.gpx];
-    try { const full = await loadFull(d.id); downloadGPX(full); } catch (e) { flash('This ride could not be loaded for the GPX.'); } });
+    try { const full = await loadFull(d.id); downloadGPX(tripGpxWithAdds(full, +b.dataset.gpx)); } catch (e) { flash('This ride could not be loaded for the GPX.'); } });
   /* a phone shows one day's stops at a time: opening one folds the others, and the opened day comes to the top */
   TRIP.bookArmed = Date.now() + 700;
   document.querySelectorAll('.tripBook').forEach(dt => dt.addEventListener('toggle', () => { if (!dt.open || Date.now() < TRIP.bookArmed) return; const i = +dt.dataset.book;
@@ -8172,7 +8251,7 @@ async function tripCardCanvas(plan) {
   /* fade from the map into the page, logo and title over it */
   const gr = x.createLinearGradient(0, MH - 260, 0, MH); gr.addColorStop(0, 'rgba(11,12,14,0)'); gr.addColorStop(1, 'rgba(11,12,14,1)'); x.fillStyle = gr; x.fillRect(0, MH - 260, W, 260);
   const top = x.createLinearGradient(0, 0, 0, 150); top.addColorStop(0, 'rgba(11,12,14,0.85)'); top.addColorStop(1, 'rgba(11,12,14,0)'); x.fillStyle = top; x.fillRect(0, 0, W, 150);
-  const logo = await tripImg('curvescout-mark-transparent.png', false);
+  const logo = await tripImg('assets/curvescout-mark-transparent.png', false);
   if (logo) { try { x.drawImage(logo, 40, 34, 64, 59); } catch (e) {} }
   if (TRIP._cardTiles) { x.font = F('400', 17, 'Arial, sans-serif'); x.fillStyle = 'rgba(255,255,255,0.8)'; x.textAlign = 'right'; x.textBaseline = 'alphabetic'; x.fillText('Map © OpenStreetMap contributors', W - 30, 70); }
   x.textAlign = 'left'; x.textBaseline = 'alphabetic'; x.font = F('800 italic', 40); x.fillStyle = '#fff'; x.fillText('CURVE', 118, 80); const wC = x.measureText('CURVE').width; x.fillStyle = '#e11b2b'; x.fillText('SCOUT', 118 + wC, 80);
@@ -8283,14 +8362,104 @@ async function tripMailBox(plan, m) {
   };
   if ($('tmbSave')) $('tmbSave').onclick = () => { const a = document.createElement('a'); a.href = data; a.download = (file && file.name) || 'curvescout-trip.jpg'; document.body.appendChild(a); a.click(); setTimeout(() => a.remove(), 500); };
 }
+/* ---- THE TRIP AT A GLANCE, FIRST (owner 2026-10-31: "dont immediately show me the roadbook with every trip details but an
+   overview section first, so i can better evaluate and change daytrips") ----
+   One compact tile per day: what it is, how long, how high, from where to where - and the three things you do with a day
+   right there: open its details, change it, add to it. The stop-by-stop roadbook stays folded until asked for. */
+/* a day's own name: "Hamburg · Travemünde Bay and Old Holstein Roads" is a Travemünde day from the Hamburg collection -
+   the overview showed "Hamburg" three days running (owner 2026-10-31) */
+function tripShortTitle(t) { return String(t || '').split(' + ').map(x => { const parts = x.split(' · '); return parts.length > 1 && parts[0].split(' ').length <= 2 ? parts.slice(1).join(' · ') : x; }).join(' + '); }
+function tripOverviewHtml(plan) {
+  const o = TRIP.opts;
+  return '<section class="tripOv" aria-label="Your days at a glance"><h3 class="tripOvH">Your days at a glance</h3><div class="tripOvGrid">' + plan.days.map((d, i) => {
+    const r = d.route, date = o.from ? tripDate(o.from, i) : null, hi = CS_TRIPS.altOf(r, o), adds = tripAddsOf(i);
+    const nm = p => { const t = p ? tripTownNear(p, 25) : ''; return t || ''; };
+    const a = nm(d.start), b = nm(d.finish || d.night);
+    const title = r.travel ? 'Travel day' : tripShortTitle(r.t);
+    return '<article class="tripOvDay" style="--c:' + TRIP_COL[i % TRIP_COL.length] + '"><div class="tripOvTop"><span class="tripOvN">' + (i + 1) + '</span><span class="tripOvD">' + (date ? esc(tripDayLabel(date)) : 'Day ' + (i + 1)) + '</span></div>' +
+      '<h4>' + esc(title) + '</h4><p class="tripOvF"><b>' + Math.round(d.km + adds.km) + ' km</b> · ' + tripFmtMin(d.minutes + adds.min) + (hi ? ' · ' + Math.round(hi) + ' m' : '') + '</p>' +
+      (a || b ? '<p class="tripOvW">' + esc(a || 'start') + ' → ' + esc(b || 'night') + '</p>' : '') +
+      (adds.n ? '<p class="tripOvA">＋ ' + adds.n + ' added stop' + (adds.n > 1 ? 's' : '') + '</p>' : '') +
+      '<div class="tripOvB"><button type="button" data-ovgo="' + i + '">Details</button><button type="button" data-ovrep="' + i + '">⇄ Change</button><button type="button" data-ovadd="' + i + '">＋ Add</button></div></article>'; }).join('') + '</div></section>';
+}
+function tripOvWire() {
+  const card = i => document.querySelector('.tripDay[data-i="' + i + '"]');
+  document.querySelectorAll('[data-ovgo]').forEach(b => b.onclick = () => { const i = +b.dataset.ovgo, c = card(i); if (!c) return; const bk = c.querySelector('.tripBook'); if (bk) bk.open = true; tripScrollTo(c); });
+  document.querySelectorAll('[data-ovrep]').forEach(b => b.onclick = () => { const i = +b.dataset.ovrep, c = card(i); if (!c) return; const box = $('tripAlt' + i); if (box && box.hidden) { const rb = c.querySelector('[data-rep="' + i + '"]'); if (rb) rb.click(); } tripScrollTo(box || c); });
+  document.querySelectorAll('[data-ovadd]').forEach(b => b.onclick = () => { const i = +b.dataset.ovadd, c = card(i); if (!c) return; const ad = c.querySelector('.tripAdd'); if (ad) { ad.open = true; tripScrollTo(ad); } });
+}
+/* ---- ADD TO THIS DAY (owner 2026-10-31: "at the end of every trip we need again many more options re what can be added
+   to the daytrip") ----
+   Passes within reach, sights along the way (Wikipedia, linked), short scouted rides that start near the day's road.
+   Each says what it adds in distance and time; "Add" puts it into the day (figures, overview, GPX), "✕" takes it out.
+   Kept in this browser per day ride, so a reload or a shared plan from this device keeps them. */
+const TRIP_ADDS_KEY = 'cs_tripadds';
+function tripAddsStore() { try { return JSON.parse(localStorage.getItem(TRIP_ADDS_KEY) || '{}') || {}; } catch (e) { return {}; } }
+function tripAddsKey(i) { const pl = TRIP.plan; return csCpHashTrip(pl.days.map(x => x.id).join('|') + '|' + JSON.stringify((pl.opts || {}).start || '')) + ':' + pl.days[i].id + '@' + i; }
+function csCpHashTrip(s) { let h = 0x811c9dc5; for (let k = 0; k < s.length; k++) { h ^= s.charCodeAt(k); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36); }
+function tripAddsList(i) { const d = TRIP.plan && TRIP.plan.days[i]; if (!d) return []; const k = tripAddsKey(i); const mem = (TRIP.adds = TRIP.adds || {}); if (!mem[k]) mem[k] = tripAddsStore()[k] || []; return mem[k]; }
+function tripAddsSave(i) { const k = tripAddsKey(i); try { const s = tripAddsStore(); if ((TRIP.adds[k] || []).length) s[k] = TRIP.adds[k]; else delete s[k]; localStorage.setItem(TRIP_ADDS_KEY, JSON.stringify(s)); } catch (e) {} }
+function tripAddsOf(i) { const l = tripAddsList(i); return { n: l.length, km: l.reduce((a, x) => a + (x.km || 0), 0), min: l.reduce((a, x) => a + (x.min || 0), 0) }; }
+function tripDayLine(d) { let w = d.route && d.route.wp; if (typeof w === 'string') { try { w = JSON.parse(w); } catch (e) { w = []; } }
+  return [d.start].concat((w || []).filter(p => Array.isArray(p)).map(p => [+p[0], +p[1]])).concat([d.finish || d.night]).filter(p => Array.isArray(p) && Number.isFinite(+p[0])); }
+function tripOffLine(line, p) { let best = Infinity, at = 0; for (let k = 0; k < line.length; k++) { const dd = CS_TRIPS._dist(line[k], p); if (dd < best) { best = dd; at = k; } }
+  /* checkpoints are far apart: also measure to the middle of each leg */
+  for (let k = 1; k < line.length; k++) { const m = [(line[k - 1][0] + line[k][0]) / 2, (line[k - 1][1] + line[k][1]) / 2], dd = CS_TRIPS._dist(m, p); if (dd < best) { best = dd; at = k; } }
+  return { km: best, at }; }
+async function tripAddCandidates(i) {
+  const d = TRIP.plan.days[i], line = tripDayLine(d); if (line.length < 2) return [];
+  const had = new Set(tripAddsList(i).map(x => x.n)), out = [], seen = new Set();
+  const push = x => { const k = x.n.toLowerCase(); if (seen.has(k) || had.has(x.n)) return; seen.add(k); out.push(x); };
+  const ridden = String((d.route.t || '') + ' ' + (d.route.ic || []).map(x => x && x.n).join(' ')).toLowerCase();
+  /* passes the day does not already ride, within 25 km of its road */
+  for (const p of tripPasses()) { const o = tripOffLine(line, p.at); if (o.km > 25 || o.km < 2) continue; const core = String(p.n).toLowerCase().replace(/\b(pass|passo|col|colle|de|du|del|la|le|joch|sattel|puerto|paso)\b/g, '').trim();
+    if (core.length > 2 && ridden.indexOf(core) >= 0) continue; const km = Math.max(4, Math.round(o.km * 2 * 1.3)); push({ kind: 'pass', n: p.n, at: p.at, km, min: Math.round(km / 45 * 60) + 10, what: (p.alt ? p.alt.toLocaleString('en-GB') + ' m pass' : 'mountain pass') + (p.season && !/generally open/i.test(p.season) ? ' · ' + p.season : '') }); }
+  /* sights near the start, the middle and the finish */
+  const pts = [line[0], line[Math.floor(line.length / 2)], line[line.length - 1]];
+  const lists = await Promise.all(pts.map(p => tripWikiNear(p).catch(() => [])));
+  lists.flat().forEach(x => { if (!Number.isFinite(x.la)) return; const o = tripOffLine(line, [x.la, x.lo]); if (o.km > 12) return; const km = Math.max(1, Math.round(o.km * 2 * 1.3));
+    push({ kind: 'sight', n: x.t, at: [x.la, x.lo], km, min: Math.round(km / 40 * 60) + 25, what: x.d, img: x.img || null, url: 'https://en.wikipedia.org/wiki/' + encodeURIComponent(String(x.t).replace(/ /g, '_')) }); });
+  /* short scouted rides that begin near the day's road and are not in the plan */
+  const inPlan = new Set(TRIP.plan.days.map(x => x.id));
+  for (const r of tripRoutes()) { if (inPlan.has(r.i) || !(+r.km > 0 && +r.km <= 70)) continue; let w = r.wp; if (typeof w === 'string') { try { w = JSON.parse(w); } catch (e) { continue; } }
+    if (!Array.isArray(w) || !w[0]) continue; const o = tripOffLine(line, [+w[0][0], +w[0][1]]); if (o.km > 10) continue;
+    push({ kind: 'ride', n: String(r.t || '').split(' · ')[0], at: [+w[0][0], +w[0][1]], km: Math.round(+r.km + o.km * 2), min: Math.round((+r.mn || +r.km * 1.3) + o.km * 2 * 1.4), what: 'scouted ride, ' + Math.round(+r.km) + ' km', rid: r.i });
+    if (out.filter(x => x.kind === 'ride').length >= 4) break; }
+  const order = { pass: 0, sight: 1, ride: 2 }; return out.sort((a, b) => order[a.kind] - order[b.kind] || a.km - b.km).slice(0, 14);
+}
+function tripAddPaint(i) {
+  const box = document.querySelector('.tripAdd[data-add="' + i + '"]'); if (!box) return; const body = box.querySelector('.tripAddBody'), list = tripAddsList(i), sum = tripAddsOf(i);
+  const icon = k => k === 'pass' ? '⛰' : k === 'ride' ? '🏍' : '📍';
+  const added = list.length ? '<div class="tripAdded"><b>Added to this day</b>' + list.map((x, k) => '<span class="tripAddChip">' + icon(x.kind) + ' ' + esc(x.n) + ' <small>+' + x.km + ' km</small><button type="button" data-unadd="' + k + '" aria-label="Remove ' + esc(x.n) + '">✕</button></span>').join('') +
+    '<p class="tripAddSum">With your additions: <b>' + Math.round(TRIP.plan.days[i].km + sum.km) + ' km</b>, ' + tripFmtMin(TRIP.plan.days[i].minutes + sum.min) + ' riding and stops. The day\'s GPX carries them as waypoints for your navigator.</p></div>' : '';
+  const cands = box._cands || [];
+  body.innerHTML = added + (cands.length ? '<div class="tripAddGrid">' + cands.filter(x => !list.some(y => y.n === x.n)).map((x, k) => '<div class="tripAddOpt">' + (x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : '<span class="tripAddI">' + icon(x.kind) + '</span>') +
+    '<div><b>' + (x.url ? '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.n) + '</a>' : x.rid ? '<a href="#/ride/' + encodeURIComponent(x.rid) + '">' + esc(x.n) + '</a>' : esc(x.n)) + '</b><span>' + esc(x.what || '') + '</span><span>+' + x.km + ' km · +' + tripDur(x.min) + '</span></div>' +
+    '<button type="button" data-addc="' + esc(x.n) + '">＋ Add</button></div>').join('') + '</div>' : (box._loaded ? '<p class="tripNote">Nothing more within reach of this day\'s road.</p>' : '<p class="tripNote">Looking along the day\'s road…</p>'));
+  body.querySelectorAll('[data-addc]').forEach(b => b.onclick = () => { const x = cands.find(c => c.n === b.dataset.addc); if (!x) return; list.push({ kind: x.kind, n: x.n, at: x.at, km: x.km, min: x.min }); tripAddsSave(i); tripAddPaint(i); tripOvRefresh(); tripCardMeta(i); });
+  body.querySelectorAll('[data-unadd]').forEach(b => b.onclick = () => { list.splice(+b.dataset.unadd, 1); tripAddsSave(i); tripAddPaint(i); tripOvRefresh(); tripCardMeta(i); });
+}
+function tripCardMeta(i) { const c = document.querySelector('.tripDay[data-i="' + i + '"] .tripMeta'); if (!c) return; const a = tripAddsOf(i); let e = c.querySelector('.tripAddMeta'); if (!a.n) { if (e) e.remove(); return; }
+  if (!e) { e = document.createElement('span'); e.className = 'tripAddMeta'; c.appendChild(e); } e.textContent = ' · with your ' + a.n + ' addition' + (a.n > 1 ? 's' : '') + ': ' + Math.round(TRIP.plan.days[i].km + a.km) + ' km, ' + tripFmtMin(TRIP.plan.days[i].minutes + a.min); }
+function tripOvRefresh() { const ov = document.querySelector('.tripOv'); if (ov && TRIP.plan) { ov.outerHTML = tripOverviewHtml(TRIP.plan); tripOvWire(); } }
+function tripAddWire() {
+  document.querySelectorAll('.tripAdd').forEach(dt => { const i = +dt.dataset.add; if (tripAddsList(i).length) { tripAddPaint(i); tripCardMeta(i); }
+    dt.addEventListener('toggle', async () => { if (!dt.open || dt._busy || dt._loaded) return; dt._busy = true; tripAddPaint(i); try { dt._cands = await tripAddCandidates(i); } catch (e) { dt._cands = []; } dt._loaded = true; dt._busy = false; tripAddPaint(i); }); });
+}
+/* the day's GPX carries the added stops, each placed between the checkpoints it lies closest to */
+function tripGpxWithAdds(full, i) { const list = tripAddsList(i); if (!list.length || !full) return full;
+  const r = JSON.parse(JSON.stringify(full)); const key = Array.isArray(r.waypoints) ? 'waypoints' : (Array.isArray(r.wps) ? 'wps' : null); if (!key) return full;
+  for (const x of list) { const wps = r[key], line = wps.map(w => [+w.lat, +w.lon]); const o = tripOffLine(line, x.at); const at = Math.min(Math.max(1, o.at), wps.length - 1);
+    wps.splice(at, 0, { name: x.kind === 'ride' ? 'Start of ' + x.n : x.n, lat: +x.at[0], lon: +x.at[1], kind: x.kind === 'pass' ? 'pass' : 'sight', added: true }); }
+  return r; }
 
 /* About: founder interview (owner 2026-10-11). Text supplied by the owner; photographs his own. */
-const ABOUT_DATA = {"title": "I wanted to build the service I kept looking for.", "standfirst": "A conversation with Torsten Sauter, founder of CurveScout, about mountain roads, making time for a proper ride, and building something other motorcyclists will want to use.", "intro": ["Torsten Sauter’s starting point for CurveScout was personal. Based in Switzerland, he loves riding, mountains and the roads that make an ordinary day out worth remembering. What he wanted online was equally straightforward: help finding those roads, enough information to choose between them, and a practical way to turn the choice into a trip.", "Developed and launched in 2026, CurveScout began with scenic-road discovery. Its ambitions now extend to day trips, weekends and longer motorcycle holidays. The service remains free, and Sauter describes its commercial future as an open question. His immediate priority is more definite: make it useful enough that riders come back.", "We asked him what that means in practice, where the idea came from, and how he intends to grow without losing sight of the ride itself."], "blocks": [{"t": "photo", "n": 1}, {"t": "q", "x": "You could have spent your spare time riding. Why spend so much of it building a website about riding?"}, {"t": "a", "x": "That is a fair question. I wanted something that would help me make better use of the time I do have on the bike."}, {"t": "a", "x": "Living in Switzerland, I have mountains and extraordinary roads within reach. But even with that advantage, deciding where to go can involve surprisingly much work. You find a road, look somewhere else for a description, check whether the distance makes sense, then start thinking about the rest of the day."}, {"t": "a", "x": "Some of the services I tried were too basic for what I wanted. Others offered more, but at a price that made casual use less attractive. I kept thinking there was room for something generous, detailed and easy to get into. Eventually, I decided to pursue it myself."}, {"t": "q", "x": "What does a really good ride mean to you?"}, {"t": "a", "x": "Mountains are a large part of it, certainly. I like the changing landscape, the way a road climbs and then opens into a different valley. But I would not reduce a good ride to altitude or the number of hairpins."}, {"t": "a", "x": "It is also the sequence. A demanding section followed by something more flowing. Somewhere worth stopping. Enough time to enjoy the place rather than immediately looking at the clock."}, {"t": "a", "x": "I love life in the saddle, but I do not need every ride to become an endurance exercise. Sometimes a few hours on roads that suit your mood are more satisfying than covering a much greater distance because a route happens to look impressive on a screen."}, {"t": "q", "x": "There are already plenty of maps and route planners. What is the question CurveScout tries to answer differently?"}, {"t": "a", "x": "The question comes before navigation: which ride should I choose?"}, {"t": "a", "x": "Knowing how to reach somewhere is useful once you have decided to go there. I wanted more help with that decision. What is the road like? How does it fit with the roads around it? Is this a sensible afternoon ride, or am I committing to something much longer? What would make me choose it over another option nearby?"}, {"t": "a", "x": "That is where the idea of CurveScout starts. Discovery needs explanation. A photograph can catch your attention, but the next step should be information that helps you decide whether the ride is right for you."}, {"t": "q", "x": "Walk us through someone’s first visit. What do they actually do?"}, {"t": "a", "x": "You begin with a starting point, the distance you have in mind and the kind of riding you are looking for. Then you explore the alternatives through route cards, the map or Swipe, and build a shortlist. The route information brings together the roadbook, elevation, weather context, services and GPX export. Those are the core functions around which the experience is organised."}, {"t": "a", "x": "The important part for me is that you should not need to become an expert in the application before you can use it. You might arrive with a particular pass in mind. Or you might simply have Saturday free. Both are perfectly reasonable starting points."}, {"t": "q", "x": "Your own enthusiasm is for the mountains. Does that make CurveScout a product mainly for Alpine riders?"}, {"t": "a", "x": "The Alps inspired the idea, but they should not limit it."}, {"t": "a", "x": "A coastal road, a route through wooded hills or an unfamiliar stretch near home can be just as worthwhile. The rider who has a free evening deserves attention as much as the person planning a week abroad."}, {"t": "a", "x": "I also do not want the service to assume that everybody enjoys the same kind of riding. Some people want technically demanding roads. Others want scenery, a relaxed pace and somewhere pleasant to stop. Those preferences should influence the recommendations. My own taste gave the project its starting point; it should not become a rule that everyone else has to follow."}, {"t": "photo", "n": 2}, {"t": "q", "x": "You have extended the idea into trip, weekend and holiday planning. What changes when someone has several days rather than an afternoon?"}, {"t": "a", "x": "The individual roads still matter, but the choices start affecting one another."}, {"t": "a", "x": "For an afternoon, you might want a satisfying loop from home. For a weekend, you need to think about what belongs on the first day, where you finish, and whether the second day offers something different. For a longer holiday, the balance becomes more important again. You want good riding, but you also want time to stop and experience the places you have travelled to."}, {"t": "a", "x": "That is the thinking behind the expanded planners. We are using the road inventory as the basis for a fuller itinerary, rather than treating every day as an isolated route. The aim is to help people put together a trip they would actually enjoy riding."}, {"t": "q", "x": "What would you tell someone who keeps adding another pass to the itinerary?"}, {"t": "a", "x": "I understand the temptation. You see another interesting road and think it would be a shame to miss it."}, {"t": "a", "x": "But the useful question is what that addition does to the whole day. Does it add a worthwhile contrast, or does it turn the last two hours into a rush? Does it leave time for the stop you were looking forward to? Are you still planning for the people on the trip, or for the satisfaction of completing a list?"}, {"t": "a", "x": "A planner should make those consequences easier to see. It should help you make a good choice, including the choice to leave something for another visit. I would rather help someone enjoy four days than persuade them to squeeze six days of riding into them."}, {"t": "q", "x": "A large road inventory sounds attractive. How do you prevent it from becoming a large collection of places nobody can distinguish?"}, {"t": "a", "x": "By remembering that the number of entries is not the product."}, {"t": "a", "x": "The useful work is in making those entries understandable: what a route contains, how the sections connect, what is distinctive, and what information is reliable. Ten genuinely relevant choices are more helpful than hundreds that all sound alike."}, {"t": "a", "x": "That is also why I care about the descriptions. Repeating “beautiful views” does not tell you much. A rider needs to understand what changes along the road and why one option might suit them better."}, {"t": "a", "x": "We want breadth, because discovery benefits from having alternatives. But breadth has to be accompanied by detail and clear distinctions. Otherwise we have simply moved the research burden onto another screen."}, {"t": "q", "x": "How much authority should a platform like this claim over a rider’s decisions?"}, {"t": "a", "x": "Less than it might be tempting to claim."}, {"t": "a", "x": "There is a difference between helping someone prepare and telling them that a road is safe to ride. A route description, a forecast and a suggested itinerary are useful inputs. They do not replace the conditions in front of you or your own judgement."}, {"t": "a", "x": "I want CurveScout to be clear about what it knows and what still needs checking. That is part of being useful, not an admission that the idea does not work. People can make sensible decisions with incomplete information when the limits are clear. What they cannot use is confidence that the underlying information does not justify."}, {"t": "a", "x": "The rider remains responsible for the ride."}, {"t": "q", "x": "“From bikers for bikers” is an appealing phrase. What would make it more than a slogan?"}, {"t": "a", "x": "The details that affect an actual day out."}, {"t": "a", "x": "You should be able to see the time implications of a decision, not only the distance. You should be able to distinguish an interesting road from the journey needed to reach it. You should get a reason to stop at a place, rather than another marker to decipher."}, {"t": "a", "x": "It also means respecting different riders. Experience, preferred pace and appetite for a long day vary considerably. I do not want the platform to reward one type of rider and make everyone else feel they have chosen the less serious option."}, {"t": "a", "x": "The phrase only earns its place if riders recognise their own needs in the product."}, {"t": "q", "x": "You say the response has been encouraging. What matters to you in that response?"}, {"t": "a", "x": "We are very happy with the early response. It gives me confidence that the interest is shared and that this was not simply a service I wanted for myself."}, {"t": "a", "x": "But I would be careful about confusing enthusiasm for an idea with proof that every part of the product is finished. Those are different things."}, {"t": "a", "x": "The response that matters most is whether people find it useful enough to return. Does it help them choose a ride? Does it make planning easier? Do they feel that their time was well spent?"}, {"t": "a", "x": "I want to keep that practical test. Positive feedback is encouraging; suggestions and criticism are valuable because they tell us where the experience still needs work."}, {"t": "q", "x": "Why keep it free?"}, {"t": "a", "x": "Because reaching fellow enthusiasts is a central part of why I started it."}, {"t": "a", "x": "I would like someone to hear about CurveScout, try it and discover whether it helps them without having to make a purchasing decision first. That matters for a service people might use for a spontaneous outing as well as a bigger trip."}, {"t": "a", "x": "My primary motivation is to build something people genuinely like using. Of course, running and developing a platform has to be sustainable. A freemium model may make sense at some stage. I am not ruling it out, and I am not making a promise about pricing forever."}, {"t": "a", "x": "But I do not want the initial experience to feel like a demonstration of everything you cannot do until you pay."}, {"t": "q", "x": "You want the platform to keep evolving. How do you stop that from becoming an excuse for leaving things unfinished?"}, {"t": "a", "x": "By separating ambition from what a rider is being asked to rely on today."}, {"t": "a", "x": "There will always be more we could add. That does not remove the obligation to make the existing experience coherent. A new feature should improve the trip, not make something familiar harder to use."}, {"t": "a", "x": "For me, evolving means listening, correcting and adding carefully. It does not mean changing things simply to have another announcement. We need to preserve what people value while making the weak parts better."}, {"t": "a", "x": "I am ambitious about where CurveScout can go. But someone opening it to plan this weekend should not need to care about our long-term ambitions. It has to be useful to them now."}, {"t": "photo", "n": 3}, {"t": "q", "x": "CurveScout has a couple of cousins. What are DipMapper and Nestlyzer?"}, {"t": "a", "x": "They explore different interests through a similar approach."}, {"t": "a", "x": "DipMapper is centred on finding places to swim: lakes, beaches, pools, baths and other swimming spots. Its map and place cards bring practical details together, including facilities, parking, weather and source links where available. The wider direction is information around time spent in and around the water, including water sports."}, {"t": "a", "x": "Nestlyzer applies the idea to municipalities and the question of where to live. It is about comparing places and understanding how they fit different priorities, rather than assuming there is one universally right place for everyone. The latest version is still being prepared and is not yet live."}, {"t": "a", "x": "They are separate products, but the connection is quite natural to me: helping someone understand a place before choosing what to do there."}, {"t": "q", "x": "You describe the common approach as open-source intelligence. What does that mean for someone who just wants a good ride or a swim?"}, {"t": "a", "x": "In this context, it means working with information that is already publicly available and making it more useful."}, {"t": "a", "x": "The information may exist, but it is often spread across maps, public records, local websites and specialist sources. Finding it is one job. Working out whether it concerns the same place, how current it is, and what it means for the user is another."}, {"t": "a", "x": "That is the part that interests me. A person should not need to repeat all that work every time they consider somewhere new."}, {"t": "a", "x": "And it requires judgement. Combining five sources does not automatically produce a better answer. You still have to understand the differences between them and avoid presenting an assumption as an established fact."}, {"t": "q", "x": "Is the ambition eventually to build a much larger family of services?"}, {"t": "a", "x": "Potentially, yes. I like the idea of starting with a concrete need, building something useful and allowing the scope to grow from there."}, {"t": "a", "x": "I am curious about what is possible, and I am motivated by making things that help people. That can lead to more than one product. But I do not think having a long list of websites is an achievement in itself."}, {"t": "a", "x": "Each one needs a reason to exist. It needs to do something well enough that people choose to use it. CurveScout should succeed as a riding platform, DipMapper as a service for finding and understanding swimming places, and Nestlyzer on its own merits."}, {"t": "a", "x": "There is more I would like to explore. The responsibility is to finish useful things as well as imagine new ones."}, {"t": "q", "x": "What would make you proudest of CurveScout a few years from now?"}, {"t": "a", "x": "Being able to say that people genuinely use it to get more from something they enjoy."}, {"t": "a", "x": "I would love CurveScout to become one of the best platforms available to motorcyclists. But I would rather earn that description than put it in a headline ourselves."}, {"t": "a", "x": "The simplest version of success is still close to the original idea: someone has time for a ride, opens CurveScout, finds an option that interests them and comes home pleased they went. Perhaps they discovered a road they would otherwise have missed. Perhaps they planned a better weekend because they understood the choices more clearly."}, {"t": "a", "x": "That is a worthwhile result. It is why I wanted to build it."}]};
+const ABOUT_DATA = {"title": "I wanted to build the service I kept looking for.", "standfirst": "A conversation with Torsten Sauter, founder of CurveScout, about mountain roads, making time for a proper ride, and building something other motorcyclists will want to use.", "intro": ["Torsten Sauter’s starting point for CurveScout was personal. Based in Switzerland, he loves riding, mountains and the roads that make an ordinary day out worth remembering. What he wanted online was equally straightforward: help finding those roads, enough information to choose between them, and a practical way to turn the choice into a trip.", "Developed and launched in 2026, CurveScout began with scenic-road discovery. Its ambitions now extend to day trips, weekends and longer motorcycle holidays. The service remains free, and Sauter describes its commercial future as an open question. His immediate priority is more definite: make it useful enough that riders come back.", "We asked him what that means in practice, where the idea came from, and how he intends to grow without losing sight of the ride itself."], "blocks": [{"t": "photo", "n": 1}, {"t": "q", "x": "You could have spent your spare time riding. Why spend so much of it building a website about riding?"}, {"t": "a", "x": "That is a fair question. I wanted something that would help me make better use of the time I do have on the bike."}, {"t": "a", "x": "Living in Switzerland, I have mountains and extraordinary roads within reach. But even with that advantage, deciding where to go can involve surprisingly much work. You find a road, look somewhere else for a description, check whether the distance makes sense, then start thinking about the rest of the day."}, {"t": "a", "x": "Some of the services I tried were too basic for what I wanted. Others offered more, but at a price that made casual use less attractive. I kept thinking there was room for something generous, detailed and easy to get into. Eventually, I decided to pursue it myself."}, {"t": "q", "x": "What does a really good ride mean to you?"}, {"t": "a", "x": "Mountains are a large part of it, certainly. I like the changing landscape, the way a road climbs and then opens into a different valley. But I would not reduce a good ride to altitude or the number of hairpins."}, {"t": "a", "x": "It is also the sequence. A demanding section followed by something more flowing. Somewhere worth stopping. Enough time to enjoy the place rather than immediately looking at the clock."}, {"t": "a", "x": "I love life in the saddle, but I do not need every ride to become an endurance exercise. Sometimes a few hours on roads that suit your mood are more satisfying than covering a much greater distance because a route happens to look impressive on a screen."}, {"t": "q", "x": "There are already plenty of maps and route planners. What is the question CurveScout tries to answer differently?"}, {"t": "a", "x": "The question comes before navigation: which ride should I choose?"}, {"t": "a", "x": "Knowing how to reach somewhere is useful once you have decided to go there. I wanted more help with that decision. What is the road like? How does it fit with the roads around it? Is this a sensible afternoon ride, or am I committing to something much longer? What would make me choose it over another option nearby?"}, {"t": "a", "x": "That is where the idea of CurveScout starts. Discovery needs explanation. A photograph can catch your attention, but the next step should be information that helps you decide whether the ride is right for you."}, {"t": "q", "x": "Walk us through someone’s first visit. What do they actually do?"}, {"t": "a", "x": "You begin with a starting point, the distance you have in mind and the kind of riding you are looking for. Then you explore the alternatives through route cards, the map or Swipe, and build a shortlist. The route information brings together the roadbook, elevation, weather context, services and GPX export. Those are the core functions around which the experience is organised."}, {"t": "a", "x": "The important part for me is that you should not need to become an expert in the application before you can use it. You might arrive with a particular pass in mind. Or you might simply have Saturday free. Both are perfectly reasonable starting points."}, {"t": "q", "x": "Your own enthusiasm is for the mountains. Does that make CurveScout a product mainly for Alpine riders?"}, {"t": "a", "x": "The Alps inspired the idea, but they should not limit it."}, {"t": "a", "x": "A coastal road, a route through wooded hills or an unfamiliar stretch near home can be just as worthwhile. The rider who has a free evening deserves attention as much as the person planning a week abroad."}, {"t": "a", "x": "I also do not want the service to assume that everybody enjoys the same kind of riding. Some people want technically demanding roads. Others want scenery, a relaxed pace and somewhere pleasant to stop. Those preferences should influence the recommendations. My own taste gave the project its starting point; it should not become a rule that everyone else has to follow."}, {"t": "photo", "n": 2}, {"t": "q", "x": "You have extended the idea into trip, weekend and holiday planning. What changes when someone has several days rather than an afternoon?"}, {"t": "a", "x": "The individual roads still matter, but the choices start affecting one another."}, {"t": "a", "x": "For an afternoon, you might want a satisfying loop from home. For a weekend, you need to think about what belongs on the first day, where you finish, and whether the second day offers something different. For a longer holiday, the balance becomes more important again. You want good riding, but you also want time to stop and experience the places you have travelled to."}, {"t": "a", "x": "That is the thinking behind the expanded planners. We are using the road inventory as the basis for a fuller itinerary, rather than treating every day as an isolated route. The aim is to help people put together a trip they would actually enjoy riding."}, {"t": "q", "x": "What would you tell someone who keeps adding another pass to the itinerary?"}, {"t": "a", "x": "I understand the temptation. You see another interesting road and think it would be a shame to miss it."}, {"t": "a", "x": "But the useful question is what that addition does to the whole day. Does it add a worthwhile contrast, or does it turn the last two hours into a rush? Does it leave time for the stop you were looking forward to? Are you still planning for the people on the trip, or for the satisfaction of completing a list?"}, {"t": "a", "x": "A planner should make those consequences easier to see. It should help you make a good choice, including the choice to leave something for another visit. I would rather help someone enjoy four days than persuade them to squeeze six days of riding into them."}, {"t": "q", "x": "A large road inventory sounds attractive. How do you prevent it from becoming a large collection of places nobody can distinguish?"}, {"t": "a", "x": "By remembering that the number of entries is not the product."}, {"t": "a", "x": "The useful work is in making those entries understandable: what a route contains, how the sections connect, what is distinctive, and what information is reliable. Ten genuinely relevant choices are more helpful than hundreds that all sound alike."}, {"t": "a", "x": "That is also why I care about the descriptions. Repeating “beautiful views” does not tell you much. A rider needs to understand what changes along the road and why one option might suit them better."}, {"t": "a", "x": "We want breadth, because discovery benefits from having alternatives. But breadth has to be accompanied by detail and clear distinctions. Otherwise we have simply moved the research burden onto another screen."}, {"t": "q", "x": "How much authority should a platform like this claim over a rider’s decisions?"}, {"t": "a", "x": "Less than it might be tempting to claim."}, {"t": "a", "x": "There is a difference between helping someone prepare and telling them that a road is safe to ride. A route description, a forecast and a suggested itinerary are useful inputs. They do not replace the conditions in front of you or your own judgement."}, {"t": "a", "x": "I want CurveScout to be clear about what it knows and what still needs checking. That is part of being useful, not an admission that the idea does not work. People can make sensible decisions with incomplete information when the limits are clear. What they cannot use is confidence that the underlying information does not justify."}, {"t": "a", "x": "The rider remains responsible for the ride."}, {"t": "q", "x": "“From bikers for bikers” is an appealing phrase. What would make it more than a slogan?"}, {"t": "a", "x": "The details that affect an actual day out."}, {"t": "a", "x": "You should be able to see the time implications of a decision, not only the distance. You should be able to distinguish an interesting road from the journey needed to reach it. You should get a reason to stop at a place, rather than another marker to decipher."}, {"t": "a", "x": "It also means respecting different riders. Experience, preferred pace and appetite for a long day vary considerably. I do not want the platform to reward one type of rider and make everyone else feel they have chosen the less serious option."}, {"t": "a", "x": "The phrase only earns its place if riders recognise their own needs in the product."}, {"t": "q", "x": "You say the response has been encouraging. What matters to you in that response?"}, {"t": "a", "x": "We are very happy with the early response. It gives me confidence that the interest is shared and that this was not simply a service I wanted for myself."}, {"t": "a", "x": "But I would be careful about confusing enthusiasm for an idea with proof that every part of the product is finished. Those are different things."}, {"t": "a", "x": "The response that matters most is whether people find it useful enough to return. Does it help them choose a ride? Does it make planning easier? Do they feel that their time was well spent?"}, {"t": "a", "x": "I want to keep that practical test. Positive feedback is encouraging; suggestions and criticism are valuable because they tell us where the experience still needs work."}, {"t": "q", "x": "Why keep it free?"}, {"t": "a", "x": "Because reaching fellow enthusiasts is a central part of why I started it."}, {"t": "a", "x": "I would like someone to hear about CurveScout, try it and discover whether it helps them without having to make a purchasing decision first. That matters for a service people might use for a spontaneous outing as well as a bigger trip."}, {"t": "a", "x": "My primary motivation is to build something people genuinely like using. Of course, running and developing a platform has to be sustainable. A freemium model may make sense at some stage. I am not ruling it out, and I am not making a promise about pricing forever."}, {"t": "a", "x": "But I do not want the initial experience to feel like a demonstration of everything you cannot do until you pay."}, {"t": "q", "x": "You want the platform to keep evolving. How do you stop that from becoming an excuse for leaving things unfinished?"}, {"t": "a", "x": "By separating ambition from what a rider is being asked to rely on today."}, {"t": "a", "x": "There will always be more we could add. That does not remove the obligation to make the existing experience coherent. A new feature should improve the trip, not make something familiar harder to use."}, {"t": "a", "x": "For me, evolving means listening, correcting and adding carefully. It does not mean changing things simply to have another announcement. We need to preserve what people value while making the weak parts better."}, {"t": "a", "x": "I am ambitious about where CurveScout can go. But someone opening it to plan this weekend should not need to care about our long-term ambitions. It has to be useful to them now."}, {"t": "photo", "n": 3}, {"t": "q", "x": "CurveScout has a few cousins. What are DipMapper, Nestlyzer and Mnemika?"}, {"t": "a", "x": "They explore different interests through a similar approach."}, {"t": "a", "x": "DipMapper is centred on finding places to swim: lakes, beaches, pools, baths and other swimming spots. Its map and place cards bring practical details together, including facilities, parking, weather and source links where available. The wider direction is information around time spent in and around the water, including water sports."}, {"t": "a", "x": "Nestlyzer applies the idea to municipalities and the question of where to live. It is about comparing places and understanding how they fit different priorities, rather than assuming there is one universally right place for everyone. The latest version is still being prepared and is not yet live."}, {"t": "a", "x": "Mnemika, at mnemika.com, is the odd one out, because it is about learning rather than places. It is an exam trainer, built first for the Swiss Passerelle, the supplementary exam that opens the way from a vocational baccalaureate to university. It turns the syllabus into practice and repetition, so that preparing becomes steady work rather than last-minute cramming."}, {"t": "a", "x": "They are separate products, but the connection is quite natural to me: helping someone understand a place before choosing what to do there."}, {"t": "q", "x": "You describe the common approach as open-source intelligence. What does that mean for someone who just wants a good ride or a swim?"}, {"t": "a", "x": "In this context, it means working with information that is already publicly available and making it more useful."}, {"t": "a", "x": "The information may exist, but it is often spread across maps, public records, local websites and specialist sources. Finding it is one job. Working out whether it concerns the same place, how current it is, and what it means for the user is another."}, {"t": "a", "x": "That is the part that interests me. A person should not need to repeat all that work every time they consider somewhere new."}, {"t": "a", "x": "And it requires judgement. Combining five sources does not automatically produce a better answer. You still have to understand the differences between them and avoid presenting an assumption as an established fact."}, {"t": "q", "x": "Is the ambition eventually to build a much larger family of services?"}, {"t": "a", "x": "Potentially, yes. I like the idea of starting with a concrete need, building something useful and allowing the scope to grow from there."}, {"t": "a", "x": "I am curious about what is possible, and I am motivated by making things that help people. That can lead to more than one product. But I do not think having a long list of websites is an achievement in itself."}, {"t": "a", "x": "Each one needs a reason to exist. It needs to do something well enough that people choose to use it. CurveScout should succeed as a riding platform, DipMapper as a service for finding and understanding swimming places, Mnemika as a way to prepare for an exam, and Nestlyzer on its own merits."}, {"t": "a", "x": "There is more I would like to explore. The responsibility is to finish useful things as well as imagine new ones."}, {"t": "q", "x": "What would make you proudest of CurveScout a few years from now?"}, {"t": "a", "x": "Being able to say that people genuinely use it to get more from something they enjoy."}, {"t": "a", "x": "I would love CurveScout to become one of the best platforms available to motorcyclists. But I would rather earn that description than put it in a headline ourselves."}, {"t": "a", "x": "The simplest version of success is still close to the original idea: someone has time for a ride, opens CurveScout, finds an option that interests them and comes home pleased they went. Perhaps they discovered a road they would otherwise have missed. Perhaps they planned a better weekend because they understood the choices more clearly."}, {"t": "a", "x": "That is a worthwhile result. It is why I wanted to build it."}]};
 
 const ABOUT_PHOTOS = {
-  1: { src: 'founder-ride.jpg', w: 1400, h: 788, alt: 'Torsten Sauter in his open-face helmet beside a road sign reading Bad Egg', cap: 'Torsten Sauter, founder of CurveScout, out on the bike.' },
-  2: { src: 'founder-signpost.jpg', w: 825, h: 1100, alt: 'A wooden signpost covered in yellow arrows to places around the world, snowy Alpine peaks behind', cap: 'Every direction is a possible ride. Choosing one is the hard part.' },
-  3: { src: 'founder-teide.jpg', w: 1400, h: 1050, alt: 'An empty road curving through volcanic scrubland towards Mount Teide on Tenerife', cap: 'Beyond the Alps: the road towards Mount Teide, Tenerife.' },
+  1: { src: 'assets/about/founder-ride.jpg', w: 1400, h: 788, alt: 'Torsten Sauter in his open-face helmet beside a road sign reading Bad Egg', cap: 'Torsten Sauter, founder of CurveScout, out on the bike.' },
+  2: { src: 'assets/about/founder-signpost.jpg', w: 825, h: 1100, alt: 'A wooden signpost covered in yellow arrows to places around the world, snowy Alpine peaks behind', cap: 'Every direction is a possible ride. Choosing one is the hard part.' },
+  3: { src: 'assets/about/founder-teide.jpg', w: 1400, h: 1050, alt: 'An empty road curving through volcanic scrubland towards Mount Teide on Tenerife', cap: 'Beyond the Alps: the road towards Mount Teide, Tenerife.' },
 };
 function renderAbout() {
   show('about');
@@ -8298,7 +8467,7 @@ function renderAbout() {
   if (host.dataset.built) return;
   host.dataset.built = '1';
   const d = ABOUT_DATA, esc2 = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const link = t => esc2(t).replace(/\bDipMapper\b/, '<a href="https://dipmapper.com" target="_blank" rel="noopener">DipMapper</a>');
+  const link = t => esc2(t).replace(/\bDipMapper\b/, '<a href="https://dipmapper.com" target="_blank" rel="noopener">DipMapper</a>').replace(/\bmnemika\.com\b/, '<a href="https://mnemika.com" target="_blank" rel="noopener">mnemika.com</a>');
   const fig = n => { const p = ABOUT_PHOTOS[n]; if (!p) return '';
     return '<figure class="abFig abFig' + n + '"><img src="' + p.src + '" width="' + p.w + '" height="' + p.h + '" alt="' + esc2(p.alt) + '" loading="' + (n === 1 ? 'eager' : 'lazy') + '" decoding="async"><figcaption>' + esc2(p.cap) + '</figcaption></figure>'; };
   let html = '<article class="abWrap">' +
@@ -8342,7 +8511,7 @@ function csPlaceKey(name, lat, lon) {
 function csProsePack(key) { const m = key.match(/@(-?[\d.]+),(-?[\d.]+)$/); if (!m) return -1; const a = Math.floor((+m[1] + 90) / 5), b = Math.floor((+m[2] + 180) / 5); return (a * 72 + b) % 96; }
 async function csPlaceText(key) {
   if (!key) return '';
-  if (CS_PROSE.idx === undefined) CS_PROSE.idx = (async () => { try { return await jget('prose-index.json', 9000); } catch (e) { return null; } })();
+  if (CS_PROSE.idx === undefined) CS_PROSE.idx = (async () => { try { return await jget('data/prose/prose-index.json', 9000); } catch (e) { return null; } })();
   const idx = await CS_PROSE.idx; if (!idx || !idx.packs) return '';
   const n = csProsePack(key); if (n < 0 || !idx.packs[n]) return '';
   if (!CS_PROSE.packs.has(n)) CS_PROSE.packs.set(n, (async () => { try { const j = await jget('data/prose/prose-' + n + '.json', 12000); return (j && j.t) || {}; } catch (e) { return {}; } })());
@@ -8668,180 +8837,73 @@ function csReportButton() { try {
 } catch (e) {} }
 setInterval(csReportButton, 1000);
 
-/* ---- CO-PILOT / PREVIEW: ONE TAB ON THE RIDE PAGE (owner 2026-10-30, package 1.3.0-global-safety-beta) ----
-   The ride page gets exactly one extra tab beside its map. Nothing of the Co-Pilot loads until the rider
-   presses it: then the 172 KB runtime (copilot-runtime.js, bundled from copilot/) is imported,
-   the mandatory pre-start acknowledgement is shown, and only after it is accepted is the ride read.
-
-   What the Co-Pilot is given (the host bindings, written up in copilot/HOST_BINDINGS.md):
-   - the ride's own road line - the same line the ride map draws (stored road, OSRM or Valhalla on
-     OpenStreetMap). Every review flag stays false: unreviewed geometry is good for a rehearsal, never for
-     live guidance. A ride whose road is not loaded is a checkpoint corridor, and the package refuses to
-     invent bends from it - the rider sees that, with the roadbook and GPX still one tap away;
-   - a native MapLibre map for the heading-up camera, on the same OpenFreeMap style as the ride map. While
-     it is open the ride map's own basemap layers are removed (not just hidden), so only one map client
-     runs, and they are put back on close;
-   - places along the road that the page already found (fuel, food, rest, charging, motorcycle shops).
-     Speed cameras and police are NOT passed on: enforcement data goes through the camera gate only, and
-     with no legally reviewed provider registry the gate denies and nothing is loaded;
-   - no road-alert provider (none is licensed), no voices (none recorded and reviewed), no GPS request.
-   Public live GPS guidance and automatic voice stay locked inside the runtime (RELEASE). */
-const CS_CP = { inst: null, host: null, ride: null, assets: new Map(), listeners: new Set(), loading: null, gate: null, gateDecision: null, ack: null, alert: null, building: null };
+/* ---- CO-PILOT: LIVE NAVIGATION, OPENED FROM A RIDE OR FROM ANY ROAD (owner 2026-10-31) ----
+   "what i asked for is a switch to a navigation system. real time ... take out the sim." The 1.3.0 rehearsal tab is
+   gone. A ride page has one button, "Ride with Co-Pilot", which opens the full-screen navigator on that ride's
+   waypoints; the header has "Co-Pilot" for a free ride on any road. The navigator itself (src/copilot-live/nav.mjs,
+   bundled into assets/copilot/copilot-runtime.js) loads only when one of them is pressed.
+   What the host hands over: the ride's title, its named waypoints and its road line; the same map style, the routers
+   and the weather service the rest of the app uses (through the app's own network guard); the ride's written place
+   texts; Wikipedia for what is around you; sunset from the trip planner's own calculation. Speed cameras are not
+   announced: warning of enforcement cameras is illegal while riding in Switzerland, Germany, France and others. */
+const CS_CP = { loading: null, nav: null };
 window.CS_COPILOT = CS_CP;
 function csCpUrl() {
-  const p = 'copilot-runtime.js'; let u = p;
+  const p = 'assets/copilot/copilot-runtime.js'; let u = p;
   try { if (window.CS_FLAT_URL) u = window.CS_FLAT_URL(p); } catch (e) {}
   return new URL(u, location.href).href;
 }
+/* the studio voice's own files on this site (built by tools/build-copilot.mjs); the model itself comes from jsDelivr */
+function csCpAsset(f) { return new URL(window.CS_FLAT_URL ? window.CS_FLAT_URL('assets/copilot/' + f) : 'assets/copilot/' + f, location.href).href; }
 function csCpLoad() { return CS_CP.loading || (CS_CP.loading = import(csCpUrl()).catch(e => { CS_CP.loading = null; throw e; })); }
-function csCpHash(s) { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36); }
-/* the ride as one directed leg: the exact line on the map, or its checkpoints when the road is not loaded */
-function csCpRoute(r) {
+const csCpStore = { get(k, f) { try { const v = localStorage.getItem(k); return v === null ? f : v; } catch (e) { return f; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+/* the ride as the navigator needs it: named waypoints in order and the road line the map already shows */
+function csCpRide(r) {
   if (!r) return null;
-  const key = (typeof geomKey === 'function') ? geomKey(r) : String(r.id);
-  const line = S.geomCache && S.geomCache.get(key);
-  const routed = Array.isArray(line) && line.length > 1 && line.approximate !== true;
-  const pts = routed ? line : ((typeof rideWaypoints === 'function' ? rideWaypoints(r) : r.wp) || []).map(w => [+w.lat, +w.lon]);
-  const coordinates = pts.filter(p => Number.isFinite(+p[0]) && Number.isFinite(+p[1])).map(p => [+(+p[1]).toFixed(6), +(+p[0]).toFixed(6)]);
-  if (coordinates.length < 2) return null;
-  const n = coordinates.length, sig = key + '|' + n + '|' + coordinates[0].join(',') + '|' + coordinates[n - 1].join(',') + '|' + coordinates[n >> 1].join(',');
-  const evidence = routed
-    ? { provider: line.stored ? 'CurveScout stored road (OSRM on OpenStreetMap)' : (line.rc ? 'Valhalla on OpenStreetMap' : 'OSRM on OpenStreetMap'),
-        geometryKind: 'road-centerline', licence: 'ODbL-1.0', sourceUrl: 'https://www.openstreetmap.org/copyright', sourceDataVersion: null, fetchedAt: null,
-        fullResolution: false, drivableGeometry: false, topologyReviewed: false, directionAccessReviewed: false, roadContextReviewed: false }
-    : { provider: 'CurveScout checkpoints', geometryKind: 'checkpoint-corridor', licence: 'CurveScout', sourceUrl: null, sourceDataVersion: null, fetchedAt: null,
-        fullResolution: false, drivableGeometry: false, topologyReviewed: false, directionAccessReviewed: false, roadContextReviewed: false };
-  return { id: String(r.id), revision: 'g' + csCpHash(sig), legId: 'ride', direction: r.reversed ? 'reversed' : 'as-provided', occurrenceIndex: 0,
-    name: String(r.title || r.name || r.id).slice(0, 200), geometry: { type: 'LineString', coordinates }, evidence };
+  const wps = ((typeof rideWaypoints === 'function' ? rideWaypoints(r) : r.waypoints) || []).filter(w => w && Number.isFinite(+w.lat) && Number.isFinite(+w.lon));
+  let line = null; try { const g = S.geomCache && S.geomCache.get(geomKey(r)); if (Array.isArray(g) && g.length > 1 && !g.approximate) line = g.map(p => Array.isArray(p) ? [+p[0], +p[1]] : [+p.lat, +p.lon]); } catch (e) {}
+  return { id: r.id, title: String(r.title || r.t || r.id), km: +r.km || 0, line,
+    waypoints: wps.map((w, i) => ({ name: (typeof csName === 'function' ? (csName(w).place || w.name) : w.name) || ('Waypoint ' + (i + 1)), rawName: w.name, lat: +w.lat, lon: +w.lon, kind: w.kind || '' })) };
 }
-/* the analysis runs once per exact line, in this browser, and is then held for this page (two at most) */
-async function csCpBuild(route) {
-  const M = await csCpLoad(); const id = M.routeIdentity(route);
-  if (CS_CP.assets.has(id)) return CS_CP.assets.get(id);
-  const asset = await M.buildRoadIntelligence(route);
-  CS_CP.assets.set(id, asset); while (CS_CP.assets.size > 2) CS_CP.assets.delete(CS_CP.assets.keys().next().value);
-  return asset;
+function csCpHost() {
+  return { MapClass: window.maplibregl && maplibregl.Map, Marker: window.maplibregl && maplibregl.Marker,
+    styleUrl: OFM.street, routers: [NET.router, NET.routerAlt], fetch: (u, o) => fetch(u, o),
+    weatherUrl: 'https://api.open-meteo.com/v1/forecast', wikiUrl: 'https://en.wikipedia.org/w/api.php', wikiSummary: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
+    placeText: async w => { try { return await csPlaceText(csPlaceKey(w.rawName || w.name, w.lat, w.lon)); } catch (e) { return ''; } },
+    sunset: (lat, lon, date) => { try { const m = tripSunset(lat, lon, date); if (m == null) return null; const d0 = new Date(date); d0.setHours(0, 0, 0, 0); return new Date(d0.getTime() + m * 60000); } catch (e) { return null; } },
+    shortName: n => String(n || '').split(/[·,(]/)[0].trim(), store: csCpStore,
+    /* road watch: the app's own Overpass hosts with their fail-over and the refusal check */
+    overpass: typeof overpass === 'function' ? (q => overpass(q)) : null,
+    studio: (typeof Worker === 'function' && typeof WebAssembly === 'object') ? { worker: csCpAsset('cs-studio-worker.js'), files: { wasm: csCpAsset('cs-ort.wasm'), glue: csCpAsset('cs-ort-glue.js'), voices: { af_bella: csCpAsset('cs-voice-bella.bin'), af_heart: csCpAsset('cs-voice-heart.bin') } } } : null };
 }
-function csCpNotify() { CS_CP.listeners.forEach(fn => { try { fn(); } catch (e) {} }); }
-/* prepare the current ride's analysis; when it is ready the Co-Pilot is told the route changed */
-function csCpPrepare() {
-  const route = csCpRoute(CS_CP.ride); if (!route) return Promise.resolve(null);
-  const p = csCpBuild(route).then(a => { csCpNotify(); return a; }).catch(e => { try { console.warn('CurveScout Co-Pilot: analysis unavailable -', e && e.message); } catch (e2) {} CS_CP.buildError = String(e && e.message || e); csCpNotify(); return null; });
-  CS_CP.building = p; return p;
+async function csNavOpen(mode, r) {
+  if ((CS_CP.nav && window.CS_NAV) || CS_CP.opening) return; CS_CP.opening = true;
+  let M; try { M = await csCpLoad(); } catch (e) { CS_CP.opening = false; try { flash('The Co-Pilot could not load. Check the connection and try again.'); } catch (e2) {} return; } finally { CS_CP.opening = false; }
+
+  const ride = mode === 'route' ? csCpRide(r) : null;
+  if (mode === 'route' && (!ride || ride.waypoints.length < 2)) { try { flash('This ride has no waypoints to guide you through yet.'); } catch (e) {} return; }
+  /* the ride's start for the first map view; the map follows you as soon as your position arrives */
+  const start = ride && ride.waypoints[0] ? [ride.waypoints[0].lat, ride.waypoints[0].lon] : null;
+  CS_CP.nav = M.openNav({ mode, ride, start, host: csCpHost(), onClose: () => { CS_CP.nav = null; } });
 }
-/* ---- THE ONE MAP CLIENT ----
-   While the heading-up map is open the ride map's basemap layers are taken off the map (a CSS-hidden map
-   can still fetch), the preview bike is stopped, and the box is folded away. Close puts all of it back. */
-function csCpSuspendHostMap() {
-  const map = S.map, removed = [];
-  try { if (S.ride && document.getElementById('rideBtn')) document.getElementById('rideBtn').click(); } catch (e) {}
-  try { if (map) map.eachLayer(l => { if ((window.L && l instanceof L.TileLayer) || (l && typeof l.getMaplibreMap === 'function')) removed.push(l); }); } catch (e) {}
-  removed.forEach(l => { try { map.removeLayer(l); } catch (e) {} });
-  /* a ride map that is already gone (the rider left the page) is not brought back */
-  return () => { if (!map || !map._container || !map._container.isConnected || !map._loaded) return; removed.forEach(l => { try { if (map && !map.hasLayer(l)) l.addTo(map); } catch (e) {} }); try { map && map.invalidateSize(); } catch (e) {} };
-}
-function csCpSummary({ route }) {
-  const r = CS_CP.ride, el = document.createElement('div'); el.className = 'cpSummary';
-  const why = CS_CP.buildError ? 'The bend analysis could not run in this browser.' :
-    (route && route.evidence && route.evidence.geometryKind === 'checkpoint-corridor') ? 'The road line of this ride has not loaded yet, so only its checkpoints are known. No bends are guessed from them.' : '';
-  el.innerHTML = (why ? '<p>' + esc(why) + '</p>' : '') + (r ? '<p class="mut">' + esc(String(Math.round(+r.km || 0))) + ' km · ' + esc(String(((typeof rideWaypoints === 'function' ? rideWaypoints(r) : r.wp) || []).length)) + ' stops. The roadbook, the map and the GPX are unchanged.</p>' : '');
-  return el;
-}
-function csCpServices(ctx) {
-  const svc = S.svcNow; if (!svc || !ctx || !ctx.identity) return null;
-  /* cameras and police never pass through here (camera gate) */
-  const KIND = { fuel: 'fuel', ev: 'charging', food: 'food', rest: 'rest', moto: 'repair' }, items = [];
-  for (const k of Object.keys(KIND)) (svc[k] || []).slice(0, 400).forEach((x, i) => {
-    if (!Number.isFinite(+x.lat) || !Number.isFinite(+x.lon) || !x.name) return;
-    items.push({ id: k + ':' + (x.id || i) + ':' + (+x.lat).toFixed(5) + ',' + (+x.lon).toFixed(5), name: String(x.name).slice(0, 100), kind: KIND[k], coordinate: [+x.lon, +x.lat] });
-  });
-  return { identity: ctx.identity, items: items.slice(0, 5000), complete: false, asOf: null };
-}
-async function csCpInstall(host, r) {
-  const M = await csCpLoad();
-  if (CS_CP.host !== host || !host.isConnected) return null;
-  const tabs = host.querySelector('#cpTabs'), panels = host.querySelector('#cpPanels'), page = document.getElementById('rideDetail');
-  let storage = null; try { storage = window.localStorage; } catch (e) {}
-  if (!CS_CP.gate) {
-    /* enforcement cameras: no legally reviewed registry is configured, so every decision denies and the
-       loader is never called; the host has nothing to stop or purge because nothing was ever loaded */
-    CS_CP.gate = new M.CameraDataGate({ applyPolicy: d => { CS_CP.gateDecision = d; } });
-    try { CS_CP.gate.update({ enabled: false }); } catch (e) {}
-  }
-  const inst = M.installMobileCoPilot({
-    tabContainer: tabs, panelContainer: panels, storage, logoUrl: 'curvescout-mark-192.png', voices: [], safetyLocale: (document.documentElement.lang || 'en'),
-    onSelect: () => { page && page.classList.add('cpOn'); tabs.querySelector('.cpMapTab').setAttribute('aria-selected', 'false'); },
-    onReturn: () => { page && page.classList.remove('cpOn'); const t = tabs.querySelector('.cpMapTab'); if (t) t.setAttribute('aria-selected', 'true'); try { S.map && S.map.invalidateSize(); } catch (e) {} },
-    bindings: {
-      getCurrentRoute: () => csCpRoute(CS_CP.ride),
-      getManifestBinding: route => { try { const id = M.routeIdentity(route), a = CS_CP.assets.get(id); return a ? { identity: id, contentHash: a.contentHash } : null; } catch (e) { return null; } },
-      loadAsset: route => { const a = CS_CP.assets.get(M.routeIdentity(route)); if (!a) throw new Error('ASSET_NOT_PREPARED'); return Promise.resolve(a); },
-      validateAsset: (asset, expected) => M.validateRoadIntelligence(asset, expected),
-      subscribeRouteChange: fn => { CS_CP.listeners.add(fn); return () => CS_CP.listeners.delete(fn); },
-      getMapContext: () => null,
-      acquireHeadingUpMap: async ({ route }) => {
-        if (!(window.maplibregl && typeof csWebGL === 'function' && csWebGL())) throw new Error('The rotating map needs WebGL, which this browser does not offer.');
-        const c = route.geometry.coordinates[0];
-        return M.acquireNativeRideMap({ MapClass: maplibregl.Map, parent: panels, style: OFM.street, initialCenter: [c[0], c[1]], initialZoom: 14,
-          suspendHostMap: csCpSuspendHostMap, installHostServices: () => () => {} });
-      },
-      getTripOverview: () => null,
-      getServices: csCpServices,
-      getPoiPresentation: () => null,
-      photoAllowed: () => false,
-      getPlanningContext: ctx => ({ identity: ctx.identity, arrivalAtMs: null, roadAlerts: null }),
-      getRoadAlertSources: () => [],
-      onRoadAlertState: s => { CS_CP.alert = s; },
-      isContextReviewed: () => false,
-      getSafetyLocale: () => (document.documentElement.lang || 'en'),
-      /* the ride is read only after the acknowledgement; the receipt stays in this page */
-      onSafetyAcknowledged: receipt => { CS_CP.ack = receipt; csCpPrepare(); },
-      stopAudio: () => { try { window.speechSynthesis && speechSynthesis.cancel(); } catch (e) {} },
-      renderCoPilotSummary: csCpSummary,
-      openRoadbook: () => { inst.hide(); try { if (page && page.dataset.ptabs && typeof csPtabGo === 'function') csPtabGo('roadbook', true); } catch (e) {} const h = document.getElementById('rbHead'); if (h) h.scrollIntoView({ block: 'start' }); },
-      exportGpx: () => { try { downloadGPX(CS_CP.ride); } catch (e) {} },
-      chooseRoute: () => { inst.hide(); go('#/rides'); },
-      onError: e => { try { console.warn('CurveScout Co-Pilot:', e && e.message); } catch (e2) {} },
-    },
-  });
-  CS_CP.inst = inst; return inst;
-}
-function csCopilotLeave() {
-  try { if (CS_CP.inst) CS_CP.inst.destroy(); } catch (e) {}
-  CS_CP.inst = null; CS_CP.listeners.clear(); clearInterval(CS_CP._poll); CS_CP._poll = null;
-  try { const d = document.getElementById('rideDetail'); d && d.classList.remove('cpOn'); } catch (e) {}
-}
-window.addEventListener('hashchange', () => { if (CS_CP.inst && !/^#\/ride\//.test(location.hash || '')) csCopilotLeave(); });
-/* called by renderRide: one host per ride page, the previous Co-Pilot is destroyed first */
+window.csNavOpen = csNavOpen;
+/* called by renderRide: one button where the ride map is */
 function csCopilotMount(host, r) {
-  try { if (CS_CP.inst) CS_CP.inst.destroy(); } catch (e) {}
-  try { document.getElementById('rideDetail').classList.remove('cpOn'); } catch (e) {}
-  CS_CP.inst = null; CS_CP.ride = r; CS_CP.building = null; CS_CP.buildError = null; CS_CP.listeners.clear();
   const mb = host.querySelector(':scope > .mapBox'); if (!mb || !r) return;
   let box = host.querySelector(':scope > #cpHost');
   if (!box) { box = document.createElement('div'); box.id = 'cpHost'; box.className = 'cpHost'; mb.parentNode.insertBefore(box, mb); }
-  box.innerHTML = '<div class="cpTabs" id="cpTabs" role="tablist" aria-label="Ride views">' +
-      '<button type="button" role="tab" class="cpMapTab" aria-selected="true">Ride map</button>' +
-      '<button type="button" role="tab" class="cpLazy" aria-selected="false" data-cs-copilot="lazy">Co-Pilot <small>PREVIEW</small></button></div>' +
-    '<div id="cpPanels"></div>';
-  CS_CP.host = box;
-  const lazy = box.querySelector('.cpLazy');
-  box.querySelector('.cpMapTab').onclick = () => { try { CS_CP.inst && CS_CP.inst.hide(); } catch (e) {} };
-  lazy.onclick = async () => {
-    lazy.disabled = true; lazy.classList.add('busy');
-    try { const inst = await csCpInstall(box, r); if (!inst) return; lazy.remove(); inst.select(); }
-    catch (e) { lazy.disabled = false; lazy.classList.remove('busy'); try { flash('The Co-Pilot preview could not load. The ride map and GPX are unchanged.'); } catch (e2) {} }
-  };
-  /* a fresh road line (router answered, edit, avoid switch) is a new revision: tell an open Co-Pilot */
-  if (!CS_CP._poll) CS_CP._poll = setInterval(() => {
-    /* left the ride page: the Co-Pilot (and its map) goes with it, and so does this timer */
-    if (!CS_CP.host || !CS_CP.host.isConnected || !/^#\/ride\//.test(location.hash || '')) { csCopilotLeave(); return; }
-    if (!CS_CP.inst || !CS_CP.ride) return; const st = CS_CP.inst.getState && CS_CP.inst.getState(); if (!st || !st.selected || !st.acknowledged) return;
-    const route = csCpRoute(CS_CP.ride); if (!route) return;
-    csCpLoad().then(M => { const id = M.routeIdentity(route); if (!CS_CP.assets.has(id) && st.identity !== id && !CS_CP._pending) { CS_CP._pending = true; csCpPrepare().finally(() => { CS_CP._pending = false; }); } });
-  }, 2500);
+  box.innerHTML = '<button type="button" class="cpGo" id="cpGo"><span class="cpGoI" aria-hidden="true">🧭</span><span><b>Ride with Co-Pilot</b><small>Live navigation: turn by turn, sights, stories, weather</small></span></button>';
+  box.querySelector('#cpGo').onclick = () => csNavOpen('route', r);
 }
-window.csCopilotMount = csCopilotMount; window.csCpServices = csCpServices; window.csCpRoute = csCpRoute;
+window.csCopilotMount = csCopilotMount;
+/* the header and the phone menu: Co-Pilot on any road */
+(function () { try {
+  const add = () => { const top = document.querySelector('header.top .topIn'); if (!top || document.getElementById('cpFree')) return;
+    const b = document.createElement('button'); b.type = 'button'; b.id = 'cpFree'; b.className = 'tbtn cpFree'; b.title = 'Co-Pilot on any road'; b.setAttribute('aria-label', 'Co-Pilot: live navigation on any road');
+    b.innerHTML = '<span aria-hidden="true">🧭</span><span class="cpFreeT">Co-Pilot</span>'; b.onclick = () => csNavOpen('free');
+    const hud = document.getElementById('raHud'); if (hud) top.insertBefore(b, hud); else top.appendChild(b); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add); else add();
+} catch (e) {} })();
 
 /* the week's road: a scouted ride that is in season this month, picked the same way for every visitor in an ISO week */
 function csWeekRoad(now) {
@@ -11000,7 +11062,7 @@ function depNow() {
 let PLACE_GRID = null;
 async function placesNear(lat, lon, radiusM) {
   if (!PLACE_GRID) {
-    try { PLACE_GRID = await jget('places-index.json', 12000); }
+    try { PLACE_GRID = await jget('data/places-index.json', 12000); }
     catch (e) { PLACE_GRID = { cell: 0.25, grid: {} }; }
   }
   const c = PLACE_GRID.cell || 0.25;
@@ -11030,7 +11092,7 @@ const APPROVED_UNAVAILABLE = new Set();
     if (window.CS_APPROVED_MEDIA && typeof window.CS_APPROVED_MEDIA === 'object') {
       APPROVED_MEDIA = window.CS_APPROVED_MEDIA.approved || {}; return;
     }
-    const j = await jget('approved-media.json', 8000);
+    const j = await jget('data/media/approved-media.json', 8000);
     APPROVED_MEDIA = j && j.approved ? j.approved : {};
   } catch (e) { APPROVED_MEDIA = {}; }
 })();
@@ -12994,7 +13056,7 @@ window.csAds = ADS;
 
 /* ---------------- the named roads of the world ----------------
    Matching legends by NAME only caught rides whose title happened to mention one. This
-   matches on GEOGRAPHY: legends.json holds 61 named roads across 26 countries with an
+   matches on GEOGRAPHY: data/legends.json holds 61 named roads across 26 countries with an
    approximate corridor, and a ride counts if it runs within 12 km of one.
    The corridors are anchor points, not surveyed centrelines: accurate enough to say "you
    are on the Stelvio", nowhere near accurate enough to navigate by, and the page says so. */
@@ -13006,18 +13068,18 @@ async function loadLegends() {
   const inl = window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.legends;
   if (inl && inl.roads) { LEGENDS.roads = inl.roads; csTidyRows(LEGENDS.roads); return LEGENDS.roads; }
   try {
-    const j = await jget('legends.json', 8000);
+    const j = await jget('data/legends.json', 8000);
     LEGENDS.roads = (j && j.roads) || []; csTidyRows(LEGENDS.roads);
   } catch (e) { LEGENDS.roads = []; }
   /* THE TRUE SHAPE, WHEN THE NIGHTLY HAS FETCHED IT.
      The corridors in legends.json are traced by hand from settlements and summits, so they
      draw as a chain of straight segments - no hairpins, and one of them cut across a lake.
      OpenStreetMap holds these routes as relations with every way in order. When the nightly
-     has pulled them, legends-geom.json carries the real line, hairpin for hairpin, and
+     has pulled them, data/legends-geom.json carries the real line, hairpin for hairpin, and
      it replaces the approximation. Until then the corridor is what we have, and it is
      labelled as approximate on the page. */
   try {
-    const geom = await jget('legends-geom.json', 9000);
+    const geom = await jget('data/legends-geom.json', 9000);
     if (geom && geom.roads) {
       let swapped = 0;
       for (const r of LEGENDS.roads) {
@@ -16752,7 +16814,7 @@ function csSvcReady(id) { try { const b = window.csBriefRepaint; if (b && b.id =
 const CS_TOWNS = { idx: undefined, cells: new Map() };
 async function csTownsAlong(pts, km) {
   if (!pts || !pts.length) return [];
-  if (CS_TOWNS.idx === undefined) CS_TOWNS.idx = (async () => { try { return await jget('towns-index.json', 9000); } catch (e) { return null; } })();
+  if (CS_TOWNS.idx === undefined) CS_TOWNS.idx = (async () => { try { return await jget('data/towns/towns-index.json', 9000); } catch (e) { return null; } })();
   const idx = await CS_TOWNS.idx; if (!idx || !idx.cells) return [];
   const cellOf = (la, lo) => (Math.floor(la / 20) + 5) + '_' + (Math.floor(lo / 20) + 9);
   const need = [...new Set(pts.map(p => cellOf(p.lat, p.lon)))].filter(c => idx.cells[c]);
@@ -18826,7 +18888,7 @@ const CS_ROADS = { idx: undefined, cells: new Map() };
 function csPolyDecode(s) { const out = []; let i = 0, la = 0, lo = 0; s = String(s || ''); while (i < s.length) { for (let k = 0; k < 2; k++) { let r = 0, sh = 0, b; do { b = s.charCodeAt(i++) - 63; r |= (b & 0x1f) << sh; sh += 5; } while (b >= 0x20 && i < s.length + 1); const d = r & 1 ? ~(r >> 1) : r >> 1; if (k) lo += d; else la += d; } out.push([la / 1e5, lo / 1e5]); } return out; }
 const csRoadCell = (la, lo) => (Math.floor(la / 3) + 30) + '-' + (Math.floor(lo / 3) + 60);
 async function csRoadsIndex() {
-  if (CS_ROADS.idx === undefined) CS_ROADS.idx = (async () => { try { if (location.protocol === 'file:') return null; return await jget('roads-index.json', 8000); } catch (e) { return null; } })();
+  if (CS_ROADS.idx === undefined) CS_ROADS.idx = (async () => { try { if (location.protocol === 'file:') return null; return await jget('data/roads/roads-index.json', 8000); } catch (e) { return null; } })();
   return CS_ROADS.idx;
 }
 async function csStoredRoad(id, pts, km) {
@@ -20780,7 +20842,7 @@ function drawSpeedLine(map, line, speeds) {
    transparent to the pointer, so hovering works on whatever basemap is showing. */
 
 /* ---- 7,622 CATALOGUED PLACES, NEVER ONCE PUT ON A MAP ----
-   heritage.json has been in the repository the whole time: World Heritage sites and
+   data/heritage.json has been in the repository the whole time: World Heritage sites and
    catalogued landmarks with coordinates, 1.16 MB, and nothing had ever fetched it. A rider
    looking at a route wants to know what is beside it - a monastery, a gorge, a palace two
    kilometres off the line is the difference between a ride and a day out.
@@ -20826,7 +20888,7 @@ async function nearbyAdditions(r, howMany) {
   if (line.length < 2) return [];
   if (!S._heritage) {
     /* ---- THE CATALOGUE IS ALREADY IN THE FILE. ASK FOR IT BEFORE ASKING THE NETWORK ----
-       "Add a stop" and "Worth adding" fetched heritage.json. The single-file build he
+       "Add a stop" and "Worth adding" fetched data/heritage.json. The single-file build he
        downloads has no server, so the fetch always failed, S._heritage came back with zero
        rows and BOTH panels rendered with nothing to offer - a feature that exists in code
        and gives the rider nothing, which is the definition of lost. release.mjs has been
@@ -20839,7 +20901,7 @@ async function nearbyAdditions(r, howMany) {
        row read the same. */
     S._heritage = (inl && inl.rows && inl.rows.length)
       ? Promise.resolve({ rows: inl.rows, grid: inl.grid || null, prose: inl.prose || null })
-      : jget('heritage.json', 20000)
+      : jget('data/heritage.json', 20000)
           .then(j => (j && j.rows) ? { rows: j.rows, grid: j.grid || null, prose: j.prose || null }
                                    : { rows: [], grid: null, prose: null })
           .catch(() => ({ rows: [], grid: null, prose: null }));
@@ -21326,13 +21388,13 @@ function drawHeritageNear(map) {
   if (!map || !window.L || !L.circleMarker || !L.layerGroup || !line || line.length < 2) return;
   /* ---- READ THE FILE THE WAY IT IS ACTUALLY BUILT ----
      I guessed at `places` or a bare array and got neither, so this quietly resolved to an
-     empty list and drew nothing for three sessions. heritage.json is `rows` - 7,622
+     empty list and drew nothing for three sessions. data/heritage.json is `rows` - 7,622
      places as [lat, lon, name, ...] - plus `grid`, which already indexes them into one-degree
      cells. That grid is exactly the lookup this needs, so the whole catalogue never has to be
      scanned: take the cells the route passes through and look only at those. */
   if (!S._heritage) {
     /* ---- THE CATALOGUE IS ALREADY IN THE FILE. ASK FOR IT BEFORE ASKING THE NETWORK ----
-       "Add a stop" and "Worth adding" fetched heritage.json. The single-file build he
+       "Add a stop" and "Worth adding" fetched data/heritage.json. The single-file build he
        downloads has no server, so the fetch always failed, S._heritage came back with zero
        rows and BOTH panels rendered with nothing to offer - a feature that exists in code
        and gives the rider nothing, which is the definition of lost. release.mjs has been
@@ -21345,7 +21407,7 @@ function drawHeritageNear(map) {
        row read the same. */
     S._heritage = (inl && inl.rows && inl.rows.length)
       ? Promise.resolve({ rows: inl.rows, grid: inl.grid || null, prose: inl.prose || null })
-      : jget('heritage.json', 20000)
+      : jget('data/heritage.json', 20000)
           .then(j => (j && j.rows) ? { rows: j.rows, grid: j.grid || null, prose: j.prose || null }
                                    : { rows: [], grid: null, prose: null })
           .catch(() => ({ rows: [], grid: null, prose: null }));
@@ -25780,7 +25842,7 @@ const clock = m => String(Math.floor((m / 60) % 24)).padStart(2, '0') + ':' + St
    after the box was resized. Rebuilding the path against the measured width removes the
    distortion completely instead of reducing it. */
 /* ---------------- rider gatherings near the road ----------------
-   Reads events.json, which ships EMPTY. There is no open dataset of motorcycle
+   Reads data/events.json, which ships EMPTY. There is no open dataset of motorcycle
    events, and a wrong date sends someone a long way to an empty car park - so the app
    claims nothing until a list exists. When one does, an event within 30 km of the route
    and within a fortnight of the ride shows up, always with the organiser's own link so a
@@ -25788,7 +25850,7 @@ const clock = m => String(Math.floor((m / 60) % 24)).padStart(2, '0') + ':' + St
 const EVENTS = { data: null, tried: false };
 /* THE FEED FINALLY HAS SOMETHING IN IT: 429 recurring series with coordinates, 51 countries.
    It arrives inline like everything else, because the download has no server to fetch from -
-   this mechanism has been reading `events.json` over the network since it was written,
+   this mechanism has been reading `data/events.json` over the network since it was written,
    which in the single file is a 404 every time and an empty list for ever.
    Rows are positional to keep the payload small; expanded once, here, into the shape the
    rest of the code already expects. */
@@ -28869,7 +28931,8 @@ async function renderRide(id) {
         if (!gEl) { gEl = document.createElement('div'); gEl.id = 'csGuideRoute'; $('butlerBox').insertAdjacentElement('afterend', gEl); }
         const LABEL = { go: 'A good day for it', warn: 'Ride with care today', risk: 'Not today' };
         const reason = String(v.body || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().split(/(?<=[.!?])\s/)[0].replace(/[.!?]+$/, '');
-        gEl.innerHTML = renderGuideCallout({ routeId: r.i, surfaceId: 'route', guideId: 'noor_brief', tone: 'warning',
+        /* a good day needs no comment: the conditions box already says so. Noor speaks only to warn */
+        gEl.innerHTML = v.level === 'go' ? '' : renderGuideCallout({ routeId: r.i, surfaceId: 'route', guideId: 'noor_brief', tone: 'warning',
           fields: { verdict_label: LABEL[v.level] || null, verdict_reason: reason ? reason.charAt(0).toLowerCase() + reason.slice(1) : null,
             __note: 'Forecast-based. For the official road status use the links in the conditions panel.' },
           evidence: { route_duration: Number.isFinite(+r.km) && +r.km > 0 }, limit: 240 });
@@ -30174,6 +30237,8 @@ async function boot() {
     try { route(); } catch (e) { console.warn('CurveScout: first route failed -', e && e.message); }
     /* startup audit 2026-10-26: the footer sat in the empty first screen and jumped down when the view filled (layout shift
        0.78 on a phone). It is shown once the first view has painted. */
+    /* owner 2026-10-31: "every site must start at launch on the top" - the browser does not put back an old scroll position */
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; if (!/^#\/trip\?/.test(location.hash || '')) scrollTo(0, 0); } catch (e) {}
     requestAnimationFrame(() => requestAnimationFrame(() => { try { document.body.classList.add('csBooted'); } catch (e) {} }));
 
     $('boot').classList.add('done');
