@@ -1,0 +1,16 @@
+How cs-studio-worker.js is built (its complete corresponding source under GPL-3.0-or-later)
+
+Sources in this folder, as they are in the CurveScout project:
+  cs-studio-worker.src.mjs  = src/copilot-live/studio-worker.mjs
+  cs-g2p-local.src.mjs      = src/copilot-live/g2p-local.mjs
+  cs-phon.src.mjs           = src/copilot-live/phon.mjs
+  cs-build-copilot.src.mjs  = tools/build-copilot.mjs (this build script)
+
+Dependencies (npm, exact versions): onnxruntime-web@1.22.0, phonemizer@1.2.1, kokoro-js@1.2.1; bundler esbuild@0.24.0.
+
+Rebuild:
+  1. put the four .src.mjs files back at the paths above (the imports name ./phon.mjs and ./g2p-local.mjs)
+  2. npm install onnxruntime-web@1.22.0 phonemizer@1.2.1 kokoro-js@1.2.1 esbuild@0.24.0
+  3. esbuild src/copilot-live/studio-worker.mjs --bundle --format=esm --platform=browser --target=es2020 --minify --legal-comments=inline --outfile=cs-studio-worker.js
+
+Licences: see STUDIO-VOICE-LICENSES.txt. Questions or a copy of the source on request: the address on curvescout.com/about.html.

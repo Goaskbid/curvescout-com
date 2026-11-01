@@ -46,7 +46,12 @@
       let ctl = null, opts = init;
       if ((k === 'photos' || k === 'mapdata') && !(init && init.signal)) { ctl = new AbortController(); opts = Object.assign({}, init || {}, { signal: ctl.signal }); views.add(ctl); }
       f.sent++;
-      const pr = raw(input, opts).then(r => { if (r.status >= 500 || r.status === 429) { bad(f); failedUrl.set(key, Date.now() + 60000); } else ok(f); return r; },
+      /* FOSSGIS asks for at most one request per second to its routing servers (routing.openstreetmap.de, valhalla1.openstreetmap.de):
+         requests to one of them are spaced a second apart, whatever part of the app sends them (legal audit 2026-11-01) */
+      let send = () => raw(input, opts);
+      if (/(^|\.)openstreetmap\.de$/.test(url.host) && k === 'routing') { const last = guarded._fossgis || (guarded._fossgis = {}), at = Math.max(now, (last[url.host] || 0) + 1000); last[url.host] = at;
+        if (at > now) { const go = send; send = () => new Promise(res => setTimeout(res, at - now)).then(go); } }
+      const pr = send().then(r => { if (r.status >= 500 || r.status === 429) { bad(f); failedUrl.set(key, Date.now() + 60000); } else ok(f); return r; },
         e => { if (!(e && e.name === 'AbortError')) { bad(f); failedUrl.set(key, Date.now() + 60000); } throw e; })
         .finally(() => { inflight.delete(key); if (ctl) views.delete(ctl); });
       if (method === 'GET') inflight.set(key, pr);
@@ -908,6 +913,41 @@ function guidePresenter(guideId, surfaceId, routeId, label, pose, fact) {
     (fact ? '<em class="csPresenterFact">' + esc(fact) + '</em>' : '') + '</span>';
 }
 window.csPresenter = guidePresenter;
+/* ---- THE GUIDES COME ALIVE (owner 2026-11-01: "could you animate the testimonial drivers? make it amazing") ----
+   When a guide scrolls into view: the portrait pops in while a ring in the guide's colour draws round it, the name slides in,
+   a small voice meter plays while the line they say types itself out, then the portrait keeps breathing gently. Once per
+   presenter, only when seen, nothing at all with "reduce motion". The guides are CurveScout's own characters, said so on
+   every portrait - they are not customer reviews. */
+(function csGuidesAlive() {
+  try {
+    if (typeof IntersectionObserver === 'undefined' || typeof MutationObserver === 'undefined') return;
+    const still = () => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } };
+    const type = (el) => { const full = el.textContent; if (!full || full.length < 4) return Promise.resolve(); el.setAttribute('aria-label', full); el.textContent = '';
+      const step = Math.max(12, Math.min(32, 1600 / full.length)); let i = 0;
+      return new Promise(res => { const tick = () => { i += 1; el.textContent = full.slice(0, i); if (i < full.length) setTimeout(tick, step); else res(); }; setTimeout(tick, 380); }); };
+    /* seen = on screen: checked on scroll and every second (an IntersectionObserver missed guides that the page moves after drawing) */
+    const waiting = new Set();
+    const live = p => {
+      p.classList.add('csLive'); p.classList.remove('csWait');
+      /* a guide card: the figure steps in and sways, the voice meter plays while the words fade in, line by line */
+      if (p.classList.contains('csGuide')) { const nm = p.querySelector('.csgHead b'); if (nm && !still()) { const mt = document.createElement('span'); mt.className = 'csTalk'; mt.setAttribute('aria-hidden', 'true'); mt.innerHTML = '<i></i><i></i><i></i><i></i>'; nm.after(mt);
+          p.querySelectorAll('p').forEach((x, k) => { x.style.animationDelay = (0.35 + k * 0.25) + 's'; }); setTimeout(() => mt.classList.add('done'), 2600); } return; }
+      const fact = p.querySelector('.csPresenterFact'), name = p.querySelector('b');
+      if (fact && name && !still()) { const meter = document.createElement('span'); meter.className = 'csTalk'; meter.setAttribute('aria-hidden', 'true'); meter.innerHTML = '<i></i><i></i><i></i><i></i>'; name.after(meter);
+        type(fact).then(() => setTimeout(() => meter.classList.add('done'), 250)); } };
+    const check = () => { for (const p of waiting) { if (!p.isConnected) { waiting.delete(p); continue; } const r = p.getBoundingClientRect(); if (r.height && r.top < innerHeight * 0.92 && r.bottom > 40) { waiting.delete(p); live(p); } } };
+    let tk = 0; addEventListener('scroll', () => { if (!tk) tk = setTimeout(() => { tk = 0; check(); }, 120); }, { passive: true }); setInterval(() => { if (waiting.size) check(); }, 1000);
+    const io = { observe: p => { waiting.add(p); setTimeout(check, 60); }, unobserve: p => waiting.delete(p) };
+    const seen = new WeakSet();
+    const scan = root => { (root.querySelectorAll ? root.querySelectorAll('.csPresenter, .csGuide') : []).forEach(p => { if (seen.has(p)) return; seen.add(p);
+      if (!p.title) p.title = 'A CurveScout guide character - the words come from this route\'s own data, not from a customer review';
+      if (still()) { p.classList.add('csLive', 'csStill'); return; } p.classList.add('csWait'); io.observe(p);
+      }); };
+    const mo = new MutationObserver(ms => { for (const m of ms) for (const n of m.addedNodes) if (n.nodeType === 1) { if (n.classList && (n.classList.contains('csPresenter') || n.classList.contains('csGuide'))) scan(n.parentNode || n); else if (n.querySelector && n.querySelector('.csPresenter, .csGuide')) scan(n); } });
+    const start = () => { scan(document); mo.observe(document.body, { childList: true, subtree: true }); };
+    if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
+  } catch (e) {}
+})();
 /* ---- NEIGHBOURS MUST NOT SAY THE SAME THING ----
    Two cards side by side carried the identical sentence, which reads like a template because it
    was one. Each line is now picked from a small bank by a hash of the route, and a line already
@@ -2620,7 +2660,7 @@ async function csAltPump() {
     for (const [id, w] of CS_ALT.q) { if (n + w.length > 100) break; group.push([id, w]); n += w.length; }
     group.forEach(([id]) => CS_ALT.q.delete(id));
     const flat = [].concat(...group.map(g => g[1]));
-    let js = null; try { js = await jget(ELEV_HOST() + '/v1/elevation?latitude=' + flat.map(c => c[0].toFixed(4)).join(',') + '&longitude=' + flat.map(c => c[1].toFixed(4)).join(','), 12000); } catch (e) { js = null; }
+    let js = null; try { js = await elevJson(flat, 12000, 10); } catch (e) { js = null; }
     const el = js && js.elevation;
     if (!Array.isArray(el) || el.length !== flat.length) break;   /* refused or offline: the slots stay empty, asked again next visit */
     let k = 0; for (const [id, w] of group) { const part = el.slice(k, k + w.length).filter(v => Number.isFinite(+v)); k += w.length; if (part.length) csAltNote(id, Math.max(...part), false); }
@@ -3088,7 +3128,8 @@ async function expandDerived(rc) {
     /* SAY SO ON THE PAGE. A ride cut out of another ride is a real ride, but the reader is
        entitled to know which it is - and where the geometry came from. */
     geomQuality: rc.k === 'scenic' ? 'corridor' : 'routed',
-    kmQuality: rc.k === 'scenic' ? 'approximate' : 'measured',
+    /* r30 audit: a ride cut from another ride was labelled 'measured' without a dense line of its own - it is derived */
+    kmQuality: rc.k === 'scenic' ? 'approximate' : 'derived from the parent ride',
   }, extra || {});
 
   if (rc.k === 'scenic') {
@@ -3500,7 +3541,37 @@ function routeLine(r, n) {
    configured for WX still wins, as commercial mode requires. */
 function ELEV_HOST() {
   const h = WX.cfg && WX.cfg.host;
-  return (h && !/met\.no/.test(h)) ? h.replace(/\/$/, '') : 'https://api.open-meteo.com';
+  return (h && !/met\.no/.test(h)) ? h.replace(/\/$/, '') : '';
+}
+/* ---- HEIGHTS FROM OPEN TERRAIN DATA (owner 2026-11-01: "we are going commercial ... free of charge data ... legally safe") ----
+   Open-Meteo's free API is for non-commercial sites only ("websites or apps that display advertisements" are commercial),
+   so the heights no longer come from it. They come from the open Terrain Tiles on AWS (Mapzen/Tilezen terrarium tiles:
+   SRTM and 3DEP (USGS), Copernicus EU-DEM, ETOPO1, Kartverket, Geoscience Australia ... all open, commercial use allowed
+   with credit), read in the browser: a terrarium pixel is height = R*256 + G + B/256 - 32768 metres. A paid or self-hosted
+   Open-Meteo-compatible host configured in CS_WX still wins. Tiles are kept for the visit, so a ride's profile and its
+   neighbours share them. */
+const TERRAIN = { url: 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/', tiles: new Map(),
+  credit: 'Heights: Terrain Tiles (AWS Open Data; SRTM, USGS, Copernicus EU-DEM and others)' };
+function terrainTile(z, x, y) {
+  const k = z + '/' + x + '/' + y; if (TERRAIN.tiles.has(k)) return TERRAIN.tiles.get(k);
+  const p = (async () => { const r = await fetch(TERRAIN.url + k + '.png', { mode: 'cors' }); if (!r.ok) throw new Error('terrain ' + r.status);
+    const bmp = await createImageBitmap(await r.blob()); const c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height;
+    const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(bmp, 0, 0); return { d: g.getImageData(0, 0, c.width, c.height).data, w: c.width, h: c.height }; })();
+  p.catch(() => TERRAIN.tiles.delete(k)); TERRAIN.tiles.set(k, p); return p;
+}
+async function terrainHeights(pts, z) {
+  z = z || 11; const n = 2 ** z;
+  return Promise.all(pts.map(async q => { const la = Math.max(-85, Math.min(85, +q[0])), lo = +q[1], s = Math.sin(la * Math.PI / 180);
+    const xf = (lo + 180) / 360 * n, yf = (0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)) * n, x = Math.floor(xf), y = Math.floor(yf);
+    const t = await terrainTile(z, ((x % n) + n) % n, Math.max(0, Math.min(n - 1, y)));
+    const px = Math.min(t.w - 1, Math.floor((xf - x) * t.w)), py = Math.min(t.h - 1, Math.floor((yf - y) * t.h)), i = (py * t.w + px) * 4;
+    return Math.round((t.d[i] * 256 + t.d[i + 1] + t.d[i + 2] / 256 - 32768) * 10) / 10; }));
+}
+/* one answer shape for every caller: { elevation: [...] }, whichever source answered */
+async function elevJson(pts, ms, z) {
+  const h = ELEV_HOST();
+  if (h) return jget(h + '/v1/elevation?latitude=' + pts.map(c => (+c[0]).toFixed(4)).join(',') + '&longitude=' + pts.map(c => (+c[1]).toFixed(4)).join(','), ms || 12000);
+  return { elevation: await terrainHeights(pts, z) };
 }
 async function elevationFor(r, n) {
   const N = n || 60;
@@ -3520,9 +3591,7 @@ async function elevationFor(r, n) {
   }
   if (line.length < 4) return null;
   const p = (async () => {
-    const js = await jget(ELEV_HOST() + '/v1/elevation?latitude=' +
-      line.map(c => c[0].toFixed(4)).join(',') + '&longitude=' +
-      line.map(c => c[1].toFixed(4)).join(','), 12000);
+    const js = await elevJson(line, 12000, 11);
     const el = js && js.elevation;
     if (!Array.isArray(el) || el.length !== line.length || !el.every(v => Number.isFinite(v))) {
       throw new Error('unexpected elevation response');
@@ -3548,9 +3617,7 @@ async function elevationBatch(routes, perRoute) {
     if (lines.some(l => l.length !== per)) { group.forEach(r => ELEV.cache.set(r.id + '@' + per, null)); continue; }
     const flat = [].concat(...lines);
     try {
-      const js = await jget(ELEV_HOST() + '/v1/elevation?latitude=' +
-        flat.map(c => c[0].toFixed(4)).join(',') + '&longitude=' +
-        flat.map(c => c[1].toFixed(4)).join(','), 12000);
+      const js = await elevJson(flat, 12000, 10);
       const el = js && js.elevation;
       if (!Array.isArray(el) || el.length !== flat.length) throw new Error('bad batch');
       group.forEach((r, gi) => ELEV.cache.set(r.id + '@' + per, el.slice(gi * per, (gi + 1) * per).map(v => Math.round(v))));
@@ -5932,8 +5999,8 @@ const THIRD_PARTIES = [
   ['Wikidata', 'facts about the notable places near the road', 'https://foundation.wikimedia.org/wiki/Policy:Privacy_policy',
    'Receives the coordinates of a handful of points along the route when you run the scan. ' +
    'Its data is CC0; CurveScout writes its own wording from those facts.'],
-  ['Open-Meteo', 'ground elevation and the weather window', 'https://open-meteo.com/en/terms',
-   'Receives the coordinates along the route.'],
+  ['Terrain Tiles on AWS (s3.amazonaws.com/elevation-tiles-prod)', 'ground heights for the climb profiles and the relief of the Topo map', 'https://aws.amazon.com/privacy/',
+   'Receives requests for elevation tiles around the route (no personal data beyond your IP address, as with any image).'],
   ['Overpass / OpenStreetMap', 'fuel, food, viewpoints, speed cameras', 'https://osmfoundation.org/wiki/Privacy_Policy',
    'Receives a bounding box around the road, not your position.'],
 ];
@@ -6056,8 +6123,11 @@ function csWallShow(i) { try {
 /* the photo fills exactly the screen between the header and the bottom bar */
 function csWallFit() { try { const w = document.getElementById('csWall'); if (!w || !w.offsetParent) return;
   const nav = [...document.querySelectorAll('#bottomNav, .bnav, nav.bottom')].find(e => e.getClientRects().length && getComputedStyle(e).position === 'fixed');
-  const bottom = nav ? nav.getBoundingClientRect().top : innerHeight; const top = w.getBoundingClientRect().top;
-  w.style.height = Math.max(420, Math.round(bottom - top)) + 'px'; } catch (e) {} }
+  /* owner 2026-11-01 "check scrolling of the start site, it is weird": the top was read on screen, so once the page was
+     scrolled it went negative, the wall grew by the scrolled distance and a timer repeated it every 0.7 s - the page
+     grew under the finger and never ended. The wall's place IN THE PAGE does not move when you scroll. */
+  const bottom = nav ? nav.getBoundingClientRect().top : innerHeight; const top = w.getBoundingClientRect().top + (window.scrollY || 0);
+  const h = Math.max(420, Math.round(bottom - top)) + 'px'; if (w.style.height !== h) w.style.height = h; } catch (e) {} }
 window.addEventListener('resize', csWallFit); window.csWallFit = csWallFit;
 setInterval(() => { const h = document.getElementById('view-home'); if (h && h.classList.contains('csWallOn')) csWallFit(); }, 700);
 function csWallTick() { const h = document.getElementById('view-home');
@@ -8088,6 +8158,9 @@ async function tripDrawMap() {
   try { if (TRIP.map) { TRIP.map.remove(); TRIP.map = null; } } catch (e) {}
   const m = L.map(el, { scrollWheelZoom: false, zoomSnap: 0.25, zoomDelta: 0.5 }); TRIP.map = m; csBasemap(m, 'street'); try { csDeclutterWire(m); } catch (e) {}
   const g = L.layerGroup().addTo(m), all = [];
+  /* owner 2026-11-01: "legends and maps were still forgotten" - the trip map gets its key and switches: nights and
+     transfers are their own layers so a rider can turn them off; the key under the map names every mark on it */
+  const gNight = L.layerGroup().addTo(m), gXfer = L.layerGroup().addTo(m), gPins = L.layerGroup().addTo(m);
   const o = TRIP.opts; const base = [+o.start[0], +o.start[1]]; all.push(base);
   TRIP.lines = []; TRIP.polys = []; TRIP.group = g;
   L.circleMarker(base, { radius: 8, color: '#fff', weight: 2.5, fillColor: '#15171b', fillOpacity: 1 }).addTo(g).bindTooltip(esc(o.label || 'Start'));
@@ -8100,10 +8173,10 @@ async function tripDrawMap() {
     const outline = L.polyline(w, { color: col, weight: 3, opacity: 0, interactive: false }).addTo(g); w.forEach(p => all.push(p));
     TRIP.polys[i] = [outline];
     outline.on('click', () => tripFocus(i, true));
-    L.marker(d.start, { icon: L.divIcon({ className: '', iconSize: [24, 24], iconAnchor: [12, 12], html: '<div class="tripPin" style="background:' + col + '">' + (i + 1) + '</div>' }) }).addTo(g).on('click', () => tripFocus(i, true));
+    L.marker(d.start, { icon: L.divIcon({ className: '', iconSize: [24, 24], iconAnchor: [12, 12], html: '<div class="tripPin" style="background:' + col + '">' + (i + 1) + '</div>' }) }).addTo(gPins).on('click', () => tripFocus(i, true));
     /* moving tour: the way from last night's stop to this start, as a thin dotted line - an estimate, not a route */
     /* transfers are drawn only as routed roads (tripTransfers below) - never as a straight line */
-    if (o.mode !== 'base') L.marker(d.night, { icon: L.divIcon({ className: '', iconSize: [22, 22], iconAnchor: [11, 11], html: '<div class="tripBed">🛏</div>' }) }).addTo(g).bindTooltip('Night ' + (i + 1));
+    if (o.mode !== 'base') L.marker(d.night, { icon: L.divIcon({ className: '', iconSize: [22, 22], iconAnchor: [11, 11], html: '<div class="tripBed">🛏</div>' }) }).addTo(gNight).bindTooltip('Night ' + (i + 1));
     /* the real road, from the same cached router call the ride page makes */
     tripRoadStatus(i, 'loading');
     let fullRide = null;
@@ -8122,12 +8195,30 @@ async function tripDrawMap() {
     }).catch(() => { if (TRIP.map === m) tripRoadStatus(i, 'none'); });
   });
   if (o.mode === 'a2b' && o.dest) { all.push([+o.dest[0], +o.dest[1]]); L.marker([+o.dest[0], +o.dest[1]], { icon: L.divIcon({ className: '', iconSize: [26, 26], iconAnchor: [13, 13], html: '<div class="tripDest">B</div>' }) }).addTo(g).bindTooltip(esc(o.dest[2] || 'Destination')); }
-  tripTransfers(m, g);
+  tripTransfers(m, gXfer);
   TRIP.allBounds = all;
+  try { tripMapKey(el, m, { gNight, gXfer, gPins }); } catch (e) {}
   try { m.fitBounds(L.latLngBounds(all).pad(0.12)); } catch (e) { m.setView(base, 8); }
   /* the result is laid out after the map is created (grid on desktop, fonts on phones): measure again, then frame the trip */
   setTimeout(() => { if (TRIP.map !== m) return; try { m.invalidateSize(false); if (TRIP.focus == null && !TRIP.anim) m.fitBounds(L.latLngBounds(all).pad(0.12)); } catch (e) {} }, 260);
 }
+/* the key under the trip map: every mark named, the days in their colours (a tap shows that day), and switches for the
+   layers a rider may want out of the way. Transfers appear in the key only once one is drawn. */
+function tripMapKey(el, m, ly) {
+  const wrap = el.closest('.tripMapWrap') || el.parentElement; if (!wrap) return;
+  let k = wrap.nextElementSibling && wrap.nextElementSibling.classList.contains('tripKey') ? wrap.nextElementSibling : null;
+  if (!k) { k = document.createElement('div'); k.className = 'tripKey'; wrap.after(k); }
+  const o = TRIP.opts, days = TRIP.plan.days, moving = o.mode !== 'base';
+  const sw = (key, ic, label, on) => '<button type="button" class="tkSw' + (on ? ' on' : '') + '" data-ly="' + key + '" aria-pressed="' + on + '">' + ic + '<span>' + esc(label) + '</span></button>';
+  const hasX = days.some(d => (d.transferIn && d.transferIn.km > 0) || (d.transferOut && d.transferOut.km > 0));
+  k.innerHTML = '<div class="tkRow tkDays" role="group" aria-label="Days">' + days.map((d, i) => '<button type="button" class="tkDay" data-day="' + i + '" title="Show day ' + (i + 1) + ' on the map"><i style="background:' + TRIP_COL[i % TRIP_COL.length] + '">' + (i + 1) + '</i><span>' + esc(tripDayShort(d, i)) + '</span></button>').join('') + '</div>' +
+    '<div class="tkRow tkMarks"><span class="tkM"><i class="tkStart"></i>Start</span>' + (o.mode === 'a2b' && o.dest ? '<span class="tkM"><i class="tkDest">B</i>Destination</span>' : '') + '<span class="tkM"><i class="tkLine"></i>Road of the day</span>' + (hasX ? '<span class="tkM"><i class="tkXfer"></i>Transfer</span>' : '') + '</div>' +
+    '<div class="tkRow tkSws" role="group" aria-label="Show on the map">' + sw('gPins', '<i class="tkPinI">1</i>', 'Day starts', true) + (moving ? sw('gNight', '<i class="tkBedI">🛏</i>', 'Nights', true) : '') + (hasX ? sw('gXfer', '<i class="tkXfer"></i>', 'Transfers', true) : '') + '</div>';
+  k.querySelectorAll('[data-day]').forEach(b => b.onclick = () => { try { tripFocus(+b.dataset.day, true); } catch (e) {} });
+  k.querySelectorAll('[data-ly]').forEach(b => b.onclick = () => { const g = ly[b.dataset.ly]; if (!g) return; const on = !m.hasLayer(g); on ? g.addTo(m) : m.removeLayer(g); b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); });
+}
+/* a day in the key is named by where it ends, like the day cards: "to Wolfsburg" */
+function tripDayShort(d, i) { try { const p = d.finish || d.night; const t = p ? (tripTownNear(p, 12) || tripTownNear(p, 45)) : ''; return t ? 'to ' + t : 'Day ' + (i + 1); } catch (e) { return 'Day ' + (i + 1); } }
 /* ---- TRANSFERS ON THE MAP AND IN THE SCHEDULE (owner 2026-10-13: "add transfers to the schedule and map") ----
    Each transfer is asked of the router once (two points, motorways allowed - getting there is the point of a transfer).
    The answer draws a grey road under the day lines and replaces the estimate in the schedule and the trip total. No
@@ -9038,7 +9129,9 @@ setInterval(csReportButton, 1000);
 /* the Wingman mark, one drawing for the header, the welcome card and the ride button */
 const CS_WM_LOGO = '<svg class="wmLogo" viewBox="0 0 32 32" aria-hidden="true"><circle class="wmRing" cx="16" cy="16" r="14.5"/><circle class="wmGrid" cx="16" cy="16" r="9.5"/><path class="wmGrid" d="M16 2.5v27M2.5 16h27"/><g class="wmSweep"><path d="M16 16L16 1.5A14.5 14.5 0 0 1 26.3 5.8Z"/></g><path class="wmJet" d="M16 6.5l6.2 16.2L16 19.2l-6.2 3.5z"/><circle class="wmBlip" cx="22.5" cy="9.5" r="1.4"/></svg>';
 /* ---- WINGMAN (formerly "Co-Pilot"): LIVE NAVIGATION, OPENED FROM A RIDE OR FROM ANY ROAD (owner 2026-10-31) ----
-   Renamed: "CoPilot" is an established navigation-app brand (CoPilot GPS) and Copilot a Microsoft mark; Wingman fits the
+   Renamed twice: "CoPilot" is an established navigation-app brand (CoPilot GPS) and Copilot a Microsoft mark; "Wingman" is
+   RideLink's motorcycle GPS tracker brand in the EU and Royal Enfield's connected-bike app (legal audit 2026-11-01). The
+   navigator is CurveScout Ride - built on our own brand.
    radar look the owner asked for. The name lives in src/copilot-live/i18n.mjs (name) and here.
    "what i asked for is a switch to a navigation system. real time ... take out the sim." The 1.3.0 rehearsal tab is
    gone. A ride page has one button, "Ride with Co-Pilot", which opens the full-screen navigator on that ride's
@@ -9062,15 +9155,18 @@ const csCpStore = { get(k, f) { try { const v = localStorage.getItem(k); return 
 /* the ride as the navigator needs it: named waypoints in order and the road line the map already shows */
 function csCpRide(r) {
   if (!r) return null;
-  const wps = ((typeof rideWaypoints === 'function' ? rideWaypoints(r) : r.waypoints) || []).filter(w => w && Number.isFinite(+w.lat) && Number.isFinite(+w.lon));
+  /* a stop without a real position (null is not 0/0) goes along by name only, and Ride says it is not in the route */
+  const okW = w => w && w.lat !== null && w.lon !== null && w.lat !== '' && w.lon !== '' && Number.isFinite(+w.lat) && Number.isFinite(+w.lon) && Math.abs(+w.lat) <= 90 && Math.abs(+w.lon) <= 180;
+  const all = ((typeof rideWaypoints === 'function' ? rideWaypoints(r) : r.waypoints) || []).filter(w => w && w.kind !== 'shape' || (w && okW(w)));
+  const wps = all.filter(okW), unplaced = all.filter(w => !okW(w)).map(w => (w && w.name) || '?');
   let line = null; try { const g = S.geomCache && S.geomCache.get(geomKey(r)); if (Array.isArray(g) && g.length > 1 && !g.approximate) line = g.map(p => Array.isArray(p) ? [+p[0], +p[1]] : [+p.lat, +p.lon]); } catch (e) {}
-  return { id: r.id, title: String(r.title || r.t || r.id), km: +r.km || 0, line,
+  return { id: r.id, title: String(r.title || r.t || r.id), km: +r.km || 0, line, unplaced,
     waypoints: wps.map((w, i) => ({ name: (typeof csName === 'function' ? (csName(w).place || w.name) : w.name) || ('Waypoint ' + (i + 1)), rawName: w.name, lat: +w.lat, lon: +w.lon, kind: w.kind || '' })) };
 }
 function csCpHost() {
   return { MapClass: window.maplibregl && maplibregl.Map, Marker: window.maplibregl && maplibregl.Marker,
     styleUrl: OFM.street, routers: [NET.router, NET.routerAlt], fetch: (u, o) => fetch(u, o),
-    weatherUrl: 'https://api.open-meteo.com/v1/forecast', wikiUrl: 'https://en.wikipedia.org/w/api.php', wikiSummary: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
+    weatherUrl: '', wikiUrl: 'https://en.wikipedia.org/w/api.php', wikiSummary: 'https://en.wikipedia.org/api/rest_v1/page/summary/',
     placeText: async w => { try { return await csPlaceText(csPlaceKey(w.rawName || w.name, w.lat, w.lon)); } catch (e) { return ''; } },
     sunset: (lat, lon, date) => { try { const m = tripSunset(lat, lon, date); if (m == null) return null; const d0 = new Date(date); d0.setHours(0, 0, 0, 0); return new Date(d0.getTime() + m * 60000); } catch (e) { return null; } },
     shortName: n => String(n || '').split(/[·,(]/)[0].trim(), store: csCpStore,
@@ -9087,6 +9183,8 @@ function csCpHost() {
     photoAt: async (lat, lon, w) => { try { const baked = w && Array.isArray(w.photos) ? w.photos.filter(p => p && p.url) : [];
       const pics = baked.length ? baked : (await commonsPhotos(lat, lon, 4, 160)).filter(picIsOfAPlace).filter(p => !mediaIsRejected(p)); const p = pics[0];
       return p && safePhotoUrl(p.url) ? photoSrc(p.url) : null; } catch (e) { return null; } },
+    /* the weather along the way: MET Norway through the site's weather adapter (free, commercial use allowed, CC BY 4.0) */
+    weatherAt: async pts => Promise.all(pts.map(q => WX.forecast(+(+q[0]).toFixed(3), +(+q[1]).toFixed(3), { days: 2 }).catch(() => null))),
     setNear: p => { try { CS_SUGGEST.setNear(p); } catch (e) {} },
     townNear: async p => { try { return await CS_PLACES.nearAsync(p, 3); } catch (e) { return null; } },
     /* road watch: the app's own Overpass hosts with their fail-over and the refusal check */
@@ -9108,13 +9206,13 @@ function csCpCurvy(a, b) { try {
 } catch (e) { return []; } }
 async function csNavOpen(mode, r) {
   if ((CS_CP.nav && window.CS_NAV) || CS_CP.opening) return; CS_CP.opening = true;
-  let M; try { M = await csCpLoad(); } catch (e) { CS_CP.opening = false; try { flash('Wingman could not load. Check the connection and try again.'); } catch (e2) {} return; } finally { CS_CP.opening = false; }
+  let M; try { M = await csCpLoad(); } catch (e) { CS_CP.opening = false; try { flash('CurveScout Ride could not load. Check the connection and try again.'); } catch (e2) {} return; } finally { CS_CP.opening = false; }
 
   const ride = mode === 'route' ? csCpRide(r) : null;
   if (mode === 'route' && (!ride || ride.waypoints.length < 2)) { try { flash('This ride has no waypoints to guide you through yet.'); } catch (e) {} return; }
   /* the ride's start for the first map view; the map follows you as soon as your position arrives */
   const start = ride && ride.waypoints[0] ? [ride.waypoints[0].lat, ride.waypoints[0].lon] : null;
-  CS_CP.nav = M.openNav({ mode, ride, start, host: csCpHost(), onClose: () => { CS_CP.nav = null; } });
+  CS_CP.nav = M.openNav({ mode, ride, start, host: csCpHost(), returnFocus: document.activeElement, onClose: () => { CS_CP.nav = null; } });
 }
 window.csNavOpen = csNavOpen;
 /* called by renderRide: one button where the ride map is */
@@ -9122,20 +9220,20 @@ function csCopilotMount(host, r) {
   const mb = host.querySelector(':scope > .mapBox'); if (!mb || !r) return;
   let box = host.querySelector(':scope > #cpHost');
   if (!box) { box = document.createElement('div'); box.id = 'cpHost'; box.className = 'cpHost'; mb.parentNode.insertBefore(box, mb); }
-  box.innerHTML = '<button type="button" class="cpGo" id="cpGo"><span class="cpGoI" aria-hidden="true">' + CS_WM_LOGO + '</span><span><b>Ride it with Wingman</b><small>Your navigator and tour guide: turn by turn, pace notes for every bend, sights told where and why, warnings in time</small></span></button>';
+  box.innerHTML = '<button type="button" class="cpGo" id="cpGo"><span class="cpGoI" aria-hidden="true">' + CS_WM_LOGO + '</span><span><b>Ride it now · CurveScout Ride</b><small>Your navigator and tour guide: turn by turn, pace notes for the bends it can read, sights told where and why, warnings from open road data</small></span></button>';
   box.querySelector('#cpGo').onclick = () => csNavOpen('route', r);
 }
 window.csCopilotMount = csCopilotMount;
 /* the header and the phone menu: Co-Pilot on any road */
 (function () { try {
   const add = () => { const top = document.querySelector('header.top .topIn'); if (!top || document.getElementById('cpFree')) return;
-    const b = document.createElement('button'); b.type = 'button'; b.id = 'cpFree'; b.className = 'tbtn cpFree'; b.title = 'Wingman – navigator and tour guide for riders'; b.setAttribute('aria-label', 'Wingman: navigator and tour guide for riders');
-    b.innerHTML = '<span aria-hidden="true" class="cpFreeI">' + CS_WM_LOGO + '</span><span class="cpFreeT">Wingman</span>'; b.onclick = () => csNavOpen('free');
+    const b = document.createElement('button'); b.type = 'button'; b.id = 'cpFree'; b.className = 'tbtn cpFree'; b.title = 'CurveScout Ride – navigator and tour guide for riders'; b.setAttribute('aria-label', 'CurveScout Ride: navigator and tour guide for riders');
+    b.innerHTML = '<span aria-hidden="true" class="cpFreeI">' + CS_WM_LOGO + '</span><span class="cpFreeT">Ride</span>'; b.onclick = () => csNavOpen('free');
     const hud = document.getElementById('raHud'); if (hud) top.insertBefore(b, hud); else top.appendChild(b); };
   /* and on the welcome screen, under the main buttons: what Wingman is, one tap to start it */
   const hero = () => { const cta = document.querySelector('#csWall .csHeroCta'); if (!cta || document.getElementById('cpHero')) return;
     const b = document.createElement('button'); b.type = 'button'; b.id = 'cpHero'; b.className = 'cpHero';
-    b.innerHTML = '<span class="cpHeroI" aria-hidden="true">' + CS_WM_LOGO + '</span><span><b>Wingman</b><small>World-class navigator and tour guide for riders. Address to address, through your stops, on the good roads. It tells you every bend, every risk ahead and every sight on the way - where it is and why it matters.</small></span>';
+    b.innerHTML = '<span class="cpHeroI" aria-hidden="true">' + CS_WM_LOGO + '</span><span><b>CurveScout Ride</b><small>World-class navigator and tour guide for riders. Address to address, through your stops, on the good roads. It reads the bends ahead, warns of the hazards open road data knows about, and tells you the sights on the way - where they are and why they matter. Your eyes, the signs and the law always come first.</small></span>';
     b.onclick = () => { try { if (typeof csShowWall === 'function') csShowWall(false); } catch (e) {} csNavOpen('free'); }; cta.insertAdjacentElement('afterend', b); };
   const both = () => { add(); hero(); setTimeout(hero, 1500); setTimeout(hero, 5000); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', both); else both();
@@ -9271,9 +9369,16 @@ function renderLegal() {
       '<li><b>Your last search</b> - the start town, range and riding style, so the board is there when you return.</li>' +
       '<li><b>Your bike figures</b> - litres per 100 km and the pump price you typed.</li>' +
     '</ul>' +
-    '<p>None of it is transmitted to us, because there is no “us” to transmit it to: this is a static ' +
-    'site with no backend. Clearing your browser storage erases all of it permanently, and there is ' +
-    'nothing left anywhere else to delete.</p>' +
+    /* r30 external audit: "nothing left anywhere else to delete" was not true - the services below receive requests
+       and keep their own server logs. Said as it is. */
+    '<p>None of it is sent to CurveScout: this is a static site with no CurveScout server, account or user ' +
+    'database. Clearing your browser storage, or the button below, erases everything this site keeps on this device.</p>' +
+    '<p><b>What the button cannot erase.</b> When you plan or ride, your browser asks outside services for a map, a ' +
+    'route, a search result, the weather or a photograph. Each of them receives that request - your IP address and ' +
+    'the places or points you asked about - and may keep it in its own server logs for the period it states ' +
+    '(listed under "Who your browser talks to" and "Where the data comes from" below). The button does not reach ' +
+    'those logs. You can ask each service directly; write to us at the address below and we will tell you which ' +
+    'services a feature uses and help you reach them.</p>' +
     '<p><button class="lgWipe" id="lgWipe" type="button">Erase everything this site has stored about me</button>' +
     '<span class="lgWipeNote" id="lgWipeNote"></span></p>' +
 
@@ -9311,10 +9416,12 @@ function renderLegal() {
     'with the maps and photographs blocked.</p>' +
 
     '<h2>Your rights</h2>' +
-    '<p>Under the GDPR and the Swiss FADP you have the right to access, correct, delete and port your ' +
-    'personal data, and to object to its processing. In this case those rights are satisfied by the ' +
-    'button above: we hold no personal data about you, so there is nothing for us to hand over, ' +
-    'correct or erase. If you believe otherwise, write to the address below and say so.</p>' +
+    '<p>Under the Swiss FADP and, where it applies, the GDPR you have the right to information, access, correction ' +
+    'and deletion, to data portability and to object to processing. CurveScout itself keeps no account or profile ' +
+    'about you: what this site remembers is on your device, and the button above erases it. Requests your browser ' +
+    'sends to the services listed on this page are processed by those services under their own terms and ' +
+    'retention; we cannot erase their logs for you, but you can ask them, and we will help. For any request or ' +
+    'question, write to the address below.</p>' +
 
     '<h2>Where the data comes from</h2>' +
     '<ul class="lgList">' +
@@ -10672,7 +10779,8 @@ const OFM = {
   terrain: 'https://tiles.openfreemap.org/styles/fiord',
   credit: '\u00a9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> \u00b7 ' +
     '<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> \u00b7 ' +
-    '<a href="https://openmaptiles.org" target="_blank" rel="noopener">OpenMapTiles</a>',
+    '<a href="https://openmaptiles.org" target="_blank" rel="noopener">OpenMapTiles</a> \u00b7 ' +
+    '<a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener">Improve this map</a>',
   ready() {
     return typeof L !== 'undefined' && !!L.maplibreGL && typeof maplibregl !== 'undefined';
   },
@@ -10709,6 +10817,25 @@ function csBasemap(map, kind, attach = true) {
      the raster street map is used - bounded, no repeated errors, overlays unaffected. */
   /* 'mini' (roadbook stops, dock, cards): raster, never a WebGL context each - browsers keep ~8-16 live contexts and
      a page of GL minimaps evicted the main map's context (owner 2026-10-25: "the map is killed", "not a single waypoint with map") */
+  /* ---- OUR OWN TOPO (legal audit 2026-11-01) ----
+     OpenTopoMap's volunteer tile server does not clearly allow use on a commercial site. Topo is now the OpenFreeMap vector map
+     with relief shading drawn in the browser from the open Terrain Tiles on AWS (free, commercial use allowed, credited) -
+     every valley, ridge and pass in shadow and light, sharper than a raster topo. OpenTopoMap stays only for a browser
+     without WebGL. */
+  if (csWebGL() && OFM.ready() && kind === 'terrain') {
+    try {
+      const layer = L.maplibreGL({ style: OFM.street, attribution: OFM.credit + ' \u00b7 Relief: Terrain Tiles (AWS Open Data: SRTM, USGS, Copernicus EU-DEM)', interactive: false, csKind: 'terrain' });
+      layer.on('add', () => { try { layer.getContainer().classList.add('csTopoRelief'); } catch (e) {} try { const gl = layer.getMaplibreMap(); if (!gl) return;
+        const hills = () => { try { if (!gl.isStyleLoaded() || gl.getLayer('csHills')) return; if (!gl.getSource('csDem')) gl.addSource('csDem', { type: 'raster-dem', tiles: [TERRAIN.url + '{z}/{x}/{y}.png'], encoding: 'terrarium', tileSize: 256, maxzoom: 14 });
+          const firstSym = (gl.getStyle().layers || []).find(l => l.type === 'symbol');
+          gl.addLayer({ id: 'csHills', type: 'hillshade', source: 'csDem', paint: { 'hillshade-exaggeration': 0.6, 'hillshade-shadow-color': '#3b3227', 'hillshade-highlight-color': '#ffffff', 'hillshade-accent-color': '#5c4b38' } }, firstSym && firstSym.id);
+          try { layer.getContainer().dataset.relief = 'on'; } catch (e) {} } catch (e) {} };
+        if (gl.isStyleLoaded()) hills(); gl.on('load', hills); gl.on('styledata', hills); } catch (e) {} });
+      add(layer);
+      try { if (attach && map && map.attributionControl) map.attributionControl.addAttribution(OFM.credit); } catch (e) {}
+      return layer;
+    } catch (e) { try { console.warn('CurveScout: topo vector map unavailable', e && e.message); } catch (e2) {} }
+  }
   if (csWebGL() && OFM.ready() && kind !== 'terrain' && kind !== 'mini') {
     try {
       const layer = L.maplibreGL({ style, attribution: OFM.credit, interactive: false, csKind: kind });
@@ -16726,8 +16853,8 @@ const SERVICE_REGISTRY = [
     sends: 'the coordinates of the route', trigger: 'only when the first routing server does not answer',
     licence: 'ODbL data, FOSSGIS usage policy', licenceUrl: 'https://routing.openstreetmap.de/about.html',
     mode: 'gateway', retention: 'their policy applies' },
-  { id: 'studiovoice', name: 'jsDelivr / Hugging Face (Wingman studio voice)', purpose: 'the natural voice model, downloaded once',
-    sends: 'nothing about you - a file download', trigger: 'only when the studio voice is switched on in Wingman',
+  { id: 'studiovoice', name: 'jsDelivr / Hugging Face (CurveScout Ride studio voice)', purpose: 'the natural voice model, downloaded once',
+    sends: 'nothing about you - a file download', trigger: 'only when the studio voice is switched on in CurveScout Ride',
     licence: 'Kokoro-82M, Apache-2.0', licenceUrl: 'https://huggingface.co/hexgrad/Kokoro-82M',
     mode: 'direct', retention: 'their policy applies' },
   { id: 'addressregisters', name: 'National address registers (swisstopo CH, IGN/BAN FR, PDOK/BAG NL, Kartverket NO)', purpose: 'street addresses as you type, house by house',
@@ -16754,10 +16881,10 @@ const SERVICE_REGISTRY = [
     sends: 'the map area you are looking at', trigger: 'when a map opens',
     licence: 'ODbL', licenceUrl: 'https://www.openstreetmap.org/copyright',
     mode: 'browser', retention: 'their tile usage policy applies' },
-  { id: 'open-meteo', name: 'Open-Meteo', purpose: 'weather and ground elevation',
-    sends: 'the coordinates of the route', trigger: 'when a route page opens',
-    licence: 'CC BY 4.0', licenceUrl: 'https://open-meteo.com/en/license',
-    mode: 'gateway', retention: 'unknown' },
+  { id: 'terrain-tiles', name: 'Terrain Tiles on AWS (Mapzen/Tilezen terrarium)', purpose: 'ground heights and the Topo relief',
+    sends: 'tile requests around the route, as with any map image', trigger: 'when a climb profile or the Topo map is shown',
+    licence: 'Open data: SRTM, 3DEP, GMTED2010 (USGS, public domain); EU-DEM (Copernicus); ETOPO1 (NOAA); Kartverket CC BY 4.0; Geoscience Australia CC BY 4.0; and others - credited',
+    licenceUrl: 'https://registry.opendata.aws/terrain-tiles/', mode: 'direct', retention: 'their policy applies' },
   { id: 'gateway', name: 'CurveScout API gateway', purpose: 'the single door the services above go through',
     sends: 'whatever those services need', trigger: 'only when a gateway is configured',
     licence: 'operated by CurveScout', licenceUrl: '',
@@ -16772,6 +16899,15 @@ const SERVICE_REGISTRY = [
 
 const LEGAL_REVISION_DATE = '2026-09-05';
 
+/* ---- ONE CAMERA POLICY FOR THE WHOLE APP (r30 audit: an unknown country was treated as permission, a route tagged only
+   in part passed, and the review date was never read) ----
+   Camera data is asked for, kept, shown or spoken ONLY in countries on this reviewed allowlist - the same list as
+   CurveScout Ride's CAMERA_OK (tools/test-camera-policy.mjs keeps them identical). Everything else - unknown, unlisted or
+   prohibited - gets nothing. Past CAMERA_REVIEW_DUE the whole list stops counting until it is reviewed again. */
+const CAMERA_ALLOWED = ['gb', 'ie', 'es', 'nl', 'pt', 'dk', 'se', 'no', 'fi', 'is', 'ee', 'lv', 'lt', 'pl', 'cz', 'sk', 'hu', 'si', 'hr', 'ro', 'bg', 'gr', 'us', 'ca', 'au', 'nz'];
+const CAMERA_CHECKED = '2026-10-31', CAMERA_REVIEW_DUE = '2027-04-30';
+const cameraCountryOk = cc => !!cc && Date.now() < Date.parse(CAMERA_REVIEW_DUE) && CAMERA_ALLOWED.includes(String(cc).toLowerCase()) &&
+  !(JURISDICTION_POLICY[String(cc).toLowerCase()] && JURISDICTION_POLICY[String(cc).toLowerCase()].cameraDataMode === 'prohibited');
 const JURISDICTION_POLICY = {
   ch: { cameraDataMode: 'prohibited', checkedAt: '2026-09-05', reviewDueAt: '2027-03-05',
         source: 'ASTRA guidance on GPS devices carrying enforcement warnings; SVG art. 98a' },
@@ -16807,8 +16943,10 @@ function getOrderedRouteCountries(route) {
   if (!route) return [];
   if (Array.isArray(route.countrySeq) && route.countrySeq.length)
     return route.countrySeq.map(c => String(c).toLowerCase());
-  const w = (route.waypoints || []).filter(p => p && p.cc);
-  if (w.length) {
+  /* every stop must carry its country: one untagged stop means the route's countries are not known */
+  const all = (route.waypoints || []).filter(p => p && Number.isFinite(+p.lat));
+  const w = all.filter(p => p.cc);
+  if (w.length && w.length === all.length) {
     const out = [];
     for (const p of w) { const c = String(p.cc).toLowerCase(); if (out[out.length - 1] !== c) out.push(c); }
     return out;
@@ -16818,10 +16956,7 @@ function getOrderedRouteCountries(route) {
 function cameraDataAllowed(route) {
   const countries = getOrderedRouteCountries(route);
   if (!countries.length) return false;          // unverified ground: no camera data
-  return countries.every(cc => {
-    const p = JURISDICTION_POLICY[cc];
-    return !p || p.cameraDataMode !== 'prohibited';
-  });
+  return countries.every(cameraCountryOk);
 }
 
 const cameraPolicy = (lat, lon) => {
@@ -16835,8 +16970,7 @@ const cameraPolicy = (lat, lon) => {
     const c = countryAt(+lat, +lon);
     const cc = c && c.cc ? String(c.cc).toLowerCase() : '';
     if (!cc) return 'prohibited';
-    const p = JURISDICTION_POLICY[cc];
-    return p ? p.cameraDataMode : 'allowed';
+    return cameraCountryOk(cc) ? 'allowed' : 'prohibited';
   } catch (e) { return 'prohibited'; }   /* unknown ground: ask for nothing */
 };
 /* one point inside a banned country is enough - a query covers the whole route */
@@ -17202,7 +17336,11 @@ async function scanServices(r) {
       const part = await overpass(groups[gi]);
       elements.push(...((part && part.elements) || []));
       okCount++; if (gi === 0) fuelOk = true;
-    } catch (e) { lastErr = e; }
+    } catch (e) { lastErr = e;
+      /* owner 2026-11-01 audit: the first two groups refused on every mirror, twice, means Overpass is blocking this
+         address. Asking the six other groups as well took four minutes and ~80 more requests to volunteer servers
+         (their fair-use terms) before the page could say so. Stop here; the rider gets "ask again" at once. */
+      if (gi === 1 && !okCount) break; }
   }
   if (!okCount) {
     /* SAY WHICH SERVICE REFUSED, AND WHY IT PROBABLY DID.
@@ -17900,7 +18038,7 @@ function profileSVG(r, prof, pois) {
       (real ? '<span><i style="background:#f07f1d"></i>climb 4–8%</span>' : '') +
       (real ? '<span><i style="background:#ff2d40"></i>climb &gt;8%</span>' : '') +
       (real ? '<span><i style="background:#4a9fd8"></i>steep descent</span>' : '') +
-      '<span class="pfSrc">' + (real ? 'Ground elevation measured along the road (Open-Meteo)' : chordGround ? 'Ground elevation sampled on the straight line between checkpoints (Open-Meteo) - not along the road' : 'Measured elevation unavailable') + '</span>' +
+      '<span class="pfSrc">' + (real ? 'Ground elevation measured along the road (' + (ELEV_HOST() ? 'Open-Meteo' : 'Terrain Tiles: SRTM, USGS, Copernicus EU-DEM') + ')' : chordGround ? 'Ground elevation sampled on the straight line between checkpoints (' + (ELEV_HOST() ? 'Open-Meteo' : 'Terrain Tiles') + ') - not along the road' : 'Measured elevation unavailable') + '</span>' +
     '</div>' +
     climbStripHTML(r, p) +
     '<div class="profStats num">' +
@@ -18915,6 +19053,12 @@ function navPointsFor(r) {
     if (fresh && longEnough2) base = np;
     void at;
   } else if (np.length >= 2) base = np;
+  /* ---- A STOP WITHOUT A POSITION IS NOT 0/0 (r30 audit: +null is 0, so a missing coordinate became the Gulf of Guinea) ----
+     Points off the Earth or missing are never sent to the router. They are named once, so the rider knows the route
+     does not pass them - never silently dropped, never invented. */
+  const csOk = q => q && q.lat !== null && q.lon !== null && q.lat !== '' && q.lon !== '' && Number.isFinite(+q.lat) && Number.isFinite(+q.lon) && Math.abs(+q.lat) <= 90 && Math.abs(+q.lon) <= 180;
+  if (base.some(q => !csOk(q))) { const lost = base.filter(q => !csOk(q)); base = base.filter(csOk);
+    r._unplaced = lost.map(q => (q && q.name) || '?'); try { if (!S._unplacedSaid) S._unplacedSaid = new Set(); if (!S._unplacedSaid.has(r.id)) { S._unplacedSaid.add(r.id); setTimeout(() => flash('Not on the map, so the route does not pass it: ' + r._unplaced.slice(0, 3).join(', ') + '.'), 400); } } catch (e) {} }
   /* Leading the line in from the rider's door is useful at 40 km and nonsense at 400 - 
      it drags the whole map across a country and hides the ride. Beyond 250 km the ride
      is drawn on its own and the page says why. */
@@ -27930,7 +28074,13 @@ async function renderRide(id) {
         'title="Discard every change and return to the scouted route">\u21ba Original</button>' +
       '<span class="mapEditN" id="mapEditN"></span>' +
     '</div>' +
-      '<div class="mapLayers" id="mapLayers" hidden></div>' +
+      /* owner 2026-11-01: "the fuel and other map elements toggles got lost" - they were hidden until OpenStreetMap had
+         answered every one of eight paced questions (20 s with instant answers, a minute or never on the live site).
+         The bar is there from the first second; each button says it is looking and fills in when the answer comes. */
+      '<div class="mapLayers csLyWait" id="mapLayers" aria-label="What to show on the map: looking along the road">' +
+        [['fuel', '⛽', 'Fuel'], ['ev', '⚡', 'EV charging'], ['moto', '🏍️', 'Bike service'], ['view', '🌄', 'Viewpoints'], ['rest', '☕', 'Rest & refresh']].map(x =>
+          '<button type="button" class="wait" disabled data-l="' + x[0] + '" title="' + x[2] + ' - looking along the road…">' + x[1] + '<b class="ld" aria-hidden="true"></b></button>').join('') +
+      '</div>' +
       '<div class="mapBase"><button id="baseBtn" type="button" aria-pressed="false" title="Switch between street and topographic map">Street</button></div>' +
       '<button class="mapExpand" id="mapExpand" type="button" title="Expand the map" aria-label="Expand the map"><span class="mbTxt">⤢ Expand</span></button>' +
       '<button class="mapHome" id="mapHome" type="button" title="Frame the whole route again" aria-label="Frame the whole route"><span class="mbTxt">⌖ Whole route</span></button>' +
@@ -29983,6 +30133,10 @@ const seedFromRoute = () => {
           ' old). It will refresh when OpenStreetMap answers again.';
         const box = $('svcBox'); if (box) box.appendChild(note);
       } else {
+        /* the bar stays: a tap asks OpenStreetMap again (the whole ride page, as a reload would) */
+        try { const ly = $('mapLayers'); if (ly) { ly.classList.remove('csLyWait'); ly.classList.add('csLyFail'); ly.setAttribute('aria-label', 'OpenStreetMap did not answer - tap to ask again');
+          ly.querySelectorAll('button').forEach(b => { b.disabled = false; b.className = 'fail'; b.title = (b.title || '').split(' - ')[0] + ' - OpenStreetMap did not answer. Tap to ask again';
+            const bb = b.querySelector('b'); if (bb) { bb.className = ''; bb.textContent = '⟳'; } b.onclick = () => { try { S.svcCache.delete(r.id); } catch (e) {} renderRide(r.id); }; }); } } catch (e) {}
         $('svcBox').innerHTML = '<div class="atrNote">' +
           (S.svcError
             ? '<b>OpenStreetMap refused all ' + S.svcError.mirrors + ' mirrors.</b> ' +
@@ -30014,7 +30168,7 @@ const seedFromRoute = () => {
 
     // Everything along the road, on the map by default - decluttered so pins stay readable.
     if (S.map && window.L) {
-      const box = $('mapLayers'); box.hidden = false;
+      const box = $('mapLayers'); box.hidden = false; box.classList.remove('csLyWait', 'csLyFail'); box.setAttribute('aria-label', 'What to show on the map');
       const PIN = { fuel: ['⛽', '#f2a71b'], ev: ['⚡', '#38d39f'], moto: ['🏍️', '#f4f2ec'], camera: ['📷', '#ff2d40'],
                     police: ['🚓', '#4a9fd8'], food: ['🍽️', '#4fce7f'], view: ['🌄', '#2bbfa4'],
                     swim: ['🏊', '#3ba6dd'], rest: ['☕', '#c9a227'] };
@@ -30380,7 +30534,7 @@ function initOffline() {
   }).catch(() => { /* offline mode simply unavailable */ });
   navigator.serviceWorker.addEventListener('message', ev => {
     const d = ev.data || {};
-    if (d.type === 'cached') flash('Saved for offline: ' + d.ok + ' of ' + d.total + ' rides.');
+    if (d.type === 'cached') flash(d.ok === d.total ? 'Saved for offline: all ' + d.total + ' rides. They stay through app updates.' : 'Only ' + d.ok + ' of ' + d.total + ' rides could be saved for offline. Try again while you have a connection.');
     /* a new release took over (see sw.js): answer, then switch - at once if this page was only just opened (a link was
        tapped), otherwise on the rider's next tap, so a half-typed search or trip is never thrown away */
     if (d.type === 'cs-release') {
@@ -30596,6 +30750,8 @@ try {
   try { window.CS_TRIP_STATE = TRIP; window.csTripMailHtml = tripMailHtml; window.csPickLine = pickLine; window.csStoredRoad = csStoredRoad; window.csRoadsIndex = csRoadsIndex; } catch (e) {}
   window.CACHE = CACHE;
   window.scanServices = scanServices;
+  /* read by the release checks (tools/test-nav-integrity.mjs): the camera policy and the points sent to the router */
+  window.cameraDataAllowed = cameraDataAllowed; window.navPointsFor = navPointsFor;
 } catch (e) {}
 
 /* Remove stop (owner 2026-10-05). Same rules as the pin's right-click / long-press handler: the stop

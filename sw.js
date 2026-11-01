@@ -2,7 +2,7 @@
    App files: network first, cached copy offline. Pictures and libraries: cache-first.
    Ride shards: cached the moment a ride is opened, so it stays readable with no bars.
    Tiles / live APIs: never cached here (they go stale and they're big). */
-const V = 'curvescout-550c9fe';
+const V = 'curvescout-f5c6881';
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
    Route data was cached in the same versioned cache as the shell, and activation deletes every
    cache but the new version - so each app update silently wiped the routes a rider had taken
@@ -62,9 +62,16 @@ self.addEventListener('activate', e => {
   let upgrade = 0;
   e.waitUntil(
     caches.keys()
-      .then(keys => { const old = keys.filter(k => k !== V && k !== ROUTES);
-        upgrade = old.filter(k => /^curvescout-/.test(k)).length;
-        return Promise.all(old.map(k => caches.delete(k))); })
+      /* ---- ONLY OLD COPIES OF THIS APP ARE REMOVED (r30 audit: an update deleted a ride saved for offline and an
+         unrelated cache too) ----
+         Removed: earlier app versions (curvescout-<build>) and nothing else - not the saved routes, not the studio voice
+         (92 MB the rider chose to download), not the map library's tiles. Before an old version goes, any ride data it
+         still holds (older releases saved rides there) is moved into the routes cache, so nothing saved is lost. */
+      .then(keys => { const old = keys.filter(k => k !== V && k !== ROUTES && /^curvescout-[0-9a-f]{6,}$/.test(k));
+        upgrade = old.length;
+        return Promise.all(old.map(k => caches.open(k).then(c => c.keys().then(reqs => Promise.all(reqs.filter(r => /\/data\/|\/data__/.test(r.url))
+          .map(r => c.match(r).then(res => res && caches.open(ROUTES).then(rc => rc.match(r).then(have => have ? null : rc.put(r, res))))))))
+          .catch(() => null).then(() => caches.delete(k)))); })
       .then(() => self.clients.claim())
       /* the hand-over to open pages runs AFTER activation, never inside it: a page reload inside waitUntil held the
          worker in "activating", and every request of every page waited behind it (found in testing, 2026-10-12) */
@@ -146,8 +153,9 @@ self.addEventListener('fetch', e => {
 self.addEventListener('message', e => {
   const d = e.data || {};
   if (d.type !== 'cacheRides' || !Array.isArray(d.urls)) return;
+  /* saved rides go to the routes cache, which no update touches (they were in the versioned shell cache before) */
   e.waitUntil(
-    caches.open(V)
+    caches.open(ROUTES)
       .then(c => Promise.allSettled(d.urls.map(u => c.add(u))))
       .then(rs => {
         const okCount = rs.filter(x => x.status === 'fulfilled').length;

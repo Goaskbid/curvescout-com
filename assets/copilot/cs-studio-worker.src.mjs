@@ -8,6 +8,7 @@
    on Hugging Face. Every byte is checked against the model's SHA-256 before it is used, and it is kept in the
    browser's cache so it downloads once. */
 import * as ort from 'onnxruntime-web/wasm';
+import { respell } from './phon.mjs';
 import { phonemize } from 'phonemizer';
 import { localIPA } from './g2p-local.mjs';
 
@@ -45,7 +46,7 @@ export async function toPhonemes(text, lang = 'a') {
   const parts = String(text).split(/(⟦[^⟧]*⟧)/); if (parts.length === 1) return toPhonemesEn(text, lang);
   const out = [];
   for (const p of parts) { if (!p) continue; const m = p.match(/^⟦([^|⟧]*)\|([a-z]*)⟧$/);
-    if (m) { const ipa = localIPA(m[1], m[2]); out.push(ipa ? ipa.split('').filter(ch => VOCAB[ch] !== undefined).join('') : await toPhonemesEn(m[1], lang)); }
+    if (m) { const ipa = localIPA(m[1], m[2]); out.push(ipa ? ipa.split('').filter(ch => VOCAB[ch] !== undefined).join('') : await toPhonemesEn(respell(m[1], m[2], 'en'), lang)); }   /* no local phonemes: the name respelled for English (phon.mjs) */
     else if (/[a-z0-9]/i.test(p)) out.push(await toPhonemesEn(p, lang)); else out.push(p.trim()); }
   return out.join(' ').replace(/\s+([,.;:!?])/g, '$1').replace(/\s+/g, ' ').trim();
 }
