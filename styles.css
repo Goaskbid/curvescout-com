@@ -5110,17 +5110,17 @@ body #rideDetail .mapBox:not(.expanded)>#mapBar #lineMode button{flex:1 1 auto!i
 .cpHost{margin-top:14px}
 .cpGo{display:flex;gap:14px;align-items:center;width:100%;min-height:64px;padding:12px 18px;border-radius:16px;border:1px solid #ff2d55;background:linear-gradient(135deg,#ff2d55,#b8123a);color:#fff;text-align:left;cursor:pointer;box-shadow:0 8px 24px rgba(255,45,85,.25)}
 .cpGo:hover{filter:brightness(1.08)}
-.cpGo .cpGoI{font-size:30px;line-height:1}
+.cpGo .cpGoI{display:block;width:38px;height:38px;flex:none;border-radius:50%;animation:cpPing 2.4s infinite}
 .cpGo b{display:block;font:700 20px/1.1 var(--display);letter-spacing:.04em;text-transform:uppercase}
 .cpGo small{display:block;font-size:14px;line-height:1.3;opacity:.92;margin-top:2px}
 header.top .cpFree{display:inline-flex;gap:6px;align-items:center;min-height:40px;border-color:#ff2d55!important;color:#fff;white-space:nowrap;flex:0 0 auto;padding:0 12px;background:linear-gradient(135deg,rgba(255,45,85,.22),rgba(184,18,58,.22))}
-header.top .cpFree .cpFreeI{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:2px solid #ff2d55;font-size:11px;color:#ff2d55;animation:cpPing 2.4s infinite}
+header.top .cpFree .cpFreeI{display:inline-block;width:24px;height:24px;border-radius:50%;animation:cpPing 2.4s infinite}
 @keyframes cpPing{0%{box-shadow:0 0 0 0 rgba(255,45,85,.6)}70%{box-shadow:0 0 0 10px rgba(255,45,85,0)}100%{box-shadow:0 0 0 0 rgba(255,45,85,0)}}
 @media (prefers-reduced-motion:reduce){header.top .cpFree .cpFreeI{animation:none}}
 /* the Wingman card on the welcome screen: the navigator says what it is */
 .cpHero{display:flex;gap:14px;align-items:center;margin-top:14px;max-width:560px;padding:12px 16px;border-radius:18px;border:1px solid rgba(255,45,85,.7);background:linear-gradient(135deg,rgba(255,45,85,.24),rgba(10,10,12,.72));color:#fff;text-align:left;cursor:pointer;backdrop-filter:blur(6px)}
 .cpHero:hover{filter:brightness(1.1)}
-.cpHero .cpHeroI{flex:none;width:48px;height:48px;border-radius:50%;border:2px solid #ff2d55;display:grid;place-items:center;font-size:22px;color:#ff2d55;background:radial-gradient(circle,rgba(255,45,85,.25),transparent 70%);animation:cpPing 2.4s infinite}
+.cpHero .cpHeroI{flex:none;width:52px;height:52px;border-radius:50%;display:block;animation:cpPing 2.4s infinite}
 .cpHero b{display:block;font:800 18px/1.1 var(--display);letter-spacing:.06em;text-transform:uppercase}
 .cpHero b .cpNew{display:inline-block;margin-top:0;font-style:normal;font-size:14px;letter-spacing:.14em;padding:2px 7px;border-radius:8px;background:#ff2d55;margin-left:8px;vertical-align:middle}
 .cpHero small{display:block;font-size:14px;line-height:1.35;opacity:.92;margin-top:3px}
@@ -5179,3 +5179,83 @@ header.top .mark{flex:0 0 auto}
 @media (min-width:901px){header.top .navScroll{gap:4px;scrollbar-width:none}header.top .navScroll::-webkit-scrollbar{display:none}
  header.top .navScroll .tbtn{padding-left:11px;padding-right:11px;letter-spacing:.04em}}
 @media (min-width:901px) and (max-width:1500px){header.top .navScroll .tbtn{padding-left:8px;padding-right:8px;letter-spacing:.02em}header.top .tbtn.back{padding-left:10px;padding-right:10px}}
+/* r30 (owner 2026-11-01): travel days told as a ride; places to stay suggested for every night, with phone and price category */
+.tripTravel p{margin:0 0 6px}.tripTravel p:last-child{margin-bottom:0}.tripTravel a{color:var(--amber,#ffb020)}
+.tripStayTop{margin:10px 0 0;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--edge2,#2a2e36)}
+.tripStayTop:empty{display:none}
+.tripStayH{margin:0 0 6px;font-weight:700;color:#e9e6df;font-size:16px}
+.tripStayRow{margin:0 0 8px;line-height:1.45}.tripStayRow:last-child{margin-bottom:0}
+.tripCat{color:#7ed492;font-weight:700;letter-spacing:.04em}
+.tripAd{color:#9da3ad;font-size:14px}
+.tripReach{display:inline-flex;flex-wrap:wrap;gap:4px 10px;margin-left:8px}
+.tripReach a{font-size:15px}
+.tripTel{font-weight:700;white-space:nowrap}
+/* r30 (owner 2026-11-01: "in the badges area some icons and flags don't work on the browser ... looks dull") */
+.raOval{display:inline-grid;place-items:center;min-width:44px;height:28px;padding:0 9px;border-radius:50%;background:#fff;border:2.5px solid #111;color:#111;font:800 15px/1 var(--display)!important;letter-spacing:.04em;vertical-align:middle;box-shadow:0 1px 0 rgba(255,255,255,.15),0 2px 6px rgba(0,0,0,.4)}
+.raFlags{display:flex;flex-wrap:wrap;gap:8px;font-size:16px}
+.raCol h3{display:flex;align-items:center;gap:10px}.raColIc{width:28px;height:28px;color:#ffd166;flex:none}
+.raGot{font:600 15px var(--body,system-ui);color:var(--mut);text-transform:none;letter-spacing:0;margin-left:8px}
+.raBadges{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.raBadge{position:relative;display:grid;grid-template-columns:56px minmax(0,1fr);grid-template-rows:auto 1fr auto;column-gap:12px;align-items:start;padding:14px;opacity:.82;filter:none;background:linear-gradient(160deg,#181b21,#111317);border-radius:16px}
+.raBadge .raMedal{grid-row:1/4;width:56px;height:56px}
+.raBadge b{grid-column:2;margin:2px 0 2px!important;font:700 17px/1.2 var(--display)!important;letter-spacing:.02em}
+.raBadge span{grid-column:2;font-size:14px;line-height:1.35}
+.raBadge.got{opacity:1;border-color:#8a6a24;background:radial-gradient(120% 90% at 0% 0%,rgba(255,209,102,.16),transparent 60%),linear-gradient(160deg,#1d1a12,#121316);box-shadow:0 0 0 1px rgba(255,209,102,.12),0 8px 22px rgba(0,0,0,.35)}
+.raBadge.got .raMedal{filter:drop-shadow(0 0 8px rgba(255,209,102,.45))}
+.raEarned{font-style:normal;color:#ffd166;font-weight:700}
+.raBProg{grid-column:2;height:6px;border-radius:3px;background:#262a31;overflow:hidden;margin-top:8px}.raBProg i{display:block;height:100%;background:linear-gradient(90deg,#c8902a,#ffd166);border-radius:3px}
+.raBOf{grid-column:2;color:var(--dim,#8a909a);font-size:14px;margin-top:3px}
+.csCc{display:inline-grid;place-items:center;min-width:38px;height:24px;padding:0 6px;border-radius:50%;background:#fff;border:2px solid #111;color:#111;font:800 14px/1 var(--display)!important;font-style:normal;letter-spacing:.03em}
+@media (max-width:620px){.raBadge{grid-template-columns:44px minmax(0,1fr);padding:11px;column-gap:10px}.raBadge .raMedal{width:44px;height:44px}}
+
+/* the Wingman mark (owner 2026-11-01: "the logo needs a little improvement but I like that it is animated"):
+   the navigation arrow in a radar ring - the sweep turns, a contact blinks where it passes, the ring pings */
+.wmLogo{width:100%;height:100%;display:block;overflow:visible}
+.wmLogo .wmRing{fill:rgba(255,45,85,.12);stroke:#ff2d55;stroke-width:2}
+.wmLogo .wmGrid{fill:none;stroke:rgba(255,45,85,.35);stroke-width:1}
+.wmLogo .wmSweep{transform-origin:16px 16px;animation:wmSweep 2.8s linear infinite}.wmLogo .wmSweep path{fill:rgba(255,45,85,.45)}
+.wmLogo .wmJet{fill:#fff;stroke:#ff2d55;stroke-width:.8;stroke-linejoin:round}
+.wmLogo .wmBlip{fill:#ffd166;animation:wmBlip 2.8s linear infinite}
+@keyframes wmSweep{to{transform:rotate(360deg)}}
+@keyframes wmBlip{0%,8%{opacity:0}12%{opacity:1}55%{opacity:.15}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.wmLogo .wmSweep,.wmLogo .wmBlip{animation:none}}
+/* ---- r31 (owner 2026-11-01): "make the credits font size much smaller. picture credits can move into the pic" ----
+   Every credit line is small print: present (the licences need it) and out of the way. */
+footer .srcRow, footer .srcRow > a, footer .srcRow > span, footer .srcRow > b,
+.leaflet-container .leaflet-control-attribution, .leaflet-container .leaflet-control-attribution a,
+.mapBox .csMapCredit, .mapBox .csMapCredit a, #rideDetail[data-ptabs] .mapBox .csMapCredit,
+.csSugCredit, li.csSugCredit, p.tripFine, .tripFine, .maplibregl-ctrl-attrib, .maplibregl-ctrl-attrib a,
+#csLead .csStoryPic figcaption, .tripPic figcaption, .tripPic figcaption a { font-size:11px !important; line-height:1.35 !important; }
+footer .srcRow{gap:2px 10px;align-items:baseline}
+footer .srcRow > a{background:none!important;border:0!important;padding:0!important;border-radius:0!important;color:var(--mut)!important;text-decoration:underline;text-decoration-color:rgba(255,255,255,.2)}
+footer .srcRow > b{color:var(--dim,#8a909a);font-weight:600}
+/* picture credits sit inside the picture, bottom right */
+.tripPic{position:relative}
+.tripPic figcaption{position:absolute;right:0;bottom:0;max-width:85%;padding:3px 7px!important;background:rgba(0,0,0,.6);color:#e9e6df!important;border-top-left-radius:8px;text-align:right}
+.tripPic figcaption a{color:#e9e6df!important}
+#csLead .csStoryPic{position:relative}
+#csLead .csStoryPic figcaption{position:absolute;right:0;bottom:0;margin:0!important;max-width:90%;padding:2px 6px;background:rgba(0,0,0,.6);color:#e9e6df!important;border-top-left-radius:6px;text-align:right}
+/* the trip day: where it goes in the title, what you ride in one line under it */
+.tripSub{margin:2px 0 4px;color:#c9c6bf;font-size:15px;line-height:1.35}
+.tripTravel p{font-size:16px}
+/* waypoint weather: loud when it matters, quiet otherwise */
+.rbWx.wxAlert{border-color:#5a3a12;background:#120e08}
+.wxFlags{display:grid;gap:6px;margin:0 0 6px}
+.wxFlag{margin:0;padding:8px 12px;border-radius:10px;font:700 17px/1.3 var(--display);letter-spacing:.01em;border-left:5px solid #f2a71b;background:#21180a;color:#ffe2a8}
+.wxFlag.f-storm,.wxFlag.f-snow,.wxFlag.f-ice{border-left-color:#e11b2b;background:#2a0d10;color:#ffd0d0}
+.wxFlag.f-rain{border-left-color:#4a9fd8;background:#0c1a26;color:#cfe6ff}
+.wxFlag.f-dark{border-left-color:#8b7cf6;background:#16122a;color:#ddd6ff}
+.wxFlag.f-dusk{border-left-color:#ff8a3d;background:#24140a;color:#ffd9bf}
+.wxQuiet{margin:0;display:flex;align-items:center;flex-wrap:wrap;gap:4px 6px;color:#c9c6bf;font-size:15px}
+.wxQuiet .wxIco{width:22px;height:22px}.wxQuiet span{color:var(--dim,#8a909a);font-size:14px}
+.wxMore{margin-top:6px}.wxMore > summary{cursor:pointer;color:var(--dim,#8a909a);font-size:14px;list-style:none}
+.wxMore > summary::before{content:'▸ '}.wxMore[open] > summary::before{content:'▾ '}
+.rbWx:not(.wxAlert){padding:8px 12px 6px}
+/* the climb on a mountain ride: open, tall and clear on a phone */
+@media(max-width:759px){
+  .csMountain .profSvg{height:230px}
+  .csMountain .profWrap{padding:12px 8px 10px;margin-left:-6px;margin-right:-6px;border-color:#3a2a14;background:linear-gradient(180deg,#17140f,#121316)}
+  .csMountain .profSvg text{font-size:22px}
+  .csMountain .climbStrip{height:112px}
+}
+.csMountain .chev h2::after{content:' ▲';color:#ffd166}

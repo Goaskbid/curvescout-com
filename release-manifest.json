@@ -1,6 +1,6 @@
 {
- "build_id": "58b30f8",
- "build_date": "2026-10-31T19:34:00.688Z",
+ "build_id": "550c9fe",
+ "build_date": "2026-11-01T08:10:55.021Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -53,8 +53,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 2162448,
-   "sha256": "213220ea94d7a5d69e5eb3a98d32fc1e50dfc7d3c05b0a891caa850344a8d234"
+   "bytes": 2199119,
+   "sha256": "e77b62537da66e97787be8d4c4f88018606a8c2d32578b0417b34899be549e28"
   },
   {
    "path": "archive.js",
@@ -93,8 +93,8 @@
   },
   {
    "path": "assets/copilot/copilot-runtime.js",
-   "bytes": 130331,
-   "sha256": "44069cf32db5727cdd586a52bcde9b06d5790f85f7849e20e2622d40317e7315"
+   "bytes": 164289,
+   "sha256": "c92a0af4ad5bee309d0c9dd1c820e39b09fca824822fb6225b48b36f8d8b3c52"
   },
   {
    "path": "assets/copilot/cs-g2p-local.src.mjs",
@@ -1024,7 +1024,7 @@
   {
    "path": "config.js",
    "bytes": 161288,
-   "sha256": "2579a876551609fbebb7a562213160fae2f18bfd29b519fb0ff56297648b0f5f"
+   "sha256": "a5ac9071b55a5505fd24fa138ba5634e61d5a360caf3d321a5b6e161c6077cea"
   },
   {
    "path": "data/cities.txt",
@@ -4638,8 +4638,8 @@
   },
   {
    "path": "index.html",
-   "bytes": 30821,
-   "sha256": "8060bb6b62f8bb69da2c0fbd291e5a057ec21117e85ec9d999cdbbb659ee167b"
+   "bytes": 32534,
+   "sha256": "aed95eeba4a14926b3fff088414162026c8c8e8b781e571891b849b45626cc8f"
   },
   {
    "path": "manifest.webmanifest",
@@ -4658,13 +4658,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 369276,
-   "sha256": "c3e7f10760782f15af0bda015cfa3730f7e303cc197dd4021d3e763c0ed0a652"
+   "bytes": 376513,
+   "sha256": "87ac5187a5e8e92ce2f49e9388eb4d8714c4b0a3049ecf322323e5d553866e60"
   },
   {
    "path": "sw.js",
    "bytes": 8544,
-   "sha256": "42a1c7ccea6388be3e2f08fc77799995469f96da8abed1f1f364a4d9ec1b90d7"
+   "sha256": "c260ce5a88be4ca83f0a569c057fcc81bd70e8cdca1773149811a835baf13cff"
   }
  ]
 }

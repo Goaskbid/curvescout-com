@@ -5913,6 +5913,8 @@ const THIRD_PARTIES = [
   /* owner 2026-10-10 audit: every service the browser contacts is named */
   ['FOSSGIS routing (routing.openstreetmap.de)', 'the road line when the first routing server does not answer', 'https://www.fossgis.de/datenschutzerklaerung/',
    'Receives the coordinates of the route you opened, only when the first server is busy.'],
+  ['National address registers: swisstopo (api3.geo.admin.ch), IGN Géoplateforme (data.geopf.fr), PDOK (api.pdok.nl), Kartverket (ws.geonorge.no)', 'finding street addresses as you type, house by house', 'https://www.geo.admin.ch/en/general-terms-of-use-fsdi',
+   'Receive what you type into a place box, only when it looks like an address (a house number or a street name). Nothing else.'],
   ['FOSSGIS Valhalla (valhalla1.openstreetmap.de)', 'routes that leave out motorways or toll roads', 'https://www.fossgis.de/datenschutzerklaerung/',
    'Receives the coordinates of the route, only when you switch "Avoid motorways" or "Avoid tolls" on.'],
   ['OpenFreeMap (tiles.openfreemap.org)', 'the map tiles and map styles', 'https://openfreemap.org/privacy/',
@@ -6329,11 +6331,32 @@ const CS_TRIPS = (() => {
      to Los Angeles, Sydney to Melbourne, Bangkok to Chiang Mai). Dumping that distance onto one day made 18-hour days.
      A planner makes it a travel day: up to about 8 hours on main roads to the next cluster or to B, said plainly. A travel
      day is a ride-shaped record whose id carries its own ends, so links, the map, the roadbook and the GPX all work. */
-  const travelId = (a, b) => 'travel:' + (+a[0]).toFixed(3) + ',' + (+a[1]).toFixed(3) + ':' + (+b[0]).toFixed(3) + ',' + (+b[1]).toFixed(3);
-  function travelRoute(a, b) {
-    if (typeof a === 'string') { const m = a.match(/^travel:(-?[\d.]+),(-?[\d.]+):(-?[\d.]+),(-?[\d.]+)$/); if (!m) return null; b = [+m[3], +m[4]]; a = [+m[1], +m[2]]; }
-    const km = Math.round(dist(a, b) * ROAD), mn = Math.round(km / TRANSFER_KMH * 60);
-    return { i: travelId(a, b), t: 'Travel day', travel: true, km, mn, wp: [[+a[0], +a[1]], [+b[0], +b[1]]], la: +a[0], lo: +a[1], s: 0, tier: 'VERIFIED_CURATED', sh: 'a2b', sl: 'A travel day on main roads - ' + km + ' km, about ' + Math.floor(mn / 60) + ' h ' + String(mn % 60).padStart(2, '0') + '.', k: 'travel', tg: [] };
+  const p3 = q => (+q[0]).toFixed(3) + ',' + (+q[1]).toFixed(3);
+  const travelId = (a, b, via) => 'travel:' + p3(a) + ':' + p3(b) + (via && via.length ? ':v' + via.map(v => p3(v.at) + '@' + v.id).join(';') : '');
+  /* a travel day is still a ride (owner 2026-11-01: "for all the transfer days, find interesting waypoints and explain the
+     ride"): it goes through up to three PEARLS - checkpoints of our scouted rides that lie on the way - in order, so the
+     day passes the good country instead of the motorway. The pearls are in the id, so links and GPX rebuild the same day. */
+  function travelRoute(a, b, via, routes) {
+    if (typeof a === 'string') { const m = a.match(/^travel:(-?[\d.]+),(-?[\d.]+):(-?[\d.]+),(-?[\d.]+)(?::v(.+))?$/); if (!m) return null; b = [+m[3], +m[4]]; a = [+m[1], +m[2]];
+      via = m[5] ? m[5].split(';').map(x => { const k = x.match(/^(-?[\d.]+),(-?[\d.]+)@(.*)$/); if (!k) return null; const r = (routes || []).find(z => z && z.i === k[3]); return { at: [+k[1], +k[2]], id: k[3], t: r ? r.t : '' }; }).filter(Boolean) : []; }
+    via = via || []; const pts = [[+a[0], +a[1]]].concat(via.map(v => v.at), [[+b[0], +b[1]]]);
+    let line = 0; for (let k = 1; k < pts.length; k++) line += dist(pts[k - 1], pts[k]);
+    const km = Math.round(line * ROAD), mn = Math.round(km / TRANSFER_KMH * 60);
+    return { i: travelId(a, b, via), t: 'Travel day', travel: true, km, mn, wp: pts, via: via.map(v => ({ at: v.at, id: v.id, t: v.t })), la: +a[0], lo: +a[1], s: 0, tier: 'VERIFIED_CURATED', sh: 'a2b', sl: 'A travel day - ' + km + ' km, about ' + Math.floor(mn / 60) + ' h ' + String(mn % 60).padStart(2, '0') + (via.length ? ', through ' + via.length + ' good stretch' + (via.length > 1 ? 'es' : '') + ' of our scouted roads.' : '.'), k: 'travel', tg: [] };
+  }
+  /* the pearls for a travel day from a to b: checkpoints of good scouted rides within 30 km of the line, spread along it, that add
+     at most a quarter to the way */
+  function pearls(pool, a, b, used) {
+    const kx = Math.cos(rad((a[0] + b[0]) / 2)), B = [(b[1] - a[1]) * kx * 111.32, (b[0] - a[0]) * 110.57], L2 = B[0] * B[0] + B[1] * B[1]; if (L2 < 60 * 60) return [];
+    const P = q => [(q[1] - a[1]) * kx * 111.32, (q[0] - a[0]) * 110.57], cand = [];
+    for (const f of pool) { if (used && used.has(f.r.i)) continue; if (/^city-|^places-/.test(String(f.r.i))) continue; let best = null;
+      for (const q of wps(f.r)) { const v = P(q), t = (v[0] * B[0] + v[1] * B[1]) / L2; if (t < 0.12 || t > 0.88) continue; const off = Math.hypot(v[0] - t * B[0], v[1] - t * B[1]); if (off > 30) continue;
+        if (!best || off < best.off) best = { at: q, t, off }; }
+      if (best) cand.push(Object.assign(best, { id: f.r.i, tt: f.r.t, sc: f.score - best.off / 60 })); }
+    cand.sort((x, y) => y.sc - x.sc || x.t - y.t); const out = [], D = dist(a, b);
+    for (const c of cand) { if (out.length >= 3) break; if (out.some(o => Math.abs(o.t - c.t) < 0.18)) continue; const trial = out.concat([c]).sort((x, y) => x.t - y.t);
+      let k = 0, prev = a; for (const o of trial) { k += dist(prev, o.at); prev = o.at; } k += dist(prev, b); if (k > D * 1.25) continue; out.push(c); }
+    return out.sort((x, y) => x.t - y.t).map(c => ({ at: [+c.at[0], +c.at[1]], id: c.id, t: c.tt }));
   }
   /* ---- CUT A DAY RIDE (owner 2026-10-24/25: "you can cut daytrips", "where to in and out of scenic routes with an eye
      towards logistics for the next day", "take them in a way that uses the trip to get closer to the target") ----
@@ -6383,6 +6406,11 @@ const CS_TRIPS = (() => {
     const prog = p => Math.max(-0.2, Math.min(1.2, (((p[1] - A[1]) * kx) * ax[0] + (p[0] - A[0]) * ax[1]) / L2));
     const lateral = p => { const x = (p[1] - A[1]) * kx, y = p[0] - A[0]; const t = Math.max(0, Math.min(1, (x * ax[0] + y * ax[1]) / L2)); return Math.hypot(x - t * ax[0], y - t * ax[1]) * 111; };
     const ex = new Set(o.exclude || []);
+    /* STRING OF PEARLS (owner 2026-11-01: "it cannot be that we have trips in the chain that take the ride massively back
+       behind the previous waypoint"): no point of a day - where it begins, any checkpoint, where it ends - lies more than
+       BACK km behind last night along the way to B */
+    const BACK = Math.min(15, Math.max(6, lineKm * 0.02)), behind = (st, pts) => pts.some(q => (st.p - prog(q)) * lineKm > BACK);
+    const pacedOk = (d, p) => d === 0 || p >= (d + 1) / N - Math.max(0.25, 1.4 / N);   /* nights keep pace with the days */
     /* a day on a journey is the hand-over plus the ride, so a short great road (Giau and Falzarego, 54 km) is a fine day:
        the ride may be as short as a third of the daily range, the transfers make up the rest */
     const oFit = Object.assign({}, o, { minWp: 3, dayKm: [Math.max(30, o.dayKm[0] * 0.3), o.dayKm[1] * 1.1] });
@@ -6426,6 +6454,7 @@ const CS_TRIPS = (() => {
             /* the whole day stays in the corridor - every checkpoint, not only its ends (a Rome loop to Amalfi and back
                ends in Rome and still rides 230 km past it: owner 2026-10-26 "trip 6 takes me to naples") */
             const vw = v.cut ? v.cut.wp : wps(r); if (!vw.every(q => inCorr2(q))) continue;
+            if (behind(st, [v.begin, v.finish].concat(vw))) continue;                         /* hard: a string of pearls, never back behind last night */
             { const lim = dist(st.at, B) + 40; if (vw.some(q => dist(q, B) > lim)) continue; }   /* no part of the day rides away from B beyond last night (audit 2026-10-26: Gran Sasso detour on the last day) */
             /* a stored distance shorter than its own checkpoints allow is wrong: the checkpoints win */
             const gk = geoKm(vw, loop && !v.cut);
@@ -6437,7 +6466,7 @@ const CS_TRIPS = (() => {
             if (fk + xinKm + xoutKm > KMAX) continue;                                           /* hard: the rider's daily distance (owner: "no extra miles") */
             const remKm = dist(v.finish, B) * ROAD, left = N - 1 - d;
             if (!last && remKm > left * CAP) continue;                                         /* hard: B out of reach in the days left */
-            const p = prog(v.finish); if (p < st.p - 0.03 || (d === 0 && p < -0.02)) continue;  /* hard: never back towards A */
+            const p = prog(v.finish); if (p < st.p - 0.03 || (d === 0 && p < -0.02) || !pacedOk(d, p)) continue;  /* hard: never back towards A, and keep pace */
             if (dist(v.finish, B) > dist(st.at, B) + 40) continue;                             /* hard: no night further from B than the last by more than 40 km (audit 2026-10-25: 14 days Zurich->Venice went back to the Grossglockner) */
             const target = (d + 1) / N;
             let sc = st.score + (v.cut ? f.score * (0.78 + 0.22 * v.cut.cut.frac) * (v.cut.cut.hasFar ? 1 : 0.55) : f.score)
@@ -6471,6 +6500,7 @@ const CS_TRIPS = (() => {
                 const fin = cr.wp[cr.wp.length - 1], gn = prog(fin) - prog(at1); if (!best || gn > best.gn + 0.002 || (Math.abs(gn - best.gn) <= 0.002 && cr.km > best.cr.km)) best = { cr, fin, gn }; }
               if (!best || best.gn <= 0.01) continue;
               if (!best.cr.wp.every(q => inCorr2(q)) || !p1.wp.every(q => inCorr2(q))) continue;
+              if (behind(st, p1.wp.concat(best.cr.wp))) continue;
               { const lim = dist(st.at, B) + 40; if (best.cr.wp.concat(p1.wp).some(q => dist(q, B) > lim)) continue; }
               const linkKm = bd < 1.5 ? 0 : bd * ROAD, c2 = best.cr;
               const rec = Object.assign({}, f1.r, { i: 'combo:' + p1.i + '+' + c2.i, t: f1.r.t + ' + ' + f2.r.t, km: p1.km + Math.round(linkKm) + c2.km, mn: p1.mn + Math.round(tmin(linkKm)) + c2.mn,
@@ -6479,7 +6509,7 @@ const CS_TRIPS = (() => {
               const xin = A0.xinKm, xout = last ? (dist(best.fin, B) < 1.5 ? 0 : dist(best.fin, B) * ROAD) : 0;
               const load = rec.mn + tmin(xin) + tmin(xout), tot = load + stopsMin(load); if (tot > DAYMAX || rec.km + xin + xout > KMAX) continue;
               const left = N - 1 - d; if (!last && dist(best.fin, B) * ROAD > left * CAP) continue;
-              const pp = prog(best.fin); if (pp < st.p - 0.03) continue; if (dist(best.fin, B) > dist(st.at, B) + 40) continue;
+              const pp = prog(best.fin); if (pp < st.p - 0.03 || !pacedOk(d, pp)) continue; if (dist(best.fin, B) > dist(st.at, B) + 40) continue;
               const target = (d + 1) / N, k1 = p1.km || 1, k2 = c2.km || 1;
               const sc1 = v1.cut ? f1.score * (0.78 + 0.22 * v1.cut.cut.frac) * (v1.cut.cut.hasFar ? 1 : 0.55) : f1.score, sc2 = f2.score * (0.78 + 0.22 * c2.cut.frac) * (c2.cut.hasFar ? 1 : 0.55);
               let sc = st.score + (sc1 * k1 + sc2 * k2) / (k1 + k2) + 0.08
@@ -6504,7 +6534,8 @@ const CS_TRIPS = (() => {
             ahead.sort((x, y) => y[0] - x[0]); for (const [, q] of ahead.slice(0, 12)) targets.push(q); }
           for (const q of targets) {
             const isB = q === B; if (last && !isB) continue; if (!last && isB && N - 1 - d > 0) continue;   /* arrive early only by riding */
-            const rt = travelRoute(st.at, q), load = rt.mn + stopsMin(rt.mn); if (load > TRAVEL_MAX + 45 || rt.km > KMAX * 1.1) continue;   /* a travel day keeps to the rider's daily distance too */
+            let rt = travelRoute(st.at, q, pearls(pool, st.at, q, st.used)); if (rt.mn + stopsMin(rt.mn) > TRAVEL_MAX + 45 || rt.km > KMAX * 1.1) rt = travelRoute(st.at, q);
+            const load = rt.mn + stopsMin(rt.mn); if (load > TRAVEL_MAX + 45 || rt.km > KMAX * 1.1) continue;   /* a travel day keeps to the rider's daily distance too */
             const remKm = dist(q, B) * ROAD, left = N - 1 - d; if (!last && remKm > left * CAP) continue;
             const p = prog(q); if (p < st.p - 0.02) continue; if (dist(q, B) > dist(st.at, B) + 40) continue;
             const used = new Set(st.used); used.add(rt.i);
@@ -6709,7 +6740,7 @@ const CS_TRIPS = (() => {
        prefixed "places-"): exact first, then the same words with filler and spelling variants folded */
     const fold = s => String(s || '').toLowerCase().replace(/^places-/, '').split('-').filter(w => w && !/^(and|of|the|a)$/.test(w)).join('').replace(/ss/g, '').replace(/[^a-z0-9]/g, '');
     let folded = null;
-    const find = id => (String(id).startsWith('travel:') ? travelRoute(String(id)) : String(id).startsWith('cut:') ? cutFromId(routes, id) : String(id).startsWith('combo:') ? comboFromId(routes, id) : null) || by.get(id) || by.get('places-' + id) || (() => { if (!folded) { folded = new Map(); routes.forEach(r => { const k = fold(r.i); if (!folded.has(k)) folded.set(k, r); }); } return folded.get(fold(id)); })();
+    const find = id => (String(id).startsWith('travel:') ? travelRoute(String(id), null, null, routes) : String(id).startsWith('cut:') ? cutFromId(routes, id) : String(id).startsWith('combo:') ? comboFromId(routes, id) : null) || by.get(id) || by.get('places-' + id) || (() => { if (!folded) { folded = new Map(); routes.forEach(r => { const k = fold(r.i); if (!folded.has(k)) folded.set(k, r); }); } return folded.get(fold(id)); })();
     const chosen = ids.map(find).filter(Boolean).map(r => fit(r, Object.assign({}, o, { dayKm: [0, 1e6] })) || { r, km: +r.km || 0, mn: +r.mn || 0, score: 0, why: [] });
     const plan = { opts: o };
     plan.days = buildDays(chosen, o);
@@ -6839,13 +6870,59 @@ const CS_SUGGEST = (() => {
   const countryName = cc => { try { if (!regionNames && typeof Intl !== 'undefined' && Intl.DisplayNames) regionNames = new Intl.DisplayNames(['en'], { type: 'region' }); return regionNames ? regionNames.of(String(cc).toUpperCase()) : cc; } catch (e) { return cc; } };
   function fromPhoton(f) {
     const p = f && f.properties || {}, c = f && f.geometry && f.geometry.coordinates;
+    /* a house has no name of its own: it is its street and number, in its town ("Bahnhofstrasse 10, Zürich") */
+    const house = Array.isArray(c) && !p.name && p.street ? p.street + (p.housenumber ? ' ' + p.housenumber : '') : '';
+    if (house) return { id: (p.osm_type || '') + (p.osm_id || ''), name: house + (p.city || p.locality ? ', ' + (p.city || p.locality) : ''), local: '', region: p.postcode ? p.postcode + ' ' + (p.city || '') : (p.state || ''),
+      country: p.country || (p.countrycode ? countryName(p.countrycode) : ''), cc: String(p.countrycode || '').toUpperCase(), kind: 'address', lat: +(c && c[1]), lon: +(c && c[0]), src: 'osm', place: false };
     if (!Array.isArray(c) || !p.name) return null;
     const kind = KIND[p.osm_value] || (p.osm_key === 'place' ? 'place' : p.osm_key === 'boundary' ? 'area' : p.osm_value === 'saddle' ? 'pass' : p.osm_key === 'mountain_pass' ? 'pass' : '');
     return { id: (p.osm_type || '') + (p.osm_id || ''), name: p.name, local: '', region: p.state || p.county || '', country: p.country || (p.countrycode ? countryName(p.countrycode) : ''),
       cc: String(p.countrycode || '').toUpperCase(), kind, lat: +c[1], lon: +c[0], src: 'osm', place: p.osm_key === 'place' || p.osm_key === 'boundary' || kind === 'pass' };
   }
+  /* ---- ADDRESSES, WORLDWIDE (owner 2026-10-31: "a real search ... we are global") ----
+     Every address-like entry (a house number or a street word) goes to the worldwide search (Photon, OpenStreetMap,
+     biased to where you are) AND, at the same time, to the open national address registers, which know every building:
+       CH  swisstopo (geo.admin.ch)            FR  Base Adresse Nationale (IGN Géoplateforme)
+       NL  BAG via PDOK                        NO  Kartverket (Geonorge)
+     A register only ever adds rows that really match what was typed (the house number and the street must be in the
+     answer), so a register never fills the list with look-alikes from the wrong country. Any order works:
+     "37 Neuwiesenstrasse Meilen", "8 rue de Rivoli Paris", "Damrak 1 Amsterdam", "1600 Pennsylvania Ave Washington". */
+  const STREETW = /(strasse|straße|str\.|gasse|weg|platz|allee|halde|rue|chemin|avenue|ave\b|boulevard|blvd|route|via|vicolo|piazza|corso|calle|carrer|avenida|rua|street|st\.|road|rd\.|lane|drive|straat|laan|gracht|plein|vej|gade|gatan|vägen|veien|gata|ulica|utca)/i;
+  const looksAddress = q => /\d/.test(q) || STREETW.test(q);
+  const toks = t => fold(String(t).replace(/(stra(ss|ß)e|str\.)/gi, 'strasse ')).split(' ').filter(Boolean);
+  /* the typed numbers are all in the answer, and the longest typed word starts a word of it */
+  const matches = (q, label) => { const L = toks(label), Q = toks(q), nums = Q.filter(w => /^\d+[a-z]?$/.test(w)), words = Q.filter(w => /[a-z]/.test(w) && w.length >= 3).sort((x, y) => y.length - x.length);
+    if (!nums.every(n => L.some(w => w === n || w.replace(/[a-z]$/, '') === n || (w.startsWith(n) && /^\d+[a-z]$/.test(w))))) return false;
+    if (!words.length) return true; const w0 = words[0]; return L.some(w => w.startsWith(w0) || w0.startsWith(w) && w.length >= 4 || L.join('').includes(w0)); };
+  const net = (k, def) => { try { return typeof NET !== 'undefined' && NET[k] !== undefined ? NET[k] : def; } catch (e) { return def; } };
+  const row = (src, cc, country, name, region, lat, lon, id) => ({ id: src + ':' + (id || name), name, local: '', region, country, cc, kind: 'address', lat: +lat, lon: +lon, src, place: false });
+  const REG = [
+    { k: 'ch', credit: 'swisstopo', host: () => net('swissSearch', 'https://api3.geo.admin.ch'),
+      url: (h, q) => h + '/rest/services/api/SearchServer?type=locations&origins=address&limit=6&sr=4326&searchText=' + encodeURIComponent(q.replace(/,/g, ' ').replace(/\s+/g, ' ').trim().split(' ').slice(0, 10).join(' ')),
+      rows: js => ((js && js.results) || []).map(x => { const a = x && x.attrs || {}, lab = String(a.label || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim(), m = lab.match(/^(.*?)\s+(\d{4})\s+(.+)$/);
+        return lab && a.origin === 'address' ? row('ch', 'CH', 'Switzerland', m ? m[1] + ', ' + m[3] : lab, m ? m[2] : '', a.lat, a.lon, a.featureId) : null; }) },
+    { k: 'fr', credit: 'IGN / BAN', host: () => net('frAddress', 'https://data.geopf.fr'),
+      url: (h, q) => h + '/geocodage/search?index=address&limit=6&q=' + encodeURIComponent(q.slice(0, 200)),
+      rows: js => ((js && js.features) || []).map(f => { const p = f && f.properties || {}, c = f && f.geometry && f.geometry.coordinates; if (!c || p.type !== 'housenumber' || (+p.score || 0) < 0.45) return null;
+        return row('fr', 'FR', 'France', (p.name || '') + ', ' + (p.city || ''), p.postcode || '', c[1], c[0], p.id); }) },
+    { k: 'nl', credit: 'PDOK / BAG', host: () => net('nlAddress', 'https://api.pdok.nl'),
+      url: (h, q) => h + '/bzk/locatieserver/search/v3_1/free?fq=type:adres&rows=6&q=' + encodeURIComponent(q.slice(0, 200)),
+      rows: js => ((js && js.response && js.response.docs) || []).map(d => { const m = String(d.centroide_ll || '').match(/POINT\(([-\d.]+) ([-\d.]+)\)/); if (!m) return null; const w = String(d.weergavenaam || ''), k = w.match(/^(.*?), (\d{4} ?[A-Z]{2}) (.+)$/);
+        return row('nl', 'NL', 'Netherlands', k ? k[1] + ', ' + k[3] : w, k ? k[2] : '', m[2], m[1], d.id); }) },
+    { k: 'no', credit: 'Kartverket', host: () => net('noAddress', 'https://ws.geonorge.no'),
+      url: (h, q) => h + '/adresser/v1/sok?treffPerSide=6&sok=' + encodeURIComponent(q.slice(0, 200)),
+      rows: js => ((js && js.adresser) || []).map(a => { const p = a.representasjonspunkt || {}; return Number.isFinite(+p.lat) ? row('no', 'NO', 'Norway', a.adressetekst + ', ' + (a.poststed || ''), a.postnummer || '', p.lat, p.lon, a.adressekode + a.adressetekst + a.postnummer) : null; }) },
+  ];
+  async function register(r, q, signal) { const h = r.host(); if (!h) return []; const url = r.url(h, q); if (CACHE.has(url)) return CACHE.get(url);
+    const res = await fetch(url, { signal, headers: { Accept: 'application/json' } }); if (!res.ok) throw new Error(r.k + ' ' + res.status);
+    const out = r.rows(await res.json()).filter(Boolean).filter(x => Number.isFinite(x.lat) && matches(q, x.name + ' ' + x.region)); CACHE.set(url, out); return out; }
+  /* all registers at once; each answer is shown the moment it arrives */
+  function registers(q, signal, each) { return Promise.all(REG.map(r => register(r, q, signal).then(x => { if (x.length && each) each(x); return x; }).catch(() => []))).then(a => [].concat(...a)); }
+  const swiss = (q, signal) => register(REG[0], q, signal);
+  /* where the rider is, so the worldwide search prefers nearby answers (set by Wingman while riding; never stored) */
+  let nearPt = null; const setNear = p => { nearPt = p && Number.isFinite(+p[0]) ? [+(+p[0]).toFixed(2), +(+p[1]).toFixed(2)] : null; };
   async function photon(q, lang, signal) {
-    const url = host() + '/api/?q=' + encodeURIComponent(q) + '&limit=8' + (lang ? '&lang=' + lang : '');
+    const url = host() + '/api/?q=' + encodeURIComponent(q) + '&limit=8' + (lang ? '&lang=' + lang : '') + (nearPt ? '&lat=' + nearPt[0] + '&lon=' + nearPt[1] : '');
     if (CACHE.has(url)) return CACHE.get(url);
     const res = await fetch(url, { signal, headers: { Accept: 'application/json' } });
     if (!res.ok) throw new Error('suggest ' + res.status);
@@ -6878,10 +6955,11 @@ const CS_SUGGEST = (() => {
     const same = all.filter(x => fold(x.name) === fold(r.name)).length > 1;
     if (r.region && (same || fold(r.region) !== fold(r.name))) bits.push(r.region);
     if (r.country) bits.push(r.country);
-    if (r.kind && r.kind !== 'town' && r.kind !== 'city') bits.push(r.kind);
+    if (r.kind && r.kind !== 'town' && r.kind !== 'city' && r.kind !== 'address') bits.push(r.kind);
     return bits.join(' · ');
   }
-  function flag(cc) { return /^[A-Z]{2}$/.test(cc || '') ? cc.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0))) : '📍'; }
+  /* the country as a small oval sticker with its code - flag emoji are not drawn on Windows (owner 2026-11-01) */
+  function flag(cc) { return /^[A-Z]{2}$/.test(cc || '') ? '<i class="csCc">' + cc + '</i>' : '📍'; }
   /* attach to an input: a listbox under it, arrows / Enter / Escape, tap to pick */
   function attach(input, onPick) {
     if (!input || input._csSuggest) return; input._csSuggest = true;
@@ -6894,7 +6972,7 @@ const CS_SUGGEST = (() => {
     const paint = (note) => {
       if (!rows.length) { if (note) { box.innerHTML = '<li class="csSugNote">' + esc(note) + '</li>'; box.hidden = false; } else close(); return; }
       box.innerHTML = rows.map((r, i) => '<li role="option" id="' + box.id + i + '" class="csSugRow' + (i === act ? ' on' : '') + '" data-i="' + i + '" aria-selected="' + (i === act) + '"><span class="csSugF">' + flag(r.cc) + '</span><span class="csSugT"><b>' + esc(r.name) + '</b><small>' + esc(sub(r, rows)) + '</small></span></li>').join('') +
-        (rows.some(r => r.src === 'osm' || r.src === 'cs+osm') ? '<li class="csSugCredit">Places © OpenStreetMap · search by Photon</li>' : rows.some(r => r.src === 'gn') ? '<li class="csSugCredit">Places © GeoNames</li>' : '');
+        (rows.some(r => REG.some(g => g.k === r.src)) ? '<li class="csSugCredit">Addresses © ' + REG.filter(g => rows.some(r => r.src === g.k)).map(g => g.credit).join(', ') + (rows.some(r => r.src === 'osm' || r.src === 'cs+osm') ? ' · Places © OpenStreetMap, Photon' : '') + '</li>' : rows.some(r => r.src === 'osm' || r.src === 'cs+osm') ? '<li class="csSugCredit">Places © OpenStreetMap · search by Photon</li>' : rows.some(r => r.src === 'gn') ? '<li class="csSugCredit">Places © GeoNames</li>' : '');
       box.hidden = false; input.setAttribute('aria-expanded', 'true');
       box.querySelectorAll('[data-i]').forEach(li => { li.onpointerdown = ev => { ev.preventDefault(); }; li.onclick = () => pick(+li.dataset.i); });
     };
@@ -6906,13 +6984,19 @@ const CS_SUGGEST = (() => {
         const twin = (a, b) => Math.abs(a.lat - b.lat) < 0.05 && Math.abs(a.lon - b.lon) < 0.05;
         mine = mine.filter(m => m.kind === 'pass' || !gn.some(g => twin(g, m))).concat(gn).slice(0, 10);
         mine.sort((a, b) => (fold(b.name) === fold(q) ? 1 : 0) - (fold(a.name) === fold(q) ? 1 : 0)); rows = mine.slice(0, 8); paint(); } } catch (e) {}
-      if (q.length < 3 || /^-?\d/.test(q)) return;
+      /* coordinates are not searched; a house number first ("37 Neuwiesenstrasse") is */
+      if (q.length < 3 || /^\s*-?\d+(\.\d+)?\s*[,; ]\s*-?\d+(\.\d+)?\s*$/.test(q) || /^\d{1,4}$/.test(q)) return;
       try { if (ctl) ctl.abort(); } catch (e) {} ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
-      try { const [en, loc] = await Promise.all([photon(q, 'en', ctl && ctl.signal), photon(q, '', ctl && ctl.signal).catch(() => [])]);
-        if (my !== seq) return; rows = merge(en, loc, mine); paint(rows.length ? '' : 'No place found - try the local spelling or coordinates like 59.94, 30.31.'); }
+      const addr = looksAddress(q);
+      /* the Swiss register answers addresses within a moment: shown as soon as it is in, before the worldwide search */
+      const chP = addr ? registers(q, ctl && ctl.signal, a => { if (my !== seq) return; rows = a.concat(rows.filter(r => !a.some(x => x.id === r.id))).slice(0, 8); paint(); }) : Promise.resolve([]);
+      try { const [en, loc, ch] = await Promise.all([photon(q, 'en', ctl && ctl.signal), photon(q, '', ctl && ctl.signal).catch(() => []), chP]);
+        if (my !== seq) return; rows = merge(en, loc, mine);
+        if (addr) { const chA = ch.filter(x => x.kind === 'address'), far = r => !chA.some(x => Math.abs(x.lat - r.lat) < 0.0008 && Math.abs(x.lon - r.lon) < 0.0008);
+          const osmA = rows.filter(r => r.kind === 'address' && far(r) && matches(q, r.name + ' ' + r.region)); rows = chA.concat(osmA, rows.filter(r => r.kind !== 'address')).slice(0, 8); } paint(rows.length ? '' : 'No place found - try the local spelling or coordinates like 59.94, 30.31.'); }
       catch (e) { if (my !== seq || (e && e.name === 'AbortError')) return; if (!rows.length) paint('No place found - try the local spelling or coordinates like 59.94, 30.31.'); }
     };
-    input.addEventListener('input', () => { clearTimeout(t); const q = input.value.trim(); if (q.length < 2) { rows = []; close(); return; } t = setTimeout(() => run(q), 320); });
+    input.addEventListener('input', () => { clearTimeout(t); const q = input.value.trim(); if (q.length < 2) { rows = []; close(); return; } t = setTimeout(() => run(q), /\d/.test(q) ? 180 : 260); });
     input.addEventListener('keydown', ev => {
       if (box.hidden || !rows.length) return;
       if (ev.key === 'ArrowDown' || ev.key === 'ArrowUp') { ev.preventDefault(); act = (act + (ev.key === 'ArrowDown' ? 1 : -1) + rows.length) % rows.length; paint(); input.setAttribute('aria-activedescendant', box.id + act); }
@@ -6923,12 +7007,16 @@ const CS_SUGGEST = (() => {
   }
   /* the first good answer for a typed name, for a form submitted without picking (gazetteer first, then Photon) */
   async function resolve(q) {
+    /* a street address ("Bahnhofstrasse 10, Zürich"): the address search answers first, its best row is the address itself */
+    if (/[a-z\u00c0-\u024f].*\d|\d.*[a-z\u00c0-\u024f]/i.test(q) && !/^\s*-?\d+(\.\d+)?\s*,\s*-?\d+(\.\d+)?\s*$/.test(q)) {
+      try { const a = (await registers(q))[0]; if (a) return { lat: a.lat, lon: a.lon, label: a.name + ', ' + a.country, address: true }; } catch (e) {}
+      try { const en = await photon(q, 'en'); const r = en.find(x => x.kind === 'address' && matches(q, x.name + ' ' + x.region)) || en[0]; if (r) return { lat: r.lat, lon: r.lon, label: r.name + (r.country ? ', ' + r.country : ''), address: !r.place }; } catch (e) {} }
     const mine = local(q); if (mine.length && fold(mine[0].name) === fold(q)) return { lat: mine[0].lat, lon: mine[0].lon, label: mine[0].name };
     try { if (typeof CS_PLACES !== 'undefined') { const g = await CS_PLACES.find(q); if (g) return g; } } catch (e) {}
     try { const en = await photon(q, 'en'); const r = en.find(x => x.place) || en[0]; if (r) return { lat: r.lat, lon: r.lon, label: r.name + (r.country ? ', ' + r.country : '') }; } catch (e) {}
     return mine[0] ? { lat: mine[0].lat, lon: mine[0].lon, label: mine[0].name } : null;
   }
-  return { attach, resolve, merge, sub, _local: local };
+  return { attach, resolve, merge, sub, setNear, _local: local, _matches: matches };
 })();
 if (typeof window !== 'undefined') window.CS_SUGGEST = CS_SUGGEST;
 
@@ -6998,24 +7086,24 @@ const CS_RA = (() => {
   ];
   /* ---- BADGES: what a rider did, never what they bought ---- */
   const BADGES = [
-    { id: 'first', icon: '🏁', name: 'First road', test: s => s.ridden >= 1, how: 'Mark your first ride as ridden.' },
-    { id: 'five', icon: '🖐', name: 'Five roads', test: s => s.ridden >= 5, how: 'Ride five CurveScout roads.' },
-    { id: 'twenty', icon: '🛣', name: 'Twenty roads', test: s => s.ridden >= 20, how: 'Ride twenty.' },
-    { id: 'k1', icon: '🔢', name: '1,000 km', test: s => s.km >= 1000, how: 'Ride 1,000 km of CurveScout roads.' },
-    { id: 'k5', icon: '🧭', name: '5,000 km', test: s => s.km >= 5000, how: 'Ride 5,000 km.' },
-    { id: 'c3', icon: '🛂', name: 'Three flags', test: s => s.countries.length >= 3, how: 'Ride in three countries.' },
-    { id: 'c7', icon: '🌍', name: 'Seven flags', test: s => s.countries.length >= 7, how: 'Ride in seven countries.' },
-    { id: 'p2000', icon: '🏔', name: '2,000 m club', test: s => s.high >= 2000, how: 'Ride a road over 2,000 m.' },
-    { id: 'p2500', icon: '❄', name: 'Above 2,500 m', test: s => s.high >= 2500, how: 'Ride a road over 2,500 m (Stelvio, Iseran, Bonette).' },
-    { id: 'passes10', icon: '⛰', name: 'Ten passes', test: s => s.passes.length >= 10, how: 'Cross ten named passes.' },
-    { id: 'big5-ch', icon: '🇨🇭', name: 'Swiss Big Five', test: s => s.col['big5-ch'] && s.col['big5-ch'].done === 5, how: 'Ride all five Swiss Big Five passes.' },
-    { id: 'big5-it', icon: '🇮🇹', name: 'Italian Big Five', test: s => s.col['big5-it'] && s.col['big5-it'].done === 5, how: 'Ride all five Italian Big Five passes.' },
-    { id: 'cont2', icon: '✈', name: 'Two continents', test: s => continents(s.countries).length >= 2, how: 'Ride on two continents.' },
-    { id: 'cont4', icon: '🌐', name: 'Four continents', test: s => continents(s.countries).length >= 4, how: 'Ride on four continents.' },
+    { id: 'first', pr: s => [s.ridden, 1], icon: '🏁', name: 'First road', test: s => s.ridden >= 1, how: 'Mark your first ride as ridden.' },
+    { id: 'five', pr: s => [s.ridden, 5], icon: '🖐', name: 'Five roads', test: s => s.ridden >= 5, how: 'Ride five CurveScout roads.' },
+    { id: 'twenty', pr: s => [s.ridden, 20], icon: '🛣', name: 'Twenty roads', test: s => s.ridden >= 20, how: 'Ride twenty.' },
+    { id: 'k1', pr: s => [s.km, 1000], icon: '🔢', name: '1,000 km', test: s => s.km >= 1000, how: 'Ride 1,000 km of CurveScout roads.' },
+    { id: 'k5', pr: s => [s.km, 5000], icon: '🧭', name: '5,000 km', test: s => s.km >= 5000, how: 'Ride 5,000 km.' },
+    { id: 'c3', pr: s => [s.countries.length, 3], icon: '🛂', name: 'Three flags', test: s => s.countries.length >= 3, how: 'Ride in three countries.' },
+    { id: 'c7', pr: s => [s.countries.length, 7], icon: '🌍', name: 'Seven flags', test: s => s.countries.length >= 7, how: 'Ride in seven countries.' },
+    { id: 'p2000', pr: s => [s.high, 2000], icon: '🏔', name: '2,000 m club', test: s => s.high >= 2000, how: 'Ride a road over 2,000 m.' },
+    { id: 'p2500', pr: s => [s.high, 2500], icon: '❄', name: 'Above 2,500 m', test: s => s.high >= 2500, how: 'Ride a road over 2,500 m (Stelvio, Iseran, Bonette).' },
+    { id: 'passes10', pr: s => [s.passes.length, 10], icon: '⛰', name: 'Ten passes', test: s => s.passes.length >= 10, how: 'Cross ten named passes.' },
+    { id: 'big5-ch', pr: s => [s.col['big5-ch'] ? s.col['big5-ch'].done : 0, 5], icon: '🇨🇭', name: 'Swiss Big Five', test: s => s.col['big5-ch'] && s.col['big5-ch'].done === 5, how: 'Ride all five Swiss Big Five passes.' },
+    { id: 'big5-it', pr: s => [s.col['big5-it'] ? s.col['big5-it'].done : 0, 5], icon: '🇮🇹', name: 'Italian Big Five', test: s => s.col['big5-it'] && s.col['big5-it'].done === 5, how: 'Ride all five Italian Big Five passes.' },
+    { id: 'cont2', pr: s => [continents(s.countries).length, 2], icon: '✈', name: 'Two continents', test: s => continents(s.countries).length >= 2, how: 'Ride on two continents.' },
+    { id: 'cont4', pr: s => [continents(s.countries).length, 4], icon: '🌐', name: 'Four continents', test: s => continents(s.countries).length >= 4, how: 'Ride on four continents.' },
     { id: 'worldcol', icon: '🗺', name: 'World collector', test: s => Object.entries(s.col).some(([k, c]) => !/^(big5|grandes|austria|dolomites)/.test(k) && c.done === c.of), how: 'Complete one collection outside the Alps.' },
-    { id: 'dream10', icon: '✨', name: 'Dreamer', test: s => s.want >= 10, how: 'Put ten roads on your wish list.' },
-    { id: 'scout25', icon: '🔍', name: 'Scout', test: s => s.opened >= 25, how: 'Look at 25 rides closely.' },
-    { id: 'streak3', icon: '🔥', name: 'Three days running', test: s => s.streak >= 3, how: 'Open CurveScout three days in a row.' },
+    { id: 'dream10', pr: s => [s.want, 10], icon: '✨', name: 'Dreamer', test: s => s.want >= 10, how: 'Put ten roads on your wish list.' },
+    { id: 'scout25', pr: s => [s.opened, 25], icon: '🔍', name: 'Scout', test: s => s.opened >= 25, how: 'Look at 25 rides closely.' },
+    { id: 'streak3', pr: s => [s.streak, 3], icon: '🔥', name: 'Three days running', test: s => s.streak >= 3, how: 'Open CurveScout three days in a row.' },
   ];
   /* continent of a country code - enough for the badges, not a gazetteer */
   const CONT = { NA: 'US CA MX GT BZ HN SV NI CR PA CU DO JM HT PR BS', SA: 'BR AR CL PE BO EC CO VE UY PY GY SR', AF: 'ZA NA BW ZW ZM MZ TZ KE UG RW ET MA DZ TN EG LY SN GH NG CM AO MG MU LS SZ NE ML',
@@ -7085,7 +7173,7 @@ const CS_RA = (() => {
     s.xp = ridden.length * 10 + Math.round(km / 25) + passes.length * 15 + countries.length * 25 + want.length + Math.min(50, s.opened) + Object.values(col).reduce((a, c) => a + (c.done === c.of ? 100 : 0), 0) + Math.min(30, s.streak * 2);
     let lv = LEVELS[0]; for (const L of LEVELS) if (s.xp >= L[0]) lv = L; s.level = lv[1];
     const nx = LEVELS.find(L => L[0] > s.xp); s.nextAt = nx ? nx[0] : null; s.nextName = nx ? nx[1] : null; s.levelAt = lv[0];
-    s.badges = BADGES.map(b => ({ id: b.id, icon: b.icon, name: b.name, how: b.how, got: !!d.earned[b.id] || b.test(s) }));
+    s.badges = BADGES.map(b => { let pr = null; try { pr = b.pr ? b.pr(s) : null; } catch (e) {} return { id: b.id, icon: b.icon, name: b.name, how: b.how, got: !!d.earned[b.id] || b.test(s), pr }; });
     return s;
   }
   /* a new badge or level is announced once, quietly */
@@ -7163,15 +7251,38 @@ const CS_RA = (() => {
     x.font = F('600', 32); x.fillStyle = '#d9d6cf'; x.fillText(s.xp + ' points' + (s.nextName ? ' · ' + (s.nextAt - s.xp) + ' to ' + s.nextName : ''), 60, 828);
     const tiles = [[s.ridden, s.ridden === 1 ? 'road ridden' : 'roads ridden'], [s.km.toLocaleString('en-GB'), 'km'], [s.passes.length, s.passes.length === 1 ? 'pass' : 'passes'], [s.countries.length, s.countries.length === 1 ? 'country' : 'countries']];
     tiles.forEach((t, k) => { const tx = 60 + k * 245; x.fillStyle = '#1b1e23'; x.fillRect(tx, 870, 225, 130); x.fillStyle = '#fff'; x.font = F('800', 58); x.fillText(String(t[0]), tx + 20, 945); x.fillStyle = '#9a968e'; x.font = F('600', 24); x.fillText(t[1].toUpperCase(), tx + 20, 982); });
-    const flags = s.countries.map(cc => cc.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0)))).join(' ');
-    if (flags) { x.font = '48px sans-serif'; x.fillText(flags.slice(0, 40), 60, 1080); }
-    const got = s.badges.filter(b => b.got).slice(0, 10); x.font = '52px sans-serif'; got.forEach((b, k) => x.fillText(b.icon, 60 + k * 96, 1170));
+    /* country stickers, drawn (flag emoji do not exist on Windows) */
+    { let cx = 60; for (const cc of s.countries.slice(0, 12)) { const t = VCODE[cc] || cc; x.font = F('800', 30); const w = Math.max(70, x.measureText(t).width + 34); if (cx + w > W - 60) break;
+        x.beginPath(); x.ellipse(cx + w / 2, 1066, w / 2, 26, 0, 0, 7); x.fillStyle = '#fff'; x.fill(); x.lineWidth = 3; x.strokeStyle = '#111'; x.stroke(); x.fillStyle = '#111'; x.textAlign = 'center'; x.fillText(t, cx + w / 2, 1077); x.textAlign = 'left'; cx += w + 14; } }
+    /* earned badges as gold medals with their initials */
+    const got = s.badges.filter(b => b.got).slice(0, 10); got.forEach((b, k) => { const mx = 96 + k * 96, my = 1160; const g = x.createLinearGradient(mx - 38, my - 38, mx + 38, my + 38); g.addColorStop(0, '#ffe39a'); g.addColorStop(1, '#c8902a');
+      x.beginPath(); x.arc(mx, my, 38, 0, 7); x.fillStyle = g; x.fill(); x.beginPath(); x.arc(mx, my, 30, 0, 7); x.fillStyle = '#2a1d06'; x.fill(); x.fillStyle = '#ffd166'; x.font = F('800', 30); x.textAlign = 'center'; x.fillText(String(b.name).replace(/[^A-Za-z0-9]/g, '').slice(0, 2).toUpperCase(), mx, my + 11); x.textAlign = 'left'; });
     x.fillStyle = '#e11b2b'; x.fillRect(0, H - 80, W, 80); x.fillStyle = '#fff'; x.font = F('800', 34); x.textAlign = 'center'; x.fillText('START YOURS ON CURVESCOUT.COM', W / 2, H - 28);
     return c;
   }
 
   /* ---- THE PASSPORT PAGE (#/passport) ---- */
-  function flag(cc) { return /^[A-Z]{2}$/.test(cc) ? cc.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0))) : ''; }
+/* ---- COUNTRY STICKERS, NOT FLAG EMOJI (owner 2026-11-01: "some icons and flags don't work on the browser, just the
+     mobile") ----
+     Windows draws no flag emoji at all - "🇨🇭" shows as the letters CH. A rider's country is shown the way it is on the
+     back of a bike: the white oval sticker with the international vehicle code (CH, D, I, F, A, GB, USA ...). Pure
+     HTML/CSS, the same on every browser, and on the share picture it is drawn the same way. */
+  const VCODE = { DE: 'D', FR: 'F', IT: 'I', AT: 'A', ES: 'E', PT: 'P', BE: 'B', NO: 'N', SE: 'S', FI: 'FIN', HU: 'H', SI: 'SLO', IE: 'IRL', LU: 'L', LI: 'FL', US: 'USA', AU: 'AUS', CA: 'CDN', JP: 'J', MX: 'MEX', AR: 'RA', CL: 'RCH', IN: 'IND', TH: 'T', MA: 'MA', NP: 'NEP', MT: 'M', VA: 'V', SM: 'RSM', AD: 'AND', KR: 'ROK', TW: 'RC', CN: 'CHN', PE: 'PE', CO: 'CO', NZ: 'NZ', ZA: 'ZA', IS: 'IS', GB: 'GB', UK: 'GB', CH: 'CH', NL: 'NL', DK: 'DK', PL: 'PL', CZ: 'CZ', SK: 'SK', HR: 'HR', RO: 'RO', BG: 'BG', GR: 'GR', TR: 'TR', ME: 'MNE', BA: 'BIH', RS: 'SRB', MK: 'NMK', AL: 'AL', EE: 'EST', LV: 'LV', LT: 'LT', VN: 'VN', BR: 'BR', GE: 'GE', MY: 'MAL' };
+  let ccNames = null; const ccName = cc => { try { if (!ccNames && typeof Intl !== 'undefined' && Intl.DisplayNames) ccNames = new Intl.DisplayNames(['en'], { type: 'region' }); return ccNames ? ccNames.of(cc) : cc; } catch (e) { return cc; } };
+  function flag(cc) { return /^[A-Z]{2}$/.test(cc) ? '<span class="raOval" title="' + esc(ccName(cc)) + '">' + esc(VCODE[cc] || cc) + '</span>' : ''; }
+  /* ---- MEDALS: one drawn line icon per badge, gold when earned, with the way to it when not ---- */
+  const IC = { first: '<path d="M6 21V4M6 4h11l-2 4 2 4H6"/><path d="M9 4v8M12 4v8M15 4v8" opacity=".45"/>', five: '<path d="M4 20l5-16M20 20L15 4M12 6v2M12 11v2M12 16v2"/>', twenty: '<path d="M3 20l6-16M21 20L15 4M12 5v3M12 10v3M12 15v4"/>',
+    k1: '<circle cx="12" cy="13" r="8"/><path d="M12 13l4-4M8 17h8"/>', k5: '<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>', c3: '<rect x="3" y="6" width="18" height="12" rx="6"/><path d="M8 12h8"/>', c7: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>',
+    p2000: '<path d="M2 20l7-12 4 6 3-4 6 10z"/>', p2500: '<path d="M12 2v20M3 7l18 10M21 7L3 17M9 3l3 2 3-2M9 21l3-2 3 2"/>', passes10: '<path d="M2 20l6-10 4 5 4-8 6 13z"/><path d="M8 10l1.5 2.5"/>',
+    'big5-ch': '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 7v10M7 12h10" stroke-width="3"/>', 'big5-it': '<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+    cont2: '<path d="M2 14l9-2 5-7 2 1-3 7 5 1 2-2h1l-1 4-12 2-5 1z"/>', cont4: '<circle cx="12" cy="12" r="9"/><path d="M7 7c2 1 1 3 3 4s1 4 3 4M15 5c-1 2 1 3 3 3M14 19c0-2 2-2 3-4"/>', worldcol: '<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/>',
+    dream10: '<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>', scout25: '<circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/>', streak3: '<path d="M12 22c4 0 7-3 7-7 0-5-5-7-4-13-4 2-7 6-7 9-1-1-2-2-2-4-1 2-1 4-1 6 0 5 3 9 7 9z"/>' };
+  const medal = b => '<svg class="raMedal' + (b.got ? ' got' : '') + '" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="rg' + b.id + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + (b.got ? '#ffe39a' : '#3a3f48') + '"/><stop offset="1" stop-color="' + (b.got ? '#c8902a' : '#22262d') + '"/></linearGradient></defs>' +
+    '<circle cx="24" cy="24" r="22" fill="url(#rg' + b.id + ')"/><circle cx="24" cy="24" r="17.5" fill="' + (b.got ? '#2a1d06' : '#15181d') + '"/><g transform="translate(12 12)" fill="none" stroke="' + (b.got ? '#ffd166' : '#8a909a') + '" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + (IC[b.id] || '<circle cx="12" cy="12" r="6"/>') + '</g></svg>';
+  /* a collection is marked by its country's sticker, or by a drawn icon for a region */
+  const COLIC = { dolomites: IC.passes10, 'asia-high': IC.cont4, 'south-america': IC.cont4, africa: IC.cont4 };
+  const colMark = c => { const cps = [...String(c.flag || '')].map(ch => ch.codePointAt(0)); if (cps.length === 2 && cps.every(x => x >= 0x1F1E6 && x <= 0x1F1FF)) return flag(String.fromCharCode(...cps.map(x => x - 127397)));
+    return '<svg class="raColIc" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">' + (COLIC[c.id] || IC.c7) + '</svg>'; };
   function render() {
     show('passport'); const host = document.getElementById('view-passport'); if (!host) return;
     const s = stats(), d = load(); const pct = s.nextAt ? Math.round((s.xp - s.levelAt) / (s.nextAt - s.levelAt) * 100) : 100;
@@ -7185,9 +7296,11 @@ const CS_RA = (() => {
         (s.countries.length ? '<p class="raFlags">' + s.countries.map(cc => '<span title="' + esc(cc) + '">' + flag(cc) + '</span>').join(' ') + '</p>' : '') +
         (s.passes.length ? '<p class="raPassList"><b>Passes:</b> ' + s.passes.slice(0, 40).map(esc).join(' · ') + '</p>' : '') +
         (s.special.length ? '<p class="raPassList"><b>Special roads:</b> ' + s.special.slice(0, 30).map(esc).join(' · ') + '</p>' : '') + '</section>' +
-      '<section><h2>Collections</h2><div class="raCols">' + COLLECTIONS.map(c => { const g = s.col[c.id]; return '<article class="raCol' + (g.done === g.of ? ' done' : '') + '"><h3>' + c.flag + ' ' + esc(c.name) + '</h3><p>' + esc(c.blurb) + '</p><div class="raBar"><i style="width:' + Math.round(g.done / g.of * 100) + '%"></i></div><span class="raOf">' + g.done + ' of ' + g.of + (g.done === g.of ? ' · complete 🏆' : '') + '</span><ul>' +
+      '<section><h2>Collections</h2><div class="raCols">' + COLLECTIONS.map(c => { const g = s.col[c.id]; return '<article class="raCol' + (g.done === g.of ? ' done' : '') + '"><h3>' + colMark(c) + ' ' + esc(c.name) + '</h3><p>' + esc(c.blurb) + '</p><div class="raBar"><i style="width:' + Math.round(g.done / g.of * 100) + '%"></i></div><span class="raOf">' + g.done + ' of ' + g.of + (g.done === g.of ? ' · complete 🏆' : '') + '</span><ul>' +
         g.got.map(it => '<li class="' + (it.s === 'r' ? 'r' : it.s === 'w' ? 'w' : '') + '"><span>' + (it.s === 'r' ? '✓' : it.s === 'w' ? '◎' : '○') + '</span>' + esc(it.n) + '<button type="button" class="raPassB" data-pass="' + esc(it.n) + '" data-ps="' + (it.s === 'r' ? '' : 'r') + '">' + (it.s === 'r' ? 'undo' : 'I rode it') + '</button></li>').join('') + '</ul></article>'; }).join('') + '</div></section>' +
-      '<section><h2>Badges</h2><div class="raBadges">' + s.badges.map(b => '<div class="raBadge' + (b.got ? ' got' : '') + '" title="' + esc(b.how) + '"><i>' + b.icon + '</i><b>' + esc(b.name) + '</b><span>' + (b.got ? 'earned' : esc(b.how)) + '</span></div>').join('') + '</div></section>' +
+      '<section><h2>Badges <small class="raGot">' + s.badges.filter(b => b.got).length + ' of ' + s.badges.length + ' earned</small></h2><div class="raBadges">' + s.badges.map(b => { const pr = b.pr, pc = pr && pr[1] ? Math.max(0, Math.min(100, Math.round(pr[0] / pr[1] * 100))) : 0;
+        return '<div class="raBadge' + (b.got ? ' got' : '') + '" title="' + esc(b.how) + '">' + medal(b) + '<b>' + esc(b.name) + '</b><span>' + (b.got ? '<em class="raEarned">✓ Earned</em>' : esc(b.how)) + '</span>' +
+          (!b.got && pr ? '<div class="raBProg" aria-label="' + Math.min(pr[0], pr[1]).toLocaleString('en-GB') + ' of ' + pr[1].toLocaleString('en-GB') + '"><i style="width:' + pc + '%"></i></div><small class="raBOf">' + Math.min(pr[0], pr[1]).toLocaleString('en-GB') + ' / ' + pr[1].toLocaleString('en-GB') + '</small>' : '') + '</div>'; }).join('') + '</div></section>' +
       '<section class="raLists"><div><h2>Ridden</h2>' + (list('r').length ? '<ul class="raList">' + list('r').map(row).join('') + '</ul>' : '<p class="raMut">None yet.</p>') + '</div>' +
         '<div><h2>Wish list</h2>' + (list('w').length ? '<ul class="raList">' + list('w').map(row).join('') + '</ul>' : '<p class="raMut">None yet - tap ◎ Want to ride on a ride.</p>') + '</div></section>' +
       '<section class="raShare"><h2>Share and keep</h2><div class="raBtns"><button type="button" class="primary" id="raCard">Share my atlas picture</button><button type="button" class="ghost2" id="raExport">⬇ Export file</button><button type="button" class="ghost2" id="raCode">Copy restore code</button><button type="button" class="ghost2" id="raRestore">Restore</button></div>' +
@@ -7456,6 +7569,9 @@ function tripResult() {
   const out = $('tripOut'), plan = TRIP.plan, o = TRIP.opts; if (!out || !plan) return;
   try { csNeedCards(tripRealRoutes(plan), () => { if (TRIP.plan === plan && $('tripOut')) tripResult(); }); } catch (e) {}
   /* the real town names: once the place tiles for this trip are in, the page is drawn again with them (once per plan) */
+  /* tonight's places to stay, suggested for every night: one query for the whole plan, then each card is filled */
+  setTimeout(() => { if (TRIP.plan === plan) tripTravelSights(plan); }, 0);
+  setTimeout(() => { if (TRIP.plan !== plan) return; (plan._staysP || (plan._staysP = tripStaysPreload(plan))).then(() => { if (TRIP.plan === plan) tripStaysPreload(plan); }); }, 0);
   if (!plan._places) { plan._places = 1; tripPlacesReady(plan).then(() => { if (TRIP.plan === plan && $('tripOut')) { const y = scrollY; tripResult(); scrollTo(0, y); } }); }
   /* fewer days than asked: offer the change that gives more, if there is one */
   TRIP.partialFix = null;
@@ -7591,19 +7707,22 @@ function tripDayCard(d, i) {
   const hideStay = (o.mode !== 'base' && o.end === 'return' && last) || (o.mode === 'base' && i > 0);
   const nightLabel = o.mode === 'base' ? (TRIP.plan.days.length > 1 ? 'Your base for ' + (TRIP.plan.days.length - 1) + (TRIP.plan.days.length === 2 ? ' night' : ' nights') : 'Your base') : (last ? 'Last night' : 'Night ' + (i + 1));
   const cut = r.cut, travel = !!r.travel, combo = r.combo;
-  const shape = travel ? 'travel day on main roads' : combo ? 'two roads, one day' : cut ? ('section, ' + Math.round(cut.frac * 100) + '% of the ride') : d.loop ? (d.entry > 0 ? 'loop, joined part way round' : 'loop') : d.rev ? 'ridden from its far end' : 'point to point';
+  const shape = travel ? (r.via && r.via.length ? 'travel day through ' + r.via.length + ' scouted stretch' + (r.via.length > 1 ? 'es' : '') : 'travel day') : combo ? 'two roads, one day' : cut ? ('section, ' + Math.round(cut.frac * 100) + '% of the ride') : d.loop ? (d.entry > 0 ? 'loop, joined part way round' : 'loop') : d.rev ? 'ridden from its far end' : 'point to point';
   const nm = (p, fb) => { const t = p ? tripTownNear(p, 12) : ''; if (t) return t; const t2 = p ? (tripTownNear(p, 45) || tripTownNear(p, 90)) : ''; return t2 ? 'near ' + t2 : fb; };
   const fromTo = (a, b) => nm(a, 'last night') + ' → ' + nm(b, 'tonight');
-  const title = travel ? 'Travel day: ' + fromTo(d.start, d.finish) : combo ? r.t + ' · ' + fromTo(d.start, d.finish) : cut ? (cut.hasFar === false || cut.frac < 0.7 ? fromTo(d.start, d.finish) + ' · on part of ' + r.t : r.t + ' · ' + fromTo(d.start, d.finish)) : r.t;   /* a section that never reaches what the ride is named after is titled by where it goes (owner 2026-10-26: "Amalfi" on a day around Rome) */
+  /* ---- EASY TO READ (owner 2026-11-01: "clean up and ease up the trip descriptions, still all very convoluted") ----
+     The day is named by where it goes; one short line says what you ride; the explanations of how the planner cut or
+     joined roads are gone - the map and the stops show it. */
+  const rT = id => tripShortTitle(((tripRoutes().find(x => x.i === id) || {}).t) || '');
+  const title = fromTo(d.start, d.finish);
+  const sub = travel ? (r.via && r.via.length ? 'Travel day through ' + r.via.length + ' good stretch' + (r.via.length > 1 ? 'es' : '') + ' of road' : 'Travel day') : combo ? rT(combo.parents[0]) + ', then ' + rT(combo.parents[1]) : cut ? 'Part of ' + tripShortTitle(r.t) : tripShortTitle(r.t) + (d.loop ? ' · loop' : '');
   const parentId = combo ? combo.parents[0] : cut ? cut.parent : d.id;
   const roads = (r.ic || []).filter(x => x && x.n);
   return '<article class="tripDay" data-i="' + i + '"><div class="tripDayHead"><span class="tripNum" style="background:' + TRIP_COL[i % TRIP_COL.length] + '">' + (i + 1) + '</span><div class="tripDayT">' +
-    '<p class="tripKick"><small>' + (date ? esc(tripDayLabel(date)) + ' · ' : '') + 'Day ' + (i + 1) + '</small></p><h3>' + esc(title) + '</h3>' +
-    '<p class="tripMeta"><b>' + Math.round(d.km) + ' km</b> · <b>' + tripFmtMin(d.minutes) + '</b> riding' + (hi ? ' · up to <b>' + Math.round(hi) + ' m</b>' : csAltSlot(r, 'trip')) + ' · ' + shape + '</p></div></div>' +
-    tripLeadHtml(d) + seasonNote +
-    (travel ? '<p class="tripTravel">No scouted riding lies on this stretch, so it is a travel day: about ' + Math.round(d.km) + ' km on main roads, planned at 62 km/h with stops. ' + (tripVia({ from: d.start, to: d.finish, km: d.km }).length ? '' : 'Tomorrow the riding starts again.') + '</p>' + tripViaHtml({ from: d.start, to: d.finish, km: d.km }) : '') +
-    (combo ? '<p class="tripCut">Two scouted roads in one day, both ridden towards ' + esc((o.dest && o.dest[2]) || 'your goal') + ': ' + esc((tripRoutes().find(x => x.i === combo.parents[0]) || {}).t || '') + ', then ' + esc((tripRoutes().find(x => x.i === combo.parents[1]) || {}).t || '') + (combo.link ? ' - about ' + combo.link + ' km between them' : ', joined where one ends and the other begins') + '.</p>' : '') +
-    (cut ? '<p class="tripCut">This day rides the part of the ride that takes you on towards ' + esc((o.dest && o.dest[2]) || 'your goal') + ': in at ' + esc(tripPlaceName(d.start, 'its first stop')) + ', out at ' + esc(tripPlaceName(d.finish, 'its last stop')) + '. The rest of the ride stays for another trip.</p>' : '') +
+    '<p class="tripKick"><small>' + (date ? esc(tripDayLabel(date)) + ' · ' : '') + 'Day ' + (i + 1) + '</small></p><h3>' + esc(title) + '</h3><p class="tripSub">' + esc(sub) + '</p>' +
+    '<p class="tripMeta"><b>' + Math.round(d.km) + ' km</b> · <b>' + tripFmtMin(d.minutes) + '</b> riding' + (hi ? ' · up to <b>' + Math.round(hi) + ' m</b>' : csAltSlot(r, 'trip')) + '</p></div></div>' +
+    (travel ? '' : tripLeadHtml(d)) + seasonNote +
+    (travel ? tripTravelStory(d, i) + tripViaHtml({ from: d.start, to: d.finish, km: d.km }) : '') +
     (travel ? '' : (() => { try { const rid = CS_RA.status(parentId) === 'r'; return '<p class="tripDayRa">' + CS_RA.cardBadge(r) + '<button type="button" class="tripRode' + (rid ? ' on' : '') + '" data-rode="' + i + '" aria-pressed="' + rid + '">' + (rid ? '✓ Ridden' : '✓ I rode this day') + '</button></p>'; } catch (e) { return ''; } })()) +
     '<p class="tripPath" id="tripPath' + i + '">' + (roads.length ? roads.slice(0, 4).map(x => esc(x.n)).join(' <i>→</i> ') : '&nbsp;') + '</p>' +
     '<figure class="tripPic" id="tripPic' + i + '" hidden></figure>' +
@@ -7613,15 +7732,13 @@ function tripDayCard(d, i) {
     '<div class="tripBtns">' + (travel ? '' : combo ? combo.parents.map((id, k) => '<a class="ghost2" href="#/ride/' + encodeURIComponent(id) + '">' + (k ? 'View the second road' : 'View the first road') + '</a>').join('') : '<a class="ghost2" href="#/ride/' + encodeURIComponent(parentId) + '">' + (cut ? 'View the whole ride' : 'View ride') + '</a>') + '<button type="button" class="ghost2" data-rep="' + i + '">⇄ Replace</button><button type="button" class="ghost2" data-gpx="' + i + '">⬇ GPX</button></div>' +
     '<div class="tripAlt" id="tripAlt' + i + '" hidden></div>' +
     (travel ? '' : '<details class="tripAdd" data-add="' + i + '"><summary>＋ Add to this day: passes, sights, short rides nearby</summary><div class="tripAddBody"></div></details>') +
-    (hideStay ? '' : '<details class="tripStay" data-stay="' + i + '"><summary>🛏 ' + nightLabel + ownN + ': places to stay and eat</summary><div class="tripStayBody">Opening…</div></details>') + '</article>';
+    (hideStay ? '' : '<div class="tripStayTop" data-stt="' + i + '"></div><details class="tripStay" data-stay="' + i + '"><summary>🛏 ' + nightLabel + ownN + ': places to stay and eat</summary><div class="tripStayBody">Opening…</div></details>') + '</article>';
 }
 /* the ride's own line, and the reason it was picked only where the stops do not already say it ("rides Furka Pass and
    Susten Pass" is what the stop list shows a few lines down) */
 function tripLeadHtml(d) {
   const r = d.route, sl = r.sl ? String(window.csSloganTrue ? window.csSloganTrue(r) : r.sl).trim() : '';
-  const why = (d.reasons || []).filter(x => /^a different character/.test(x)).map(x => String(x).trim()).filter(Boolean);
   const parts = []; if (sl) parts.push(sl.replace(/[.\s]+$/, '') + '.');
-  if (why.length) parts.push(why.map(x => x.charAt(0).toUpperCase() + x.slice(1)).join('; ').replace(/[.\s]+$/, '') + '.');
   return parts.length ? '<p class="tripLead">' + esc(parts.join(' ')) + '</p>' : '';
 }
 /* ---- THE DAY'S SCHEDULE: transfer in, every stop of the ride, transfer out (owner 2026-10-13, 2026-10-17) ----
@@ -8124,6 +8241,83 @@ function tripPlay() {
     TRIP.focus = null; tripFocus(null, true); TRIP.anim = null; btn.textContent = '↻ Play again'; btn.classList.remove('on');
   })();
 }
+/* ---- A TRAVEL DAY, DRESSED UP (owner 2026-11-01: "for all the transfer days, try to find interesting waypoints and
+   explain the ride and try to dress it really up") ----
+   The engine routes a travel day through up to three pearls - stretches of our scouted rides on the way. Here they get
+   their towns and their story: where you leave, which good roads you pass and why, where lunch falls, where you sleep. */
+function tripTravelStory(d, i) {
+  const r = d.route || {}, via = Array.isArray(r.via) ? r.via : [], o = TRIP.opts, plan = TRIP.plan, last = i === plan.days.length - 1;
+  const from = i === 0 ? (o.label || 'your start') : tripPlaceName(d.start, 'last night’s stop'), to = last && o.dest ? (o.dest[2] || 'your goal') : tripPlaceName(d.finish || d.night, 'tonight’s stop');
+  const mins = Math.round(d.minutes || r.mn || 0), stop = tripStops(mins);
+  const pts = [d.start].concat(via.map(v => v.at), [d.finish || d.night]).filter(Boolean);
+  /* where lunch falls: the town nearest the middle of the day's way */
+  let half = null; { let tot = 0; const seg = []; for (let k = 1; k < pts.length; k++) { const s0 = CS_TRIPS._dist(pts[k - 1], pts[k]); seg.push(s0); tot += s0; } let acc = 0;
+    for (let k = 0; k < seg.length; k++) { if (acc + seg[k] >= tot / 2) { const f = seg[k] ? (tot / 2 - acc) / seg[k] : 0; half = [pts[k][0] + (pts[k + 1][0] - pts[k][0]) * f, pts[k][1] + (pts[k + 1][1] - pts[k][1]) * f]; break; } acc += seg[k]; } }
+  const lunch = half ? tripTownNear(half, 25) : '';
+  const pearlTxt = via.map(v => { const town = tripTownNear(v.at, 20), name = tripShortTitle(String(v.t || '').split(':')[0]);
+    return (town ? 'near <b>' + esc(town) + '</b>' : '') + (name ? (town ? ', on ' : 'on ') + '<a href="#/ride/' + encodeURIComponent(v.id) + '">' + esc(name) + '</a>' : ''); }).filter(Boolean);
+  const open = via.length ? 'A travel day that still rides well' : 'A travel day';
+  return '<div class="tripTravel">' + (pearlTxt.length ? '<p><b>' + open + ':</b> instead of the motorway, through ' + pearlTxt.join('; then ') + '.</p>' : '<p><b>' + open + '</b> - making ground towards tomorrow’s riding.</p>') +
+    (lunch ? '<p>🍽 Lunch around <b>' + esc(lunch) + '</b> · ' + tripDur(stop) + ' of stops in all.</p>' : '') + '<div class="tripTravelSee" data-tsee="' + i + '"></div></div>';
+}
+/* worth a stop on a travel day: the website's own attraction scan (Wikidata, the same as on a ride's page) along the
+   day's way, the best three named with what they are */
+async function tripTravelSights(plan) { const o = TRIP.opts;
+  for (let i = 0; i < plan.days.length; i++) { const d = plan.days[i], r = d.route || {}; if (!r.travel) continue; const el = document.querySelector('[data-tsee="' + i + '"]'); if (!el || el.dataset.done) continue; el.dataset.done = '1';
+    try { const pts = [d.start].concat((r.via || []).map(v => v.at), [d.finish || d.night]).filter(Boolean); const wps = []; for (let k = 0; k < pts.length; k++) { wps.push({ lat: pts[k][0], lon: pts[k][1], name: '' }); if (k < pts.length - 1) for (const f of [1 / 3, 2 / 3]) wps.push({ lat: pts[k][0] + (pts[k + 1][0] - pts[k][0]) * f, lon: pts[k][1] + (pts[k + 1][1] - pts[k][1]) * f, name: '' }); }
+      let list = []; try { list = await scanAttractions({ id: 'trip-' + r.i, waypoints: wps }); } catch (e) {} if (TRIP.plan !== plan) return;
+      let top = (list || []).filter(a => a && a.title && !/^Q\d+$/.test(a.title)).slice(0, 3);
+      /* where our own index is thin (much of the lowlands), Wikipedia's map of articles names what stands near the way:
+         titles and their one-line descriptions only (the descriptions are Wikidata's, CC0), each linked to read more */
+      if (top.length < 2) top = top.concat(await tripWikiAlong(wps.filter((w, k) => k % 2 === 1).slice(0, 4), top)).slice(0, 3);
+      const el2 = document.querySelector('[data-tsee="' + i + '"]'); if (!el2 || !top.length) continue;
+      el2.innerHTML = '<p>📍 <b>Worth a stop:</b> ' + top.map(a => { const near = tripTownNear([a.lat, a.lon], 15); return '<a href="' + esc(a.gmap || gmapsPin(a.lat, a.lon)) + '" target="_blank" rel="noopener nofollow">' + esc(a.title) + '</a>' + (near ? ' near ' + esc(near) : '') + (a.text ? ' - ' + esc(String(a.text).split(/(?<=\.)\s/)[0].slice(0, 110).replace(/\.$/, '')) : ''); }).join('; ') + '.</p>';
+    } catch (e) {} } }
+const TRIP_SIGHT_WORD = /castle|palace|fortress|abbey|monastery|cathedral|church|minster|lake|glacier|waterfall|gorge|pass|peak|mountain|bridge|viewpoint|tower|ruin|museum|national park|nature reserve|old town|historic|heritage|dam|lighthouse|valley|forest|island|moor|heath|vineyard|wine/i;
+async function tripWikiAlong(pts, have) { const out = [], seen = new Set((have || []).map(a => a.title));
+  for (const w of pts) { try { const u = 'https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=geosearch&ggscoord=' + (+w.lat).toFixed(4) + '%7C' + (+w.lon).toFixed(4) + '&ggsradius=10000&ggslimit=30&prop=coordinates%7Cdescription%7Cpageprops&ppprop=wikibase_item';
+      const js = await (await fetch(u)).json(); const pages = js && js.query && js.query.pages ? Object.values(js.query.pages) : [];
+      const c = pages.map(pg => ({ title: pg.title, text: String(pg.description || ''), lat: pg.coordinates && pg.coordinates[0] && pg.coordinates[0].lat, lon: pg.coordinates && pg.coordinates[0] && pg.coordinates[0].lon, url: 'https://en.wikipedia.org/wiki/' + encodeURIComponent(String(pg.title).replace(/ /g, '_')) }))
+        .filter(a => Number.isFinite(a.lat) && !seen.has(a.title) && TRIP_SIGHT_WORD.test(a.text + ' ' + a.title) && !/\b(street|road|school|station|district|municipality|electoral|company|hospital|parish|constituency|airport)\b/i.test(a.text));
+      c.sort((x, y) => (/castle|palace|abbey|monastery|cathedral|lake|gorge|waterfall|old town/i.test(y.text + y.title) ? 1 : 0) - (/castle|palace|abbey|monastery|cathedral|lake|gorge|waterfall|old town/i.test(x.text + x.title) ? 1 : 0));
+      if (c[0]) { seen.add(c[0].title); out.push(Object.assign(c[0], { text: c[0].text ? c[0].text.charAt(0).toUpperCase() + c[0].text.slice(1) + '.' : '', gmap: c[0].url })); } } catch (e) {} if (out.length >= 3) break; }
+  return out; }
+/* ---- PLACES TO STAY, SUGGESTED FOR EVERY NIGHT (owner 2026-11-01: "3-5 hotel suggestions incl price category ... with
+   address and especially their phone numbers in the website for easy contacting") ----
+   From OpenStreetMap (ODbL), one bounded query for all nights of the plan at once, cached for a week. No booking site is
+   read or scraped. The price category comes from the official star rating where the place has one (1-2★ €, 3★ €€, 4★ €€€,
+   5★ €€€€; hostels, huts and campsites €); without stars it says so instead of guessing. */
+const TRIP_STAY_KIND = { hotel: 'Hotel', guest_house: 'Guesthouse', hostel: 'Hostel', motel: 'Motel', camp_site: 'Campsite', alpine_hut: 'Mountain hut', chalet: 'Chalet', apartment: 'Apartment' };
+function tripStayItem(e, at) { const t = e.tags || {}; const lat = e.lat != null ? e.lat : e.center && e.center.lat, lon = e.lon != null ? e.lon : e.center && e.center.lon;
+  const street = [t['addr:street'] || t['addr:place'] || '', t['addr:housenumber'] || ''].join(' ').trim(), town = [t['addr:postcode'] || '', t['addr:city'] || ''].join(' ').trim();
+  return { n: t.name, k: t.tourism || t.amenity, w: t.website || t['contact:website'] || t.url || '', s: t.stars || '', c: t.cuisine || '', lat, lon,
+    ph: t.phone || t['contact:phone'] || t['contact:mobile'] || '', em: t.email || t['contact:email'] || '', ad: [street, town].filter(Boolean).join(', '), moto: /yes|designated/.test(t.motorcycle || t['motorcycle:friendly'] || ''),
+    d: Number.isFinite(lat) ? hav({ lat: at[0], lon: at[1] }, { lat, lon }) : 99 }; }
+function tripPriceCat(x) { const st = parseInt(x.s, 10); if (st >= 5) return '€€€€'; if (st === 4) return '€€€'; if (st === 3) return '€€'; if (st >= 1) return '€';
+  if (/hostel|camp_site|alpine_hut/.test(x.k)) return '€'; if (/motel/.test(x.k)) return '€–€€'; if (/guest_house/.test(x.k)) return '€–€€'; return ''; }
+/* the best few: real hotels and guesthouses with a way to reach them first, then the closest */
+function tripBestStays(items, n) { const kindW = { hotel: 3, guest_house: 2.6, motel: 2, chalet: 1.6, apartment: 1.2, hostel: 1, alpine_hut: 1.4, camp_site: 0.6 };
+  return items.filter(x => TRIP_STAY_KIND[x.k]).map(x => ({ x, sc: (kindW[x.k] || 0) + (x.ph ? 2 : 0) + (x.w ? 1 : 0) + (x.s ? 0.6 : 0) + (x.ad ? 0.5 : 0) + (x.moto ? 1 : 0) - x.d / 2.5 }))
+    .sort((a, b) => b.sc - a.sc).slice(0, n).map(y => y.x); }
+const tripTel = ph => String(ph).split(/[;,]/)[0].trim();
+function tripStayRow(x, rich) { const cat = tripPriceCat(x), tel = tripTel(x.ph);
+  return '<li class="tripStayRow"><b>' + esc(x.n) + '</b> <span class="tripK">' + esc(TRIP_STAY_KIND[x.k] || x.k) + (x.s ? ' · ' + esc(x.s) + '★' : '') + (cat ? ' · <span class="tripCat" title="Price category from the star rating">' + cat + '</span>' : ' · price on request') + (x.moto ? ' · 🏍 bikers welcome' : '') + ' · ' + (x.d < 1 ? Math.round(x.d * 1000) + ' m' : x.d.toFixed(1) + ' km') + '</span>' +
+    (rich && x.ad ? '<br><span class="tripAd">' + esc(x.ad) + '</span>' : '') +
+    '<span class="tripReach">' + (tel ? ' <a class="tripTel" href="tel:' + esc(tel.replace(/[^\d+]/g, '')) + '">📞 ' + esc(tel) + '</a>' : '') + (x.w && /^https?:\/\//.test(x.w) ? ' <a href="' + esc(x.w) + '" target="_blank" rel="noopener nofollow">website</a>' : '') +
+    (x.em && /^[^@\s]+@[^@\s]+$/.test(x.em) ? ' <a href="mailto:' + esc(x.em) + '">e-mail</a>' : '') + ' <a href="' + esc(gmapsPin(x.lat, x.lon)) + '" target="_blank" rel="noopener nofollow">map</a></span></li>'; }
+/* every night of the plan in one query; each night keeps its own cache entry (the same one the night's panel reads) */
+async function tripStaysPreload(plan) { try {
+  const o = TRIP.opts; if (!plan || !plan.days || !plan.days.length) return; const nights = o.mode === 'base' ? [[+o.start[0], +o.start[1]]] : plan.days.map(d => d.night).filter(Boolean);
+  const keyOf = at => 'stay:' + at[0].toFixed(2) + ',' + at[1].toFixed(2); const need = [];
+  for (const at of nights) { let hit = null; try { hit = CACHE.read('services', keyOf(at)); } catch (e) {} if (!(hit && !hit.stale)) need.push(at); }
+  if (need.length) { const q = need.map(at => { const A = at[0].toFixed(4) + ',' + at[1].toFixed(4); return 'nwr(around:6000,' + A + ')[tourism~"^(hotel|guest_house|hostel|motel|camp_site|alpine_hut|chalet|apartment)$"][name];nwr(around:2500,' + A + ')[amenity~"^(restaurant|cafe|biergarten)$"][name];'; }).join('');
+    const js = await overpass('[out:json][timeout:25];(' + q + ');out center tags ' + Math.min(900, 120 * need.length) + ';'); const els = (js && js.elements) || [];
+    for (const at of need) { const items = els.map(e => tripStayItem(e, at)).filter(x => x.n && Number.isFinite(x.lat) && x.d <= (TRIP_STAY_KIND[x.k] ? 6.2 : 2.7)).sort((a, b) => a.d - b.d); try { CACHE.write('services', keyOf(at), items); } catch (e) {} } }
+  plan.days.forEach((d, i) => { const at = o.mode === 'base' ? nights[0] : d.night; if (!at || (o.mode === 'base' && i > 0)) return; let hit = null; try { hit = CACHE.read('services', keyOf(at)); } catch (e) {}
+    const el = document.querySelector('[data-stt="' + i + '"]'); if (!el || !hit) return; const best = tripBestStays(hit.value || [], 5);
+    el.innerHTML = best.length ? '<p class="tripStayH">🛏 Suggested for tonight' + (o.mode === 'base' ? '' : ', ' + esc(tripPlaceName(at, 'around your stop')).replace(/^(?!near )/, 'in ')) + ':</p><ul class="tripList">' + best.map(x => tripStayRow(x, true)).join('') + '</ul><p class="tripFine">From OpenStreetMap. Prices are a category from the star rating, not a quote - call or check the website for the price and a free room.</p>'
+      : '<p class="tripStayH">🛏 No place to stay is mapped within 6 km of tonight’s stop - the search links under “places to stay” cover the wider area, or move the night.</p>'; });
+  } catch (e) {} }
 /* places to stay and eat around one night - one bounded query, cached a week, only when the rider opens it */
 async function tripStays(i, box) {
   const plan = TRIP.plan, o = TRIP.opts, d = plan.days[i]; const at = o.mode === 'base' ? [+o.start[0], +o.start[1]] : d.night;
@@ -8147,19 +8341,17 @@ async function tripStays(i, box) {
   if (!items) {
     try {
       const A = at[0].toFixed(4) + ',' + at[1].toFixed(4);
-      const js = await overpass('[out:json][timeout:20];(nwr(around:6000,' + A + ')[tourism~"^(hotel|guest_house|hostel|motel|camp_site|alpine_hut|chalet)$"][name];nwr(around:2500,' + A + ')[amenity~"^(restaurant|cafe|biergarten)$"][name];);out center tags 80;');
-      items = ((js && js.elements) || []).map(e => { const t = e.tags || {}; const lat = e.lat != null ? e.lat : e.center && e.center.lat, lon = e.lon != null ? e.lon : e.center && e.center.lon;
-        return { n: t.name, k: t.tourism || t.amenity, w: t.website || t['contact:website'] || '', s: t.stars || '', c: t.cuisine || '', lat, lon, d: Number.isFinite(lat) ? hav({ lat: at[0], lon: at[1] }, { lat, lon }) : 99 }; })
-        .filter(x => x.n && Number.isFinite(x.lat)).sort((a, b) => a.d - b.d);
+      const js = await overpass('[out:json][timeout:20];(nwr(around:6000,' + A + ')[tourism~"^(hotel|guest_house|hostel|motel|camp_site|alpine_hut|chalet|apartment)$"][name];nwr(around:2500,' + A + ')[amenity~"^(restaurant|cafe|biergarten)$"][name];);out center tags 120;');
+      items = ((js && js.elements) || []).map(e => tripStayItem(e, at)).filter(x => x.n && Number.isFinite(x.lat)).sort((a, b) => a.d - b.d);
       try { CACHE.write('services', key, items); } catch (e) {}
     } catch (e) { const mv0 = box.querySelector('.tripMove'); box.innerHTML = head + (mv0 ? mv0.outerHTML : '') + '<p class="tripNote">OpenStreetMap did not answer just now - the search links above still work.</p>'; if (mv0) tripMoveWire(i); return; }
   }
   const KIND = { hotel: 'Hotel', guest_house: 'Guesthouse', hostel: 'Hostel', motel: 'Motel', camp_site: 'Campsite', alpine_hut: 'Mountain hut', chalet: 'Chalet', restaurant: 'Restaurant', cafe: 'Café', biergarten: 'Beer garden' };
-  const stays = items.filter(x => /hotel|guest_house|hostel|motel|camp_site|alpine_hut|chalet/.test(x.k)).slice(0, 6), food = items.filter(x => /restaurant|cafe|biergarten/.test(x.k)).slice(0, 4);
+  const stays = tripBestStays(items, 6), food = items.filter(x => /restaurant|cafe|biergarten/.test(x.k)).slice(0, 4);
   const row = x => '<li><b>' + esc(x.n) + '</b> <span class="tripK">' + esc(KIND[x.k] || x.k) + (x.s ? ' · ' + esc(x.s) + '★' : '') + (x.c ? ' · ' + esc(String(x.c).replace(/_/g, ' ').replace(/;/g, ', ')) : '') + ' · ' + (x.d < 1 ? Math.round(x.d * 1000) + ' m' : x.d.toFixed(1) + ' km') + '</span>' +
     (x.w && /^https?:\/\//.test(x.w) ? ' <a href="' + esc(x.w) + '" target="_blank" rel="noopener nofollow">website</a>' : '') + ' <a href="' + esc(gmapsPin(x.lat, x.lon)) + '" target="_blank" rel="noopener nofollow">map</a></li>';
   const mv = box.querySelector('.tripMove'); const keepMove = mv ? mv.outerHTML : '';
-  box.innerHTML = head + keepMove + (stays.length ? '<h4>Places to stay</h4><ul class="tripList">' + stays.map(row).join('') + '</ul>' : '<p class="tripNote">No accommodation is mapped close by - the search links above cover the wider area.</p>') +
+  box.innerHTML = head + keepMove + (stays.length ? '<h4>Places to stay</h4><ul class="tripList">' + stays.map(x => tripStayRow(x, true)).join('') + '</ul>' : '<p class="tripNote">No accommodation is mapped close by - the search links above cover the wider area.</p>') +
     (food.length ? '<h4>Places to eat</h4><ul class="tripList">' + food.map(row).join('') + '</ul>' : '') + '<p class="tripFine">From OpenStreetMap (© OpenStreetMap contributors). No availability, prices or opening hours - check with the place.</p>';
   if (keepMove) tripMoveWire(i);
 }
@@ -8555,6 +8747,8 @@ const CS_PTABS = [['overview', 'Overview'], ['roadbook', 'Roadbook'], ['briefing
    banner, the Road Atlas buttons and the figures are above the tabs on every tab */
 function csPtabOf(el) {
   const id = el.id || '', c = el.classList, txt = (el.textContent || '').slice(0, 40).toUpperCase();
+  /* a mountain ride keeps its climb right under the map, whatever tab is open (owner 2026-11-01) */
+  if (el.parentElement && el.parentElement.classList.contains('csMountain') && (id === 'pfHost' || (c.contains('chev') && /CLIMB/.test(txt)))) return 'top';
   if (c.contains('dHead') || c.contains('mapBox') || id === 'csRoadBan' || c.contains('raStrip') || c.contains('statRow') || c.contains('csPtabs') || id === 'cpHost') return 'top';
   if (c.contains('jumpRow')) return 'hide';
   if (/^(rbHead|miniDock|csGuideBrief|rbBox|mapJump|startFrom|dayWarn)$/.test(id) || c.contains('rbTop') || c.contains('rbConf') || c.contains('rbHowTo')) return 'roadbook';
@@ -8841,6 +9035,8 @@ function csReportButton() { try {
 } catch (e) {} }
 setInterval(csReportButton, 1000);
 
+/* the Wingman mark, one drawing for the header, the welcome card and the ride button */
+const CS_WM_LOGO = '<svg class="wmLogo" viewBox="0 0 32 32" aria-hidden="true"><circle class="wmRing" cx="16" cy="16" r="14.5"/><circle class="wmGrid" cx="16" cy="16" r="9.5"/><path class="wmGrid" d="M16 2.5v27M2.5 16h27"/><g class="wmSweep"><path d="M16 16L16 1.5A14.5 14.5 0 0 1 26.3 5.8Z"/></g><path class="wmJet" d="M16 6.5l6.2 16.2L16 19.2l-6.2 3.5z"/><circle class="wmBlip" cx="22.5" cy="9.5" r="1.4"/></svg>';
 /* ---- WINGMAN (formerly "Co-Pilot"): LIVE NAVIGATION, OPENED FROM A RIDE OR FROM ANY ROAD (owner 2026-10-31) ----
    Renamed: "CoPilot" is an established navigation-app brand (CoPilot GPS) and Copilot a Microsoft mark; Wingman fits the
    radar look the owner asked for. The name lives in src/copilot-live/i18n.mjs (name) and here.
@@ -8881,8 +9077,18 @@ function csCpHost() {
     /* destination navigation: Valhalla motorcycle routing (avoid motorways, tolls, ferries), the place index for "where to" */
     valhallaUrl: (typeof NET !== 'undefined' && NET.valhalla) || 'https://valhalla1.openstreetmap.de',
     attachSuggest: (input, onPick) => { try { CS_SUGGEST.attach(input, onPick); } catch (e) {} },
-    findPlace: async q => { try { return (await CS_PLACES.find(q)) || (await CS_SUGGEST.resolve(q)); } catch (e) { return null; } },
+    /* a town, a pass or a street address: addresses go to the address search, the rest to our place index first;
+       coordinates and the built-in town list answer through geocode() as the last word */
+    findPlace: async q => { const tryG = async () => { try { return typeof geocode === 'function' ? await geocode(q) : null; } catch (e) { return null; } };
+      try { if (/\d/.test(q)) return (await CS_SUGGEST.resolve(q)) || (await tryG()); return (await CS_PLACES.find(q)) || (await CS_SUGGEST.resolve(q)) || (await tryG()); } catch (e) { return tryG(); } },
     curvy: async (a, b) => csCpCurvy(a, b),
+    /* the town you are riding into, from the place index (no outside service) */
+    /* a round mini picture for a waypoint: the ride's own photo, else Wikimedia Commons near it (as on the ride map) */
+    photoAt: async (lat, lon, w) => { try { const baked = w && Array.isArray(w.photos) ? w.photos.filter(p => p && p.url) : [];
+      const pics = baked.length ? baked : (await commonsPhotos(lat, lon, 4, 160)).filter(picIsOfAPlace).filter(p => !mediaIsRejected(p)); const p = pics[0];
+      return p && safePhotoUrl(p.url) ? photoSrc(p.url) : null; } catch (e) { return null; } },
+    setNear: p => { try { CS_SUGGEST.setNear(p); } catch (e) {} },
+    townNear: async p => { try { return await CS_PLACES.nearAsync(p, 3); } catch (e) { return null; } },
     /* road watch: the app's own Overpass hosts with their fail-over and the refusal check */
     overpass: typeof overpass === 'function' ? (q => overpass(q)) : null,
     studio: (typeof Worker === 'function' && typeof WebAssembly === 'object') ? { worker: csCpAsset('cs-studio-worker.js'), files: { wasm: [csCpAsset('cs-ort-1.bin'), csCpAsset('cs-ort-2.bin')], glue: csCpAsset('cs-ort-glue.js'), voices: { af_bella: csCpAsset('cs-voice-bella.bin'), af_heart: csCpAsset('cs-voice-heart.bin') } } } : null };
@@ -8916,20 +9122,20 @@ function csCopilotMount(host, r) {
   const mb = host.querySelector(':scope > .mapBox'); if (!mb || !r) return;
   let box = host.querySelector(':scope > #cpHost');
   if (!box) { box = document.createElement('div'); box.id = 'cpHost'; box.className = 'cpHost'; mb.parentNode.insertBefore(box, mb); }
-  box.innerHTML = '<button type="button" class="cpGo" id="cpGo"><span class="cpGoI" aria-hidden="true">◎</span><span><b>Ride it with Wingman</b><small>Our motorcycle navigator: turn by turn, radar, pace notes, sights and warnings</small></span></button>';
+  box.innerHTML = '<button type="button" class="cpGo" id="cpGo"><span class="cpGoI" aria-hidden="true">' + CS_WM_LOGO + '</span><span><b>Ride it with Wingman</b><small>Your navigator and tour guide: turn by turn, pace notes for every bend, sights told where and why, warnings in time</small></span></button>';
   box.querySelector('#cpGo').onclick = () => csNavOpen('route', r);
 }
 window.csCopilotMount = csCopilotMount;
 /* the header and the phone menu: Co-Pilot on any road */
 (function () { try {
   const add = () => { const top = document.querySelector('header.top .topIn'); if (!top || document.getElementById('cpFree')) return;
-    const b = document.createElement('button'); b.type = 'button'; b.id = 'cpFree'; b.className = 'tbtn cpFree'; b.title = 'Wingman – our motorcycle navigator'; b.setAttribute('aria-label', 'Wingman: our motorcycle navigator');
-    b.innerHTML = '<span aria-hidden="true" class="cpFreeI">◎</span><span class="cpFreeT">Wingman</span>'; b.onclick = () => csNavOpen('free');
+    const b = document.createElement('button'); b.type = 'button'; b.id = 'cpFree'; b.className = 'tbtn cpFree'; b.title = 'Wingman – navigator and tour guide for riders'; b.setAttribute('aria-label', 'Wingman: navigator and tour guide for riders');
+    b.innerHTML = '<span aria-hidden="true" class="cpFreeI">' + CS_WM_LOGO + '</span><span class="cpFreeT">Wingman</span>'; b.onclick = () => csNavOpen('free');
     const hud = document.getElementById('raHud'); if (hud) top.insertBefore(b, hud); else top.appendChild(b); };
   /* and on the welcome screen, under the main buttons: what Wingman is, one tap to start it */
   const hero = () => { const cta = document.querySelector('#csWall .csHeroCta'); if (!cta || document.getElementById('cpHero')) return;
     const b = document.createElement('button'); b.type = 'button'; b.id = 'cpHero'; b.className = 'cpHero';
-    b.innerHTML = '<span class="cpHeroI" aria-hidden="true">◎</span><span><b>Wingman <small class="cpNew">New</small></b><small>Our motorcycle navigator: radar, rally pace notes for every bend, hazards and cameras where legal, stories on the way – in a natural voice.</small></span>';
+    b.innerHTML = '<span class="cpHeroI" aria-hidden="true">' + CS_WM_LOGO + '</span><span><b>Wingman</b><small>World-class navigator and tour guide for riders. Address to address, through your stops, on the good roads. It tells you every bend, every risk ahead and every sight on the way - where it is and why it matters.</small></span>';
     b.onclick = () => { try { if (typeof csShowWall === 'function') csShowWall(false); } catch (e) {} csNavOpen('free'); }; cta.insertAdjacentElement('afterend', b); };
   const both = () => { add(); hero(); setTimeout(hero, 1500); setTimeout(hero, 5000); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', both); else both();
@@ -12777,6 +12983,12 @@ const NET = {
   get routerAlt() { return this.get('routerAlt', 'https://routing.openstreetmap.de/routed-car'); },
   /* Valhalla (FOSSGIS, the openstreetmap.org directions service): asked only when the rider switches an avoid on */
   get valhalla() { return this.get('valhalla', 'https://valhalla1.openstreetmap.de'); },
+  /* the Swiss federal address search (geo.admin.ch, swisstopo): asked only for address-like input; '' switches it off */
+  get swissSearch() { return this.get('swissSearch', 'https://api3.geo.admin.ch'); },
+  /* the other open national address registers, asked the same way: France (IGN Géoplateforme, BAN), the Netherlands (PDOK, BAG), Norway (Kartverket) */
+  get frAddress() { return this.get('frAddress', 'https://data.geopf.fr'); },
+  get nlAddress() { return this.get('nlAddress', 'https://api.pdok.nl'); },
+  get noAddress() { return this.get('noAddress', 'https://ws.geonorge.no'); },
   /* ---- A BLOCKED ADDRESS NEEDS A DIFFERENT DOOR, NOT A BETTER APOLOGY ----
      OpenStreetMap's volunteer servers are the default and the right default: free, no key, no
      account. They also block, and when they do there is nothing the app can say that puts a
@@ -16517,6 +16729,10 @@ const SERVICE_REGISTRY = [
   { id: 'studiovoice', name: 'jsDelivr / Hugging Face (Wingman studio voice)', purpose: 'the natural voice model, downloaded once',
     sends: 'nothing about you - a file download', trigger: 'only when the studio voice is switched on in Wingman',
     licence: 'Kokoro-82M, Apache-2.0', licenceUrl: 'https://huggingface.co/hexgrad/Kokoro-82M',
+    mode: 'direct', retention: 'their policy applies' },
+  { id: 'addressregisters', name: 'National address registers (swisstopo CH, IGN/BAN FR, PDOK/BAG NL, Kartverket NO)', purpose: 'street addresses as you type, house by house',
+    sends: 'the text typed into a place box', trigger: 'only for address-like input (a house number or a street word)',
+    licence: 'Open government data: swisstopo free use (fair use), Etalab 2.0, CC0, CC BY 4.0', licenceUrl: 'https://www.geo.admin.ch/en/general-terms-of-use-fsdi',
     mode: 'direct', retention: 'their policy applies' },
   { id: 'valhalla', name: 'FOSSGIS Valhalla', purpose: 'routes without motorways or toll roads',
     sends: 'the coordinates of the route', trigger: 'only when an avoid switch is on',
@@ -28915,7 +29131,14 @@ async function renderRide(id) {
         const FOLD = [['legendBox', 'Map legend'],
           ['camTail', 'Cameras and enforcement'],
           ['bbBox', 'Riding rules by country'], ['pfHost', 'Height profile']];
+        /* a mountain ride shows its climb, it does not fold it away (owner 2026-11-01: "for mountain trips give the topo more
+           relevance and prominence and make the thing better visible on a mobile") */
+        const mountain = (() => { try { return +(summitOf(r).m || 0); } catch (e) { return 0; } })() >= 1200 || +(r && (r.al || r.high || r.hi) || 0) >= 1200 || /alpine|mountain|pass/i.test(String(r && (r.kind || r.k) || ''));
+        if (mountain) { const host = document.getElementById('rideDetail') || document.body; host.classList.add('csMountain');
+          /* on a phone the climb moves up, right under the map */
+          try { const pf = document.getElementById('pfHost'), ch = pf && pf.previousElementSibling, mb = host.querySelector(':scope > .mapBox'); if (pf && ch && mb && ch.classList.contains('chev')) { mb.insertAdjacentElement('afterend', pf); mb.insertAdjacentElement('afterend', ch); } } catch (e) {} }
         for (const [id, title] of FOLD) {
+          if (mountain && id === 'pfHost') continue;
           const el = document.getElementById(id);
           if (!el || el.dataset.folded || !el.getBoundingClientRect().height) continue;
           el.dataset.folded = '1';
@@ -29103,13 +29326,27 @@ async function renderRide(id) {
             '</div>');
         }
         const wet = cells.filter(c => /class="wxCell wet/.test(c) || / wet/.test(c)).length;
-        host.innerHTML =
-          '<div class="wxHead"><b>Weather from your arrival</b>' +
-            '<span>' + (wet >= 3 ? 'Rain likely for much of it - pack for wet'
-              : wet ? 'A wet hour or two in the window' : 'Dry in the forecast window') + '</span></div>' +
+        /* ---- LOUD WHEN IT MATTERS, QUIET WHEN IT DOES NOT (owner 2026-11-01: "the waypoint weather must highlight better
+           if there is rain or nightfall, etc. can otherwise be a little quieter") ----
+           At the hour you arrive: rain, snow or a storm, ice, strong wind, and arriving after dark each get a coloured line
+           that says it plainly. A fine hour is one quiet line; the hourly strip is a tap away (open by itself when it matters). */
+        const nc = h.weathercode[nearest], nt = Math.round(h.temperature_2m[nearest]), np = Math.round(h.precipitation_probability ? h.precipitation_probability[nearest] : 0), nw = Math.round(h.windspeed_10m[nearest]);
+        const arrH = String(new Date(h.time[nearest]).getHours()).padStart(2, '0') + ':00', flags = [];
+        if (nc >= 95) flags.push(['storm', '⛈ Thunderstorms likely when you arrive (' + arrH + ')']);
+        else if ((nc >= 71 && nc <= 77) || nc === 85 || nc === 86) flags.push(['snow', '🌨 Snow when you arrive (' + arrH + ') - check the pass is open']);
+        else if (np >= 50 || (nc >= 61 && nc <= 67) || (nc >= 80 && nc <= 82)) flags.push(['rain', '🌧 Rain likely when you arrive (' + arrH + '): ' + np + '%']);
+        if (nt <= 3) flags.push(['ice', '❄ ' + nt + '° on arrival - slippery or icy spots possible']);
+        if (nw >= 45) flags.push(['wind', '💨 Strong wind on arrival: ' + nw + ' km/h']);
+        try { const sm = typeof tripSunset === 'function' ? tripSunset(+w.lat, +w.lon, target) : null; const am = target.getHours() * 60 + target.getMinutes();
+          if (sm != null && am > sm) flags.push(['dark', '🌙 You arrive after dark - sunset ' + String(Math.floor(sm / 60)).padStart(2, '0') + ':' + String(Math.round(sm % 60)).padStart(2, '0') + '. Lights on, watch for deer']); else if (sm != null && am > sm - 45) flags.push(['dusk', '🌇 You arrive at dusk - sunset ' + String(Math.floor(sm / 60)).padStart(2, '0') + ':' + String(Math.round(sm % 60)).padStart(2, '0')]); } catch (e) {}
+        const ico = WMO_ICON(nc);
+        host.classList.toggle('wxAlert', flags.length > 0);
+        host.innerHTML = (flags.length ? '<div class="wxFlags">' + flags.map(f => '<p class="wxFlag f-' + f[0] + '">' + f[1] + '</p>').join('') + '</div>'
+            : '<p class="wxQuiet"><svg class="wxIco" viewBox="0 0 24 24" aria-hidden="true">' + WX_ICON[ico.icon] + '</svg> <b>' + nt + '°</b> · ' + esc(ico.label) + ' · wind ' + nw + ' km/h <span>at ' + arrH + (wet ? ' · a wet hour nearby' : ', dry around it') + '</span></p>') +
+          '<details class="wxMore"' + (flags.length ? ' open' : '') + '><summary>Hour by hour</summary>' +
           '<div class="wxStrip">' + cells.join('') + '</div>' +
           '<p class="wxFine">Hourly forecast at this exact point, arrow shows where the wind blows ' +
-            'towards. Mountain weather turns faster than any forecast.</p>';
+            'towards. Mountain weather turns faster than any forecast.</p></details>';
       });
     } catch (e) { /* a forecast outage must not disturb the roadbook */ }
   })();
