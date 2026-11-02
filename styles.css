@@ -5306,3 +5306,45 @@ footer .srcRow > b{color:var(--dim,#8a909a);font-weight:600}
 .tripKey .tkSw.on{opacity:1;border-color:var(--red,#e11b2b);background:rgba(225,27,43,.16)}
 .tripKey .tkPinI{width:18px;height:18px;border-radius:50%;background:#e11b2b;border:1.5px solid #fff;color:#fff;font:800 10px/15px var(--display);text-align:center}
 .tripKey .tkBedI{font-size:13px;line-height:1}
+
+/* scroll anchoring dragged a building page downwards (owner 2026-11-01: every page opens at its top) */
+html, body { overflow-anchor: none; }
+/* ---- the trip in tabs and baskets (owner 2026-11-01: "group and display it much much better") ---- */
+.tripForm.tripFolded > :not(.tripFoldBar){display:none!important}
+.tripFoldBar{display:none}
+.tripForm.tripFolded .tripFoldBar,.tripForm .tripFoldBar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;border-radius:14px;background:var(--card,#121418);border:1px solid var(--edge,#23262d);margin-bottom:10px}
+.tripFoldBar span{font-size:15px;color:var(--mute,#c9ced8)}.tripFoldBar b{color:var(--ink,#f4f2ec)}
+.tripFoldBar .tripFoldBtn{min-height:44px;padding:0 16px;border-radius:22px}
+.tripTabs{position:sticky;top:var(--hdrH,60px);z-index:30;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:4px;margin:10px 0 14px;border-radius:16px;background:rgba(13,15,19,.94);border:1px solid var(--edge,#2a2e36);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.tripTabs button{min-height:46px;border:0;border-radius:12px;background:transparent;color:var(--mute,#c9ced8);font:700 14px/1.1 var(--display)!important;letter-spacing:.04em;text-transform:uppercase;padding:0 6px;cursor:pointer}
+.tripTabs button.on{background:linear-gradient(160deg,#ff3b47,#b3121f);color:#fff}
+.tripPane[hidden]{display:none!important}
+.tripPane{display:grid;gap:14px;min-width:0}
+.tripDayIdx{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.tripDayIdx button{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;min-height:64px;padding:10px 12px;border-radius:16px;border:1px solid var(--edge,#2a2e36);background:var(--card,#121418);color:var(--ink,#f4f2ec);cursor:pointer}
+.tripDayIdx button.on{border-color:var(--red,#e11b2b);box-shadow:inset 3px 0 0 var(--red,#e11b2b)}
+.tripDayIdx i{width:30px;height:30px;border-radius:50%;border:2px solid #fff;color:#fff;font:800 14px/26px var(--display);text-align:center;font-style:normal}
+.tripDayIdx b{display:block;font:700 16px/1.2 var(--display)!important}.tripDayIdx small{display:block;margin-top:3px;color:var(--mute,#b9bec7);font-size:14px!important;line-height:1.3}
+.tripDayIdx em{font-style:normal;font-size:22px;color:var(--mute,#9da3ad)}
+.tripPane[data-pane="days"].oneDay .tripDayIdx{display:none}
+.tripPager{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}
+.tripPager[hidden]{display:none}
+.tripPager button{min-height:48px;border-radius:14px;border:1px solid var(--edge,#2a2e36);background:var(--card,#121418);color:var(--ink,#f4f2ec);font:700 15px var(--display)!important;cursor:pointer;padding:0 12px}
+.tripPager button.all{color:var(--mute,#c9ced8)}.tripPager button[disabled]{opacity:.4;cursor:default}
+.tripPane[data-pane="days"].oneDay .tripPager{order:-1}
+.tdBasket{display:grid;gap:10px;margin-top:12px;padding:12px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid var(--edge,#23262d)}
+.tdBasket h4{margin:0;color:#ff7a82;font:800 13px/1 var(--display)!important;letter-spacing:.12em;text-transform:uppercase}
+.tripBasket{padding:14px;border-radius:16px;background:var(--card,#121418);border:1px solid var(--edge,#23262d)}
+.tripBasket h3{margin:0 0 10px;font:800 18px var(--display)!important;text-transform:uppercase;letter-spacing:.03em}
+.tripCountry{padding:8px 0;border-top:1px solid var(--edge,#23262d)}.tripCountry:first-of-type{border-top:0}
+.tripCountry p{margin:0 0 6px;display:flex;align-items:center;gap:8px}.tripCountry ul,.tripWarnList{margin:0;padding-left:20px;display:grid;gap:5px;color:var(--mute,#d6d3cc);font-size:15px;line-height:1.4}
+.raOval.tripCc{min-width:36px;height:24px;font-size:13px!important;border-width:2px;padding:0 7px}
+.tripStat .raOval.tripCc{margin:1px 1px}
+@media (min-width:900px){
+ .tripPane[data-pane="days"]{grid-template-columns:300px minmax(0,1fr);align-items:start}
+ .tripPane[data-pane="days"] .tripDayIdx,.tripPane[data-pane="days"].oneDay .tripDayIdx{display:grid;position:sticky;top:calc(var(--hdrH,60px) + 76px);grid-column:1;grid-row:1 / span 2}
+ .tripPane[data-pane="days"] .tripDays{grid-column:2}.tripPane[data-pane="days"] .tripPager{grid-column:2;order:0}
+ .tripTabs{max-width:720px}
+}
+@media (prefers-reduced-motion:reduce){.tripTabs button{transition:none}}
+.tripForm.tripFolded{padding:0!important;background:none!important;border:0!important;box-shadow:none!important}

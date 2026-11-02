@@ -322,13 +322,13 @@ async function eraseAllUserData() {
   const count = (label, n) => { if (n) cleared.push(n + ' ' + label); };
 
   try {
-    const keys = Object.keys(localStorage).filter(k => /^cs[_:]/i.test(k));
+    const keys = Object.keys(localStorage).filter(k => /^(cs[_:]|cs[A-Z]|cpn[A-Z])/.test(k) || /^cs[_:]/i.test(k));   /* r31 audit: CurveScout Ride's settings (cpn...) and csHeroNext were left behind */
     keys.forEach(k => localStorage.removeItem(k));
     count('saved settings', keys.length);
   } catch (e) { left.push('local storage'); }
 
   try {
-    const keys = Object.keys(sessionStorage).filter(k => /^cs[_:]/i.test(k));
+    const keys = Object.keys(sessionStorage).filter(k => /^(cs[_:]|cs[A-Z]|cpn[A-Z])/.test(k) || /^cs[_:]/i.test(k));
     keys.forEach(k => sessionStorage.removeItem(k));
     count('session entries', keys.length);
   } catch (e) { left.push('session storage'); }
@@ -5665,6 +5665,8 @@ function rankSettle() {
    is one call per ride rather than one per stop. Drawn as a strip of pictograms across the
    riding day, because a number tells you less than a shape you can scan. */
 const WMO_ICON = code => {
+  /* no forecast is "no data", never "clear" (+null is 0) */
+  if (code == null || code === '' || !Number.isFinite(+code)) return { icon: 'cloud', label: 'no forecast' };
   const c = +code;
   if (c === 0) return { icon: 'sun', label: 'clear' };
   if (c <= 2) return { icon: 'part', label: 'some cloud' };
@@ -5972,44 +5974,18 @@ const OPERATOR = {
   responsible: '', // defaults to the operator name
 };
 
-const THIRD_PARTIES = [
-  ['OpenStreetMap', 'map tiles and the road network', 'https://osmfoundation.org/wiki/Privacy_Policy',
-   'Your browser requests map tiles directly, so OSM receives your IP address and which tiles you looked at.'],
-  ['Project OSRM', 'turning checkpoints into a real road line', 'https://github.com/Project-OSRM/osrm-backend',
-   'Receives the coordinates of the route you opened.'],
-  /* owner 2026-10-10 audit: every service the browser contacts is named */
-  ['FOSSGIS routing (routing.openstreetmap.de)', 'the road line when the first routing server does not answer', 'https://www.fossgis.de/datenschutzerklaerung/',
-   'Receives the coordinates of the route you opened, only when the first server is busy.'],
-  ['National address registers: swisstopo (api3.geo.admin.ch), IGN Géoplateforme (data.geopf.fr), PDOK (api.pdok.nl), Kartverket (ws.geonorge.no)', 'finding street addresses as you type, house by house', 'https://www.geo.admin.ch/en/general-terms-of-use-fsdi',
-   'Receive what you type into a place box, only when it looks like an address (a house number or a street name). Nothing else.'],
-  ['FOSSGIS Valhalla (valhalla1.openstreetmap.de)', 'routes that leave out motorways or toll roads', 'https://www.fossgis.de/datenschutzerklaerung/',
-   'Receives the coordinates of the route, only when you switch "Avoid motorways" or "Avoid tolls" on.'],
-  ['OpenFreeMap (tiles.openfreemap.org)', 'the map tiles and map styles', 'https://openfreemap.org/privacy/',
-   'Your browser loads the map pictures for the area on screen, so OpenFreeMap receives your IP address and that map area.'],
-  ['Unsplash', 'the photographs on the welcome screen', 'https://unsplash.com/privacy',
-   'Your browser loads the welcome photographs from Unsplash, so Unsplash receives your IP address.'],
-  ['MET Norway (api.met.no)', 'the weather forecast along the route', 'https://www.met.no/en/About-us/privacy',
-   'Receives the coordinates along the route when the weather is shown.'],
-  ['Wikimedia Commons', 'the photographs', 'https://foundation.wikimedia.org/wiki/Policy:Privacy_policy',
-   'Receives the coordinates of the places whose pictures load as you scroll.'],
-  /* Wikipedia's API is no longer read: the "worth stopping for" facts come from Wikidata
-     under CC0, and Wikipedia remains only as a link a rider clicks. ipapi.co is gone
-     entirely - declining location is an answer, and the reply to it is not to send the
-     visitor's address to a third party instead. Neither may be described as active. */
-  ['Wikidata', 'facts about the notable places near the road', 'https://foundation.wikimedia.org/wiki/Policy:Privacy_policy',
-   'Receives the coordinates of a handful of points along the route when you run the scan. ' +
-   'Its data is CC0; CurveScout writes its own wording from those facts.'],
-  ['Terrain Tiles on AWS (s3.amazonaws.com/elevation-tiles-prod)', 'ground heights for the climb profiles and the relief of the Topo map', 'https://aws.amazon.com/privacy/',
-   'Receives requests for elevation tiles around the route (no personal data beyond your IP address, as with any image).'],
-  ['Overpass / OpenStreetMap', 'fuel, food, viewpoints, speed cameras', 'https://osmfoundation.org/wiki/Privacy_Policy',
-   'Receives a bounding box around the road, not your position.'],
-];
+/* ---- ONE PRIVACY REGISTER (r31 audit CS-R31-011) ----
+   Two hand-kept lists (this table and SERVICE_REGISTRY) disagreed: one said Overpass never sees your position while
+   CurveScout Ride asks it about the road around you, and Wikipedia was "no longer read" while Ride and trips read it.
+   The table on the privacy page is now a view of SERVICE_REGISTRY; each entry's `sees` says what that service
+   receives. tools/test-legal.mjs checks every contacted host against the register. */
+const THIRD_PARTIES = () => SERVICE_REGISTRY.filter(x => x.sees).map(x => [x.name, x.purpose, x.privacy || x.licenceUrl, x.sees]);
 /* footer follows the active settings (owner 2026-10-07): with AdSense on it must not say "No advertising",
    and "Privacy choices" reopens the Google consent dialog so a reader can change or withdraw consent */
 (function csFooterTruth() { try {
   const adsOn = !!(window.CS_ADS && window.CS_ADS.publisher && /^ca-pub-\d{10,}$/.test(String(window.CS_ADS.publisher)));
   const note = document.getElementById('csFootNote'), pc = document.getElementById('csPrivacyChoices');
-  if (adsOn && note) note.textContent = 'No account. Ads by Google AdSense load only after your choice in the consent dialog. Saved rides stay in your browser; maps, weather and photographs are fetched from named services as you use them.';
+  if (adsOn && note) note.textContent = 'No account. Ads by Google AdSense load only after your choice in the consent dialog. Saved rides are stored only in your browser; maps, routes, weather and photographs are fetched from named services as you use them, and those services see the places asked about.';
   if (adsOn && pc) { pc.hidden = false; try { document.querySelectorAll('.csPcSep').forEach(x => { x.hidden = false; }); } catch (e) {} pc.addEventListener('click', ev => { ev.preventDefault();
     try { window.googlefc = window.googlefc || {}; window.googlefc.callbackQueue = window.googlefc.callbackQueue || []; window.googlefc.callbackQueue.push({ CONSENT_API_READY: () => window.googlefc.showRevocationMessage() }); } catch (e) {} }); }
 } catch (e) {} })();
@@ -6086,7 +6062,8 @@ const csHeroQuick = !!(window.matchMedia && matchMedia('(prefers-reduced-motion:
      20 minutes does not replay it; a deep link to a ride or a trip never shows it) */
   if (sessionStorage.getItem('csIntroSeen')) return; sessionStorage.setItem('csIntroSeen', '1');
   if (location.hash && !/^#\/?$/.test(location.hash)) return;
-  try { const last = +localStorage.getItem('csIntroAt') || 0; if (Date.now() - last < 20 * 60000) return; localStorage.setItem('csIntroAt', String(Date.now())); } catch (e) {}
+  /* owner 2026-11-01 "the site intro animation seems gone": the 20-minute pause hid it from anyone opening the site again soon -
+     now every fresh opening of the start page plays it (a reload in the same tab does not) */
   const p = CS_HERO[CS_HERO_START];
   const d = document.createElement('div'); d.id = 'csIntro'; d.setAttribute('aria-hidden', 'true');
   d.innerHTML = '<div class="ciPic"><img alt=""></div><div class="ciShade"></div>' +
@@ -7531,7 +7508,7 @@ async function renderTrip(h) {
         try { history.replaceState(null, '', '#/trip?p=' + tripEncode(TRIP.plan)); } catch (e) {} } } }
   tripPaint();
   /* a shared link or "plan a trip with this ride" opens on the trip itself, not on the form above it */
-  if ((shared || withId) && TRIP.plan) setTimeout(() => { const res = document.querySelector('.tripRes, .tripEmpty'); if (res) scrollTo({ top: Math.max(0, res.getBoundingClientRect().top + scrollY - 64), behavior: 'auto' }); }, 60);
+  /* owner 2026-11-01: a page opens at its top - a trip opened by its link starts with the trip (the form folds away), not half way down */
 }
 function tripFormHtml(f) {
   const chip = (name, val, label, on) => '<button type="button" class="chip' + (on ? ' on' : '') + '" data-' + name + '="' + val + '">' + label + '</button>';
@@ -7634,7 +7611,11 @@ function tripPaint() {
 }
 /* the riding to and from the starts: one way on a moving tour, there and back from one base (estimate) */
 function tripApproachKm(plan) { if (Number.isFinite(plan.transferKm)) return Math.round(plan.transferKm); const o = plan.opts || TRIP.opts || {}; const ap = plan.days.reduce((a, d) => a + (d.approachKm || 0), 0); return Math.round(o.mode === 'base' ? ap * 2 : ap); }
-function tripScrollTo(el) { if (!el) return; scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + scrollY - 72), behavior: 'auto' }); }
+function tripScrollTo(el) { if (!el) return;
+  /* with the trip in tabs, the thing asked for may sit in another tab or another day: open that first */
+  try { const pn = el.closest && el.closest('.tripPane'); const dc = el.closest && el.closest('.tripDay');
+    if (dc && pn && pn.dataset.pane === 'days') tripShowDay(+dc.dataset.i, false); else if (pn && pn.hidden) tripShowTab(pn.dataset.pane, false); } catch (e) {}
+  scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + scrollY - 72), behavior: 'auto' }); }
 function tripResult() {
   const out = $('tripOut'), plan = TRIP.plan, o = TRIP.opts; if (!out || !plan) return;
   try { csNeedCards(tripRealRoutes(plan), () => { if (TRIP.plan === plan && $('tripOut')) tripResult(); }); } catch (e) {}
@@ -7691,7 +7672,7 @@ function tripResult() {
     '<div class="tripDays">' + plan.days.map((d, i) => tripDayCard(d, i)).join('') + '</div></div>' +
     '<div class="tripActs"><button type="button" class="primary" id="tripShare">Share this trip</button><a class="ghost2" id="tripMail" href="#">✉ Email to a friend</a><button type="button" class="ghost2" id="tripGpx">⬇ GPX, all days</button><button type="button" class="ghost2" id="tripSave">☆ Save trip</button></div>' +
     '<details class="tripFineD"><summary>How the times, distances and stops are worked out</summary><p class="tripFine">Routes, distances and riding times come from CurveScout’s scouted rides. Transfers (from your bed to where a ride begins, and from where it ends to the next bed) start as estimates marked "about" and are replaced by the routed road when the router answers. Clock times assume a 09:00 start and short stops. Places to stay and eat are from OpenStreetMap: no prices, availability or opening hours are promised - check before you go. Road and pass conditions change; posted signs and official closures always win. Per stop: heights and passes come from the ride’s checkpoints and the app’s pass list; a town named beside a stop is a GeoNames place of 1,000 people or more (a name to find on the map, not a promise of fuel - the stations actually mapped are on each ride page); World Heritage text is UNESCO’s own description; rider meets are listed with their published dates or, where none are published, the month they usually run; sunset is calculated for the date and place; what is around each stop is Wikipedia’s own list of articles nearby, linked to the article (CC BY-SA) and fetched only when you open that day.</p></details></section>';
-  tripWire(); tripOvWire(); tripAddWire(); tripDrawMap(); tripDayPhotos(plan);
+  tripWire(); tripOvWire(); tripAddWire(); tripDrawMap(); tripDayPhotos(plan); tripTabs(plan);
   /* the stops of each day: the open day first, the rest one after another (their rides are the ones the map loads anyway) */
   (async () => { const order = plan.days.map((_, i) => i); for (const i of order) { if (TRIP.plan !== plan) return; try { await tripBookFill(i); } catch (e) {} } })();
 }
@@ -7734,15 +7715,23 @@ function tripStatsHtml(plan) {
   const roads = new Set(); rs.forEach(r => (r.ic || []).forEach(x => x && x.n && roads.add(String(x.n).toLowerCase())));
   /* countries ridden through: each checkpoint takes the country of the nearest town in the app's own list (within 35 km) -
      the ride's country field is its home region, so the Black Forest from Zurich would read as Switzerland */
-  const cc = []; try { const gz = typeof gazetteer === 'function' ? gazetteer() : [];
-    plan.days.forEach(d => { let w = d.route.wp; if (typeof w === 'string') { try { w = JSON.parse(w); } catch (e) { w = []; } }
-      (w || []).forEach(p => { if (!Array.isArray(p)) return; let best = null, bd = 35; for (const t of gz) { if (Math.abs(t.la - p[0]) > 0.5 || Math.abs(t.lo - p[1]) > 0.7) continue; const k = CS_TRIPS._dist([+p[0], +p[1]], [t.la, t.lo]); if (k < bd) { bd = k; best = t; } }
-        const c = best && String(best.cc || '').toUpperCase(); if (c && /^[A-Z]{2}$/.test(c) && !cc.includes(c)) cc.push(c); }); }); } catch (e) {}
-  const flag = c => c.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0)));
+  const cc = tripCountries(plan);
+  /* owner 2026-11-01: flag emoji are not drawn on Windows - countries as oval stickers, as in the passport */
+  const flag = c => '<span class="raOval tripCc" title="' + esc(TRIP_CC_NAME[c.toLowerCase()] || c) + '">' + esc(TRIP_CC_CODE[c.toLowerCase()] || c) + '</span>';
   const tile = (v, l) => '<div class="tripStat"><b>' + v + '</b><span>' + l + '</span></div>';
   return '<div class="tripStats" data-n="' + (3 + (top ? 1 : 0) + (roads.size ? 1 : 0) + (cc.length ? 1 : 0)) + '">' + tile(plan.days.length, plan.days.length === 1 ? 'riding day' : 'riding days') + tile(plan.totalKm.toLocaleString('en-GB'), 'km') + tile(tripFmtMin(plan.totalMin), 'riding') +
     (top ? tile(Math.round(top) + ' m', 'highest') : '') + (roads.size ? tile(roads.size, roads.size === 1 ? 'named road' : 'named roads') : '') +
     (cc.length ? tile(cc.map(flag).join(' '), cc.length === 1 ? 'country' : 'countries') : '') + '</div>';
+}
+const TRIP_CC_CODE = { de: 'D', at: 'A', ch: 'CH', it: 'I', fr: 'F', li: 'FL', si: 'SLO', cz: 'CZ', sk: 'SK', hu: 'H', hr: 'HR', es: 'E', pt: 'P', be: 'B', nl: 'NL', lu: 'L', pl: 'PL', gb: 'GB', ie: 'IRL', us: 'USA', ca: 'CDN', no: 'N', se: 'S', dk: 'DK', fi: 'FIN' };
+const TRIP_CC_NAME = { de: 'Germany', at: 'Austria', ch: 'Switzerland', it: 'Italy', fr: 'France', li: 'Liechtenstein', si: 'Slovenia', cz: 'Czechia', sk: 'Slovakia', hu: 'Hungary', hr: 'Croatia', es: 'Spain', pt: 'Portugal', be: 'Belgium', nl: 'the Netherlands', lu: 'Luxembourg', pl: 'Poland', gb: 'the United Kingdom', ie: 'Ireland', us: 'the United States', ca: 'Canada', no: 'Norway', se: 'Sweden', dk: 'Denmark', fi: 'Finland' };
+/* the countries a trip rides through: each checkpoint takes the country of the nearest town in the app's own list (within 35 km) */
+function tripCountries(plan) {
+  const cc = []; try { const gz = typeof gazetteer === 'function' ? gazetteer() : [];
+    plan.days.forEach(d => { let w = d.route.wp; if (typeof w === 'string') { try { w = JSON.parse(w); } catch (e) { w = []; } }
+      (w || []).forEach(p => { if (!Array.isArray(p)) return; let best = null, bd = 35; for (const t of gz) { if (Math.abs(t.la - p[0]) > 0.5 || Math.abs(t.lo - p[1]) > 0.7) continue; const k = CS_TRIPS._dist([+p[0], +p[1]], [t.la, t.lo]); if (k < bd) { bd = k; best = t; } }
+        const c = best && String(best.cc || '').toUpperCase(); if (c && /^[A-Z]{2}$/.test(c) && !cc.includes(c)) cc.push(c); }); }); } catch (e) {}
+  return cc;
 }
 /* one segment per day, as long as its riding: tap to see that day on the map */
 function tripRibbonHtml(plan) {
@@ -7951,7 +7940,10 @@ async function tripBookFill(i) {
   const ol = $('tripSched' + i); if (!ol || !stops.length) { const w = ol && ol.querySelector('.tsWait'); if (w) w.remove(); return; }
   ol.outerHTML = tripSchedHtml(d, i, stops);
   const bk = document.querySelector('.tripBook[data-book="' + i + '"]'); if (bk && bk.open) tripBookWiki(i);
-  const path = $('tripPath' + i), key2 = stops.filter(s => s.key);
+  const path = $('tripPath' + i); let key2 = stops.filter(s => s.key);
+  /* owner 2026-11-01 ("a Garmisch trip without a ride"): on the German Alpine Road only the two ends counted as key stops, so
+     the day read "Lindau → Garmisch" like a transfer. With fewer than three, the named places in between are shown too. */
+  if (key2.length < 3) { const named = stops.filter(s => s.name && !/^(fuel|food|rest|photo|water|coffee|lunch)\b.*\b(stop|check|break)\b|^(fuel|food) (stop|near|in)\b/i.test(s.name)); if (named.length > key2.length) key2 = named; }
   if (path && key2.length >= 2) path.innerHTML = key2.slice(0, 6).map(s => esc(s.name) + (s.alt >= 1000 && (s.kind === 'pass' || s.kind === 'high') ? ' <small>' + Math.round(s.alt) + ' m</small>' : '')).join(' <i>→</i> ');
   /* named roads the stops do not already name */
   const left = (d.route.ic || []).filter(x => x && x.n && !stops.some(s => tripFold(s.name).indexOf(tripFold(x.n).replace(TRIP_GENERIC, ' ').trim().split(' ')[0]) >= 0));
@@ -8063,9 +8055,11 @@ function tripWire() {
     /* during Play a tap means "show me this day": stop, clear the caption, and focus it (never toggle it off) */
     if (TRIP.anim) { tripStop(); const c = $('tripCap'); if (c) c.hidden = true; TRIP.focus = null; }
     tripFocus(i, true);
+    /* in tabs: a day in the strip opens that day's page; without tabs (an older page) the map is shown as before */
+    if (document.querySelector('.tripTabs')) { tripShowDay(i, true); return; }
     const mapEl = $('tripMap'); if (mapEl && mapEl.getBoundingClientRect().top < 60) mapEl.scrollIntoView({ block: 'center', behavior: tripCalm() ? 'auto' : 'smooth' }); });
   document.querySelectorAll('.tripNum').forEach(n => { n.setAttribute('role', 'button'); n.tabIndex = 0; n.title = 'Show on the map';
-    n.onclick = () => { const i = +n.closest('.tripDay').dataset.i; tripFocus(i, true); const mapEl = $('tripMap'); if (mapEl) mapEl.scrollIntoView({ block: 'center', behavior: tripCalm() ? 'auto' : 'smooth' }); }; });
+    n.onclick = () => { const i = +n.closest('.tripDay').dataset.i; if (document.querySelector('.tripTabs')) { tripShowTab('map', true); setTimeout(() => tripFocus(i, true), 120); return; } tripFocus(i, true); const mapEl = $('tripMap'); if (mapEl) mapEl.scrollIntoView({ block: 'center', behavior: tripCalm() ? 'auto' : 'smooth' }); }; });
   if ($('tripPlay')) $('tripPlay').onclick = () => { const mapEl = $('tripMap'); const r = mapEl && mapEl.getBoundingClientRect(); if (r && (r.top < 50 || r.bottom > innerHeight)) mapEl.scrollIntoView({ block: 'center', behavior: 'auto' }); tripPlay(); };
   document.querySelectorAll('[data-rep]').forEach(b => b.onclick = () => {
     const i = +b.dataset.rep, box = $('tripAlt' + i); if (!box) return;
@@ -8198,9 +8192,12 @@ async function tripDrawMap() {
   tripTransfers(m, gXfer);
   TRIP.allBounds = all;
   try { tripMapKey(el, m, { gNight, gXfer, gPins }); } catch (e) {}
-  try { m.fitBounds(L.latLngBounds(all).pad(0.12)); } catch (e) { m.setView(base, 8); }
+  /* the map may sit in the closed Map tab (0 x 0): framing a zero-size map gives NaN and every later mark throws, so it
+     gets a plain view now and is framed when its tab opens (tripShowTab) */
+  const sized = () => { const z = m.getSize(); return z.x > 0 && z.y > 0; };
+  try { if (sized()) m.fitBounds(L.latLngBounds(all).pad(0.12)); else m.setView(base, 7); } catch (e) { m.setView(base, 8); }
   /* the result is laid out after the map is created (grid on desktop, fonts on phones): measure again, then frame the trip */
-  setTimeout(() => { if (TRIP.map !== m) return; try { m.invalidateSize(false); if (TRIP.focus == null && !TRIP.anim) m.fitBounds(L.latLngBounds(all).pad(0.12)); } catch (e) {} }, 260);
+  setTimeout(() => { if (TRIP.map !== m) return; try { m.invalidateSize(false); if (sized() && TRIP.focus == null && !TRIP.anim) m.fitBounds(L.latLngBounds(all).pad(0.12)); } catch (e) {} }, 260);
 }
 /* the key under the trip map: every mark named, the days in their colours (a tap shows that day), and switches for the
    layers a rider may want out of the way. Transfers appear in the key only once one is drawn. */
@@ -8277,7 +8274,7 @@ function tripFocus(i, fit) {
   document.querySelectorAll('.tripSeg').forEach(b => b.classList.toggle('on', TRIP.focus != null && +b.dataset.seg === TRIP.focus));
   document.querySelectorAll('.tripDay').forEach(c => c.classList.toggle('focus', TRIP.focus != null && +c.dataset.i === TRIP.focus));
   if (!fit) return;
-  try { const pts = TRIP.focus == null ? TRIP.allBounds : TRIP.lines[TRIP.focus]; if (pts && pts.length) TRIP.map.flyToBounds(L.latLngBounds(pts).pad(0.15), { duration: tripCalm() ? 0 : 0.8 }); } catch (e) {}
+  try { const pts = TRIP.focus == null ? TRIP.allBounds : TRIP.lines[TRIP.focus]; const zz = TRIP.map.getSize(); if (pts && pts.length && zz.x > 0 && zz.y > 0) TRIP.map.flyToBounds(L.latLngBounds(pts).pad(0.15), { duration: tripCalm() ? 0 : 0.8 }); } catch (e) {}
 }
 function tripCalm() { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
 /* ---- Play trip: the whole trip ridden on the map, day after day, with the day's facts on screen ---- */
@@ -8739,6 +8736,78 @@ function tripGpxWithAdds(full, i) { const list = tripAddsList(i); if (!list.leng
   for (const x of list) { const wps = r[key], line = wps.map(w => [+w.lat, +w.lon]); const o = tripOffLine(line, x.at); const at = Math.min(Math.max(1, o.at), wps.length - 1);
     wps.splice(at, 0, { name: x.kind === 'ride' ? 'Start of ' + x.n : x.n, lat: +x.at[0], lon: +x.at[1], kind: x.kind === 'pass' ? 'pass' : 'sight', added: true }); }
   return r; }
+
+/* ---- THE TRIP IN BASKETS (owner 2026-11-01: "break the trip down into separately clickable sub sites on the mobile at least ...
+   have the map, the waypoints and explainers, the country and tour warnings nicely grouped and arranged in baskets a user can
+   digest ... multi day trips output and overview should be better structured and have tabs") ----
+   Nothing is rewritten: the blocks the page already builds are moved into four tabs - Overview, Days, Map, Good to know - and
+   every day becomes its own page with previous / all days / next. Inside a day: The ride, Tonight, Change this day. The form
+   folds into one line once there is a trip, so the page starts with the trip. Every switch opens at the top. */
+function tripTabs(plan) { try {
+  const res = document.querySelector('.tripRes'); if (!res || res.dataset.tabs) return; res.dataset.tabs = '1';
+  const ui = TRIP.ui || (TRIP.ui = { tab: 'ov', day: -1 }); if (TRIP.ui.plan !== plan) { ui.plan = plan; ui.tab = 'ov'; ui.day = -1; }
+  const q = sel => res.querySelector(sel), n = plan.days.length;
+  /* the form folds away */
+  const form = $('tripForm'); if (form) { form.classList.add('tripFolded'); let bar = form.querySelector('.tripFoldBar');
+    if (!bar) { bar = document.createElement('div'); bar.className = 'tripFoldBar'; form.prepend(bar); }
+    const o = TRIP.opts; bar.innerHTML = '<span><b>' + esc(o.mode === 'a2b' && o.dest ? (o.label || 'A') + ' → ' + (o.dest[2] || 'B') : o.label || 'Your trip') + '</b> · ' + n + (n === 1 ? ' day' : ' days') + '</span><button type="button" class="ghost2 tripFoldBtn">✎ Change trip</button>';
+    bar.querySelector('button').onclick = () => { const open = form.classList.toggle('tripFolded') === false; bar.querySelector('button').textContent = open ? '✕ Close' : '✎ Change trip'; if (open) scrollTo(0, 0); }; }
+  /* the panes */
+  const pane = (k) => { const d = document.createElement('div'); d.className = 'tripPane'; d.dataset.pane = k; d.setAttribute('role', 'tabpanel'); d.id = 'tripPane-' + k; return d; };
+  const P = { ov: pane('ov'), days: pane('days'), map: pane('map'), info: pane('info') };
+  const move = (sel, to) => { const el = typeof sel === 'string' ? q(sel) : sel; if (el) to.appendChild(el); return el; };
+  ['.tripVerdict', '.tripVariants', '.tripStats', '.tripRibbon', '.tripOv', '.tripRa', '.tripActs'].forEach(s2 => move(s2, P.ov));
+  move('.tripMapWrap', P.map); move('.tripKey', P.map);
+  const days = q('.tripDays'); if (days) P.days.appendChild(days);
+  /* good to know: the countries and their rules, the warnings of the days, how it is worked out */
+  const cc = tripCountries(plan).map(c => c.toLowerCase()), rules = (typeof BRIEF_RULES !== 'undefined' ? BRIEF_RULES : {});
+  const warn = [...res.querySelectorAll('.tripSeason, .tripWarn')].map(w => { const dc = w.closest('.tripDay'); return { day: dc ? +dc.dataset.i + 1 : 0, t: w.textContent.trim() }; }).filter(x => x.t);
+  const info = document.createElement('div'); info.className = 'tripInfo';
+  info.innerHTML = '<section class="tripBasket"><h3>Countries on this trip</h3>' + (cc.length ? cc.map(c => '<div class="tripCountry"><p><span class="raOval tripCc">' + esc(TRIP_CC_CODE[c] || c.toUpperCase()) + '</span> <b>' + esc(TRIP_CC_NAME[c] || c.toUpperCase()) + '</b></p>' +
+      ((rules[c] || []).length ? '<ul>' + rules[c].map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : '<p class="tripNote">No special rules on file - the usual: lights on, helmet, and the signs.</p>') + '</div>').join('') : '<p class="tripNote">Countries appear once the stops are placed.</p>') + '</section>' +
+    '<section class="tripBasket"><h3>Warnings for this trip</h3>' + (warn.length ? '<ul class="tripWarnList">' + warn.map(w => '<li>' + (w.day ? '<b>Day ' + w.day + ':</b> ' : '') + esc(w.t) + '</li>').join('') + '</ul>' : '<p class="tripNote">Nothing special on file for these days. Check pass openings in spring and autumn.</p>') + '</section>';
+  P.info.appendChild(info); move('.tripFineD', P.info);
+  const fine = P.info.querySelector('.tripFineD'); if (fine) fine.open = true;
+  /* inside each day: three baskets */
+  res.querySelectorAll('.tripDay').forEach(card => { if (card.dataset.baskets) return; card.dataset.baskets = '1';
+    const box = (cls, h) => { const b = document.createElement('section'); b.className = 'tdBasket ' + cls; b.innerHTML = '<h4>' + h + '</h4>'; return b; };
+    const ride = box('tdRide', 'The ride'), night = box('tdNight', 'Tonight'), change = box('tdChange', 'Change this day');
+    ['.tripPath', '.tripTravel', '.tripPic', '.tripBook', '.tripRoadSt', '.tripBtns'].forEach(s2 => { const el = card.querySelector(':scope > ' + s2); if (el) ride.appendChild(el); });
+    ['.tripStayTop', '.tripStay'].forEach(s2 => { const el = card.querySelector(':scope > ' + s2); if (el) night.appendChild(el); });
+    ['.tripAlt', '.tripAdd'].forEach(s2 => { const el = card.querySelector(':scope > ' + s2); if (el) change.appendChild(el); });
+    [ride, night, change].forEach(b => { if (b.children.length > 1) card.appendChild(b); }); });
+  /* the day index and the pager */
+  const idx = document.createElement('ol'); idx.className = 'tripDayIdx';
+  idx.innerHTML = plan.days.map((d, i) => { const c = (days || res).querySelector('.tripDay[data-i="' + i + '"]'); const h = c ? (c.querySelector('h3') || {}).textContent || '' : ''; const sub = c ? (c.querySelector('.tripSub') || {}).textContent || '' : '';
+    return '<li><button type="button" data-idx="' + i + '"><i style="background:' + TRIP_COL[i % TRIP_COL.length] + '">' + (i + 1) + '</i><span><b>' + esc(h.replace(/^\s*\d+\s*/, '')) + '</b><small>' + esc(sub) + '</small></span><em>›</em></button></li>'; }).join('');
+  if (days) { P.days.insertBefore(idx, days); const pg = document.createElement('nav'); pg.className = 'tripPager'; pg.setAttribute('aria-label', 'Days'); P.days.appendChild(pg); }
+  /* the tab bar */
+  const tabs = document.createElement('div'); tabs.className = 'tripTabs'; tabs.setAttribute('role', 'tablist');
+  const T = [['ov', 'Overview'], ['days', 'Days · ' + n], ['map', 'Map'], ['info', 'Good to know']];
+  tabs.innerHTML = T.map(([k, l]) => '<button type="button" role="tab" data-tab="' + k + '" aria-controls="tripPane-' + k + '">' + esc(l) + '</button>').join('');
+  const anchor = q('.tripSum') || q('.tripH2'); const after = q('.tripWarn') || anchor; after.after(tabs);
+  let at = tabs; ['ov', 'days', 'map', 'info'].forEach(k => { at.after(P[k]); at = P[k]; });
+  tabs.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => tripShowTab(b.dataset.tab, true));
+  idx.querySelectorAll('[data-idx]').forEach(b => b.onclick = () => tripShowDay(+b.dataset.idx, true));
+  tripShowTab(ui.tab, false); if (ui.tab === 'days') tripShowDay(ui.day, false);
+} catch (e) { try { console.warn('CurveScout: trip tabs', e && e.message); } catch (e2) {} } }
+/* a tab is its own page: it opens at the top */
+function tripShowTab(k, top) { const res = document.querySelector('.tripRes'); if (!res) return; TRIP.ui = Object.assign(TRIP.ui || {}, { tab: k });
+  res.querySelectorAll('.tripTabs [data-tab]').forEach(b => { const on = b.dataset.tab === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); });
+  res.querySelectorAll('.tripPane').forEach(p => { p.hidden = p.dataset.pane !== k; });
+  if (k === 'days' && !(TRIP.ui.day >= 0)) tripShowDay(innerWidth >= 900 ? 0 : -1, false);
+  if (k === 'map') setTimeout(() => { try { TRIP.map && TRIP.map.invalidateSize(false); if (TRIP.map && TRIP.allBounds && TRIP.focus == null) TRIP.map.fitBounds(L.latLngBounds(TRIP.allBounds).pad(0.12)); } catch (e) {} }, 60);
+  if (top) scrollTo(0, 0); }
+/* a day is its own page too (-1: the list of days) */
+function tripShowDay(i, top) { const res = document.querySelector('.tripRes'); if (!res) return; const n = TRIP.plan ? TRIP.plan.days.length : 0;
+  if (!res.querySelector('.tripPane[data-pane="days"]') || res.querySelector('.tripPane[data-pane="days"]').hidden) { TRIP.ui = Object.assign(TRIP.ui || {}, { tab: 'days' }); res.querySelectorAll('.tripTabs [data-tab]').forEach(b => { const on = b.dataset.tab === 'days'; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); }); res.querySelectorAll('.tripPane').forEach(p => { p.hidden = p.dataset.pane !== 'days'; }); }
+  TRIP.ui.day = i; const P = res.querySelector('.tripPane[data-pane="days"]'); if (!P) return; P.classList.toggle('oneDay', i >= 0);
+  P.querySelectorAll('.tripDay').forEach(c => { c.hidden = i >= 0 && +c.dataset.i !== i; });
+  P.querySelectorAll('[data-idx]').forEach(b => b.classList.toggle('on', +b.dataset.idx === i));
+  const pg = P.querySelector('.tripPager'); if (pg) { pg.hidden = i < 0; if (i >= 0) { pg.innerHTML = '<button type="button" data-pg="' + (i - 1) + '"' + (i > 0 ? '' : ' disabled') + '>‹ Day ' + i + '</button><button type="button" data-pg="-1" class="all">All days</button><button type="button" data-pg="' + (i + 1) + '"' + (i < n - 1 ? '' : ' disabled') + '>Day ' + (i + 2) + ' ›</button>';
+    pg.querySelectorAll('[data-pg]').forEach(b => b.onclick = () => tripShowDay(+b.dataset.pg, true)); if (i === n - 1) pg.lastChild.textContent = 'Last day'; if (i === 0) pg.firstChild.textContent = 'First day'; } }
+  if (i >= 0) try { tripBookFill(i); } catch (e) {}
+  if (top) scrollTo(0, 0); }
 
 /* About: founder interview (owner 2026-10-11). Text supplied by the owner; photographs his own. */
 const ABOUT_DATA = {"title": "I wanted to build the service I kept looking for.", "standfirst": "A conversation with Torsten Sauter, founder of CurveScout, about mountain roads, making time for a proper ride, and building something other motorcyclists will want to use.", "intro": ["Torsten Sauter’s starting point for CurveScout was personal. Based in Switzerland, he loves riding, mountains and the roads that make an ordinary day out worth remembering. What he wanted online was equally straightforward: help finding those roads, enough information to choose between them, and a practical way to turn the choice into a trip.", "Developed and launched in 2026, CurveScout began with scenic-road discovery. Its ambitions now extend to day trips, weekends and longer motorcycle holidays. The service remains free, and Sauter describes its commercial future as an open question. His immediate priority is more definite: make it useful enough that riders come back.", "We asked him what that means in practice, where the idea came from, and how he intends to grow without losing sight of the ride itself."], "blocks": [{"t": "photo", "n": 1}, {"t": "q", "x": "You could have spent your spare time riding. Why spend so much of it building a website about riding?"}, {"t": "a", "x": "That is a fair question. I wanted something that would help me make better use of the time I do have on the bike."}, {"t": "a", "x": "Living in Switzerland, I have mountains and extraordinary roads within reach. But even with that advantage, deciding where to go can involve surprisingly much work. You find a road, look somewhere else for a description, check whether the distance makes sense, then start thinking about the rest of the day."}, {"t": "a", "x": "Some of the services I tried were too basic for what I wanted. Others offered more, but at a price that made casual use less attractive. I kept thinking there was room for something generous, detailed and easy to get into. Eventually, I decided to pursue it myself."}, {"t": "q", "x": "What does a really good ride mean to you?"}, {"t": "a", "x": "Mountains are a large part of it, certainly. I like the changing landscape, the way a road climbs and then opens into a different valley. But I would not reduce a good ride to altitude or the number of hairpins."}, {"t": "a", "x": "It is also the sequence. A demanding section followed by something more flowing. Somewhere worth stopping. Enough time to enjoy the place rather than immediately looking at the clock."}, {"t": "a", "x": "I love life in the saddle, but I do not need every ride to become an endurance exercise. Sometimes a few hours on roads that suit your mood are more satisfying than covering a much greater distance because a route happens to look impressive on a screen."}, {"t": "q", "x": "There are already plenty of maps and route planners. What is the question CurveScout tries to answer differently?"}, {"t": "a", "x": "The question comes before navigation: which ride should I choose?"}, {"t": "a", "x": "Knowing how to reach somewhere is useful once you have decided to go there. I wanted more help with that decision. What is the road like? How does it fit with the roads around it? Is this a sensible afternoon ride, or am I committing to something much longer? What would make me choose it over another option nearby?"}, {"t": "a", "x": "That is where the idea of CurveScout starts. Discovery needs explanation. A photograph can catch your attention, but the next step should be information that helps you decide whether the ride is right for you."}, {"t": "q", "x": "Walk us through someone’s first visit. What do they actually do?"}, {"t": "a", "x": "You begin with a starting point, the distance you have in mind and the kind of riding you are looking for. Then you explore the alternatives through route cards, the map or Swipe, and build a shortlist. The route information brings together the roadbook, elevation, weather context, services and GPX export. Those are the core functions around which the experience is organised."}, {"t": "a", "x": "The important part for me is that you should not need to become an expert in the application before you can use it. You might arrive with a particular pass in mind. Or you might simply have Saturday free. Both are perfectly reasonable starting points."}, {"t": "q", "x": "Your own enthusiasm is for the mountains. Does that make CurveScout a product mainly for Alpine riders?"}, {"t": "a", "x": "The Alps inspired the idea, but they should not limit it."}, {"t": "a", "x": "A coastal road, a route through wooded hills or an unfamiliar stretch near home can be just as worthwhile. The rider who has a free evening deserves attention as much as the person planning a week abroad."}, {"t": "a", "x": "I also do not want the service to assume that everybody enjoys the same kind of riding. Some people want technically demanding roads. Others want scenery, a relaxed pace and somewhere pleasant to stop. Those preferences should influence the recommendations. My own taste gave the project its starting point; it should not become a rule that everyone else has to follow."}, {"t": "photo", "n": 2}, {"t": "q", "x": "You have extended the idea into trip, weekend and holiday planning. What changes when someone has several days rather than an afternoon?"}, {"t": "a", "x": "The individual roads still matter, but the choices start affecting one another."}, {"t": "a", "x": "For an afternoon, you might want a satisfying loop from home. For a weekend, you need to think about what belongs on the first day, where you finish, and whether the second day offers something different. For a longer holiday, the balance becomes more important again. You want good riding, but you also want time to stop and experience the places you have travelled to."}, {"t": "a", "x": "That is the thinking behind the expanded planners. We are using the road inventory as the basis for a fuller itinerary, rather than treating every day as an isolated route. The aim is to help people put together a trip they would actually enjoy riding."}, {"t": "q", "x": "What would you tell someone who keeps adding another pass to the itinerary?"}, {"t": "a", "x": "I understand the temptation. You see another interesting road and think it would be a shame to miss it."}, {"t": "a", "x": "But the useful question is what that addition does to the whole day. Does it add a worthwhile contrast, or does it turn the last two hours into a rush? Does it leave time for the stop you were looking forward to? Are you still planning for the people on the trip, or for the satisfaction of completing a list?"}, {"t": "a", "x": "A planner should make those consequences easier to see. It should help you make a good choice, including the choice to leave something for another visit. I would rather help someone enjoy four days than persuade them to squeeze six days of riding into them."}, {"t": "q", "x": "A large road inventory sounds attractive. How do you prevent it from becoming a large collection of places nobody can distinguish?"}, {"t": "a", "x": "By remembering that the number of entries is not the product."}, {"t": "a", "x": "The useful work is in making those entries understandable: what a route contains, how the sections connect, what is distinctive, and what information is reliable. Ten genuinely relevant choices are more helpful than hundreds that all sound alike."}, {"t": "a", "x": "That is also why I care about the descriptions. Repeating “beautiful views” does not tell you much. A rider needs to understand what changes along the road and why one option might suit them better."}, {"t": "a", "x": "We want breadth, because discovery benefits from having alternatives. But breadth has to be accompanied by detail and clear distinctions. Otherwise we have simply moved the research burden onto another screen."}, {"t": "q", "x": "How much authority should a platform like this claim over a rider’s decisions?"}, {"t": "a", "x": "Less than it might be tempting to claim."}, {"t": "a", "x": "There is a difference between helping someone prepare and telling them that a road is safe to ride. A route description, a forecast and a suggested itinerary are useful inputs. They do not replace the conditions in front of you or your own judgement."}, {"t": "a", "x": "I want CurveScout to be clear about what it knows and what still needs checking. That is part of being useful, not an admission that the idea does not work. People can make sensible decisions with incomplete information when the limits are clear. What they cannot use is confidence that the underlying information does not justify."}, {"t": "a", "x": "The rider remains responsible for the ride."}, {"t": "q", "x": "“From bikers for bikers” is an appealing phrase. What would make it more than a slogan?"}, {"t": "a", "x": "The details that affect an actual day out."}, {"t": "a", "x": "You should be able to see the time implications of a decision, not only the distance. You should be able to distinguish an interesting road from the journey needed to reach it. You should get a reason to stop at a place, rather than another marker to decipher."}, {"t": "a", "x": "It also means respecting different riders. Experience, preferred pace and appetite for a long day vary considerably. I do not want the platform to reward one type of rider and make everyone else feel they have chosen the less serious option."}, {"t": "a", "x": "The phrase only earns its place if riders recognise their own needs in the product."}, {"t": "q", "x": "You say the response has been encouraging. What matters to you in that response?"}, {"t": "a", "x": "We are very happy with the early response. It gives me confidence that the interest is shared and that this was not simply a service I wanted for myself."}, {"t": "a", "x": "But I would be careful about confusing enthusiasm for an idea with proof that every part of the product is finished. Those are different things."}, {"t": "a", "x": "The response that matters most is whether people find it useful enough to return. Does it help them choose a ride? Does it make planning easier? Do they feel that their time was well spent?"}, {"t": "a", "x": "I want to keep that practical test. Positive feedback is encouraging; suggestions and criticism are valuable because they tell us where the experience still needs work."}, {"t": "q", "x": "Why keep it free?"}, {"t": "a", "x": "Because reaching fellow enthusiasts is a central part of why I started it."}, {"t": "a", "x": "I would like someone to hear about CurveScout, try it and discover whether it helps them without having to make a purchasing decision first. That matters for a service people might use for a spontaneous outing as well as a bigger trip."}, {"t": "a", "x": "My primary motivation is to build something people genuinely like using. Of course, running and developing a platform has to be sustainable. A freemium model may make sense at some stage. I am not ruling it out, and I am not making a promise about pricing forever."}, {"t": "a", "x": "But I do not want the initial experience to feel like a demonstration of everything you cannot do until you pay."}, {"t": "q", "x": "You want the platform to keep evolving. How do you stop that from becoming an excuse for leaving things unfinished?"}, {"t": "a", "x": "By separating ambition from what a rider is being asked to rely on today."}, {"t": "a", "x": "There will always be more we could add. That does not remove the obligation to make the existing experience coherent. A new feature should improve the trip, not make something familiar harder to use."}, {"t": "a", "x": "For me, evolving means listening, correcting and adding carefully. It does not mean changing things simply to have another announcement. We need to preserve what people value while making the weak parts better."}, {"t": "a", "x": "I am ambitious about where CurveScout can go. But someone opening it to plan this weekend should not need to care about our long-term ambitions. It has to be useful to them now."}, {"t": "photo", "n": 3}, {"t": "q", "x": "CurveScout has a few cousins. What are DipMapper, Nestlyzer and Mnemika?"}, {"t": "a", "x": "They explore different interests through a similar approach."}, {"t": "a", "x": "DipMapper is centred on finding places to swim: lakes, beaches, pools, baths and other swimming spots. Its map and place cards bring practical details together, including facilities, parking, weather and source links where available. The wider direction is information around time spent in and around the water, including water sports."}, {"t": "a", "x": "Nestlyzer applies the idea to municipalities and the question of where to live. It is about comparing places and understanding how they fit different priorities, rather than assuming there is one universally right place for everyone. The latest version is still being prepared and is not yet live."}, {"t": "a", "x": "Mnemika, at mnemika.com, is the odd one out, because it is about learning rather than places. It is an exam trainer, built first for the Swiss Passerelle, the supplementary exam that opens the way from a vocational baccalaureate to university. It turns the syllabus into practice and repetition, so that preparing becomes steady work rather than last-minute cramming."}, {"t": "a", "x": "They are separate products, but the connection is quite natural to me: helping someone understand a place before choosing what to do there."}, {"t": "q", "x": "You describe the common approach as open-source intelligence. What does that mean for someone who just wants a good ride or a swim?"}, {"t": "a", "x": "In this context, it means working with information that is already publicly available and making it more useful."}, {"t": "a", "x": "The information may exist, but it is often spread across maps, public records, local websites and specialist sources. Finding it is one job. Working out whether it concerns the same place, how current it is, and what it means for the user is another."}, {"t": "a", "x": "That is the part that interests me. A person should not need to repeat all that work every time they consider somewhere new."}, {"t": "a", "x": "And it requires judgement. Combining five sources does not automatically produce a better answer. You still have to understand the differences between them and avoid presenting an assumption as an established fact."}, {"t": "q", "x": "Is the ambition eventually to build a much larger family of services?"}, {"t": "a", "x": "Potentially, yes. I like the idea of starting with a concrete need, building something useful and allowing the scope to grow from there."}, {"t": "a", "x": "I am curious about what is possible, and I am motivated by making things that help people. That can lead to more than one product. But I do not think having a long list of websites is an achievement in itself."}, {"t": "a", "x": "Each one needs a reason to exist. It needs to do something well enough that people choose to use it. CurveScout should succeed as a riding platform, DipMapper as a service for finding and understanding swimming places, Mnemika as a way to prepare for an exam, and Nestlyzer on its own merits."}, {"t": "a", "x": "There is more I would like to explore. The responsibility is to finish useful things as well as imagine new ones."}, {"t": "q", "x": "What would make you proudest of CurveScout a few years from now?"}, {"t": "a", "x": "Being able to say that people genuinely use it to get more from something they enjoy."}, {"t": "a", "x": "I would love CurveScout to become one of the best platforms available to motorcyclists. But I would rather earn that description than put it in a headline ourselves."}, {"t": "a", "x": "The simplest version of success is still close to the original idea: someone has time for a ride, opens CurveScout, finds an option that interests them and comes home pleased they went. Perhaps they discovered a road they would otherwise have missed. Perhaps they planned a better weekend because they understood the choices more clearly."}, {"t": "a", "x": "That is a worthwhile result. It is why I wanted to build it."}]};
@@ -9233,7 +9302,7 @@ window.csCopilotMount = csCopilotMount;
   /* and on the welcome screen, under the main buttons: what Wingman is, one tap to start it */
   const hero = () => { const cta = document.querySelector('#csWall .csHeroCta'); if (!cta || document.getElementById('cpHero')) return;
     const b = document.createElement('button'); b.type = 'button'; b.id = 'cpHero'; b.className = 'cpHero';
-    b.innerHTML = '<span class="cpHeroI" aria-hidden="true">' + CS_WM_LOGO + '</span><span><b>CurveScout Ride</b><small>World-class navigator and tour guide for riders. Address to address, through your stops, on the good roads. It reads the bends ahead, warns of the hazards open road data knows about, and tells you the sights on the way - where they are and why they matter. Your eyes, the signs and the law always come first.</small></span>';
+    b.innerHTML = '<span class="cpHeroI" aria-hidden="true">' + CS_WM_LOGO + '</span><span><b>CurveScout Ride</b><small>Your navigator and tour guide: turn by turn, the bends ahead, the sights on the way.</small></span>';
     b.onclick = () => { try { if (typeof csShowWall === 'function') csShowWall(false); } catch (e) {} csNavOpen('free'); }; cta.insertAdjacentElement('afterend', b); };
   const both = () => { add(); hero(); setTimeout(hero, 1500); setTimeout(hero, 5000); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', both); else both();
@@ -9335,8 +9404,7 @@ function renderLegal() {
     'over this site, over your navigation device, and over anything you read here.</p>' +
     '<p>Riding a motorcycle carries risk that no website can remove. You alone are responsible for ' +
     'your speed, your machine, your licence and insurance, your fitness to ride and your judgement ' +
-    'on the day. CurveScout accepts no liability for injury, death, damage, loss, fines or penalties ' +
-    'arising from use of this information, to the fullest extent the law allows. If a route looks ' +
+    'on the day. What CurveScout is and is not liable for is set out once, under Terms below. If a route looks ' +
     'wrong on the ground, believe the ground.</p>' +
     '<p><b>Where speed cameras are shown, they are shown for awareness, not to help you avoid enforcement.</b> ' +
     'In countries where showing or carrying camera warnings is restricted - Switzerland, Germany, France, Austria and Italy among them - ' +
@@ -9399,16 +9467,17 @@ function renderLegal() {
       : 'Nothing is counted. ') +
     (adsOn
       ? 'Advertising is the one thing that needs your consent, which is why the consent dialog asks before any ad loads. ' +
-        'Your saved rides and settings stay in your browser and are never sent anywhere, so they need no consent.</p>'
+        'Your saved rides and settings are stored only in your browser, so they need no consent. When you open a saved ride, its coordinates are sent to the routing service to draw the road, like any other route.</p>'
       : 'That is why you are not being asked to consent to anything: under the EU ePrivacy rules and the Swiss revised Data Protection Act, ' +
         'consent is required for storing data on your device that is not strictly necessary, and browser storage used solely to remember ' +
-        'your own settings, never sent anywhere, does not fall in that bucket. If that ever changes, you will be asked first.</p>') +
+        'your own settings and saved rides on your device does not fall in that bucket. (When you open a saved ride, its coordinates are sent to the routing service to draw the road, like any other route.) If that ever changes, you will be asked first.</p>') +
 
     '<h2>Who your browser talks to</h2>' +
-    '<p>To draw a map and find a photograph, your browser contacts these services directly. ' +
-    'Each one necessarily sees your IP address, as any web request does. We receive nothing back.</p>' +
+    '<p>To draw a map, a route, the weather or a photograph, your browser contacts these services directly. ' +
+    'Each one necessarily sees your IP address, as any web request does, and the places it is asked about - in ' +
+    'CurveScout Ride that includes where you are. CurveScout itself receives nothing.</p>' +
     '<table class="lgTable"><tr><th>Service</th><th>What for</th><th>What it sees</th></tr>' +
-    THIRD_PARTIES.map(([n, use, url, sees]) =>
+    THIRD_PARTIES().map(([n, use, url, sees]) =>
       '<tr><td><a href="' + url + '" target="_blank" rel="noopener">' + esc(n) + '</a></td>' +
       '<td>' + esc(use) + '</td><td>' + esc(sees) + '</td></tr>').join('') +
     '</table>' +
@@ -9539,12 +9608,14 @@ function show(v) {
   if (v === 'ride' && S._keepScrollY > 0) { const y0 = S._keepScrollY; S._keepScrollY = 0; const t1 = Date.now();
     const back = () => { if (S.view !== 'ride') return; if (document.documentElement.scrollHeight > y0 + 200 && Math.abs(window.scrollY - y0) > 4) window.scrollTo({ top: y0, behavior: 'instant' }); if (Date.now() - t1 < 900) setTimeout(back, 100); };
     setTimeout(back, 0); }
-  try { const key = v + (v === 'rides' && S.showSaved ? ':saved' : ''); const y = S._scrollMem && S._scrollMem[key];
-    if (prevView === 'ride' && v !== 'ride' && y > 80) { const t0 = Date.now(); let cancelled = false;
-      const stop = () => { cancelled = true; window.removeEventListener('touchstart', stop); window.removeEventListener('wheel', stop); window.removeEventListener('keydown', stop); };
-      window.addEventListener('touchstart', stop, { passive: true }); window.addEventListener('wheel', stop, { passive: true }); window.addEventListener('keydown', stop);
-      const again = () => { if (cancelled || S.view !== v) return stop(); if (Math.abs(window.scrollY - y) > 4 && document.documentElement.scrollHeight > y + 200) window.scrollTo({ top: y, behavior: 'instant' }); if (Date.now() - t0 < 1500) setTimeout(again, 120); else stop(); };
-      setTimeout(again, 0); } } catch (e) {}
+  /* ---- EVERY NEW PAGE OPENS AT ITS TOP (owner 2026-11-01: "every new sub site starts at its top and not where we left last
+     time or somewhere in the middle") ----
+     The list a rider came back to used to be put back where he had left it, and while a long page built itself the browser's
+     scroll anchoring dragged it down with the content (a ride landed 7,966 px down). Now a new page - a new address - goes
+     to its top and is held there while it builds, until the rider scrolls or taps himself (3 s at most). A re-render of the
+     same page (an avoid switch on a ride) keeps its place as before. */
+  try { const pageKey = location.hash || '#/'; const fresh = pageKey !== S._pageKey; S._pageKey = pageKey;
+    if (fresh && !(v === 'ride' && S._keepScrollY > 0)) csPinTop(); } catch (e) {}
   S.view = v;
   /* audit 2026-10-11: every view and every ride had the same tab title; a ride page names its ride (set in renderRide) */
   try { const TT = { home: 'CurveScout - find the road worth the ride', rides: 'Rides near you | CurveScout', explore: 'Explore rides | CurveScout',
@@ -10874,17 +10945,13 @@ function csBasemap(map, kind, attach = true) {
      tiling the map with a refusal image, and the route stays on neutral ground. */
   if (typeof L !== 'undefined' && L.tileLayer) {
     try {
-      const url = kind === 'terrain'
-        ? 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
-        : 'https://tile-a.openstreetmap.fr/hot/{z}/{x}/{y}.png';
-      const credit = kind === 'terrain'
-        ? '\u00a9 <a href="https://opentopomap.org" target="_blank" rel="noopener">OpenTopoMap</a> (CC-BY-SA) \u00b7 ' +
-          '\u00a9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
-        : '\u00a9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> ' +
+      /* r31 legal review: OpenTopoMap's free tiles are not for an ad-funded site, so the no-WebGL fallback uses the
+         OSM France standby for both kinds; the relief comes only from our own Terrain Tiles layer */
+      const url = 'https://tile-a.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+      const credit = '\u00a9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> ' +
           'contributors \u00b7 tiles by <a href="https://www.openstreetmap.fr/" target="_blank" rel="noopener">OpenStreetMap France</a>';
       const raster = L.tileLayer(url, {
-        maxZoom: kind === 'terrain' ? 17 : 18, crossOrigin: true,
-        subdomains: kind === 'terrain' ? 'abc' : 'a',
+        maxZoom: 18, crossOrigin: true, subdomains: 'a',
         attribution: credit, csKind: kind });
       raster.on('tileerror', () => {
         try { if (map) map.removeLayer(raster); } catch (e) {}
@@ -13252,12 +13319,17 @@ const WX = {
       lightrain: 61, rain: 63, heavyrain: 65, lightsnow: 71, snow: 73, heavysnow: 75,
       lightrainshowers: 80, rainshowers: 81, heavyrainshowers: 82, thunder: 95 };
     const codeOf = (sym) => {
-      const k = String(sym || '').replace(/_(day|night|polartwilight)$/, '');
-      return SYMBOL[k] != null ? SYMBOL[k] : (/rain|showers/.test(k) ? 61 : /snow/.test(k) ? 71 : 3);
+      /* Missing data stays missing (null), never "cloudy"; any thunder symbol stays a thunderstorm
+         (rainandthunder, heavysleetshowersandthunder...), never a plain rain code */
+      if (!sym) return null;
+      const k = String(sym).replace(/_(day|night|polartwilight)$/, '');
+      if (/thunder/.test(k)) return /heavy/.test(k) ? 96 : 95;
+      return SYMBOL[k] != null ? SYMBOL[k] : (/sleet/.test(k) ? 66 : /rain|showers/.test(k) ? 61 : /snow/.test(k) ? 71 : null);
     };
     for (const t of series.slice(0, days * 24)) {
       const d = (t.data && t.data.instant && t.data.instant.details) || {};
-      const n1 = (t.data && t.data.next_1_hours) || {};
+      /* Beyond ~2.5 days MET gives only 6-hour periods: use them rather than report nothing */
+      const n1 = (t.data && (t.data.next_1_hours || t.data.next_6_hours)) || {};
       const nd = n1.details || {};
       out.hourly.time.push(t.time);
       out.hourly.temperature_2m.push(d.air_temperature != null ? d.air_temperature : null);
@@ -13338,9 +13410,18 @@ const ADS = {
     const poll = (n) => {
       if (typeof window.__tcfapi === 'function') {
         window.__tcfapi('addEventListener', 2, (tc, ok) => {
-          if (!ok || !tc || !(tc.eventStatus === 'tcloaded' || tc.eventStatus === 'useractioncomplete')) return;
+          /* r31 audit (CS-R31-010): only a loaded CMP with a real answer can authorise anything. An error, a CMP
+             still loading or an unclear answer loads nothing. Consent means storage (purpose 1) AND Google itself
+             (TCF vendor 755); outside the GDPR (gdprApplies false) the CMP decides and still has to have loaded. */
+          if (!ok || !tc) { this.revoke(); return; }
+          if (tc.cmpStatus && tc.cmpStatus !== 'loaded') { this.revoke(); return; }
+          if (!(tc.eventStatus === 'tcloaded' || tc.eventStatus === 'useractioncomplete')) return;
           const p1 = !!(tc.purpose && tc.purpose.consents && tc.purpose.consents[1]);
-          if (p1) this.load(true); else this.revoke();
+          const g = !!(tc.vendor && tc.vendor.consents && tc.vendor.consents[755]);
+          const yes = tc.gdprApplies === false ? true : (p1 && g);
+          if (yes) this.load(true);
+          else if (this._loaded) this.withdraw();
+          else this.revoke();
         });
       } else if (n < 50) setTimeout(() => poll(n + 1), 200);
     };
@@ -13353,6 +13434,13 @@ const ADS = {
     try { document.querySelectorAll('script[src*="adsbygoogle.js"]').forEach(x => x.remove()); } catch (e) {}
     try { document.querySelectorAll('.adSlot[data-slot]').forEach(el => { el.innerHTML = ''; delete el.dataset.filled; }); } catch (e) {}
     try { window.adsbygoogle = { push() {}, length: 0, loaded: false }; } catch (e) {}
+  },
+  /* Withdrawal after ads ran: a loaded ad script cannot be unloaded from a page, so after removing what can be
+     removed the page reloads once - the reloaded page asks the CMP first and loads nothing without consent. */
+  withdraw() {
+    this.revoke();
+    try { sessionStorage.setItem('csAdsWithdrawn', '1'); } catch (e) {}
+    try { (window.__csAdsReload || (() => location.reload()))(); } catch (e) {}
   },
   set(v) {
     try { store.set(this.key, v); } catch (e) {}
@@ -16828,73 +16916,104 @@ const VERDICT_TAG = { risk: 'hold', warn: 'caution', good: 'go', ok: 'go',
    `sends` says what actually leaves the browser - the honest answer for a geocoder is the
    text he typed, not "coordinates". */
 const SERVICE_REGISTRY = [
-  { id: 'osm-tiles', name: 'OpenStreetMap Foundation', purpose: 'map tiles',
+  /* sees: what that service receives from your browser - the one statement the privacy page shows */
+  { id: 'host', name: 'The static host (GitHub Pages)', purpose: 'serving the site itself',
+    sends: 'your IP address and browser, as with any website', trigger: 'every visit',
+    sees: 'Your IP address, browser and the pages you open, in its access logs.',
+    licence: 'their terms', licenceUrl: 'https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement',
+    mode: 'always', retention: 'their access logs' },
+  { id: 'openfreemap', name: 'OpenFreeMap (tiles.openfreemap.org)', purpose: 'the map tiles and map styles',
     sends: 'the map area you are looking at', trigger: 'whenever a map is shown',
-    licence: 'ODbL', licenceUrl: 'https://opendatacommons.org/licenses/odbl/',
+    sees: 'Your IP address and the map area on screen. In CurveScout Ride the map follows you, so that area is where you are.',
+    privacy: 'https://openfreemap.org/privacy/', licence: 'ODbL data, OpenFreeMap terms', licenceUrl: 'https://openfreemap.org/',
+    mode: 'browser', retention: 'their policy applies' },
+  { id: 'osm-france', name: 'OpenStreetMap France', purpose: 'street map tiles when the vector map is unavailable',
+    sends: 'the map area you are looking at', trigger: 'only when the vector map cannot start',
+    sees: 'Your IP address and the map area on screen.',
+    privacy: 'https://www.openstreetmap.fr/', licence: 'ODbL', licenceUrl: 'https://www.openstreetmap.org/copyright',
     mode: 'browser', retention: 'their tile usage policy applies' },
-  { id: 'wikimedia', name: 'Wikimedia Commons', purpose: 'photographs and their credits',
-    sends: 'the name of a place', trigger: 'when a route page shows a picture',
-    licence: 'per file', licenceUrl: 'https://commons.wikimedia.org/wiki/Commons:Licensing',
-    mode: 'browser', retention: 'unknown' },
+  { id: 'osm-tiles', name: 'OpenStreetMap Foundation', purpose: 'map data and the small maps on route pages',
+    sends: 'the map area you are looking at', trigger: 'whenever such a map is shown',
+    sees: 'Your IP address and the map area you looked at.',
+    privacy: 'https://osmfoundation.org/wiki/Privacy_Policy', licence: 'ODbL', licenceUrl: 'https://opendatacommons.org/licenses/odbl/',
+    mode: 'browser', retention: 'their tile usage policy applies' },
+  { id: 'terrain-tiles', name: 'Terrain Tiles on AWS (Mapzen/Tilezen terrarium)', purpose: 'ground heights and the Topo relief',
+    sends: 'tile requests around the route, as with any map image', trigger: 'when a climb profile or the Topo map is shown',
+    sees: 'Your IP address and which elevation tiles were asked for (the area around the route).',
+    privacy: 'https://aws.amazon.com/privacy/',
+    licence: 'Open data: SRTM, 3DEP, GMTED2010 (USGS, public domain); EU-DEM (Copernicus); ETOPO1 (NOAA); Kartverket CC BY 4.0; Geoscience Australia CC BY 4.0; and others - credited',
+    licenceUrl: 'https://registry.opendata.aws/terrain-tiles/', mode: 'direct', retention: 'their policy applies' },
+  { id: 'osrm', name: 'Project OSRM', purpose: 'following the road between checkpoints',
+    sends: 'the coordinates of the route', trigger: 'when a route, a trip or a saved ride is drawn or re-measured',
+    sees: 'The coordinates of the route you opened - also of a ride you saved on this device, when it is drawn again. In CurveScout Ride, your current position when it routes you from where you are.',
+    privacy: 'https://github.com/Project-OSRM/osrm-backend', licence: 'BSD-2-Clause', licenceUrl: 'https://github.com/Project-OSRM/osrm-backend',
+    mode: 'gateway', retention: 'unknown' },
+  { id: 'osrm-fossgis', name: 'FOSSGIS routing (routing.openstreetmap.de)', purpose: 'the road line when the first routing server is busy',
+    sends: 'the coordinates of the route', trigger: 'only when the first routing server does not answer',
+    sees: 'The same as Project OSRM, only when the first server does not answer.',
+    privacy: 'https://www.fossgis.de/datenschutzerklaerung/', licence: 'ODbL data, FOSSGIS usage policy', licenceUrl: 'https://routing.openstreetmap.de/about.html',
+    mode: 'gateway', retention: 'their policy applies' },
+  { id: 'valhalla', name: 'FOSSGIS Valhalla (valhalla1.openstreetmap.de)', purpose: 'routes without motorways, toll roads or ferries',
+    sends: 'the coordinates of the route', trigger: 'only when an avoid switch is on',
+    sees: 'The coordinates of the route (and, in CurveScout Ride, your current position), only with an avoid switch on.',
+    privacy: 'https://www.fossgis.de/datenschutzerklaerung/', licence: 'ODbL data, FOSSGIS usage policy', licenceUrl: 'https://valhalla1.openstreetmap.de/',
+    mode: 'gateway', retention: 'their policy applies' },
+  { id: 'overpass', name: 'Overpass API (OpenStreetMap)', purpose: 'fuel, food, viewpoints, road works, speed limits and, where allowed, speed cameras',
+    sends: 'an area around the route, or around you', trigger: 'when you open the map layers, and continuously in CurveScout Ride',
+    sees: 'An area around the route. In CurveScout Ride it is asked about the road ahead of you, so it receives your approximate position as you ride.',
+    privacy: 'https://osmfoundation.org/wiki/Privacy_Policy', licence: 'ODbL', licenceUrl: 'https://opendatacommons.org/licenses/odbl/',
+    mode: 'gateway', retention: 'unknown' },
   { id: 'nominatim', name: 'Nominatim (OpenStreetMap)', purpose: 'turning a typed place into coordinates',
     sends: 'THE TEXT YOU TYPE in the start box, when it is not in the local place index',
-    trigger: 'a start search that misses locally', licence: 'ODbL',
-    licenceUrl: 'https://operations.osmfoundation.org/policies/nominatim/',
+    trigger: 'a start search that misses locally',
+    sees: 'What you type into a place box when it is not found locally; for "where am I", your position.',
+    privacy: 'https://osmfoundation.org/wiki/Privacy_Policy', licence: 'ODbL', licenceUrl: 'https://operations.osmfoundation.org/policies/nominatim/',
     mode: 'gateway', retention: 'their policy applies' },
-  { id: 'overpass', name: 'Overpass API', purpose: 'fuel, workshops and services along a route',
-    sends: 'the coordinates of the route', trigger: 'when you open a route and ask for services',
-    licence: 'ODbL', licenceUrl: 'https://opendatacommons.org/licenses/odbl/',
-    mode: 'gateway', retention: 'unknown' },
-  { id: 'osrm', name: 'Project OSRM', purpose: 'following the road between checkpoints',
-    sends: 'the coordinates of the route', trigger: 'when a route is drawn or re-measured',
-    licence: 'BSD-2-Clause', licenceUrl: 'https://github.com/Project-OSRM/osrm-backend',
-    mode: 'gateway', retention: 'unknown' },
-  { id: 'osrm-fossgis', name: 'FOSSGIS routing (OSRM)', purpose: 'the road line when the first routing server is busy',
-    sends: 'the coordinates of the route', trigger: 'only when the first routing server does not answer',
-    licence: 'ODbL data, FOSSGIS usage policy', licenceUrl: 'https://routing.openstreetmap.de/about.html',
-    mode: 'gateway', retention: 'their policy applies' },
-  { id: 'studiovoice', name: 'jsDelivr / Hugging Face (CurveScout Ride studio voice)', purpose: 'the natural voice model, downloaded once',
-    sends: 'nothing about you - a file download', trigger: 'only when the studio voice is switched on in CurveScout Ride',
-    licence: 'Kokoro-82M, Apache-2.0', licenceUrl: 'https://huggingface.co/hexgrad/Kokoro-82M',
-    mode: 'direct', retention: 'their policy applies' },
   { id: 'addressregisters', name: 'National address registers (swisstopo CH, IGN/BAN FR, PDOK/BAG NL, Kartverket NO)', purpose: 'street addresses as you type, house by house',
     sends: 'the text typed into a place box', trigger: 'only for address-like input (a house number or a street word)',
+    sees: 'What you type into a place box, only when it looks like an address. Nothing else.',
+    privacy: 'https://www.geo.admin.ch/en/general-terms-of-use-fsdi',
     licence: 'Open government data: swisstopo free use (fair use), Etalab 2.0, CC0, CC BY 4.0', licenceUrl: 'https://www.geo.admin.ch/en/general-terms-of-use-fsdi',
     mode: 'direct', retention: 'their policy applies' },
-  { id: 'valhalla', name: 'FOSSGIS Valhalla', purpose: 'routes without motorways or toll roads',
-    sends: 'the coordinates of the route', trigger: 'only when an avoid switch is on',
-    licence: 'ODbL data, FOSSGIS usage policy', licenceUrl: 'https://valhalla1.openstreetmap.de/',
-    mode: 'gateway', retention: 'their policy applies' },
+  { id: 'metno', name: 'MET Norway (api.met.no)', purpose: 'the weather forecast along the route',
+    sends: 'coordinates along the route', trigger: 'when the weather is shown, and every 15 minutes in CurveScout Ride',
+    sees: 'Coordinates along the route. In CurveScout Ride, your current position and points ahead of you.',
+    privacy: 'https://www.met.no/en/About-us/privacy', licence: 'CC BY 4.0', licenceUrl: 'https://api.met.no/doc/License',
+    mode: 'direct', retention: 'their policy applies' },
+  { id: 'wikipedia', name: 'Wikipedia (Wikimedia Foundation)', purpose: 'sights and stories near the road',
+    sends: 'a point and a radius', trigger: 'on trip day pages, and in CurveScout Ride as you ride',
+    sees: 'A point on the trip; in CurveScout Ride, your approximate position (a 10 km search around you).',
+    privacy: 'https://foundation.wikimedia.org/wiki/Policy:Privacy_policy', licence: 'CC BY-SA 4.0 (text, quoted with a link)', licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/',
+    mode: 'browser', retention: 'their policy applies' },
+  { id: 'wikimedia', name: 'Wikimedia Commons', purpose: 'photographs and their credits',
+    sends: 'the name or position of a place', trigger: 'when a route page shows a picture',
+    sees: 'Your IP address and the places whose pictures load as you scroll.',
+    privacy: 'https://foundation.wikimedia.org/wiki/Policy:Privacy_policy', licence: 'per file', licenceUrl: 'https://commons.wikimedia.org/wiki/Commons:Licensing',
+    mode: 'browser', retention: 'their policy applies' },
+  { id: 'wikidata', name: 'Wikidata', purpose: 'facts about the notable places near the road',
+    sends: 'a handful of points along the route', trigger: 'when you run the scan',
+    sees: 'A handful of points along the route. Its data is CC0; CurveScout writes its own wording from those facts.',
+    privacy: 'https://foundation.wikimedia.org/wiki/Policy:Privacy_policy', licence: 'CC0', licenceUrl: 'https://www.wikidata.org/wiki/Wikidata:Licensing',
+    mode: 'browser', retention: 'their policy applies' },
   { id: 'unsplash', name: 'Unsplash', purpose: 'the welcome-screen photographs',
     sends: 'your IP address, as with any image', trigger: 'when the welcome screen shows',
-    licence: 'Unsplash licence', licenceUrl: 'https://unsplash.com/license',
+    sees: 'Your IP address, as with any image.',
+    privacy: 'https://unsplash.com/privacy', licence: 'Unsplash licence', licenceUrl: 'https://unsplash.com/license',
     mode: 'browser', retention: 'their policy applies' },
+  { id: 'studiovoice', name: 'jsDelivr / Hugging Face (CurveScout Ride studio voice)', purpose: 'the natural voice model - an AI text-to-speech model (Kokoro-82M) that reads CurveScout\u2019s own guidance aloud on your phone; downloaded once, and it runs on the phone, not on a server',
+    sends: 'a file download: your IP address, browser and the time, as with any download - no ride or position data',
+    trigger: 'only when the studio voice is switched on in CurveScout Ride',
+    sees: 'Your IP address, browser and the time of the download (network metadata). No ride or position data.',
+    privacy: 'https://www.jsdelivr.com/terms/privacy-policy-jsdelivr-net', licence: 'Kokoro-82M, Apache-2.0', licenceUrl: 'https://huggingface.co/hexgrad/Kokoro-82M',
+    mode: 'direct', retention: 'their policy applies' },
   { id: 'eudem', name: 'EU-DEM via OpenTopoData', purpose: 'elevation profiles of the launch routes, measured once when the site is built',
     sends: 'nothing from your browser - sampled on the build server', trigger: 'never in your browser',
     licence: 'EU-DEM, Copernicus Land Monitoring Service', licenceUrl: 'https://www.opentopodata.org/datasets/eudem/',
     mode: 'build', retention: 'not applicable' },
-  { id: 'opentopomap', name: 'OpenTopoMap', purpose: 'terrain map tiles when the vector map is unavailable',
-    sends: 'the map area you are looking at', trigger: 'when you switch to the terrain map',
-    licence: 'CC BY-SA', licenceUrl: 'https://opentopomap.org/about',
-    mode: 'browser', retention: 'their tile usage policy applies' },
-  { id: 'osm-france', name: 'OpenStreetMap France', purpose: 'street map tiles when the vector map is unavailable',
-    sends: 'the map area you are looking at', trigger: 'when a map opens',
-    licence: 'ODbL', licenceUrl: 'https://www.openstreetmap.org/copyright',
-    mode: 'browser', retention: 'their tile usage policy applies' },
-  { id: 'terrain-tiles', name: 'Terrain Tiles on AWS (Mapzen/Tilezen terrarium)', purpose: 'ground heights and the Topo relief',
-    sends: 'tile requests around the route, as with any map image', trigger: 'when a climb profile or the Topo map is shown',
-    licence: 'Open data: SRTM, 3DEP, GMTED2010 (USGS, public domain); EU-DEM (Copernicus); ETOPO1 (NOAA); Kartverket CC BY 4.0; Geoscience Australia CC BY 4.0; and others - credited',
-    licenceUrl: 'https://registry.opendata.aws/terrain-tiles/', mode: 'direct', retention: 'their policy applies' },
   { id: 'gateway', name: 'CurveScout API gateway', purpose: 'the single door the services above go through',
     sends: 'whatever those services need', trigger: 'only when a gateway is configured',
     licence: 'operated by CurveScout', licenceUrl: '',
     mode: 'gateway', retention: 'request logs minimised' },
-  { id: 'host', name: 'The static host (GitLab Pages or GitHub Pages)',
-    purpose: 'serving the site itself',
-    sends: 'your IP address and browser, as with any website',
-    trigger: 'every visit', licence: 'their terms',
-    licenceUrl: 'https://docs.gitlab.com/user/project/pages/', mode: 'always',
-    retention: 'their access logs' },
 ];
 
 const LEGAL_REVISION_DATE = '2026-09-05';
@@ -16916,7 +17035,7 @@ const JURISDICTION_POLICY = {
   fr: { cameraDataMode: 'prohibited', checkedAt: '2026-09-05', reviewDueAt: '2027-03-05',
         source: 'Code de la route R413-15' },
   at: { cameraDataMode: 'prohibited', checkedAt: '2026-09-05', reviewDueAt: '2027-03-05',
-        source: 'StVO 1960 §98a - radar warning devices may not be carried in use' },
+        source: 'KFG 1967 §98a (Kraftfahrgesetz): radar and laser detection and blocking devices. That provision alone does not ban every database camera warning; camera data stays off in Austria as a conservative choice until a qualified review says otherwise (r31 audit correction)' },
   it: { cameraDataMode: 'prohibited', checkedAt: '2026-09-05', reviewDueAt: '2027-03-05',
         source: 'Codice della Strada art. 45' },
 };
@@ -29452,7 +29571,12 @@ async function renderRide(id) {
           const when = new Date(h.time[j]);
           const w2 = WMO_ICON(h.weathercode[j]);
           const t = Math.round(h.temperature_2m[j]);
-          const pp = Math.round(h.precipitation_probability ? h.precipitation_probability[j] : 0);
+          /* MET Norway's compact forecast gives an amount, not a chance: show what it gave, and a dash
+             for nothing at all, never a reassuring "0%" invented from missing data */
+          const ppRaw = h.precipitation_probability ? h.precipitation_probability[j] : null;
+          const mmRaw = h.precipitation ? h.precipitation[j] : null;
+          const pp = ppRaw != null ? Math.round(ppRaw) : (mmRaw != null && mmRaw >= 1 ? 60 : 0);
+          const ppTxt = ppRaw != null ? Math.round(ppRaw) + '%' : mmRaw != null ? (+mmRaw).toFixed(mmRaw < 10 ? 1 : 0) + ' mm' : '–';
           const ws = Math.round(h.windspeed_10m[j]);
           const wd = h.winddirection_10m[j];
           cells.push(
@@ -29466,11 +29590,11 @@ async function renderRide(id) {
             '<div class="wxCell' + (pp >= 50 ? ' wet' : '') + (ws >= 40 ? ' windy' : '') +
               (j === nearest ? ' wxNow' : (j === nearest - 1 || j === nearest + 1) ? ' wxNear' : '') + '"' +
               ' title="' + when.getHours() + ':00 · ' + w2.label + ' · ' + t + '°C · ' +
-              pp + '% chance of rain · wind ' + ws + ' km/h from ' + Math.round(wd) + '°">' +
+              (ppRaw != null ? ppTxt + ' chance of rain' : mmRaw != null ? ppTxt + ' rain' : 'rain not forecast') + ' · wind ' + ws + ' km/h from ' + Math.round(wd) + '°">' +
               '<span class="wxHr">' + String(when.getHours()).padStart(2, '0') + '</span>' +
               '<svg class="wxIco" viewBox="0 0 24 24" aria-hidden="true">' + WX_ICON[w2.icon] + '</svg>' +
               '<span class="wxT num">' + t + '°</span>' +
-              '<span class="wxP num' + (pp >= 50 ? ' on' : '') + '">' + pp + '%</span>' +
+              '<span class="wxP num' + (pp >= 50 ? ' on' : '') + '">' + ppTxt + '</span>' +
               '<svg class="wxW" viewBox="0 0 24 24" aria-hidden="true">' + windArrow(wd) + '</svg>' +
               '<span class="wxWs num">' + ws + '<small> km/h</small></span>' +
             '</div>');
@@ -29480,11 +29604,11 @@ async function renderRide(id) {
            if there is rain or nightfall, etc. can otherwise be a little quieter") ----
            At the hour you arrive: rain, snow or a storm, ice, strong wind, and arriving after dark each get a coloured line
            that says it plainly. A fine hour is one quiet line; the hourly strip is a tap away (open by itself when it matters). */
-        const nc = h.weathercode[nearest], nt = Math.round(h.temperature_2m[nearest]), np = Math.round(h.precipitation_probability ? h.precipitation_probability[nearest] : 0), nw = Math.round(h.windspeed_10m[nearest]);
+        const nc = h.weathercode[nearest], nt = Math.round(h.temperature_2m[nearest]), npRaw = h.precipitation_probability ? h.precipitation_probability[nearest] : null, nmm = h.precipitation ? h.precipitation[nearest] : null, np = npRaw != null ? Math.round(npRaw) : (nmm != null && nmm >= 1 ? 60 : 0), nw = Math.round(h.windspeed_10m[nearest]);
         const arrH = String(new Date(h.time[nearest]).getHours()).padStart(2, '0') + ':00', flags = [];
         if (nc >= 95) flags.push(['storm', '⛈ Thunderstorms likely when you arrive (' + arrH + ')']);
         else if ((nc >= 71 && nc <= 77) || nc === 85 || nc === 86) flags.push(['snow', '🌨 Snow when you arrive (' + arrH + ') - check the pass is open']);
-        else if (np >= 50 || (nc >= 61 && nc <= 67) || (nc >= 80 && nc <= 82)) flags.push(['rain', '🌧 Rain likely when you arrive (' + arrH + '): ' + np + '%']);
+        else if (np >= 50 || (nc >= 61 && nc <= 67) || (nc >= 80 && nc <= 82)) flags.push(['rain', '🌧 Rain likely when you arrive (' + arrH + '): ' + (npRaw != null ? np + '%' : (+nmm).toFixed(1) + ' mm')]);
         if (nt <= 3) flags.push(['ice', '❄ ' + nt + '° on arrival - slippery or icy spots possible']);
         if (nw >= 45) flags.push(['wind', '💨 Strong wind on arrival: ' + nw + ' km/h']);
         try { const sm = typeof tripSunset === 'function' ? tripSunset(+w.lat, +w.lon, target) : null; const am = target.getHours() * 60 + target.getMinutes();
@@ -29492,7 +29616,7 @@ async function renderRide(id) {
         const ico = WMO_ICON(nc);
         host.classList.toggle('wxAlert', flags.length > 0);
         host.innerHTML = (flags.length ? '<div class="wxFlags">' + flags.map(f => '<p class="wxFlag f-' + f[0] + '">' + f[1] + '</p>').join('') + '</div>'
-            : '<p class="wxQuiet"><svg class="wxIco" viewBox="0 0 24 24" aria-hidden="true">' + WX_ICON[ico.icon] + '</svg> <b>' + nt + '°</b> · ' + esc(ico.label) + ' · wind ' + nw + ' km/h <span>at ' + arrH + (wet ? ' · a wet hour nearby' : ', dry around it') + '</span></p>') +
+            : '<p class="wxQuiet"><svg class="wxIco" viewBox="0 0 24 24" aria-hidden="true">' + WX_ICON[ico.icon] + '</svg> <b>' + nt + '°</b> · ' + esc(ico.label) + ' · wind ' + nw + ' km/h <span>at ' + arrH + (wet ? ' · a wet hour nearby' : (nc == null || (npRaw == null && nmm == null)) ? ' · no rain forecast available for this hour' : ', dry around it') + '</span></p>') +
           '<details class="wxMore"' + (flags.length ? ' open' : '') + '><summary>Hour by hour</summary>' +
           '<div class="wxStrip">' + cells.join('') + '</div>' +
           '<p class="wxFine">Hourly forecast at this exact point, arrow shows where the wind blows ' +
@@ -30554,6 +30678,11 @@ function setOfflineBadge() {
   b.hidden = !off;
   if (off) b.textContent = '✈ Offline - saved rides and roadbooks still work';
 }
+/* hold the page at its top while it builds, until the rider moves it (see show) */
+function csPinTop() { try { if (S._pinStop) S._pinStop(); let on = true; const t0 = Date.now();
+  const stop = () => { on = false; ['touchstart', 'wheel', 'keydown', 'mousedown'].forEach(e => removeEventListener(e, stop)); if (S._pinStop === stop) S._pinStop = null; };
+  ['touchstart', 'wheel', 'keydown', 'mousedown'].forEach(e => addEventListener(e, stop, { passive: true })); S._pinStop = stop;
+  const hold = () => { if (!on) return; if (window.scrollY > 0) window.scrollTo(0, 0); if (Date.now() - t0 < 3000) requestAnimationFrame(hold); else stop(); }; hold(); } catch (e) {} }
 function flash(msg) {
   let t = $('csToast');
   if (!t) { t = document.createElement('div'); t.id = 'csToast'; t.className = 'toast'; document.body.appendChild(t); }
@@ -30751,7 +30880,7 @@ try {
   window.CACHE = CACHE;
   window.scanServices = scanServices;
   /* read by the release checks (tools/test-nav-integrity.mjs): the camera policy and the points sent to the router */
-  window.cameraDataAllowed = cameraDataAllowed; window.navPointsFor = navPointsFor;
+  window.cameraDataAllowed = cameraDataAllowed; window.navPointsFor = navPointsFor; window.__csWX = { WX, WMO_ICON };
 } catch (e) {}
 
 /* Remove stop (owner 2026-10-05). Same rules as the pin's right-click / long-press handler: the stop

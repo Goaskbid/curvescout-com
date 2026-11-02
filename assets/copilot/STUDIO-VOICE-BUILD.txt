@@ -13,4 +13,21 @@ Rebuild:
   2. npm install onnxruntime-web@1.22.0 phonemizer@1.2.1 kokoro-js@1.2.1 esbuild@0.24.0
   3. esbuild src/copilot-live/studio-worker.mjs --bundle --format=esm --platform=browser --target=es2020 --minify --legal-comments=inline --outfile=cs-studio-worker.js
 
-Licences: see STUDIO-VOICE-LICENSES.txt. Questions or a copy of the source on request: the address on curvescout.com/about.html.
+Which part of cs-studio-worker.js comes from which source (r31 legal review: map the eSpeak-derived binary)
+  - CurveScout code (GPL-3.0-or-later as part of this work): the three .src.mjs modules above.
+  - eSpeak NG (GPL-3.0-or-later), compiled to WebAssembly: the base64 block "WORKER_DATA" and the espeak-ng-data
+    files inside it come unchanged from phonemizer@1.2.1, files src/espeakng.worker.js and data/espeakng.worker.data
+    (github.com/xenova/phonemizer.js, commit 6835144 "Update to v1.2.1"). A snapshot of that repository at that
+    commit is cs-phonemizer-1.2.1-upstream.zip in this folder. The C source it was compiled from is eSpeak NG,
+    github.com/espeak-ng/espeak-ng (GPL-3.0-or-later).
+  - phonemizer.js glue (Apache-2.0), kokoro-js (Apache-2.0), onnxruntime-web (MIT, also cs-ort-*.bin and cs-ort-glue.js),
+    voice files cs-voice-*.bin (Kokoro-82M, Apache-2.0): see STUDIO-VOICE-LICENSES.txt.
+  CurveScout made no change to the eSpeak NG binary or its data.
+
+Written offer (GPL-3.0 section 6)
+  For at least three years after we last distribute cs-studio-worker.js, anyone who receives it may ask us for the
+  complete corresponding source of the eSpeak NG code in it, including the scripts used to compile it to WebAssembly.
+  We will provide it on a common medium or by download, for no more than the cost of providing it. Write to the
+  address on curvescout.com/about.html with "studio voice source" in the subject.
+
+Licences: see STUDIO-VOICE-LICENSES.txt.

@@ -12,7 +12,7 @@
  */
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import { execFileSync } from 'node:child_process';
 const SRC = 'copilot', LIVE = 'src/copilot-live', OUT = 'assets/copilot/copilot-runtime.js';
-const STUDIO = ['STUDIO-VOICE-LICENSES.txt', 'cs-studio-worker.src.mjs', 'cs-g2p-local.src.mjs', 'cs-studio-worker.js', 'cs-ort-1.bin', 'cs-ort-2.bin', 'cs-ort-glue.js', 'cs-voice-bella.bin', 'cs-voice-heart.bin', 'cs-phon.src.mjs', 'cs-build-copilot.src.mjs', 'STUDIO-VOICE-BUILD.txt'];
+const STUDIO = ['STUDIO-VOICE-LICENSES.txt', 'cs-studio-worker.src.mjs', 'cs-g2p-local.src.mjs', 'cs-studio-worker.js', 'cs-ort-1.bin', 'cs-ort-2.bin', 'cs-ort-glue.js', 'cs-voice-bella.bin', 'cs-voice-heart.bin', 'cs-phon.src.mjs', 'cs-build-copilot.src.mjs', 'STUDIO-VOICE-BUILD.txt', 'cs-phonemizer-1.2.1-upstream.zip'];
 const files = []; (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (/\.mjs$/.test(e.name)) files.push(p); } })(SRC); (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (/\.mjs$/.test(e.name)) files.push(p); } })(LIVE);
 files.sort(); const h = crypto.createHash('sha256'); for (const f of files) { h.update(f + '\n'); h.update(fs.readFileSync(f)); } const sum = h.digest('hex');
 const head = '/* CurveScout Co-Pilot live navigator | source sha256 ' + sum + ' | ' + files.length + ' modules | built by tools/build-copilot.mjs from copilot/ and src/copilot-live/ */';
@@ -47,7 +47,7 @@ if (process.argv.includes('--write')) {
       'Rebuild:', '  1. put the four .src.mjs files back at the paths above (the imports name ./phon.mjs and ./g2p-local.mjs)',
       '  2. npm install onnxruntime-web@1.22.0 phonemizer@1.2.1 kokoro-js@1.2.1 esbuild@' + (ev || '0.24.0'),
       '  3. esbuild src/copilot-live/studio-worker.mjs --bundle --format=esm --platform=browser --target=es2020 --minify --legal-comments=inline --outfile=cs-studio-worker.js', '',
-      'Licences: see STUDIO-VOICE-LICENSES.txt. Questions or a copy of the source on request: the address on curvescout.com/about.html.', ''].join('\n'));
+      fs.readFileSync('tools/studio-voice-gpl.txt', 'utf8')].join('\n'));   /* mapping of the eSpeak NG binary + written offer */
     const man = {}; for (const f of STUDIO) man[f] = crypto.createHash('sha256').update(fs.readFileSync(path.join(path.dirname(OUT), f))).digest('hex');
     fs.writeFileSync(path.join(LIVE, 'studio-assets.json'), JSON.stringify({ built: new Date().toISOString().slice(0, 10), ort: 'onnxruntime-web 1.22.0', phonemizer: 'phonemizer 1.2.1', voices: 'kokoro-js 1.2.1', sha256: man }, null, 1) + '\n');
     console.log('wrote studio voice files: ' + STUDIO.join(', '));

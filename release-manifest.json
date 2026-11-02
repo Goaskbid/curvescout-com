@@ -1,6 +1,6 @@
 {
- "build_id": "f5c6881",
- "build_date": "2026-11-01T21:08:32.202Z",
+ "build_id": "beb80f3",
+ "build_date": "2026-11-02T01:34:51.211Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -63,8 +63,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 2218639,
-   "sha256": "8a2fef5ddc10463a23c36f80e882b6663b420001e3a014f7ee714ea55f1fd765"
+   "bytes": 2235649,
+   "sha256": "49c23d3f9847571fea43f47e5d6d41eef48b6736f3c2555351f17aae45a3b456"
   },
   {
    "path": "archive.js",
@@ -98,8 +98,8 @@
   },
   {
    "path": "assets/copilot/STUDIO-VOICE-BUILD.txt",
-   "bytes": 1035,
-   "sha256": "2c7e242d628e42029e8edd399e994836164f6f5097ca0535eb7c6ddc51bd0226"
+   "bytes": 2396,
+   "sha256": "8da61a3bd8d80fc5045576f42b869568e71d7d6bf44606fba052e57b2bb3cb7d"
   },
   {
    "path": "assets/copilot/STUDIO-VOICE-LICENSES.txt",
@@ -108,13 +108,13 @@
   },
   {
    "path": "assets/copilot/copilot-runtime.js",
-   "bytes": 196403,
-   "sha256": "8593235859557cf1148452036d4e4df7e8ffe1fcc83e96276e30cbdf02fb5ef7"
+   "bytes": 204030,
+   "sha256": "6fda057a58a48cd9ddfe0adcceb0ee80e3cdeb782a5c350eb009a7f3a85109fe"
   },
   {
    "path": "assets/copilot/cs-build-copilot.src.mjs",
-   "bytes": 8489,
-   "sha256": "6cf328107c7a52436bc9177d1e84841ef8df0cfd4e148be31eddc681f15bad92"
+   "bytes": 8500,
+   "sha256": "53540c83c67972bdd6ced96bfe66877f42b56ec6677f9801998e18f7e1de4243"
   },
   {
    "path": "assets/copilot/cs-g2p-local.src.mjs",
@@ -140,6 +140,11 @@
    "path": "assets/copilot/cs-phon.src.mjs",
    "bytes": 9284,
    "sha256": "5cc95a1a107c0ffc402723edeca5d4ff5ac48de7661fcdf44d0dbefd1d2bc012"
+  },
+  {
+   "path": "assets/copilot/cs-phonemizer-1.2.1-upstream.zip",
+   "bytes": 1170842,
+   "sha256": "89dccc0b742503af50bfad7424b21ad2a1188b6303c488feb3184886c8c821bd"
   },
   {
    "path": "assets/copilot/cs-studio-worker.js",
@@ -1054,7 +1059,7 @@
   {
    "path": "config.js",
    "bytes": 161288,
-   "sha256": "c790cd61b7b1e9e7250d7c08a774ca2d8db3eefa23fce6da4a8573be664a323f"
+   "sha256": "4c4643ef3227c8bfb26d0900c4f29c09ce85349a67804dc032879e8cd8a132ef"
   },
   {
    "path": "data/cities.txt",
@@ -1408,168 +1413,168 @@
   },
   {
    "path": "data/index/cardpacks/p0.json",
-   "bytes": 398891,
-   "sha256": "e8f72e90980502b61fc056232ad5455515c9b11c972dbb3bc9dbb926ff0bf9ba"
+   "bytes": 402417,
+   "sha256": "b9e442eb161c850c4773a08c47f8815647c7cf4c5b2667f979fdcaebef0e795d"
   },
   {
    "path": "data/index/cardpacks/p1.json",
-   "bytes": 367800,
-   "sha256": "311295aa1f60db1ebc270c645d927e06e9cd6df05ea54d17f613a30215008be4"
+   "bytes": 370272,
+   "sha256": "ef5326b8769dd8691f5bdc4ca2596be415ac8b44daee950e765e6faffb02bede"
   },
   {
    "path": "data/index/cardpacks/p10.json",
-   "bytes": 258884,
-   "sha256": "e0a4f908f1a469453bce93afa9bf5d00226a7832cfbc979682c4ae4aab775907"
+   "bytes": 261840,
+   "sha256": "d0145883da109d3d621c9d80d992bf1b19fe82caf2f5b6e26355d133f9ac813e"
   },
   {
    "path": "data/index/cardpacks/p11.json",
-   "bytes": 335679,
-   "sha256": "ebaa226f68f3a1c31d8cdc1a3552ff96d4568a1ed94f12df13aae5b1782db4be"
+   "bytes": 339684,
+   "sha256": "e5e7823dde3aa1cfbe9a65002d8c72aa38a142c52783e470d86352c713805735"
   },
   {
    "path": "data/index/cardpacks/p12.json",
-   "bytes": 343073,
-   "sha256": "4213a1d88ba3c8c298ee5a1a9a37d859f8fc8c07c920660a23fcbe7b17687560"
+   "bytes": 345031,
+   "sha256": "dfc70055f3e04a5c92d7e4a09cd083676ce772ed5854747402cb036f34a0378d"
   },
   {
    "path": "data/index/cardpacks/p13.json",
-   "bytes": 298631,
-   "sha256": "790f61a53034a016f814c05b3446bd5fda86843f86549a56653d5dbe44c920cb"
+   "bytes": 300026,
+   "sha256": "3a987dc4d56b40c80ca311c0a5052b46e0373540aa255009c584c17fe392460b"
   },
   {
    "path": "data/index/cardpacks/p14.json",
-   "bytes": 310192,
-   "sha256": "cd542eaf28d833de2e71c1c595b984359f2ac949a09f7e24b1137c3e39c8731f"
+   "bytes": 311796,
+   "sha256": "5103da5dc84f57b21a070088b84f98a16ca1b6a2d5fa41d1b53592688273a258"
   },
   {
    "path": "data/index/cardpacks/p15.json",
-   "bytes": 468947,
-   "sha256": "504a796ae8a8427b0f107bca76a87e033593fbf4d8ff3fb6d5f2ea0582cc85d7"
+   "bytes": 470752,
+   "sha256": "5e351f4d214ba7c0af34fc75afc460eafb5582da5cbd9ed2a2c27fd5356151a8"
   },
   {
    "path": "data/index/cardpacks/p16.json",
-   "bytes": 273126,
-   "sha256": "e8ab1208fb6fa48ca456a0a0d939b965489feb8933bf54d8cabb527b165554a3"
+   "bytes": 274343,
+   "sha256": "fb0377398b7d1e51b17b7f017a44ab4cee834d1e66c9ca4e2cdfdfacbd19add2"
   },
   {
    "path": "data/index/cardpacks/p17.json",
-   "bytes": 230626,
-   "sha256": "8dfa22c730e4df6e4b6adf44be284e628b65585a97a5c605953d5912c576e479"
+   "bytes": 231185,
+   "sha256": "9d2bd1acb8d720bd01a37c4420c3b96c90f254ea1d0ff04c2f816f691b8e60e4"
   },
   {
    "path": "data/index/cardpacks/p18.json",
-   "bytes": 416179,
-   "sha256": "223bac42d48e61b2607dc3654f7fd7b5bd1a1375913f14d6311535477db07bcb"
+   "bytes": 416853,
+   "sha256": "3716f8c39f19c4fb9730e7abc29fffb7cbe89330fe39008484b862e3120ef2bb"
   },
   {
    "path": "data/index/cardpacks/p19.json",
-   "bytes": 264757,
-   "sha256": "c4f6faa3af3ecde1cca45e1514247c8d5b9a740f74d863381f128f30e0e4a470"
+   "bytes": 265613,
+   "sha256": "a54175c2d78375cf21bb0a479862ff13e77e66d2b1ad94e7c7fb53a737e8c748"
   },
   {
    "path": "data/index/cardpacks/p2.json",
-   "bytes": 307541,
-   "sha256": "8be8bba42342dba0e0b7e1a1258807ca175d1bf7d3101e6b1128b72858809ec6"
+   "bytes": 309545,
+   "sha256": "2c90e4020fb3dcdd1e5e2b8abfbf9860677cf3fcba3d43e3b1bb4d8eea76f705"
   },
   {
    "path": "data/index/cardpacks/p20.json",
-   "bytes": 344333,
-   "sha256": "dba1edb6ce0044ce04939a2bd35caeba1c467bc40bf08fe352d0c6437b13139d"
+   "bytes": 346062,
+   "sha256": "ba911042d4fd72c35ddaf7a3c3caf1075d88575b6376914e5ed2c78dc8e865d1"
   },
   {
    "path": "data/index/cardpacks/p21.json",
-   "bytes": 316779,
-   "sha256": "dbcd2901aab860626c5c106764e98ecf2049f48c438413116a007d94380f9d8d"
+   "bytes": 318517,
+   "sha256": "f5b299a8d3982c5cd125617b9d86a8f82f13ba0121614a56f670b2f548379af7"
   },
   {
    "path": "data/index/cardpacks/p22.json",
-   "bytes": 253070,
-   "sha256": "36a6ed727333cc0760d082eaf61bf18a02fef3de446068842fc9dfebf4aabb23"
+   "bytes": 254208,
+   "sha256": "39ae4f0856171cc33d5aa637025d9842296780bf7b042f59af32ab2f1d881a2d"
   },
   {
    "path": "data/index/cardpacks/p23.json",
-   "bytes": 177850,
-   "sha256": "8356f31a555cd316d2653f3790eea11b1db6c1352ad67974111f5ee23bc9bf63"
+   "bytes": 179156,
+   "sha256": "e0a87106b268d117f6cbb9e421df136378cbbcc7f267eb9fda35fc3559c83bfc"
   },
   {
    "path": "data/index/cardpacks/p24.json",
-   "bytes": 248454,
-   "sha256": "3aa61b86092b188f24e960e8c9bb36af4cb39d332fec26776602b615d4549472"
+   "bytes": 249302,
+   "sha256": "f5f2ee4bd7d581724f38ac4da2666518febc0b378de2c3846e5a83bf2ced6d2b"
   },
   {
    "path": "data/index/cardpacks/p25.json",
-   "bytes": 249770,
-   "sha256": "f900524490125f4a159627b16e003caffbd98ff446c8f9a32db27682e92444c7"
+   "bytes": 250808,
+   "sha256": "3fa99198e160ffdc6037218374c9a559daff8333a2c97916a758032cf32edc3a"
   },
   {
    "path": "data/index/cardpacks/p26.json",
-   "bytes": 178957,
-   "sha256": "c38d91c4683b1ad3f243d29fe93868a91243abccd29316afe35bc51ef796955a"
+   "bytes": 179425,
+   "sha256": "620d5076d72fa425bae4b6ac682271db35c23482cf46c54b7f730e313bc3834a"
   },
   {
    "path": "data/index/cardpacks/p27.json",
-   "bytes": 207630,
-   "sha256": "933280026ea77eb43298bb7ccddf08a49fd09ee083050940ae9739b6573822b5"
+   "bytes": 208233,
+   "sha256": "e6073944eb1983de388f65d3fe07802525ef96e5721ac821174ca13959d6954c"
   },
   {
    "path": "data/index/cardpacks/p28.json",
-   "bytes": 162101,
-   "sha256": "f698bedc4675eb543a0fbce790c940643c4cd8e889e75de689ef4bec96a89d83"
+   "bytes": 162733,
+   "sha256": "baa7f53e90c7da8e74bbb2b249f5352390845fc57313c06906e93f91854a55e4"
   },
   {
    "path": "data/index/cardpacks/p29.json",
-   "bytes": 191770,
-   "sha256": "b01946f028016c5672ff166f0b2c7b077000d80d819c4c544820fc034428497e"
+   "bytes": 192384,
+   "sha256": "2cb752a49b0daec943f37dc027c1b7781347a748225ffcca42d40e9236e05082"
   },
   {
    "path": "data/index/cardpacks/p3.json",
-   "bytes": 395415,
-   "sha256": "9aecfb71b0f285efcc5c3daa9f14cb48c845d5a4bf81376590d9e4aca05032a1"
+   "bytes": 397126,
+   "sha256": "943c30651c4e257bc0f1619855a7740a99e32c8a843be5545ac9e1beb6497d09"
   },
   {
    "path": "data/index/cardpacks/p30.json",
-   "bytes": 233893,
-   "sha256": "3b240053b59da889b3afedcc5ecaf970a074c935a8133dc1fcddbb14bfb06b82"
+   "bytes": 234344,
+   "sha256": "334cc0db21929d153aa27ea2a92c995276d7c73d49904d7f49b9480c19abd4b9"
   },
   {
    "path": "data/index/cardpacks/p31.json",
-   "bytes": 197106,
-   "sha256": "e66fa7be458dcc09308d59c4707291e34ad26978b82cff409bae7e04909d187c"
+   "bytes": 197909,
+   "sha256": "3537979dce86e069d4a60192e473f8331daecb65895f69576df70e1478f7e3ab"
   },
   {
    "path": "data/index/cardpacks/p4.json",
-   "bytes": 141893,
-   "sha256": "5d01b61ca8d98803f760791960e35978106f1bd4ab2f455b68b53a78b9cb7f7d"
+   "bytes": 143292,
+   "sha256": "865e1147db714dae4eca65af90cf9a7810d09b7d769f614453b42871ab604758"
   },
   {
    "path": "data/index/cardpacks/p5.json",
-   "bytes": 279266,
-   "sha256": "71555b470f61adb90abf6cee7b3cafc9457690a595888d737abc9d458e784502"
+   "bytes": 280934,
+   "sha256": "6a47ad530bc0a673c06bbe4da0fd8570eb53f866075135047a81bbb26a454fe5"
   },
   {
    "path": "data/index/cardpacks/p6.json",
-   "bytes": 344516,
-   "sha256": "4fcf7a6627acf805349a220de4c6bdb5578d33a094337b5e7c9bd074e2d47ff1"
+   "bytes": 346242,
+   "sha256": "01f379ad0e7c7a58e007528164ed3f72f53b30b8f3ef29fcb90b35b498fd6f2b"
   },
   {
    "path": "data/index/cardpacks/p7.json",
-   "bytes": 206764,
-   "sha256": "38b35a852337bb4bc4a94b53f233f17b738ab1b215be1db03f53ea9390072237"
+   "bytes": 207891,
+   "sha256": "ed91603f9db9964617cdb36b99d495cc81391cd58b1e2219a48a191831009753"
   },
   {
    "path": "data/index/cardpacks/p8.json",
-   "bytes": 227193,
-   "sha256": "dbe2eb16c59c86dc064a74fd498db4ec759546cbd3dc67ed20f29653206c73cc"
+   "bytes": 228974,
+   "sha256": "e1bf260e74ba652535e7c748e0655d10f3d977ca1508258d85ca1f153062216d"
   },
   {
    "path": "data/index/cardpacks/p9.json",
-   "bytes": 198766,
-   "sha256": "4e191e4460af853143ff3741da5b0839b7f6bdf19e25230c3a77527f6d42050c"
+   "bytes": 200773,
+   "sha256": "1a2b0d98d3ba7b5cb115e37a6ef4d7d8380be1f796e8440e28585b6fba1901c4"
   },
   {
    "path": "data/index/core.json",
-   "bytes": 10017680,
-   "sha256": "25055a8aca47501d560e7cc5413aedcc15d1dc585e4a3308fd45023d6f61330d"
+   "bytes": 10017684,
+   "sha256": "60eaedca654e08d06002876a4a5eb24650e8ef10f74f6c2631eb0425578783f1"
   },
   {
    "path": "data/legends-geom.json",
@@ -3093,23 +3098,23 @@
   },
   {
    "path": "data/routes/curated-am.json",
-   "bytes": 87210,
-   "sha256": "d3a67825516adf7ec2df9a40cbbfbf44c025c3005b875d513a3ebd76cbca35bc"
+   "bytes": 87204,
+   "sha256": "747a3a9e92321005c032bc1f8913247732cddadf96d02d1fbb26848b6b74c12a"
   },
   {
    "path": "data/routes/curated-ar.json",
-   "bytes": 338099,
-   "sha256": "c704a131933fd5c1a9aa717997516bff49979c981bda8f2730f3f2f47ef4e8b7"
+   "bytes": 338095,
+   "sha256": "91bb18af55274291dc2fb6a24c504f5d1225c831a653b314db307d4c7b337782"
   },
   {
    "path": "data/routes/curated-at.json",
-   "bytes": 2449758,
-   "sha256": "b6d6a993847c962969c73946231a67d37ffc4e40bfc49a015b24e357d75a2eef"
+   "bytes": 2449602,
+   "sha256": "2d753311f9b1d10730e8b8d283c61e6b757b8babdc554152a23af5ef2c79d274"
   },
   {
    "path": "data/routes/curated-au.json",
-   "bytes": 1727200,
-   "sha256": "f549deb19c3540541486767c59890c75e13b0d7dcdeef81aa157e536821e8dc6"
+   "bytes": 1727088,
+   "sha256": "bd93fa857c0685b06b27f7e483e2c82e4336f53569244513fa44ebd57d51531d"
   },
   {
    "path": "data/routes/curated-az.json",
@@ -3133,8 +3138,8 @@
   },
   {
    "path": "data/routes/curated-bg.json",
-   "bytes": 526421,
-   "sha256": "6e09e7e7edad49a635fe5de3436c3ec09137aba153ecef35e9b457e694bc2ea1"
+   "bytes": 526413,
+   "sha256": "c4e17864c48356d4b776e75b2edbc151c9b98c39f4910f88e63a632390632100"
   },
   {
    "path": "data/routes/curated-bh.json",
@@ -3148,8 +3153,8 @@
   },
   {
    "path": "data/routes/curated-br.json",
-   "bytes": 1112803,
-   "sha256": "80990b8cbd9089aa69abe45b9408d6d20aba561ff6be4339142ce5d37a8ee85d"
+   "bytes": 1112781,
+   "sha256": "a19f3a10d975e0dbd20f51a64135230311fb6de3b408ec9075151c6b612e16f2"
   },
   {
    "path": "data/routes/curated-bt.json",
@@ -3163,13 +3168,13 @@
   },
   {
    "path": "data/routes/curated-ca.json",
-   "bytes": 413352,
-   "sha256": "e1da206cad7bbfd80d6517cd88d3a73011c97546c65cfc82ed4d47846505d52b"
+   "bytes": 413262,
+   "sha256": "d0630e519db7da4d4dc36a824b16018aed7dbf2420773ad1bb616b51718fef1b"
   },
   {
    "path": "data/routes/curated-ch.json",
-   "bytes": 3771236,
-   "sha256": "d5fe8149096523f853ceebf8361cdfd86ff4dd05479e3edacef11c63360107ad"
+   "bytes": 3771062,
+   "sha256": "b2bc396af22ed18df8c398b80f9a06d1c6a44d079404bd7a36b48cd1227de2b4"
   },
   {
    "path": "data/routes/curated-cl.json",
@@ -3203,13 +3208,13 @@
   },
   {
    "path": "data/routes/curated-cz.json",
-   "bytes": 706516,
-   "sha256": "e343870da6edb080a71de2c01d00a2663cee15631c64a2a63621e692f3a82105"
+   "bytes": 706474,
+   "sha256": "c86a9dda1cb61fe036c9262d82b03495299c5886d314c5237d0acf4026d3d997"
   },
   {
    "path": "data/routes/curated-de-1.json",
-   "bytes": 7861205,
-   "sha256": "00a18554b6b59ccb7c6c28bb30459e414b286a98141f39e1e20794a9405d394d"
+   "bytes": 7860889,
+   "sha256": "a9c164e99c50310ad603c962db005d5f95351df725178b776098d50bc1f51bbe"
   },
   {
    "path": "data/routes/curated-de-2.json",
@@ -3228,8 +3233,8 @@
   },
   {
    "path": "data/routes/curated-ec.json",
-   "bytes": 929873,
-   "sha256": "e721b4f82f3b801f3654818dddbd2448a99f089de356dc80bf45b86a706c6379"
+   "bytes": 929847,
+   "sha256": "e5f67b3bfcef19185ce46f48dc344253896ab498fefb3bba86a9ec046d3eb279"
   },
   {
    "path": "data/routes/curated-ee.json",
@@ -3243,8 +3248,8 @@
   },
   {
    "path": "data/routes/curated-es-1.json",
-   "bytes": 7860445,
-   "sha256": "0172598bade002aa3ccde8dff156fe12ab57fe0a7af7dc6d6be3cd5d6af822e2"
+   "bytes": 7860385,
+   "sha256": "7bc96298002fad5b31190982db38756c1e88ce0fec956ed7a501d8eab4de9eb3"
   },
   {
    "path": "data/routes/curated-es-2.json",
@@ -3273,13 +3278,13 @@
   },
   {
    "path": "data/routes/curated-fr.json",
-   "bytes": 6571373,
-   "sha256": "f88c3628078dbb92bb743688f0a9f211f2dbc0aefe38a0669aaa8de2657786da"
+   "bytes": 6570945,
+   "sha256": "a2809efcd50d9cbeccded3d25d93658f6be03efb07c3d102d2030234d475471c"
   },
   {
    "path": "data/routes/curated-gb.json",
-   "bytes": 7698245,
-   "sha256": "8d501b49a011c0b0dbbad5ead022e6ee70aa3888e2b62af13b5adccd148e351c"
+   "bytes": 7698103,
+   "sha256": "4e7d783a01c40f355e939ac00dae2c952f3b64df092287a1550cc33d3695dcc1"
   },
   {
    "path": "data/routes/curated-ge.json",
@@ -3308,23 +3313,23 @@
   },
   {
    "path": "data/routes/curated-hr.json",
-   "bytes": 1272491,
-   "sha256": "c99235c08f858e1a67e989b6610cdfc06ae10d244f35b9d006d21bb44e979330"
+   "bytes": 1272481,
+   "sha256": "3e345a6bcb1dc8ca8fdcd40ed09b13b1540e7cfbe89efdf5d3db59fbb7107599"
   },
   {
    "path": "data/routes/curated-hu.json",
-   "bytes": 559002,
-   "sha256": "87a0a1da02da7e9a2405c19cd718a944e6a7d48d88725e8167fcf49621b8d204"
+   "bytes": 558994,
+   "sha256": "1c48093bf934f4865e8087903fa148ddea991f53d56245c02375881e0ed23f77"
   },
   {
    "path": "data/routes/curated-id.json",
-   "bytes": 356521,
-   "sha256": "ef9b2df93277859e66f5535f71d5a660afcf2987f210c5190cf58f6dd85875aa"
+   "bytes": 356505,
+   "sha256": "4034363b015f7e8601dbcdb0fb91c74dcd966a7341b0abfa27f71fb933d629a5"
   },
   {
    "path": "data/routes/curated-ie.json",
-   "bytes": 66515,
-   "sha256": "a96e7c309c1e90a011b3c214845cfc36f78320538ad75cca41aa0a8fc725928c"
+   "bytes": 66509,
+   "sha256": "aa4d48b05bc1d9bff9612d454f0635af355f59e4de17e2133b012ba9b4cad9f0"
   },
   {
    "path": "data/routes/curated-il.json",
@@ -3333,8 +3338,8 @@
   },
   {
    "path": "data/routes/curated-in.json",
-   "bytes": 665728,
-   "sha256": "8849b52665fb17296db13fe5e3dc3828d4fcf0aa721fc08c5e4e7ad1f6ab03dd"
+   "bytes": 665730,
+   "sha256": "713aadaba70dad8819fdd5cdf2321f06cc3287a7c06d7606bec03e633eb1323e"
   },
   {
    "path": "data/routes/curated-iq.json",
@@ -3348,13 +3353,13 @@
   },
   {
    "path": "data/routes/curated-is.json",
-   "bytes": 92893,
-   "sha256": "898adc1d5bc70a7e0a8c024c594039f9142c2adeeb79991c4abbdff1c7f1bb6e"
+   "bytes": 92885,
+   "sha256": "f5d938369545ae7dd27c435f101b26ac203c66e4090928e058b4fa8ff4a31790"
   },
   {
    "path": "data/routes/curated-it-1.json",
-   "bytes": 7862458,
-   "sha256": "527eb4f3342bbb0fe98f54e122bd779f91bed4a597a012bc38d09293dd482df2"
+   "bytes": 7862341,
+   "sha256": "0358bc122785f36cc61e8062df034948275c38c5d6465f52af304f8b08882bd2"
   },
   {
    "path": "data/routes/curated-it-2.json",
@@ -3368,13 +3373,13 @@
   },
   {
    "path": "data/routes/curated-jo.json",
-   "bytes": 1917104,
-   "sha256": "af50258aaa213f8099aa05e8c999432562b5feee1fb5d76897ebd4045dec8b0f"
+   "bytes": 1917078,
+   "sha256": "d9b9a12f0b23eb27796ab1e3c1b240a40aca4c6c969cd4bfe836f673c824a521"
   },
   {
    "path": "data/routes/curated-jp.json",
-   "bytes": 5961333,
-   "sha256": "6747f9010aa1f5c6396dbddafe2e1ca4d17ef82603c086f31b03be651c3e1585"
+   "bytes": 5961201,
+   "sha256": "f51bd4b93db4fa8fe9bf8bf88d5fd349c02050138b948ebc2bfc93757a3e2472"
   },
   {
    "path": "data/routes/curated-ke.json",
@@ -3393,8 +3398,8 @@
   },
   {
    "path": "data/routes/curated-kr.json",
-   "bytes": 2408826,
-   "sha256": "7252d4e4c6eb39e16dbf8d08d78bffedcd2578be3ae846970edfc489b41eaa8d"
+   "bytes": 2408764,
+   "sha256": "61e8077edb1d41349eeba7e20e066c22cb73e0397a8c1ff18cdabf2a1a4b2669"
   },
   {
    "path": "data/routes/curated-kw.json",
@@ -3428,8 +3433,8 @@
   },
   {
    "path": "data/routes/curated-lu.json",
-   "bytes": 339851,
-   "sha256": "9d5e0418a0474c42bef28c813cab5a664c5a9449d4e93fa7a13375d943863a39"
+   "bytes": 339843,
+   "sha256": "6b757a137cb7ca2e69d5bae3d682e3f0edc3b8867bdc8e1bf370e1886e852490"
   },
   {
    "path": "data/routes/curated-lv.json",
@@ -3438,13 +3443,13 @@
   },
   {
    "path": "data/routes/curated-ma.json",
-   "bytes": 124722,
-   "sha256": "eedbc80b691da5b3889237d9db2338f0acf9fe8db354b1ef2e89498492d2d9f3"
+   "bytes": 124708,
+   "sha256": "db7ff93bafe0a222d697b4a731b347454a2347cfaab186cf0ec74047269be946"
   },
   {
    "path": "data/routes/curated-me.json",
-   "bytes": 440032,
-   "sha256": "e385c700e9969bac21ec763984bd9e4249b3c20bf9c572720851e859eeba22bf"
+   "bytes": 440034,
+   "sha256": "07ce718c3d8ab31e27e3145d0839120324efd538dbbf5d707af0061c53e08472"
   },
   {
    "path": "data/routes/curated-mg.json",
@@ -3468,8 +3473,8 @@
   },
   {
    "path": "data/routes/curated-mu.json",
-   "bytes": 4085,
-   "sha256": "14a919eddaaea9e6792350f55a39723b49ce7127cecd6f7eec3b58ce42ffc857"
+   "bytes": 4079,
+   "sha256": "4ea15b9226692e5c6cec1fc655519f14d3a7bcc59854ed43c2d87d76ec371c96"
   },
   {
    "path": "data/routes/curated-mx.json",
@@ -3478,8 +3483,8 @@
   },
   {
    "path": "data/routes/curated-my.json",
-   "bytes": 19718,
-   "sha256": "48179d8f57c670902533fa5e9350cbc8f17a0b277000536e82054828b2649de7"
+   "bytes": 19720,
+   "sha256": "8b2aff47f41a24d439e2545bbcf75146d9c801cea810b235509d759f1e526fea"
   },
   {
    "path": "data/routes/curated-na.json",
@@ -3498,13 +3503,13 @@
   },
   {
    "path": "data/routes/curated-nl.json",
-   "bytes": 3943140,
-   "sha256": "01e8bd44de058ba1440d948b6b422c40dffef36eb3a6cc27f0d8b4015cb95e73"
+   "bytes": 3943134,
+   "sha256": "5ae73937098b4f9ac7f0ade29b48790cb12def04de56eb694c69a12d59008e9e"
   },
   {
    "path": "data/routes/curated-no.json",
-   "bytes": 530498,
-   "sha256": "1425c27350f9434d089ba9cff52a63fb1ebdfb90e3d3951fb7238f9b39c617f1"
+   "bytes": 530388,
+   "sha256": "18f05055de6fa393796d1fdb2f93d7251b02591fbf6858a13b735a0cc56a8ff3"
   },
   {
    "path": "data/routes/curated-np.json",
@@ -3513,13 +3518,13 @@
   },
   {
    "path": "data/routes/curated-nz.json",
-   "bytes": 304284,
-   "sha256": "fb9493baa4d44c3deb5192ae0f142ab3f97e79989032a4a441884e64875ba0d8"
+   "bytes": 304168,
+   "sha256": "464b5020226bb736752f028b097a77d642c1846f2ab8be2fa3fc2bfdcf7d6770"
   },
   {
    "path": "data/routes/curated-om.json",
-   "bytes": 225808,
-   "sha256": "2d56e7eafcad5ffd499fcce5d0da03124cd0a30521bebbfbac9bfea34c0df3c4"
+   "bytes": 225804,
+   "sha256": "d295085bb35999e17b8c7d827a1f60cd98b60a4c41bb305fa360914b1df9f0d4"
   },
   {
    "path": "data/routes/curated-pa.json",
@@ -3548,13 +3553,13 @@
   },
   {
    "path": "data/routes/curated-pl.json",
-   "bytes": 1876866,
-   "sha256": "3d4c782a71a79683ea85c43e86b50ba05b7abad558618d51b4f0920c49abe0d2"
+   "bytes": 1876862,
+   "sha256": "a53597c88a8496dbf0bf7025a72fd84280c3c6814021dcfa0364f2c090b729e2"
   },
   {
    "path": "data/routes/curated-pt.json",
-   "bytes": 892030,
-   "sha256": "ce782fdae8d181a919b02d6260319e4c93ab5cd2df6d427bb51168b6eb3e0b97"
+   "bytes": 891992,
+   "sha256": "2024ac5be31b9fe07bcce58892a1bbbb1baa5d7682b1aaf3f3efa55a64cdd79c"
   },
   {
    "path": "data/routes/curated-py.json",
@@ -3568,13 +3573,13 @@
   },
   {
    "path": "data/routes/curated-re.json",
-   "bytes": 3072,
-   "sha256": "2319cd92c52a6f631edbfc0722b43d158de4dea62b6afd439bb768943f9b16eb"
+   "bytes": 3066,
+   "sha256": "a3568dd821fbdb39f0b01f944a724b45e031a985d776ab827c159eafebf4a49f"
   },
   {
    "path": "data/routes/curated-ro-1.json",
-   "bytes": 7863741,
-   "sha256": "0b3d4761d2995894d992de208786ca35b634a5fb4270a84e6f097da092d33256"
+   "bytes": 7863743,
+   "sha256": "1481ee80318051522909372c1ee3fd61f08f13dccb9fb85237203af0ea222ad9"
   },
   {
    "path": "data/routes/curated-ro-2.json",
@@ -3613,13 +3618,13 @@
   },
   {
    "path": "data/routes/curated-si.json",
-   "bytes": 478173,
-   "sha256": "623a5385ac80f5ba38e3b83d63fd34f05f1395fc73091c0ef9a17d1006769c58"
+   "bytes": 478159,
+   "sha256": "0b56e32ed26db498e0e87faace2e2fa595e51ee4ae29187afb17d16ee6fda3ed"
   },
   {
    "path": "data/routes/curated-sk.json",
-   "bytes": 400604,
-   "sha256": "c0551e29adc752f0f09334ec8f5d1543e611112b86c7414ce5fa8de5194e46ca"
+   "bytes": 400598,
+   "sha256": "1308eb269deb47530c059a9de0e20744908294edf99a7ea8e1da3d7db96ff1ff"
   },
   {
    "path": "data/routes/curated-sn.json",
@@ -3628,13 +3633,13 @@
   },
   {
    "path": "data/routes/curated-th.json",
-   "bytes": 407843,
-   "sha256": "36fc5e46f33ea8717d7248a946b5154f92ed26d5742b5e57bdc1f8061b43800b"
+   "bytes": 407823,
+   "sha256": "c943e68f589e2e25268fd7345e313ea7e3cd92b284b748f583e0980621d98fca"
   },
   {
    "path": "data/routes/curated-tj.json",
-   "bytes": 1129508,
-   "sha256": "92d5009cefb686a41f92d67b049afe22bb968245b86c7fc88a95f0a331661436"
+   "bytes": 1129504,
+   "sha256": "233d3125eaac7f003ee3551f4a5c331efdd2fb33f0647e41031a668d5bed5021"
   },
   {
    "path": "data/routes/curated-tn.json",
@@ -3643,13 +3648,13 @@
   },
   {
    "path": "data/routes/curated-tr.json",
-   "bytes": 852867,
-   "sha256": "549b29e158d4d43436a77080dacd77285f0005d4286c5b890794bdfa8f0ec4d7"
+   "bytes": 852861,
+   "sha256": "367b2d414dc52afd083bbd94b86607c8594c8b498b930cac333ef18849c03124"
   },
   {
    "path": "data/routes/curated-tw.json",
-   "bytes": 502938,
-   "sha256": "cb637e0bc83652152ab75bdf0d3d234dc8814847bb1dee646638500059545bb2"
+   "bytes": 502934,
+   "sha256": "4c30c5681c8c9b7502c4f29d82bcf5baf8aa9291685b46b79cc197325b8e5e03"
   },
   {
    "path": "data/routes/curated-tz.json",
@@ -3663,13 +3668,13 @@
   },
   {
    "path": "data/routes/curated-ug.json",
-   "bytes": 3453,
-   "sha256": "991b076ff814f6f0e24e57c02aaa7494bdea23e5eee0df8e914351bd58066c8f"
+   "bytes": 3455,
+   "sha256": "399ef64660f65308977ea5203a465f64ad6ec34ec688b3c2945119c17fa970da"
   },
   {
    "path": "data/routes/curated-us.json",
-   "bytes": 2084291,
-   "sha256": "3a4164d4ca674dea993d8935850d0afacd65d150ca621b7bc7ce364868eb1a19"
+   "bytes": 2083595,
+   "sha256": "13c623e9f26d916ce7edd5ba1c21c01c3f725b0459f6607e4ce303314d792c9f"
   },
   {
    "path": "data/routes/curated-uy.json",
@@ -3688,8 +3693,8 @@
   },
   {
    "path": "data/routes/curated-vn.json",
-   "bytes": 575554,
-   "sha256": "14128e77b8521f9b26bc6802a1072f8bafe66358b573025837b228fea30bb8d7"
+   "bytes": 575556,
+   "sha256": "d05726d8760efb4ac8913c283024b1a1fd25ea132b835aa9bac88471affbfba7"
   },
   {
    "path": "data/routes/curated-xx.json",
@@ -3703,8 +3708,8 @@
   },
   {
    "path": "data/routes/curated-za.json",
-   "bytes": 593248,
-   "sha256": "2f9f125938f329eed0d256ff7cce5c0014dc0a9956b42331562c620e31be1c0f"
+   "bytes": 593166,
+   "sha256": "f7378948492a0905405cfd851061f83aa31ac9d3302bb54a105110450a921126"
   },
   {
    "path": "data/routes/denver-colorado-rockies.json",
@@ -3799,7 +3804,7 @@
   {
    "path": "data/routes/legend-fill.json",
    "bytes": 1465424,
-   "sha256": "d40453217bb328efb20a3b6f86944255318ad9619c9818d01d65d12908ec58c1"
+   "sha256": "abf3898bcc328761cccf28f16a1553786184eca8522d18626fc31b13f04a4db6"
   },
   {
    "path": "data/routes/lisbon-portugal.json",
@@ -3853,8 +3858,8 @@
   },
   {
    "path": "data/routes/milan-and-northern-italy.json",
-   "bytes": 28615,
-   "sha256": "79d886e86ee02cfcd89cfbe4397479b7899c9193b686a982150d6bde9bda438f"
+   "bytes": 28616,
+   "sha256": "fee51c85d7e60b7feb8c0bdf646373691b53156c32529f62a3c772a3419295e2"
   },
   {
    "path": "data/routes/milan-northern-italy.json",
@@ -4663,13 +4668,13 @@
   },
   {
    "path": "feed.xml",
-   "bytes": 7513,
-   "sha256": "fd2fc71bd85e515352e6790d1cba303a2deb7cd7ec06e8a2c5ca784605807494"
+   "bytes": 7514,
+   "sha256": "c27c2ebc0cfd229a86c6618a041271d2696243a7c6671a20d71cde65bc640188"
   },
   {
    "path": "index.html",
-   "bytes": 36346,
-   "sha256": "079bd01608d7018ea1f9d2771741445a0a02a21b5c03d5a9661c79d708455ef7"
+   "bytes": 36366,
+   "sha256": "7734672b24231477c9d275b45651959071724b9feeb5de5c9a3d19141d2454fa"
   },
   {
    "path": "manifest.webmanifest",
@@ -4678,23 +4683,23 @@
   },
   {
    "path": "rides.html",
-   "bytes": 118750,
-   "sha256": "0d579e73879bf39e54a7dc6e34d0628d5d8b1f535399b798f0ebf3922c578ad6"
+   "bytes": 118751,
+   "sha256": "77cd0a76ae9d61ff56dfd731161ba9bd3c37be54b9b9458c0161b41153f3ecbf"
   },
   {
    "path": "rides/a82-glencoe-and-great-glen.html",
-   "bytes": 22842,
-   "sha256": "187d2b006dbd9efa877e5ba13564179e98ebf86053a4497e4a75c8a0e5999380"
+   "bytes": 22930,
+   "sha256": "ba9f4f344cb5810032287c0e735d90057a70e8e5a72ef27fc9b1e3e516adc070"
   },
   {
    "path": "rides/amsterdam-veluwe-forest-and-ijssel-river.html",
-   "bytes": 16729,
-   "sha256": "63e1995fa5f33ba117d112899138ceab11db92c2ff5cc375d97bd0c3c41b660e"
+   "bytes": 16751,
+   "sha256": "da224faab4de3dc6a2822826fd6c5a4a4f887188bab7cdfd498afb18766c9b0e"
   },
   {
    "path": "rides/apache-trail.html",
-   "bytes": 19058,
-   "sha256": "191265cc597212e1fdd2eeabebcc29f30001329747c94859ac09513a125a502b"
+   "bytes": 19146,
+   "sha256": "fc89061be586ce0cde0003f5dbd942c1a9e7ae352fff7f3971356684b943a2ef"
   },
   {
    "path": "rides/appalachians-tail-of-the-dragon-and-cherohala.html",
@@ -4708,18 +4713,18 @@
   },
   {
    "path": "rides/arlberg-and-flexen-pass-route.html",
-   "bytes": 19265,
-   "sha256": "49c39d4c5dc0ba1d79cdb6cfcb8ee55d03159f9c1c3419d94eadd0bb10aaab58"
+   "bytes": 19257,
+   "sha256": "f0e5fab6579c1a5e1bccfba60848480ba7d785a812219ca1741499ab2674078b"
   },
   {
    "path": "rides/arthur-pass-highway.html",
-   "bytes": 19339,
-   "sha256": "5d2728a5b9db5249f0fc80e27de495dd765bd359e0d7a85b3b0b117bd1f29759"
+   "bytes": 19427,
+   "sha256": "72fccb44ddf4c62663496a05a50dd460639df4e131612a433f671cbefc93c957"
   },
   {
    "path": "rides/atacama-altiplano-route.html",
-   "bytes": 19577,
-   "sha256": "18a5f5d2a4f4854c54158c5db34b414cd86f4803c2b15388de8ff1aafbff012d"
+   "bytes": 19665,
+   "sha256": "71097e6009a2bfe3b3cf06173b3b251b5a4f60f752dc481e6672ff118fa5efb3"
   },
   {
    "path": "rides/athens-delphi-and-parnassus-road.html",
@@ -4768,23 +4773,23 @@
   },
   {
    "path": "rides/avenue-of-the-giants.html",
-   "bytes": 16350,
-   "sha256": "09ef0b9ab4b6906fa03c7933c04d183b2fb0e2f36b4046182112a5e45f978fd0"
+   "bytes": 16352,
+   "sha256": "175a31a993bc616eb3e86dc61ae769f3fa9e283be7ba38d827d7efed55c2e1cb"
   },
   {
    "path": "rides/babusar-pass-road.html",
-   "bytes": 15793,
-   "sha256": "8bf0fd6f10c964944f7e0cef0f0f521d35009b1d86089d0570b9c3a312d7bffa"
+   "bytes": 15925,
+   "sha256": "b1a9e526f63f5ac2e484efb1048d4242a2bab8de5b52c64259914d47d6554b89"
   },
   {
    "path": "rides/badlands-loop-state-scenic-byway.html",
-   "bytes": 19154,
-   "sha256": "6a5660c7bdcec3958b58b2ed1863d8175b1da4667e1f1e7f8042891565bd587c"
+   "bytes": 19242,
+   "sha256": "6a07b77445dbae5bb031822c30209d7be10fecff0c9431a09abc72d94813eea7"
   },
   {
    "path": "rides/bandai-azuma-skyline.html",
-   "bytes": 16260,
-   "sha256": "393705fb2e90233b4e75d834e945a38413ec8e95263b39681a47a6a54fa90af9"
+   "bytes": 16262,
+   "sha256": "5df34fd8f61c4b114c5a8473d8e6a0384328d7429edf93b81be6c9562b1b086f"
   },
   {
    "path": "rides/bangkok-khao-yai-green-escape.html",
@@ -4878,8 +4883,8 @@
   },
   {
    "path": "rides/beartooth-highway.html",
-   "bytes": 19375,
-   "sha256": "6ed61bc32f5434dc37e70cb246e8a69fc6b5856cfc295e9917a7f22f5c8d9d71"
+   "bytes": 19543,
+   "sha256": "a5d4eb831fea6af0c6f6fd292c205a6bb700af129d9075fdc4aa97a749a37a88"
   },
   {
    "path": "rides/beartooth-red-lodge-to-cooke-city.html",
@@ -4938,8 +4943,8 @@
   },
   {
    "path": "rides/bernina-pass-road.html",
-   "bytes": 19584,
-   "sha256": "488bf2e5c700bd34683cae0a526f97ced913933af3e2e81f8509e8fae0381e28"
+   "bytes": 19586,
+   "sha256": "c85a1efaa0dd137311f0059ce816f916979c8cd668c14d9861a8b09c646de6cd"
   },
   {
    "path": "rides/black-forest-wutach-schluchsee-escape.html",
@@ -4958,13 +4963,13 @@
   },
   {
    "path": "rides/blue-ridge-parkway-doughton-park-cherokee.html",
-   "bytes": 24541,
-   "sha256": "389d8dd983eeba11fa2f14827d342e975c9f6ce1fd33d3aee97986c3e6444620"
+   "bytes": 24629,
+   "sha256": "8bedeb90e9fab7557121bb96b0cb2f6e2041b7e1da465a33ef1a41d87a3a9323"
   },
   {
    "path": "rides/blue-ridge-parkway.html",
-   "bytes": 31481,
-   "sha256": "b692b04c12059252d279c0009a1a347ac56ce32ff954b683a9975ed824d9a265"
+   "bytes": 31569,
+   "sha256": "05e7a05a82ff3d4a58f529dd6b9a4711abf0c22aec8863537997f3c4f0a27f4e"
   },
   {
    "path": "rides/bodensee-rhine-falls-thurgau-orchards.html",
@@ -4973,8 +4978,8 @@
   },
   {
    "path": "rides/bow-valley-parkway.html",
-   "bytes": 16804,
-   "sha256": "374767ad23e59cf1e991be3ea4ca6c52ebcbe247c31b13833fe403dbe98e5f70"
+   "bytes": 16940,
+   "sha256": "d584f7f6872755a37672172a1138526630d33961625d790831ce7b554830690b"
   },
   {
    "path": "rides/br-nig-glaubenbielen-entlebuch-flow.html",
@@ -5003,18 +5008,18 @@
   },
   {
    "path": "rides/bulgaria-shipka-pass-road.html",
-   "bytes": 15757,
-   "sha256": "a183a86551cdd91205a3b8e6fc123d7968174290137c354cebd0813a621be6ef"
+   "bytes": 15749,
+   "sha256": "582f0e3f1454ffd23dad53dfe18b003e99e810f68a91e558b35a3b306c877f81"
   },
   {
    "path": "rides/burgundy-grand-cru-route.html",
-   "bytes": 22056,
-   "sha256": "1fab3c624ba3c60f4ca433959f01717cd7431f425d32188861bae147ce1e8425"
+   "bytes": 22144,
+   "sha256": "54ccb690076e257273f545bf2a13927ba8d202288ca1704fb46c0f1459d0fce1"
   },
   {
    "path": "rides/cabot-trail-baddeck-cape-north.html",
-   "bytes": 16615,
-   "sha256": "9f02a3036e8eabbcdf35304eab383c864672a50adab44d2dd72ff0e24626e3c8"
+   "bytes": 16703,
+   "sha256": "7ce1dfe454f4e343f46c7dd25a9203cf3f89a87b3b71daed6187bcde8451d980"
   },
   {
    "path": "rides/cabot-trail.html",
@@ -5043,13 +5048,13 @@
   },
   {
    "path": "rides/camargue-scenic-route.html",
-   "bytes": 16738,
-   "sha256": "df21da60161d297fd4bd42d62f3c26b85b835418d95ae97d2c6e3538883cd523"
+   "bytes": 16730,
+   "sha256": "a5951331df4cc9f157f92392f120281ff8df556c4357fc1a2a8a0a4672c83f9c"
   },
   {
    "path": "rides/campos-do-jordao-climb.html",
-   "bytes": 12542,
-   "sha256": "e9842e8c4df629263bc195d76096f0200451180f0c7352315345a73b635011df"
+   "bytes": 12564,
+   "sha256": "eacc64bb6933dfdfa059f3199e09b175f6339bdf08b823ade81baff45eea10e6"
   },
   {
    "path": "rides/cape-town-cederberg-red-rock-weekend.html",
@@ -5098,18 +5103,18 @@
   },
   {
    "path": "rides/causeway-coastal-route.html",
-   "bytes": 22204,
-   "sha256": "82f0bfea20c705eb6f8444064cd4863819d3ccd8817e305419120eadf1ba9711"
+   "bytes": 22292,
+   "sha256": "7e13370bd3de798f4b72e52d8bf4c7c6c1d6b39b0573269a97d5f682cb45eebd"
   },
   {
    "path": "rides/cevennes-corniche.html",
-   "bytes": 17247,
-   "sha256": "31b7caf659a201ec58b8959140a176d5acf6c51b1be4f39de4bd529da63cf854"
+   "bytes": 17335,
+   "sha256": "757d17ee1fb6cfc6cd5cfa165f68657c6d075ca4060896ec5ace2b9d7e02e8fa"
   },
   {
    "path": "rides/cherohala-skyway.html",
-   "bytes": 16176,
-   "sha256": "056664a90a29509a25714e8a351c310c3f5fa93d9e4e19029135d1c668015730"
+   "bytes": 16446,
+   "sha256": "bc179b8f3bc0b245f2f6cac72978a7872c63fb389a5e50fe6c73e1c6341a115d"
   },
   {
    "path": "rides/chiang-mai-mae-hong-son-loop-stage.html",
@@ -5118,18 +5123,18 @@
   },
   {
    "path": "rides/chiantigiana-wine-road.html",
-   "bytes": 19385,
-   "sha256": "1e36da2216e90be8ff5f138c6d531849a3b8fd06760b6efda28c3c559d4008e0"
+   "bytes": 19616,
+   "sha256": "42052b522eb2fd7bbb65465f37fbfd4e1b2261da8a9b5bc18357f04aaac314c0"
   },
   {
    "path": "rides/chiapas-highlands-route.html",
-   "bytes": 17628,
-   "sha256": "e8c69ca50b514f47350c847a8c3f899a160f5cdc7ee0b10b75c404528fe89925"
+   "bytes": 17738,
+   "sha256": "31e06cf8f144dba6fa194f721d0ac9f2597eb26974b237f2e26e0e2b23ce41f3"
   },
   {
    "path": "rides/chief-joseph-scenic-byway.html",
-   "bytes": 17044,
-   "sha256": "3dc5fa9df263aaa387e6118da9294e9151705b712b8cd1a7deb7a185b88525ea"
+   "bytes": 17190,
+   "sha256": "903061cae4510122600614425e36a11b813f1239cdd5c19c4d816421e29a05ee"
   },
   {
    "path": "rides/chile-andes-and-caj-n-del-maipo.html",
@@ -5143,8 +5148,8 @@
   },
   {
    "path": "rides/chinook-pass-scenic-byway.html",
-   "bytes": 16483,
-   "sha256": "40cd81152b888f7f7c698bc02af4ca530df86a576f23e863808ff6fa15a97104"
+   "bytes": 16571,
+   "sha256": "d6e09a46a9993b2fc1a8e5f26241a6970919b9bb63e23069a1a5a1d435437539"
   },
   {
    "path": "rides/city-aberystwyth-afternoon.html",
@@ -5178,8 +5183,8 @@
   },
   {
    "path": "rides/city-bolzano-afternoon.html",
-   "bytes": 20597,
-   "sha256": "72ab009c41c704eda96c07e9fa0ae9b1f767e4b83a96e9ccd87ae9f9def5b6cf"
+   "bytes": 20598,
+   "sha256": "d260d48af958f72ec1f7979d48140627df613575b8e35d5fe909c116271cff23"
   },
   {
    "path": "rides/city-cairns-afternoon.html",
@@ -5203,8 +5208,8 @@
   },
   {
    "path": "rides/city-da-nang-longday.html",
-   "bytes": 17267,
-   "sha256": "4047b39b86cc56a14c722f2573b5b8e5d9b3d868f35cc644c11a7218ed9adda2"
+   "bytes": 17289,
+   "sha256": "071ce8902e7d1b1b5a924aaed0dbe69f2069d00db885b9265b463dd201b2ae79"
   },
   {
    "path": "rides/city-grenoble-afternoon.html",
@@ -5243,13 +5248,13 @@
   },
   {
    "path": "rides/city-salta-dayout.html",
-   "bytes": 18134,
-   "sha256": "510c9d9f802423e48ff39195334af46321fbf6112a254851727c0436e6778005"
+   "bytes": 18222,
+   "sha256": "1e08b5a30dd3b6dd035e5f0b940a4585716d4f516e7c0ea89a0aa8e9bbf63b81"
   },
   {
    "path": "rides/city-trento-longday.html",
-   "bytes": 20431,
-   "sha256": "ae76eb81da5afd3ac175f7981a1642e3c7cdf03b4cec2de0bad286e54e8e7e97"
+   "bytes": 20432,
+   "sha256": "2bc4cdf6962ca5c5abd1b7611983699b472373db966e099af0e81813c10b13d8"
   },
   {
    "path": "rides/city-vaasa-dayout.html",
@@ -5268,8 +5273,8 @@
   },
   {
    "path": "rides/colca-canyon-route.html",
-   "bytes": 17383,
-   "sha256": "02f7370f659465c568357f26c79f3a9da8fce807e381c89741252f9cf02dcb39"
+   "bytes": 17471,
+   "sha256": "e3a12f8dc265a611daec0f69690d204e901072f0abb84064f41d48e087dff293"
   },
   {
    "path": "rides/colorado-million-dollar-highway.html",
@@ -5278,28 +5283,28 @@
   },
   {
    "path": "rides/coronado-trail-scenic-byway.html",
-   "bytes": 17107,
-   "sha256": "f84bb06500efb12b602c8f21c083e2d407c483155f0484ad0601754c79ccd0f9"
+   "bytes": 17195,
+   "sha256": "00be8f0c35f0dee53565382890d292f007d0a72265dd672fb89c31696725c1c8"
   },
   {
    "path": "rides/corsica-west-coast-d81.html",
-   "bytes": 21366,
-   "sha256": "40074473b5503b96420a38e04b7149bdda5c336c175d37cadcfd9b7b427f5d6b"
+   "bytes": 21454,
+   "sha256": "fab7572de3425b2b618265fed79ec63ddb189af68d4318be25416f545604657b"
   },
   {
    "path": "rides/curonian-spit-road.html",
-   "bytes": 14653,
-   "sha256": "eb56940d4fcfc92ab68e2cd422322b8a64079d5fc4fe28762109230b53db8e07"
+   "bytes": 14741,
+   "sha256": "b3ffe72bc401ec0c146cf47644710ab72ccf14a31d0eecac822ea1faa934dbb6"
   },
   {
    "path": "rides/death-valley-scenic-drive.html",
-   "bytes": 21565,
-   "sha256": "4495eaf98db0ed0a73c90db273dfdef25d84e487d3549ea2f2b65206eb436e79"
+   "bytes": 21653,
+   "sha256": "ab3cabd77239159ed370287665747cbdc8f3d2fadaf71d7130cf87d3c7201fb4"
   },
   {
    "path": "rides/denali-highway.html",
-   "bytes": 16652,
-   "sha256": "fd072f8ac785d00bb39eb05973275205d1e8a6df0d3551a50685810fa3a3d159"
+   "bytes": 16740,
+   "sha256": "6665f3b12187830643a90e8d06686f059e25dc214aa397eb9068a7ccea0d0340"
   },
   {
    "path": "rides/denver-colorado-rockies-golden-gate-canyon-dawn.html",
@@ -5343,18 +5348,18 @@
   },
   {
    "path": "rides/desert-road.html",
-   "bytes": 16611,
-   "sha256": "3257907af0b670772de56af051bd984113e5d096f912f74f631bf3cdf50019b1"
+   "bytes": 16699,
+   "sha256": "960a02b877ba01960d45edb47e4721b956bc3594a9ee3efb599d516a70ad0d5b"
   },
   {
    "path": "rides/desert-view-drive-grand-canyon.html",
-   "bytes": 18922,
-   "sha256": "ef6bfa84b7ff3f9cfefdf2c09b58375fa899e4f9b8db0526ba5e80ef4db30293"
+   "bytes": 18916,
+   "sha256": "b5306334fe0cab193412f1fa3c8661e3af9a00abd02d1b5cd2e01236fa09fa28"
   },
   {
    "path": "rides/dolomites-giau-falzarego-and-cortina-high-road.html",
-   "bytes": 17130,
-   "sha256": "10220d1ea79487c772ea2826f0b496460f550ec39f96bb4446b32942d5722ee2"
+   "bytes": 17131,
+   "sha256": "251c26e600b83ef10c56c0a807e332ee703702864f64273c6577114d39f8dc8c"
   },
   {
    "path": "rides/dublin-wicklow-mountains-and-glendalough.html",
@@ -5363,23 +5368,23 @@
   },
   {
    "path": "rides/espinazo-del-diablo.html",
-   "bytes": 15556,
-   "sha256": "5cb386e7de33ecd06aa75acc33b1e9c1e5ad22283197a6177dd44032c8d8faa8"
+   "bytes": 15666,
+   "sha256": "a98d8a225eb1e2a50a8d4824a3cdd106386e5b9a7591379f42a2ad8ca62050cb"
   },
   {
    "path": "rides/ethiopia-bale-mountains-road.html",
-   "bytes": 17572,
-   "sha256": "d04322655deff171d202d013169026f4c83f70873c1008a3b47d98b1d745d839"
+   "bytes": 17660,
+   "sha256": "5c3c226dbc91d3f0bde0020ac50b53b68a7badab483766e89758d168ef1def1a"
   },
   {
    "path": "rides/flaming-gorge-uintas-scenic-byway.html",
-   "bytes": 17432,
-   "sha256": "28e874840c5abe5232d8e21fd00d3fe50ab25df2c58ead8427736ea212f6d1a1"
+   "bytes": 17520,
+   "sha256": "5005da277ef640c9b7524357666ab981bf6acfd94e22b1210f9c1268017e41b8"
   },
   {
    "path": "rides/florida-a1a-scenic-and-historic-coastal-byway.html",
-   "bytes": 17286,
-   "sha256": "7fb3b6a38439951a66d09d2a3ddc63be297752729ae3fd96af322a43b1026fed"
+   "bytes": 17374,
+   "sha256": "d83aa37972baf0727ce2136558c4b39c8fd848bbb5f0afd7171b7c8e256d01ad"
   },
   {
    "path": "rides/forks-of-the-credit.html",
@@ -5388,8 +5393,8 @@
   },
   {
    "path": "rides/fundy-coastal-drive.html",
-   "bytes": 19921,
-   "sha256": "2bb7400ad7197c13a68df097d7a4259d0ecb183cffbf7c6b551170f86c6843a0"
+   "bytes": 20009,
+   "sha256": "fc37f86d337220f1dad7a70f043b6051f13ab69ae054e15ac7b4071c30f77cd2"
   },
   {
    "path": "rides/furka-grimsel-susten-big-three-dawn.html",
@@ -5398,13 +5403,13 @@
   },
   {
    "path": "rides/gamsberg-pass-route.html",
-   "bytes": 14922,
-   "sha256": "a2ccba8e67146d40f5856ae5372f3445ec74bb322c785e1d83ca5b5a6da35912"
+   "bytes": 15010,
+   "sha256": "bdfaf8159a86b0d18189335ff0ab8a8a4d54c2a3b607f6286b1d911a411355ec"
   },
   {
    "path": "rides/gavia-pass.html",
-   "bytes": 16543,
-   "sha256": "f17b3629ad52b62ddda6857679b8f58f6669397c7a23c20ef16ec49cacfd8975"
+   "bytes": 16546,
+   "sha256": "d0b0c019d82e34e4081166c30c130481834a1c73d0191715533dcd409ba3172d"
   },
   {
    "path": "rides/geneva-chamonix-and-grand-st-bernard-doorway.html",
@@ -5418,13 +5423,13 @@
   },
   {
    "path": "rides/georgia-military-highway.html",
-   "bytes": 20234,
-   "sha256": "a80193f1053d114fa3f8e158333d644f7c80392181461601fe0d7ada3d8d5a3d"
+   "bytes": 20322,
+   "sha256": "dfbb20d7f4a356a2327002f4225d499ca0b3f33d3b8df9452d0b33a06bbc268c"
   },
   {
    "path": "rides/glaubenberg-and-glaubenbielen-route.html",
-   "bytes": 18738,
-   "sha256": "94b2d50b3e2be3324e6033748329eee1af2e2b4c26acf007a89e2e3b74bfb58d"
+   "bytes": 18732,
+   "sha256": "bd654a2ef8be8f2c404acaad978b8100f9150796f1198830325a386cc9ba01ed"
   },
   {
    "path": "rides/glaubenberg-pilatus-backroads.html",
@@ -5433,18 +5438,18 @@
   },
   {
    "path": "rides/gran-canaria-mountain-loop.html",
-   "bytes": 21283,
-   "sha256": "091396bcac79b5c62ac88a2fc48e84379eb6070cb10a625772db04a6c7f7e750"
+   "bytes": 21371,
+   "sha256": "759549932745259891dea21212b52829215ec0344ce750935a49664bfecbcce2"
   },
   {
    "path": "rides/grand-pacific-drive.html",
-   "bytes": 19120,
-   "sha256": "d5342230d0f5f8930073a257ef779420077f484608bfe5c39b398da3e75c07ce"
+   "bytes": 19208,
+   "sha256": "730407eb2f71af29f27bd066cfdb4d54c3d1b80f5c0e0b48ea6e7fa1f52e2d18"
   },
   {
    "path": "rides/grand-tour-of-switzerland-andermatt-montreux.html",
-   "bytes": 16975,
-   "sha256": "b082899c1f71aa0723d5ab125efe9f9a0ef8228f5fa43acb7e5250f96e54a5f6"
+   "bytes": 17107,
+   "sha256": "501d7ccc0b49f0d99bb91298f24e0b0a1b7a0cd03ddcfad8a9ee65397d72343c"
   },
   {
    "path": "rides/grand-tour-of-switzerland.html",
@@ -5453,23 +5458,23 @@
   },
   {
    "path": "rides/great-ocean-road-cape-otway-warrnambool.html",
-   "bytes": 16793,
-   "sha256": "ffd3c6fc78403158c88d32a23c81fd437e79fe2a7143950165dad8252a20d925"
+   "bytes": 16881,
+   "sha256": "579602a10c7d2ab0849300d038835c4517381582079c9d0c7de16317babae990"
   },
   {
    "path": "rides/great-ocean-road.html",
-   "bytes": 22667,
-   "sha256": "1fc2f3cf2e47269418fce1afd04ce75df64b9895ce2b55ab4872a0dff3dbf61e"
+   "bytes": 22755,
+   "sha256": "b6c8da18fc2a264edc60a2e3ed55248f80ccea59b5e6beaaefb62208eb4638c5"
   },
   {
    "path": "rides/great-st-bernard-pass-road.html",
-   "bytes": 17154,
-   "sha256": "4723c9e36fe296dc582eba6d44d5bccf43a97921c4b886f27f1c026bb55b70a4"
+   "bytes": 17412,
+   "sha256": "e9b989e6adb97aebebaf15d35f85864d4294de4ef50f200f980af6cecce603cd"
   },
   {
    "path": "rides/grimsel-pass.html",
-   "bytes": 18026,
-   "sha256": "8ff0c49cc67ed1799ccf4bb4019f9352916f3de622b38cfab0a53fab98aef606"
+   "bytes": 18018,
+   "sha256": "dbd3fec3e8809448b513257dede4a90f5ce76f1f05f93c6989947803ee2ce218"
   },
   {
    "path": "rides/grossglockner-hochalpenstrasse.html",
@@ -5483,13 +5488,13 @@
   },
   {
    "path": "rides/ha-giang-loop-ha-giang-ma-pi-leng-pass.html",
-   "bytes": 16380,
-   "sha256": "62e26c0f1a2e84f00bd826338d4384bc7233f938486b0026b0d50a7897d996c7"
+   "bytes": 16468,
+   "sha256": "74be3de553045201f36d4313254dec907f2f1a32c57c40309fed98b67f4f013f"
   },
   {
    "path": "rides/ha-giang-loop.html",
-   "bytes": 20415,
-   "sha256": "dacab6cd20c0451ff045e476bf5f4b9a963a600097a16d035980df4eccc38e4a"
+   "bytes": 20437,
+   "sha256": "f01550dbbb5db44c46d0d0b7d914502d9e4647a12a3b5b424cd2261780c7f7aa"
   },
   {
    "path": "rides/hakone-skyline-and-fuji-lakes.html",
@@ -5673,8 +5678,8 @@
   },
   {
    "path": "rides/hanoi-ha-giang-limestone-loop-stage.html",
-   "bytes": 17231,
-   "sha256": "5095ba9bba56006ec91d2742164b24623f4d7c7cc5f059be3fe4d18e3b340dc7"
+   "bytes": 17253,
+   "sha256": "4255fb0636122de369ea5f4e7755e467682b65cb3b92e50a23580d2f17e85396"
   },
   {
    "path": "rides/hardknott-and-wrynose-passes.html",
@@ -5698,18 +5703,18 @@
   },
   {
    "path": "rides/icefields-parkway-columbia-icefield-jasper.html",
-   "bytes": 17182,
-   "sha256": "36d3f0ea933f85402d06fa6159546550f2030850a5517bf0ef7581f8690be55d"
+   "bytes": 17270,
+   "sha256": "111dc6a28b486e29e9618f8a15babe046811bf0244edf765a4dbf25c70bf04e4"
   },
   {
    "path": "rides/icefields-parkway.html",
-   "bytes": 25972,
-   "sha256": "a3568a34879af528ca849759bef8cc097168b5d7c37b0aa2bb93f1a580fe0b57"
+   "bytes": 26060,
+   "sha256": "d37cc9c37f09c1d925174c375610207b6cc2d20e99d758a3b39560b29ee6d0cc"
   },
   {
    "path": "rides/iceland-golden-circle-and-thingvellir.html",
-   "bytes": 16093,
-   "sha256": "880a3fbcce3149cbc3e6ce210b75352832e3f72f238ff8e2deb846f45517db6a"
+   "bytes": 16115,
+   "sha256": "3099b3fa46d36606519c82f9c8a2c27e97c9c2d009dcafdd851aeebe67b56227"
   },
   {
    "path": "rides/ireland-ring-of-kerry-touring-day.html",
@@ -5743,13 +5748,13 @@
   },
   {
    "path": "rides/karakoram-highway-chilas-khunjerab-pass.html",
-   "bytes": 18978,
-   "sha256": "6ce323818aa088f786ca1ba50b9deb51037c19d4aafb3bc2aa50d5bbce391235"
+   "bytes": 19110,
+   "sha256": "71f2579aba215bf57838ec36c7ffe2ea79757b8246f6be09a67f90acef89e8a7"
   },
   {
    "path": "rides/karakoram-highway.html",
-   "bytes": 28131,
-   "sha256": "0b1513550084468cca206b2f29ce57e2592a4c178df1cbea513a654846df34f6"
+   "bytes": 28263,
+   "sha256": "cfe15adfb12aaaeda6a8ad6e1257e17c19fb57cdf4a07872de83cda562d02f3c"
   },
   {
    "path": "rides/kazimierz-and-the-vistula.html",
@@ -5823,8 +5828,8 @@
   },
   {
    "path": "rides/kuala-lumpur-genting-and-fraser-s-hill.html",
-   "bytes": 16121,
-   "sha256": "09e6edf817a973d6b8a8982ccc1ba15332444642cf49482d3a942ee5711129c3"
+   "bytes": 16143,
+   "sha256": "890f4ff09b078a68883f4fd012bd1afd96e077ada222af4ddf3304e14c00fb4c"
   },
   {
    "path": "rides/kyoto-arashiyama-to-miyama-thatched-village.html",
@@ -5833,8 +5838,8 @@
   },
   {
    "path": "rides/kyrgyzstan-song-kol-route.html",
-   "bytes": 17902,
-   "sha256": "b81e0803744f1ed7de19c1d7b73522700fbb74a30715cc164f61cf53bb1e5c13"
+   "bytes": 17990,
+   "sha256": "d9e60f0277ead77ae959d220a4fc09490aee72ba804aa1a0a64425df4e587927"
   },
   {
    "path": "rides/lake-constance-appenzell-s-ntis-view-loop.html",
@@ -5843,23 +5848,23 @@
   },
   {
    "path": "rides/lake-garda-western-shore-and-strada-della-forra.html",
-   "bytes": 19608,
-   "sha256": "d09ea77a3d56689850d385af1b7987618c2d4555dce83cd53b6e4b470b4e76be"
+   "bytes": 19611,
+   "sha256": "77b618343babb88bb7c78ca81f31a466cfc9e39a7582de66452fc006e95373c4"
   },
   {
    "path": "rides/leh-manali-highway-manali-lachulung-la.html",
-   "bytes": 18087,
-   "sha256": "8df13f938bb3035c40babdbef092b613991599d14d1702541694b63ec60be592"
+   "bytes": 18219,
+   "sha256": "beeefe337ccc89858281f524e0aa87c2ef9b1bd42f1fcefb1975e8b046f689cf"
   },
   {
    "path": "rides/leh-manali-highway.html",
-   "bytes": 22398,
-   "sha256": "b8e6e1b8d6feaf7cb917ce1ba9378eed40feb25f09e89adb8006a1876fabbae7"
+   "bytes": 22530,
+   "sha256": "4fa5927cad70d5b9967f24be5a132b2e0bd3c23a9be369e4ab8bd9e721340e62"
   },
   {
    "path": "rides/lewis-pass-highway.html",
-   "bytes": 16444,
-   "sha256": "6f177e3e689dc61181008c33472718361bfe91ce9262d20fe467a7309bd1d7e9"
+   "bytes": 16532,
+   "sha256": "810546cccfc1dddb859e38e487a49701ac9ba7b1334180dff8f1c6c8f281ef06"
   },
   {
    "path": "rides/lisbon-portugal-arr-bida-and-set-bal-sweep.html",
@@ -6138,8 +6143,8 @@
   },
   {
    "path": "rides/madeira-encumeada-and-paul-da-serra.html",
-   "bytes": 16860,
-   "sha256": "a84d9ad09e3292c539ada3be39c956eed076c7d73cd0afaaf272f940c6d57acc"
+   "bytes": 16852,
+   "sha256": "6b2da2e7b5b8c5462cbad0be0175aae0378bd789c5dd53d388bc58358c73aced"
   },
   {
    "path": "rides/madrid-central-spain-alto-tajo-gorge-ride.html",
@@ -6183,13 +6188,13 @@
   },
   {
    "path": "rides/malaysia-east-west-highway.html",
-   "bytes": 15444,
-   "sha256": "ecf9009503d63e94618230940d21f354d9aa20771ec205ae42483a56e56e5aaa"
+   "bytes": 15532,
+   "sha256": "6ca1fc2f0760a2af17043b72fdf5697512eac1e20d543af6d45b1877d324b2ee"
   },
   {
    "path": "rides/mauritius-black-river-gorges-route.html",
-   "bytes": 17185,
-   "sha256": "01edae507c1460fe255665e55a13588aabc48d42341c0d95f75fe0143550c720"
+   "bytes": 17179,
+   "sha256": "75521264b2f96f1582f0057545dd7fe0f7b9a601f7e9dc5965d95d2fdd69d94b"
   },
   {
    "path": "rides/mazury-lakes-road.html",
@@ -6238,13 +6243,13 @@
   },
   {
    "path": "rides/milan-lake-como-and-ghisallo-ridge.html",
-   "bytes": 12234,
-   "sha256": "4944465296b01b0cf9828cbd25230c843c4e6cb7c5f7630dbb6cb0d84632d26d"
+   "bytes": 12235,
+   "sha256": "4664308c4bf27855be36878aa6734fa02ce10fc7faa91cc1e8871f2253455cd5"
   },
   {
    "path": "rides/milan-ligurian-apennines-and-portofino.html",
-   "bytes": 16841,
-   "sha256": "09820867dedba1cf736be01f0946e1b1c93432e46da10765d018bbdb3f8b6306"
+   "bytes": 16842,
+   "sha256": "a9e5b0385fa5817c9649bde3e88ddccb4e705d3efb0444143dbf0ba76094c9cc"
   },
   {
    "path": "rides/milan-northern-italy-aosta-valley-gateway.html",
@@ -6273,28 +6278,28 @@
   },
   {
    "path": "rides/milan-stelvio-and-gavia-serious-pass-day.html",
-   "bytes": 20637,
-   "sha256": "c729f6404c85fb529f05e6092e9fb087cac783426445424eace6616b5f4d0596"
+   "bytes": 20645,
+   "sha256": "4732b226e9e52367b34fb8e56bec179fe7b4525b5af7a9b908cabb26602ec365"
   },
   {
    "path": "rides/milford-road.html",
-   "bytes": 18526,
-   "sha256": "40250ceeabfb1d4b72ef59720f1f2ee53c7f9b0d9686156408935546350d5b26"
+   "bytes": 18682,
+   "sha256": "1920ad6e44adf35a64c87723655506d0c45695a6d410262f085e7751f5b6eec8"
   },
   {
    "path": "rides/molesworth-station-road.html",
-   "bytes": 16425,
-   "sha256": "c7617177942541587733302a1e03960e6e1842810aebe7c44e1fd12745e3a825"
+   "bytes": 16513,
+   "sha256": "428ffb2b8dd410e9fbf1761d0b30615273a913b988716fb2a55cc6df2eb6591c"
   },
   {
    "path": "rides/morocco-tizi-n-tichka-atlas-crossing.html",
-   "bytes": 14386,
-   "sha256": "f23884a0c7f1e1bda285ec03eda446131bfcefc6587e57bb166acf63d1e697a0"
+   "bytes": 14408,
+   "sha256": "895df9c309fa4dc45f9c561c656314c35a05d786f9a819a25b8a399690dbfd6d"
   },
   {
    "path": "rides/morocco-tizi-n-tichka.html",
-   "bytes": 18034,
-   "sha256": "73b5bda68aa0a968bb4f7641ca3978cdadbcced36dded998cb7a80120a2b20ef"
+   "bytes": 18122,
+   "sha256": "fbfc4beb0d02525f72357f4c88724b1acd8635f8a23a172eb561ba5840a71f2b"
   },
   {
    "path": "rides/motorcycle-rides-agelmoos.html",
@@ -6343,8 +6348,8 @@
   },
   {
    "path": "rides/motorcycle-rides-bellinzona.html",
-   "bytes": 15639,
-   "sha256": "2b7d2941bc92105dbcd892e6f21beac97fffc51aec8d58a2f334662df091e5c8"
+   "bytes": 15642,
+   "sha256": "a07c646ce425f241005ba3218e89a52f60656283705e75c4d4af5f76f503efc4"
   },
   {
    "path": "rides/motorcycle-rides-bergpark-wilhelmshohe.html",
@@ -6363,8 +6368,8 @@
   },
   {
    "path": "rides/motorcycle-rides-bolzano.html",
-   "bytes": 6184,
-   "sha256": "fae66046ae5a2e2796a12e3bbb0a49429da97baab967bcd62af6f3692b8762e8"
+   "bytes": 6187,
+   "sha256": "866be4b0785c8e6f54dc0acdcbb4ac06b15b20050526c06fdf9887238a95bc58"
   },
   {
    "path": "rides/motorcycle-rides-bourg.html",
@@ -6398,8 +6403,8 @@
   },
   {
    "path": "rides/motorcycle-rides-castel-grande.html",
-   "bytes": 15690,
-   "sha256": "c58f903b5dd0d5444a58a93b8019125fe357c38d02089669720914a29c588965"
+   "bytes": 15693,
+   "sha256": "c2bf0fa5d22b60dc33741eb01eee8a430ac33203d04f274e0b438d6805db5913"
   },
   {
    "path": "rides/motorcycle-rides-chamonix.html",
@@ -6408,8 +6413,8 @@
   },
   {
    "path": "rides/motorcycle-rides-chur.html",
-   "bytes": 17635,
-   "sha256": "2b005d03d08e3fdb432ef624f411e5a9743eb432994a30d0c932ace30bc76d55"
+   "bytes": 17638,
+   "sha256": "654156cc4ed941a83e3da7acb143b4f871515839f7ec1dc0c1d8cadfa9e5994a"
   },
   {
    "path": "rides/motorcycle-rides-como.html",
@@ -6418,8 +6423,8 @@
   },
   {
    "path": "rides/motorcycle-rides-davos.html",
-   "bytes": 16080,
-   "sha256": "0ffa5ce192686c3605810ed15005aaa0bcd246e411f163ea7392f003a58b9989"
+   "bytes": 16083,
+   "sha256": "2ae044a8265dca196b74cd90895bf382312a81d03f2ececf79fe054cc696c115"
   },
   {
    "path": "rides/motorcycle-rides-denver.html",
@@ -6458,8 +6463,8 @@
   },
   {
    "path": "rides/motorcycle-rides-fiave-lago-carera.html",
-   "bytes": 6026,
-   "sha256": "095c13b554f55b76068046266aed995e539c809c830960ec0c5454423f059c5c"
+   "bytes": 6029,
+   "sha256": "9de4b366b137a8f414320d6f871b11c3848b6423057a221cbe02a9d7c0611beb"
   },
   {
    "path": "rides/motorcycle-rides-fort-william.html",
@@ -6468,8 +6473,8 @@
   },
   {
    "path": "rides/motorcycle-rides-frassino.html",
-   "bytes": 5099,
-   "sha256": "5a546575a78ade85eb94ef8f4b78559f077505ef7328bcc3cfbf936a9c4e3321"
+   "bytes": 5102,
+   "sha256": "8aed2f60c6fb62b27326e54fce27ecbc2a6aded90e5b0e6f2e19a500f80851fa"
   },
   {
    "path": "rides/motorcycle-rides-freiburg.html",
@@ -6583,8 +6588,8 @@
   },
   {
    "path": "rides/motorcycle-rides-innsbruck.html",
-   "bytes": 6349,
-   "sha256": "59879ceaa83c9c51079d05f9c7d8f8c1c3bcda23d17583d492194128a5b57a88"
+   "bytes": 6352,
+   "sha256": "47345ebe1e445c97cc25ee34c918dfd581af6195e5a5e68ad89a6b65747ecde4"
   },
   {
    "path": "rides/motorcycle-rides-insel-werd.html",
@@ -6673,8 +6678,8 @@
   },
   {
    "path": "rides/motorcycle-rides-lavagnone.html",
-   "bytes": 5531,
-   "sha256": "f368cd9a5d11cf984c7ce86f2435210670797bc2d27ebdedc21089f817663927"
+   "bytes": 5534,
+   "sha256": "1d6f12cee214582ecb6488f8485fb7f63600697974487e51282c028f3dc0e203"
   },
   {
    "path": "rides/motorcycle-rides-lavaux.html",
@@ -6728,18 +6733,18 @@
   },
   {
    "path": "rides/motorcycle-rides-lucone.html",
-   "bytes": 6218,
-   "sha256": "6a35cd6d98e36bac899d82ffafd3c8998eaac5b54ce343c1f9df0f163d04cced"
+   "bytes": 6221,
+   "sha256": "c3c2d0622de4e4ee7914059cf558fd541649c47c39e85584490053e733fdefbc"
   },
   {
    "path": "rides/motorcycle-rides-lugana-vecchia.html",
-   "bytes": 5616,
-   "sha256": "b43e6c0e9f9977f36fa25d1443dbb69f1bcfa8477a996e6e2730c07ec4507687"
+   "bytes": 5619,
+   "sha256": "2b571d2c7b896244fe1e22b7f2f58020b23e5df67cbabc4a9360787b3fe54129"
   },
   {
    "path": "rides/motorcycle-rides-lugano.html",
-   "bytes": 11514,
-   "sha256": "8e2ba59cfd6922d9c62e2505133b06760b448a9dd1148cda28ba7845d2e2a892"
+   "bytes": 11517,
+   "sha256": "2925843560118d8810334d18eac4331ead01dfb5210d0779f0559c72843184e5"
   },
   {
    "path": "rides/motorcycle-rides-luther-hall.html",
@@ -6823,8 +6828,8 @@
   },
   {
    "path": "rides/motorcycle-rides-parco-pluritematico.html",
-   "bytes": 8068,
-   "sha256": "50b3eac0d4e54efb0edde3dfcf0ca0662ef2b1bbe73e9961beb8a6113d76ec90"
+   "bytes": 8071,
+   "sha256": "551271cac2e5a11f385812e0b5486be4647157acaccf2d3fa0647d202cc50d2d"
   },
   {
    "path": "rides/motorcycle-rides-paris.html",
@@ -6868,8 +6873,8 @@
   },
   {
    "path": "rides/motorcycle-rides-san-sivino.html",
-   "bytes": 6286,
-   "sha256": "08b68eac60b103d443d48396e6396a4487da1705b6f446c5f6035b93cad08011"
+   "bytes": 6289,
+   "sha256": "05a8c26ae8eef2740bf2e6737438c078a541ce4aac417fd30d4020a8b89a97e5"
   },
   {
    "path": "rides/motorcycle-rides-santiago.html",
@@ -6888,8 +6893,8 @@
   },
   {
    "path": "rides/motorcycle-rides-sciliar-catinaccio.html",
-   "bytes": 5619,
-   "sha256": "97034cc880436fe07e2081045e94151feb95d584d879f329d54034d5fd9cdcf9"
+   "bytes": 5622,
+   "sha256": "31ebac79d1df0976c98fa19dd6435ac5bb704be6a0d0b41ed90ff97b60381454"
   },
   {
    "path": "rides/motorcycle-rides-seematte.html",
@@ -6983,8 +6988,8 @@
   },
   {
    "path": "rides/motorcycle-rides-three-castles.html",
-   "bytes": 15690,
-   "sha256": "dba86a666270e22119b18a50a2679c0ef117d252ea03a6e5eac08934e28581ab"
+   "bytes": 15693,
+   "sha256": "703c5d877e1246d6a28d4839204bfab6c60470636ed9a3f578fe19aeb84e7f05"
   },
   {
    "path": "rides/motorcycle-rides-tokyo.html",
@@ -6993,8 +6998,8 @@
   },
   {
    "path": "rides/motorcycle-rides-trento.html",
-   "bytes": 5781,
-   "sha256": "28956c3feae31a614e7d4ea834b855ab9638ab565e1c9d0d17a6bdd5773f21e6"
+   "bytes": 5784,
+   "sha256": "7b03bf2ac0a0174719293ceae601c0ee31a22786c94834221c426915e58e91d2"
   },
   {
    "path": "rides/motorcycle-rides-turin.html",
@@ -7143,8 +7148,8 @@
   },
   {
    "path": "rides/motorcycle-roads-italy.html",
-   "bytes": 13854,
-   "sha256": "5974e7d7b2b60493259703cf1741df62d2fc09eea6883630c0cb3b44b46b636c"
+   "bytes": 13856,
+   "sha256": "720455a47ac6871ed4d9c910332d2845d6e6f753a296f23746d0b4c61572ef4d"
   },
   {
    "path": "rides/motorcycle-roads-japan.html",
@@ -7288,8 +7293,8 @@
   },
   {
    "path": "rides/nepal-prithvi-highway.html",
-   "bytes": 14909,
-   "sha256": "506f0d8463236d99f05ac0ffa62f2a45023c7feb5abb9c110643c29f904992fe"
+   "bytes": 14997,
+   "sha256": "525e868f78b37635a317292e22ebc3ea7fcc64b46c2cdaa11690f954ebf7a1ad"
   },
   {
    "path": "rides/new-york-hudson-valley-rides-appalachian-trail-ridge-day.html",
@@ -7353,8 +7358,8 @@
   },
   {
    "path": "rides/north-coast-500-inverness-john-o-groats.html",
-   "bytes": 21845,
-   "sha256": "7f428fdbe87d9b00b01e9c51ece410e2e5d6b634b79d7b504993a84fba6a210e"
+   "bytes": 21933,
+   "sha256": "9702afe041b9e601239615b29f076d1bafa06a6181ca18c923ff2821afcc0a16"
   },
   {
    "path": "rides/north-coast-500.html",
@@ -7383,33 +7388,33 @@
   },
   {
    "path": "rides/norwegian-scenic-route-atlantic-road.html",
-   "bytes": 18932,
-   "sha256": "a7f3100d5db9072fae1f8197e96ebdbbfe5b0598e6a37bbb7173f8673d20bafa"
+   "bytes": 19184,
+   "sha256": "87d2a3fc399fd239854eff1db40af0a95810660f07dfdc2ca82a38ae0b00a186"
   },
   {
    "path": "rides/norwegian-scenic-route-aurlandsfjellet.html",
-   "bytes": 17009,
-   "sha256": "d0c9fb3fc5b8dcd235e51ddc7f22a635d11a4ab1079b6ebe8fd9755f6c312311"
+   "bytes": 17003,
+   "sha256": "4a10436200df3e9b6b827d589b7631df35b7aee72a97bc37159ee25829535902"
   },
   {
    "path": "rides/norwegian-scenic-route-geiranger-trollstigen.html",
-   "bytes": 23747,
-   "sha256": "3862e11adeb7299e968608e93a9b6ab6ad3ac6b3d73dff9991a9bab689572a96"
+   "bytes": 24011,
+   "sha256": "9153c06a11af5103408a7206dca3547551d2913fc3640b06e29add3e4590f6a2"
   },
   {
    "path": "rides/norwegian-scenic-route-hardangervidda.html",
-   "bytes": 21324,
-   "sha256": "9d753f3f16bcf0b5a33cd337a3404abf9e4efb924a8eb8b38dcf14a341374ee8"
+   "bytes": 21522,
+   "sha256": "79d73de87d612b49db7aabb611d948e19ce9a05f854548bd4f2c44c93ece0d20"
   },
   {
    "path": "rides/norwegian-scenic-route-helgelandskysten.html",
-   "bytes": 19915,
-   "sha256": "5451b17fe94e5ea2c5d7ccb76547074dc2cf6757af8b9cd30baca7a0795d3aee"
+   "bytes": 20003,
+   "sha256": "6edfa0e10a1ce318c4311878497aef6a44c534260979f66658d04cf4fed72c36"
   },
   {
    "path": "rides/nubra-valley-via-khardung-la.html",
-   "bytes": 20910,
-   "sha256": "17ead87af38a0610e7f0da806721418dbfa52938b2513cbf154187755c1a8ec6"
+   "bytes": 21042,
+   "sha256": "a076bd259d559cdb2bd4409fd259833a2a54039397143c8224895bcc0ffc794e"
   },
   {
    "path": "rides/nufenen-gotthard-tremola-furka-highline.html",
@@ -7433,8 +7438,8 @@
   },
   {
    "path": "rides/oman-jebel-akhdar-road.html",
-   "bytes": 15485,
-   "sha256": "89ce9245ea86d729d707447ccf1d5f9e6d486ac695a4dab08d547cd7fe3a98c0"
+   "bytes": 15477,
+   "sha256": "0d518d757982bafc9c21a84ad79e4d07c3bf2ec564ac6b85b1747c9bcb156e8a"
   },
   {
    "path": "rides/osaka-koyasan-mountain-road.html",
@@ -7478,8 +7483,8 @@
   },
   {
    "path": "rides/oxley-highway-mountain-section.html",
-   "bytes": 16485,
-   "sha256": "70f24ff9b41ac28d9761d335e329462b5341784c60933d4ada4b135ad1e21860"
+   "bytes": 16573,
+   "sha256": "abbd4b6e1d3c31ed1db93100a2a01c6e73a11d4f880a3f3debfb1769339a7144"
   },
   {
    "path": "rides/paris-champagne-ridge-and-reims-long-day.html",
@@ -7593,18 +7598,18 @@
   },
   {
    "path": "rides/paso-de-jama-san-salvador-de-jujuy-paso-de-jama.html",
-   "bytes": 16967,
-   "sha256": "4575572fffa8f450c2a12d6556071d389573ccc5f960858ee463e6cca91d07b0"
+   "bytes": 17121,
+   "sha256": "7aaaa78121b83c2499973e8165fe19efa80c9e5bfff5fd1e22cf433a626510b1"
   },
   {
    "path": "rides/paso-de-jama.html",
-   "bytes": 19020,
-   "sha256": "ba8893cb944349051391fecd3819f988be5c505972a3ed5cd06b5587a2443b48"
+   "bytes": 19174,
+   "sha256": "e44ff1a86f16a0906d80cb75ca7a273e9830f692a3d8d5892801feca48d3b08c"
   },
   {
    "path": "rides/paso-de-los-libertadores.html",
-   "bytes": 21627,
-   "sha256": "10b286959b6051347d3dc06dd8a67f0e11fc9358adddaa6f177ad9530395fb1c"
+   "bytes": 21781,
+   "sha256": "1c9786a2bd52e31d8ef4db79b38929f56f1ccaacbd5768bd1681494812766fa7"
   },
   {
    "path": "rides/phoenix-apache-trail-and-salt-river.html",
@@ -7623,8 +7628,8 @@
   },
   {
    "path": "rides/pragel-and-ibergeregg-loop.html",
-   "bytes": 19640,
-   "sha256": "bc489324ff04a4c584c4919b1e4dd89164260ba10d05252eaa57d7a8b57f5f78"
+   "bytes": 19634,
+   "sha256": "0d18df5f9086404bf6f91c5ef8be5dc40cd08439393c42e65022af8584efadac"
   },
   {
    "path": "rides/prague-bohemia-bohemian-switzerland-gorges.html",
@@ -7668,13 +7673,13 @@
   },
   {
    "path": "rides/putty-road.html",
-   "bytes": 16807,
-   "sha256": "aa51c00b957e0be5b7fc16abf57a641e32d4d6662365eb7346b61667560b7fc3"
+   "bytes": 17077,
+   "sha256": "907972d0586afa869640e7d650000001dd13d0ed774778ca2a73bc60c5ec6c01"
   },
   {
    "path": "rides/pyrenees-cols-route.html",
-   "bytes": 22202,
-   "sha256": "2d205123d55d1d5dc93dfcbdcce27b738f3fdd298bea5c0ac66a5f42c354e6a8"
+   "bytes": 22290,
+   "sha256": "0164b13feb8862017cadb6a0b1996fd3cef80152b1f1561136933feabdbe8363"
   },
   {
    "path": "rides/queenstown-crown-range-and-milford-approach.html",
@@ -7723,8 +7728,8 @@
   },
   {
    "path": "rides/reunion-route-du-volcan.html",
-   "bytes": 16159,
-   "sha256": "ef4ac6e571360edcf1987434a9fdb2912217455c24dc8f733e68272adf0bf58b"
+   "bytes": 16153,
+   "sha256": "69b3554bcd2be16f7e68a121f1366c78ddaea98b7792473f335e619739412393"
   },
   {
    "path": "rides/richard-russell-scenic-highway.html",
@@ -7738,18 +7743,18 @@
   },
   {
    "path": "rides/rio-santos-coast-road.html",
-   "bytes": 16384,
-   "sha256": "258a673d556c41eda4e586f93ecb92b4102da0111cfdb2b56e570bc23a8cbc8d"
+   "bytes": 16406,
+   "sha256": "7ea7c0c4fd8d6a59909b69abbd6e4a89a252d91f9802c9e5c77469e0ede41861"
   },
   {
    "path": "rides/romania-maramures-wooden-churches-route.html",
-   "bytes": 18075,
-   "sha256": "032ba919d5679a168b372c90e7291109660f96b09bafb454195187690dde4e38"
+   "bytes": 18077,
+   "sha256": "93e9d966de934fb9cf11685b0569824361b0179f4956393c0506169b45ab50c1"
   },
   {
    "path": "rides/rome-abruzzo-gran-sasso-high-road.html",
-   "bytes": 16296,
-   "sha256": "1bbfb5aafecf20b0b7ad7022ece84fcfc02ecc225f9709b31c594b1fe8e3028e"
+   "bytes": 16297,
+   "sha256": "cf811534d42a5f5e9e8cb9307e5450e8792844f2ffbb8f1cde695eed5c7167f4"
   },
   {
    "path": "rides/rome-central-italy-abruzzo-gran-sasso-weekend.html",
@@ -7788,38 +7793,38 @@
   },
   {
    "path": "rides/rome-tuscany-val-d-orcia-sweep.html",
-   "bytes": 15769,
-   "sha256": "f6c76dff30692f386526545fc188c60d32bf9c6619e46579943ef573a403a766"
+   "bytes": 15770,
+   "sha256": "c079231c5d4667f94d4d4200017d4d898d3d87b43fc3ea04f88e4b9764ff38bd"
   },
   {
    "path": "rides/ronda-and-white-villages-route.html",
-   "bytes": 19618,
-   "sha256": "62c0177fbabf506dc751256b0a822c1c089c2318301aed56e35501c835daa358"
+   "bytes": 19706,
+   "sha256": "4e7d99a94091757c93b953d702fda8d88eec54f01891f2ddcf763cc43731e8f5"
   },
   {
    "path": "rides/rota-romantica-brazil.html",
-   "bytes": 19812,
-   "sha256": "f84b0d276663915dfc9aab929da5019236733ecf64018d3c3f9ea4a9ed067f2c"
+   "bytes": 19900,
+   "sha256": "02ae09cc96a8bee5d132ebee3178dfa87e1840fd6d8dc2fe7cffe49f878d583e"
   },
   {
    "path": "rides/route-des-grandes-alpes-col-de-l-iseran-col-de-vars.html",
-   "bytes": 17456,
-   "sha256": "c990484b5e82a8ba0a342a7ecc44aef9075e41be1ce67f6bb7385dd32ac1f150"
+   "bytes": 17544,
+   "sha256": "abde575b2e6a0e97eb505bb6b882d5012cad74f31eeceb7c83a0e7db6c40874f"
   },
   {
    "path": "rides/route-des-grandes-alpes.html",
-   "bytes": 33821,
-   "sha256": "c4a9546a76da0360531c45eef3fd0779ad20c4130e7ced71d9d127f5aa130da2"
+   "bytes": 33909,
+   "sha256": "f66e5e54e56f8413d9595fe2a47a7c09a8ffb121acfa16c1d09b595508cee47e"
   },
   {
    "path": "rides/route-napoleon-golfe-juan-sisteron.html",
-   "bytes": 18741,
-   "sha256": "2898f5f98aa2782a5efee3ee4697b6bac6a56a1067f799e1b05e931915776c9d"
+   "bytes": 18897,
+   "sha256": "c3dee5aa912f9469f70c2e42593884fe2a87804c9be7b93780bea973ff1a1ca3"
   },
   {
    "path": "rides/route-napoleon.html",
-   "bytes": 23367,
-   "sha256": "12c8e301bedf68b2d46b52f610f58e005fd61cb6a778577040e31b7540d1fa2b"
+   "bytes": 23529,
+   "sha256": "bd328a7f35591b65c78fbc8958eea14e975e0a0f0b3bea7ca5395e00d1b30ccd"
   },
   {
    "path": "rides/san-bernardino-spl-gen-long-alpine-day.html",
@@ -7848,8 +7853,8 @@
   },
   {
    "path": "rides/sani-pass.html",
-   "bytes": 16284,
-   "sha256": "d4aa9615d471f8c9816e2895f3bb1068092c8d8e25315c6a2f2053dfe213a1ad"
+   "bytes": 16286,
+   "sha256": "c4f820f26c571485bb595cc7a5dd96b0b9643948f5f8f6144895b666301da242"
   },
   {
    "path": "rides/scotland-applecross-torridon-and-west-coast.html",
@@ -7923,18 +7928,18 @@
   },
   {
    "path": "rides/serbia-danube-iron-gates-route.html",
-   "bytes": 18020,
-   "sha256": "41ce0155096a6446276bb6d8a99d04d655a608d84d22f5993e15a47fd1223970"
+   "bytes": 18108,
+   "sha256": "71d6c1ca9e1c19e7eb8159a4c11950abf476eee3365c12dbefe8c42ba200e24f"
   },
   {
    "path": "rides/serra-da-mantiqueira-ridge.html",
-   "bytes": 12737,
-   "sha256": "935b54dd856117ca875f8450112dda04816ac597fab1045fb6c6bda9a632fe23"
+   "bytes": 12759,
+   "sha256": "75fd141e5cb943098d0a0204bedad6238299d24c3bb50f2ae11c567a9a5b7d60"
   },
   {
    "path": "rides/seven-lakes-route.html",
-   "bytes": 19498,
-   "sha256": "7b924404c5eb623ee4a849f00dbf3bb2f7ff4ca6617e1b26d5eb94906a58b9ff"
+   "bytes": 19652,
+   "sha256": "b6d26752b21f265bbcf57f4293632a76a1312fbfc664b150357d072041a126af"
   },
   {
    "path": "rides/shenandoah-skyline-drive-ridge-day.html",
@@ -7943,13 +7948,13 @@
   },
   {
    "path": "rides/sicily-etna-scenic-road.html",
-   "bytes": 19119,
-   "sha256": "4a0f8a59f98d0fa9416f0ef759246b66092a2d8def555898658cf9ee072a7c42"
+   "bytes": 19208,
+   "sha256": "6a2c56843b498464753fc9d75176947538eb37b6a263519f1e1d2bd4a57fc9e7"
   },
   {
    "path": "rides/sicily-madonie-mountain-road.html",
-   "bytes": 17010,
-   "sha256": "c3f64224eb25831f47dd51da3b35cf0fe3cd83aa7cd531afa2bdc620c0f4fb68"
+   "bytes": 17011,
+   "sha256": "e7c3c42c36008c4a2f9e03805d5e5353fdba894a34ff7c7e272157e2c739890a"
   },
   {
    "path": "rides/sile-black-sea-coast.html",
@@ -7963,8 +7968,8 @@
   },
   {
    "path": "rides/simplon-pass-road.html",
-   "bytes": 17054,
-   "sha256": "f6b35a918702c0fdb85a6c55fb46c4048f2005abe1f24b29f5fb10828ed96a2b"
+   "bytes": 17048,
+   "sha256": "fb44d09e73ec033339a91444f675f6b8209061d7f608b6faf5e153a7f7ef3013"
   },
   {
    "path": "rides/skyline-alice-s-pacific-return.html",
@@ -7973,8 +7978,8 @@
   },
   {
    "path": "rides/slovak-high-tatras-freedom-road.html",
-   "bytes": 17885,
-   "sha256": "a564ca287c6ddddc0ad4fecb72a5f388d4fdd14c7b6c0700bbeaf00e51a604ca"
+   "bytes": 17879,
+   "sha256": "e0b3015a391c25278c3c3546af3d41e2af582100c4486536de5daa0acbb8ab4f"
   },
   {
    "path": "rides/smugglers-notch-road.html",
@@ -7983,13 +7988,13 @@
   },
   {
    "path": "rides/snaefellsnes-peninsula-loop-budir-stykkisholmur.html",
-   "bytes": 17514,
-   "sha256": "02e28ac2780feea2155fd2906d9f53aecbcd4c3c7870ce2fe2934b1803924bfc"
+   "bytes": 17602,
+   "sha256": "af6d1384f2dbb4cdb433cf2eff6fcf05caf8647eeb9891d73b2f30253e1a837e"
   },
   {
    "path": "rides/snow-roads-scenic-route.html",
-   "bytes": 19502,
-   "sha256": "f9a14bfb50c3feb630109e091bf21b9a64503398da95adc1358ea331e846659c"
+   "bytes": 19590,
+   "sha256": "57f639774f45a7ae2c0579d6187408780f7fae4ab8258aa764b6873cae108ce0"
   },
   {
    "path": "rides/south-africa-garden-route-high-and-coast.html",
@@ -8018,38 +8023,38 @@
   },
   {
    "path": "rides/taipei-yangmingshan-and-north-coast.html",
-   "bytes": 14748,
-   "sha256": "fc25e439922e9da9b56d6146582bd6a0b08972e8854a0462a5d4f07a938800d6"
+   "bytes": 14804,
+   "sha256": "0f59321ab0944af5676d94c68b80d5f7b6c501219616f50b70c1d639f70a405a"
   },
   {
    "path": "rides/taiwan-central-cross-island-highway.html",
-   "bytes": 18587,
-   "sha256": "1172c465df711f49620844c62f0bcde6a2a5b80694b6ebdf03ee2f01bae9a7f0"
+   "bytes": 18803,
+   "sha256": "6773d9cf37fdffa8ed84efdb0dcdaebfcb8de24b0506a1f516d1b9ae7e660201"
   },
   {
    "path": "rides/taiwan-taroko-gorge-and-east-coast.html",
-   "bytes": 16596,
-   "sha256": "147eed84804c3004f08eeef7135cb06a010832d28a92c7050e9f9436a63e2279"
+   "bytes": 16652,
+   "sha256": "165cc8b87aff8fe5dda5892e7c5a4ac2a92840734c7d8896c19cf824db54fde5"
   },
   {
    "path": "rides/tanzania-ngorongoro-and-serengeti-route-arusha-ngorongoro-crater-rim.html",
-   "bytes": 14021,
-   "sha256": "7dd30a2f4fc0398ec0cfa703bf733ddb87605eac562f5ce792fd7aa8ea0b6054"
+   "bytes": 14131,
+   "sha256": "20e633031f791c4dbc7f2f0bf1350eab8082b6ccedc933088bfd54440ec3d6b0"
   },
   {
    "path": "rides/tanzania-ngorongoro-and-serengeti-route.html",
-   "bytes": 18284,
-   "sha256": "daa4cb21007f81e7200591747a8bdef38061a2e949fe3629346321b79d880ee7"
+   "bytes": 18394,
+   "sha256": "b8456c92bbda02dbf3ec06387f01c749d269012f80f07e9a468be8a974da290e"
   },
   {
    "path": "rides/tasmania-western-explorer.html",
-   "bytes": 17198,
-   "sha256": "a1e8a4edfe8d27a8cebfd493bf79c9fbd774c28d29809df92c3ecc1b340fc18c"
+   "bytes": 17286,
+   "sha256": "29c4d10330625385ee2eab6e1e459891f4c3224a397e794e2cbf775aad17bcb9"
   },
   {
    "path": "rides/teide-national-park-road.html",
-   "bytes": 18755,
-   "sha256": "a6de97a138a83716df13f1751eab18edececf84c6fdaef4fee0deed99b7081e4"
+   "bytes": 18757,
+   "sha256": "4619d37f7c80f0abc197cd55fe2748cfe6d8cd0bcf81452c61c48fb5d865b81e"
   },
   {
    "path": "rides/ticino-tremola-weekend-warmth.html",
@@ -8193,13 +8198,13 @@
   },
   {
    "path": "rides/top-of-the-world-highway-dawson-city-chicken-alaska.html",
-   "bytes": 16218,
-   "sha256": "71705ceeefe97b9c212b8d9b04baa555c344b431ef9fcf8312ebccef04453f94"
+   "bytes": 16306,
+   "sha256": "60af6bf4d1e10c4e174a736ec86b161e92368c5dc03f73c4fe7cd5f50e260e1b"
   },
   {
    "path": "rides/top-of-the-world-highway.html",
-   "bytes": 18211,
-   "sha256": "6cf86ac9e320462b9bab5009369cac845548ff0e3d9de8bd00e9d97cd5f82a5c"
+   "bytes": 18299,
+   "sha256": "f038971bbb6a951c1fa621d4a94236652a6a3b8e208ab49c28fc917f2156d1ce"
   },
   {
    "path": "rides/uludag-ascent.html",
@@ -8303,8 +8308,8 @@
   },
   {
    "path": "rides/viking-trail.html",
-   "bytes": 19012,
-   "sha256": "4973735a54bdfd9548df24eb60f75a53070398f1bf20d805fd580eb6bcf3fed1"
+   "bytes": 19100,
+   "sha256": "5bb07e53333e396b4732b401d4108b28b1eeb0bc1882ad6fc06bbff1040114f4"
   },
   {
    "path": "rides/villa-de-leyva-road.html",
@@ -8318,8 +8323,8 @@
   },
   {
    "path": "rides/west-coast-glacier-highway.html",
-   "bytes": 20170,
-   "sha256": "fff314360941e470588f90ddc51e5f431308b804e9f249e92831c36b33d326b7"
+   "bytes": 20258,
+   "sha256": "0b7d80be3eba4946851795d1503e87fe1d7cb9fe77f2603f981743a0d16e0f1f"
   },
   {
    "path": "rides/yedigoller-forest-road.html",
@@ -8333,8 +8338,8 @@
   },
   {
    "path": "rides/zeeland-delta-works-route.html",
-   "bytes": 17500,
-   "sha256": "44a685be3ec5bbbd9116ead5ff34b27e7685131c76f5fa94debfc616ef5a2b38"
+   "bytes": 17588,
+   "sha256": "8254a25945401f7eac839e937bfee1c4ef0c5296714aa76d189d87fdf49a7108"
   },
   {
    "path": "robots.txt",
@@ -8353,16 +8358,16 @@
   },
   {
    "path": "styles.css",
-   "bytes": 381910,
-   "sha256": "ffdec298be313982142b94cabd339c73ec014fbfcda9b4434c3680760e5edfc0"
+   "bytes": 386414,
+   "sha256": "59e2a9ba5b6cb49511f18f62d3b8576077e62bc7f02c00ff68a957ea8c630482"
   },
   {
    "path": "sw.js",
-   "bytes": 9470,
-   "sha256": "86c384e807a54026d7d74c1bfe14e71852de92f5cf6323ff4247bbddb6b938cf"
+   "bytes": 10017,
+   "sha256": "342be2a8fee3aba1378b5de2040250852b29231ff2ca22a582606481a0dea223"
   }
  ],
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
- "file_count": 1666,
- "total_bytes": 289852424
+ "file_count": 1667,
+ "total_bytes": 291109271
 }

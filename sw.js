@@ -2,7 +2,7 @@
    App files: network first, cached copy offline. Pictures and libraries: cache-first.
    Ride shards: cached the moment a ride is opened, so it stays readable with no bars.
    Tiles / live APIs: never cached here (they go stale and they're big). */
-const V = 'curvescout-f5c6881';
+const V = 'curvescout-beb80f3';
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
    Route data was cached in the same versioned cache as the shell, and activation deletes every
    cache but the new version - so each app update silently wiped the routes a rider had taken
@@ -69,9 +69,15 @@ self.addEventListener('activate', e => {
          still holds (older releases saved rides there) is moved into the routes cache, so nothing saved is lost. */
       .then(keys => { const old = keys.filter(k => k !== V && k !== ROUTES && /^curvescout-[0-9a-f]{6,}$/.test(k));
         upgrade = old.length;
-        return Promise.all(old.map(k => caches.open(k).then(c => c.keys().then(reqs => Promise.all(reqs.filter(r => /\/data\/|\/data__/.test(r.url))
-          .map(r => c.match(r).then(res => res && caches.open(ROUTES).then(rc => rc.match(r).then(have => have ? null : rc.put(r, res))))))))
-          .catch(() => null).then(() => caches.delete(k)))); })
+        /* r31 audit (CS-R31-009): copy, then VERIFY every copy, and only then delete. Any failure - a full disk, an
+           unreadable entry, a copy that is not there afterwards - keeps the old cache: it may be the only complete copy. */
+        return Promise.all(old.map(k => caches.open(k).then(c => c.keys().then(reqs => {
+          const data = reqs.filter(r => /\/data\/|\/data__/.test(r.url));
+          return caches.open(ROUTES).then(rc => Promise.all(data.map(r => rc.match(r).then(have => have ? true
+              : c.match(r).then(res => { if (!res) throw new Error('unreadable ' + r.url); return rc.put(r, res); }))))
+            .then(() => Promise.all(data.map(r => rc.match(r)))))
+            .then(found => { if (found.some(x => !x)) throw new Error('copy missing'); return caches.delete(k); });
+        })).catch(() => { upgrade = Math.max(0, upgrade - 1); return null; }))); })
       .then(() => self.clients.claim())
       /* the hand-over to open pages runs AFTER activation, never inside it: a page reload inside waitUntil held the
          worker in "activating", and every request of every page waited behind it (found in testing, 2026-10-12) */
