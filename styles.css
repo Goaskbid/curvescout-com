@@ -63,7 +63,7 @@
   --rad:14px; --rad-s:10px;
   --shadow:0 16px 44px rgba(0,0,0,.5);
   --maxw:1060px}
-html{scroll-behavior:smooth}
+html{scroll-behavior:auto}   /* owner 2026-11-02: a page starts at its top, it is never scrolled there in view; in-page jumps ask for smooth themselves */
 body{
   /* 17px base, not 16 - this is read on a phone at arm's length, often outdoors. */
   margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
@@ -5348,3 +5348,8 @@ html, body { overflow-anchor: none; }
 }
 @media (prefers-reduced-motion:reduce){.tripTabs button{transition:none}}
 .tripForm.tripFolded{padding:0!important;background:none!important;border:0!important;box-shadow:none!important}
+/* r32 review, owner 2026-11-02: the start page leads with Find a ride and Plan a trip; Atlas and Quick tour stay, as quiet links */
+.csHeroCta .csHeroLink{background:none;border:0;color:var(--mute,#c9ced8);font:600 14px/1.2 var(--body,system-ui);text-decoration:underline;text-underline-offset:3px;min-height:44px;padding:0 10px;cursor:pointer}
+.csHeroCta .csHeroLink:hover,.csHeroCta .csHeroLink:focus-visible{color:#fff}
+@media (max-width:767px){ .csHeroCta .csHeroLink{flex:0 0 auto} }
+.raHud[hidden]{display:none!important}

@@ -1,0 +1,24 @@
+English pronunciations in the CurveScout studio voice come from the CMU Pronouncing Dictionary.
+
+1) The dictionary data: CMU Pronouncing Dictionary, Copyright (C) 1993-2015 Carnegie Mellon University.
+   Released by Carnegie Mellon University under a BSD-style licence that permits redistribution and use in source
+   and binary forms, with or without modification, provided the copyright notice and licence conditions are kept.
+   Full text: https://github.com/cmusphinx/cmudict/blob/master/LICENSE
+
+2) The packaging used here: cmu-pronouncing-dictionary 3.0.0 (npm), https://github.com/words/cmu-pronouncing-dictionary
+
+ISC License
+
+Copyright (c) 2015 Zeke Sikelianos <zeke@sikelianos.com>
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.

@@ -1,6 +1,6 @@
 /* ---- CO-PILOT STUDIO VOICE: a neural voice that runs on the rider's own device, in a worker ----
-   Model: Kokoro-82M v1.0 (Apache-2.0, hexgrad), the 8-bit ONNX export by onnx-community. Text to phonemes: espeak-ng
-   through the "phonemizer" package (Apache-2.0 / GPL-3.0 data as packaged). Inference: ONNX Runtime Web (MIT), single
+   Model: Kokoro-82M v1.0 (Apache-2.0, hexgrad), the 8-bit ONNX export by onnx-community. Text to phonemes: our own English
+   pronunciation (g2p-en.mjs: CMU Pronouncing Dictionary + rules; eSpeak NG/GPL removed 2026-11-02). Inference: ONNX Runtime Web (MIT), single
    thread, WebAssembly. The text clean-up below follows kokoro-js 1.2.1 (Apache-2.0, Joshua Lochner).
    Why a worker: one sentence takes a moment to compute; on the page that would freeze the moving map.
    Where the files come from: the runtime, its WebAssembly file and the two voice tables are on curvescout.com itself;
@@ -9,7 +9,7 @@
    browser's cache so it downloads once. */
 import * as ort from 'onnxruntime-web/wasm';
 import { respell } from './phon.mjs';
-import { phonemize } from 'phonemizer';
+import { phonemizeEn } from './g2p-en.mjs';   /* our own English pronunciation (CMU dictionary + rules); eSpeak NG removed 2026-11-02 */
 import { localIPA } from './g2p-local.mjs';
 
 const MODEL_SHA = 'fbae9257e1e05ffc727e951ef9b9c98418e6d79f1c9b6b13bd59f5c9028a1478', MODEL_BYTES = 92361116;
@@ -54,8 +54,7 @@ async function toPhonemesEn(text, lang = 'a') {
   text = normalize(text); const parts = []; let last = 0;
   for (const m of text.matchAll(PUNCT_RE)) { if (last < m.index) parts.push({ p: false, t: text.slice(last, m.index) }); if (m[0].length) parts.push({ p: true, t: m[0] }); last = m.index + m[0].length; }
   if (last < text.length) parts.push({ p: false, t: text.slice(last) });
-  const code = lang === 'a' ? 'en-us' : 'en';
-  let s = (await Promise.all(parts.map(async x => x.p ? x.t : (await phonemize(x.t, code)).join(' ')))).join('');
+  let s = (await Promise.all(parts.map(async x => x.p ? x.t : phonemizeEn(x.t)))).join('');
   s = s.replace(/kəkˈoːɹoʊ/g, 'kˈoʊkəɹoʊ').replace(/kəkˈɔːɹəʊ/g, 'kˈəʊkəɹəʊ').replace(/ʲ/g, 'j').replace(/r/g, 'ɹ').replace(/x/g, 'k').replace(/ɬ/g, 'l')
     .replace(/(?<=[a-zɹː])(?=hˈʌndɹɪd)/g, ' ').replace(/ z(?=[;:,.!?¡¿—…"«»“” ]|$)/g, 'z');
   if (lang === 'a') s = s.replace(/(?<=nˈaɪn)ti(?!ː)/g, 'di');

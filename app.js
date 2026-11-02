@@ -6120,7 +6120,7 @@ async function csPhotoWall() { try {
     '<p class="csHeroP">Motorcycle roads chosen for their curves, with the weather on the way, stops and a roadbook.</p>' +
     /* owner 2026-10-25: "you killed the nice intro" - the audit's start field (CS-017) is gone again; the intro is the
        original: the photo, the line, and three clear ways in */
-    '<div class="csHeroCta"><button type="button" class="csHeroGo" data-hero="find">Find a ride</button><button type="button" class="csHeroAlt" data-hero="trip">Plan a trip</button><button type="button" class="csHeroAlt" data-hero="atlas">Open the Atlas</button></div></div>' +
+    '<div class="csHeroCta"><button type="button" class="csHeroGo" data-hero="find">Find a ride</button><button type="button" class="csHeroAlt" data-hero="trip">Plan a trip</button><button type="button" class="csHeroLink" data-hero="atlas">Open the Atlas</button></div></div>' +
     '<div class="csHeroDots" aria-hidden="true">' + csWallPool.map(() => '<i></i>').join('') + '</div>';
   wall.addEventListener('click', ev => { const b = ev.target.closest && ev.target.closest('[data-hero]'); if (!b) return;
     if (b.dataset.hero === 'find') { csShowWall(false); if (location.hash && location.hash !== '#/') location.hash = '#/'; try { scrollTo(0, 0); } catch (e) {} }
@@ -7394,7 +7394,8 @@ const CS_RA = (() => {
   /* the level chip in the header, on every page */
   function hud() {
     try { const s = stats(), pct = s.nextAt ? Math.round((s.xp - s.levelAt) / (s.nextAt - s.levelAt) * 100) : 100;
-      document.querySelectorAll('.raHud').forEach(el => { el.innerHTML = '<span class="raHudI" aria-hidden="true">🏅</span><span class="raHudT"><b>' + esc(s.level) + '</b><small>' + s.xp + ' pts</small></span><i class="raHudBar"><s style="width:' + pct + '%"></s></i>';
+      /* r32 review, owner 2026-11-02: before the first ride the points wait in Passport - the header shows them once there are any */
+      document.querySelectorAll('.raHud').forEach(el => { el.hidden = !(s.xp > 0); el.innerHTML = '<span class="raHudI" aria-hidden="true">🏅</span><span class="raHudT"><b>' + esc(s.level) + '</b><small>' + s.xp + ' pts</small></span><i class="raHudBar"><s style="width:' + pct + '%"></s></i>';
         el.title = 'My Road Atlas: ' + s.level + ', ' + s.xp + ' points' + (s.nextName ? ' - ' + (s.nextAt - s.xp) + ' to ' + s.nextName : ''); el.setAttribute('aria-label', el.title); });
     } catch (e) {}
   }
@@ -8797,7 +8798,7 @@ function tripShowTab(k, top) { const res = document.querySelector('.tripRes'); i
   res.querySelectorAll('.tripPane').forEach(p => { p.hidden = p.dataset.pane !== k; });
   if (k === 'days' && !(TRIP.ui.day >= 0)) tripShowDay(innerWidth >= 900 ? 0 : -1, false);
   if (k === 'map') setTimeout(() => { try { TRIP.map && TRIP.map.invalidateSize(false); if (TRIP.map && TRIP.allBounds && TRIP.focus == null) TRIP.map.fitBounds(L.latLngBounds(TRIP.allBounds).pad(0.12)); } catch (e) {} }, 60);
-  if (top) scrollTo(0, 0); }
+  if (top) scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
 /* a day is its own page too (-1: the list of days) */
 function tripShowDay(i, top) { const res = document.querySelector('.tripRes'); if (!res) return; const n = TRIP.plan ? TRIP.plan.days.length : 0;
   if (!res.querySelector('.tripPane[data-pane="days"]') || res.querySelector('.tripPane[data-pane="days"]').hidden) { TRIP.ui = Object.assign(TRIP.ui || {}, { tab: 'days' }); res.querySelectorAll('.tripTabs [data-tab]').forEach(b => { const on = b.dataset.tab === 'days'; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); }); res.querySelectorAll('.tripPane').forEach(p => { p.hidden = p.dataset.pane !== 'days'; }); }
@@ -8807,7 +8808,7 @@ function tripShowDay(i, top) { const res = document.querySelector('.tripRes'); i
   const pg = P.querySelector('.tripPager'); if (pg) { pg.hidden = i < 0; if (i >= 0) { pg.innerHTML = '<button type="button" data-pg="' + (i - 1) + '"' + (i > 0 ? '' : ' disabled') + '>‹ Day ' + i + '</button><button type="button" data-pg="-1" class="all">All days</button><button type="button" data-pg="' + (i + 1) + '"' + (i < n - 1 ? '' : ' disabled') + '>Day ' + (i + 2) + ' ›</button>';
     pg.querySelectorAll('[data-pg]').forEach(b => b.onclick = () => tripShowDay(+b.dataset.pg, true)); if (i === n - 1) pg.lastChild.textContent = 'Last day'; if (i === 0) pg.firstChild.textContent = 'First day'; } }
   if (i >= 0) try { tripBookFill(i); } catch (e) {}
-  if (top) scrollTo(0, 0); }
+  if (top) scrollTo({ top: 0, left: 0, behavior: 'instant' }); }
 
 /* About: founder interview (owner 2026-10-11). Text supplied by the owner; photographs his own. */
 const ABOUT_DATA = {"title": "I wanted to build the service I kept looking for.", "standfirst": "A conversation with Torsten Sauter, founder of CurveScout, about mountain roads, making time for a proper ride, and building something other motorcyclists will want to use.", "intro": ["Torsten Sauter’s starting point for CurveScout was personal. Based in Switzerland, he loves riding, mountains and the roads that make an ordinary day out worth remembering. What he wanted online was equally straightforward: help finding those roads, enough information to choose between them, and a practical way to turn the choice into a trip.", "Developed and launched in 2026, CurveScout began with scenic-road discovery. Its ambitions now extend to day trips, weekends and longer motorcycle holidays. The service remains free, and Sauter describes its commercial future as an open question. His immediate priority is more definite: make it useful enough that riders come back.", "We asked him what that means in practice, where the idea came from, and how he intends to grow without losing sight of the ride itself."], "blocks": [{"t": "photo", "n": 1}, {"t": "q", "x": "You could have spent your spare time riding. Why spend so much of it building a website about riding?"}, {"t": "a", "x": "That is a fair question. I wanted something that would help me make better use of the time I do have on the bike."}, {"t": "a", "x": "Living in Switzerland, I have mountains and extraordinary roads within reach. But even with that advantage, deciding where to go can involve surprisingly much work. You find a road, look somewhere else for a description, check whether the distance makes sense, then start thinking about the rest of the day."}, {"t": "a", "x": "Some of the services I tried were too basic for what I wanted. Others offered more, but at a price that made casual use less attractive. I kept thinking there was room for something generous, detailed and easy to get into. Eventually, I decided to pursue it myself."}, {"t": "q", "x": "What does a really good ride mean to you?"}, {"t": "a", "x": "Mountains are a large part of it, certainly. I like the changing landscape, the way a road climbs and then opens into a different valley. But I would not reduce a good ride to altitude or the number of hairpins."}, {"t": "a", "x": "It is also the sequence. A demanding section followed by something more flowing. Somewhere worth stopping. Enough time to enjoy the place rather than immediately looking at the clock."}, {"t": "a", "x": "I love life in the saddle, but I do not need every ride to become an endurance exercise. Sometimes a few hours on roads that suit your mood are more satisfying than covering a much greater distance because a route happens to look impressive on a screen."}, {"t": "q", "x": "There are already plenty of maps and route planners. What is the question CurveScout tries to answer differently?"}, {"t": "a", "x": "The question comes before navigation: which ride should I choose?"}, {"t": "a", "x": "Knowing how to reach somewhere is useful once you have decided to go there. I wanted more help with that decision. What is the road like? How does it fit with the roads around it? Is this a sensible afternoon ride, or am I committing to something much longer? What would make me choose it over another option nearby?"}, {"t": "a", "x": "That is where the idea of CurveScout starts. Discovery needs explanation. A photograph can catch your attention, but the next step should be information that helps you decide whether the ride is right for you."}, {"t": "q", "x": "Walk us through someone’s first visit. What do they actually do?"}, {"t": "a", "x": "You begin with a starting point, the distance you have in mind and the kind of riding you are looking for. Then you explore the alternatives through route cards, the map or Swipe, and build a shortlist. The route information brings together the roadbook, elevation, weather context, services and GPX export. Those are the core functions around which the experience is organised."}, {"t": "a", "x": "The important part for me is that you should not need to become an expert in the application before you can use it. You might arrive with a particular pass in mind. Or you might simply have Saturday free. Both are perfectly reasonable starting points."}, {"t": "q", "x": "Your own enthusiasm is for the mountains. Does that make CurveScout a product mainly for Alpine riders?"}, {"t": "a", "x": "The Alps inspired the idea, but they should not limit it."}, {"t": "a", "x": "A coastal road, a route through wooded hills or an unfamiliar stretch near home can be just as worthwhile. The rider who has a free evening deserves attention as much as the person planning a week abroad."}, {"t": "a", "x": "I also do not want the service to assume that everybody enjoys the same kind of riding. Some people want technically demanding roads. Others want scenery, a relaxed pace and somewhere pleasant to stop. Those preferences should influence the recommendations. My own taste gave the project its starting point; it should not become a rule that everyone else has to follow."}, {"t": "photo", "n": 2}, {"t": "q", "x": "You have extended the idea into trip, weekend and holiday planning. What changes when someone has several days rather than an afternoon?"}, {"t": "a", "x": "The individual roads still matter, but the choices start affecting one another."}, {"t": "a", "x": "For an afternoon, you might want a satisfying loop from home. For a weekend, you need to think about what belongs on the first day, where you finish, and whether the second day offers something different. For a longer holiday, the balance becomes more important again. You want good riding, but you also want time to stop and experience the places you have travelled to."}, {"t": "a", "x": "That is the thinking behind the expanded planners. We are using the road inventory as the basis for a fuller itinerary, rather than treating every day as an isolated route. The aim is to help people put together a trip they would actually enjoy riding."}, {"t": "q", "x": "What would you tell someone who keeps adding another pass to the itinerary?"}, {"t": "a", "x": "I understand the temptation. You see another interesting road and think it would be a shame to miss it."}, {"t": "a", "x": "But the useful question is what that addition does to the whole day. Does it add a worthwhile contrast, or does it turn the last two hours into a rush? Does it leave time for the stop you were looking forward to? Are you still planning for the people on the trip, or for the satisfaction of completing a list?"}, {"t": "a", "x": "A planner should make those consequences easier to see. It should help you make a good choice, including the choice to leave something for another visit. I would rather help someone enjoy four days than persuade them to squeeze six days of riding into them."}, {"t": "q", "x": "A large road inventory sounds attractive. How do you prevent it from becoming a large collection of places nobody can distinguish?"}, {"t": "a", "x": "By remembering that the number of entries is not the product."}, {"t": "a", "x": "The useful work is in making those entries understandable: what a route contains, how the sections connect, what is distinctive, and what information is reliable. Ten genuinely relevant choices are more helpful than hundreds that all sound alike."}, {"t": "a", "x": "That is also why I care about the descriptions. Repeating “beautiful views” does not tell you much. A rider needs to understand what changes along the road and why one option might suit them better."}, {"t": "a", "x": "We want breadth, because discovery benefits from having alternatives. But breadth has to be accompanied by detail and clear distinctions. Otherwise we have simply moved the research burden onto another screen."}, {"t": "q", "x": "How much authority should a platform like this claim over a rider’s decisions?"}, {"t": "a", "x": "Less than it might be tempting to claim."}, {"t": "a", "x": "There is a difference between helping someone prepare and telling them that a road is safe to ride. A route description, a forecast and a suggested itinerary are useful inputs. They do not replace the conditions in front of you or your own judgement."}, {"t": "a", "x": "I want CurveScout to be clear about what it knows and what still needs checking. That is part of being useful, not an admission that the idea does not work. People can make sensible decisions with incomplete information when the limits are clear. What they cannot use is confidence that the underlying information does not justify."}, {"t": "a", "x": "The rider remains responsible for the ride."}, {"t": "q", "x": "“From bikers for bikers” is an appealing phrase. What would make it more than a slogan?"}, {"t": "a", "x": "The details that affect an actual day out."}, {"t": "a", "x": "You should be able to see the time implications of a decision, not only the distance. You should be able to distinguish an interesting road from the journey needed to reach it. You should get a reason to stop at a place, rather than another marker to decipher."}, {"t": "a", "x": "It also means respecting different riders. Experience, preferred pace and appetite for a long day vary considerably. I do not want the platform to reward one type of rider and make everyone else feel they have chosen the less serious option."}, {"t": "a", "x": "The phrase only earns its place if riders recognise their own needs in the product."}, {"t": "q", "x": "You say the response has been encouraging. What matters to you in that response?"}, {"t": "a", "x": "We are very happy with the early response. It gives me confidence that the interest is shared and that this was not simply a service I wanted for myself."}, {"t": "a", "x": "But I would be careful about confusing enthusiasm for an idea with proof that every part of the product is finished. Those are different things."}, {"t": "a", "x": "The response that matters most is whether people find it useful enough to return. Does it help them choose a ride? Does it make planning easier? Do they feel that their time was well spent?"}, {"t": "a", "x": "I want to keep that practical test. Positive feedback is encouraging; suggestions and criticism are valuable because they tell us where the experience still needs work."}, {"t": "q", "x": "Why keep it free?"}, {"t": "a", "x": "Because reaching fellow enthusiasts is a central part of why I started it."}, {"t": "a", "x": "I would like someone to hear about CurveScout, try it and discover whether it helps them without having to make a purchasing decision first. That matters for a service people might use for a spontaneous outing as well as a bigger trip."}, {"t": "a", "x": "My primary motivation is to build something people genuinely like using. Of course, running and developing a platform has to be sustainable. A freemium model may make sense at some stage. I am not ruling it out, and I am not making a promise about pricing forever."}, {"t": "a", "x": "But I do not want the initial experience to feel like a demonstration of everything you cannot do until you pay."}, {"t": "q", "x": "You want the platform to keep evolving. How do you stop that from becoming an excuse for leaving things unfinished?"}, {"t": "a", "x": "By separating ambition from what a rider is being asked to rely on today."}, {"t": "a", "x": "There will always be more we could add. That does not remove the obligation to make the existing experience coherent. A new feature should improve the trip, not make something familiar harder to use."}, {"t": "a", "x": "For me, evolving means listening, correcting and adding carefully. It does not mean changing things simply to have another announcement. We need to preserve what people value while making the weak parts better."}, {"t": "a", "x": "I am ambitious about where CurveScout can go. But someone opening it to plan this weekend should not need to care about our long-term ambitions. It has to be useful to them now."}, {"t": "photo", "n": 3}, {"t": "q", "x": "CurveScout has a few cousins. What are DipMapper, Nestlyzer and Mnemika?"}, {"t": "a", "x": "They explore different interests through a similar approach."}, {"t": "a", "x": "DipMapper is centred on finding places to swim: lakes, beaches, pools, baths and other swimming spots. Its map and place cards bring practical details together, including facilities, parking, weather and source links where available. The wider direction is information around time spent in and around the water, including water sports."}, {"t": "a", "x": "Nestlyzer applies the idea to municipalities and the question of where to live. It is about comparing places and understanding how they fit different priorities, rather than assuming there is one universally right place for everyone. The latest version is still being prepared and is not yet live."}, {"t": "a", "x": "Mnemika, at mnemika.com, is the odd one out, because it is about learning rather than places. It is an exam trainer, built first for the Swiss Passerelle, the supplementary exam that opens the way from a vocational baccalaureate to university. It turns the syllabus into practice and repetition, so that preparing becomes steady work rather than last-minute cramming."}, {"t": "a", "x": "They are separate products, but the connection is quite natural to me: helping someone understand a place before choosing what to do there."}, {"t": "q", "x": "You describe the common approach as open-source intelligence. What does that mean for someone who just wants a good ride or a swim?"}, {"t": "a", "x": "In this context, it means working with information that is already publicly available and making it more useful."}, {"t": "a", "x": "The information may exist, but it is often spread across maps, public records, local websites and specialist sources. Finding it is one job. Working out whether it concerns the same place, how current it is, and what it means for the user is another."}, {"t": "a", "x": "That is the part that interests me. A person should not need to repeat all that work every time they consider somewhere new."}, {"t": "a", "x": "And it requires judgement. Combining five sources does not automatically produce a better answer. You still have to understand the differences between them and avoid presenting an assumption as an established fact."}, {"t": "q", "x": "Is the ambition eventually to build a much larger family of services?"}, {"t": "a", "x": "Potentially, yes. I like the idea of starting with a concrete need, building something useful and allowing the scope to grow from there."}, {"t": "a", "x": "I am curious about what is possible, and I am motivated by making things that help people. That can lead to more than one product. But I do not think having a long list of websites is an achievement in itself."}, {"t": "a", "x": "Each one needs a reason to exist. It needs to do something well enough that people choose to use it. CurveScout should succeed as a riding platform, DipMapper as a service for finding and understanding swimming places, Mnemika as a way to prepare for an exam, and Nestlyzer on its own merits."}, {"t": "a", "x": "There is more I would like to explore. The responsibility is to finish useful things as well as imagine new ones."}, {"t": "q", "x": "What would make you proudest of CurveScout a few years from now?"}, {"t": "a", "x": "Being able to say that people genuinely use it to get more from something they enjoy."}, {"t": "a", "x": "I would love CurveScout to become one of the best platforms available to motorcyclists. But I would rather earn that description than put it in a headline ourselves."}, {"t": "a", "x": "The simplest version of success is still close to the original idea: someone has time for a ride, opens CurveScout, finds an option that interests them and comes home pleased they went. Perhaps they discovered a road they would otherwise have missed. Perhaps they planned a better weekend because they understood the choices more clearly."}, {"t": "a", "x": "That is a worthwhile result. It is why I wanted to build it."}]};
@@ -9130,7 +9131,7 @@ window.csTourStart = csTourStart; window.CS_TOUR_STEPS = CS_TOUR_STEPS;
 /* the offer: a quiet secondary link on the welcome screen and in About, never a modal on arrival */
 function csTourOffer() { try {
   const cta = document.querySelector('#csWall .csHeroCta');
-  if (cta && !document.getElementById('csTourGo')) { const b = document.createElement('button'); b.type = 'button'; b.id = 'csTourGo'; b.className = 'csHeroAlt csTourGo'; b.textContent = 'Quick tour'; b.onclick = () => { try { csShowWall(false); } catch (e) {} setTimeout(() => csTourStart(b), 200); }; cta.appendChild(b); }
+  if (cta && !document.getElementById('csTourGo')) { const b = document.createElement('button'); b.type = 'button'; b.id = 'csTourGo'; b.className = 'csHeroLink csTourGo'; b.textContent = 'Quick tour'; b.onclick = () => { try { csShowWall(false); } catch (e) {} setTimeout(() => csTourStart(b), 200); }; cta.appendChild(b); }
   const ab = document.querySelector('#view-about .abCta');
   if (ab && !document.getElementById('csTourReplay')) { const b = document.createElement('button'); b.type = 'button'; b.id = 'csTourReplay'; b.className = 'abAlt'; b.textContent = 'Replay the quick tour'; b.onclick = () => { location.hash = '#/'; setTimeout(() => { try { csShowWall(false); } catch (e) {} csTourStart(b); }, 300); }; ab.appendChild(b); }
 } catch (e) {} }
@@ -9603,8 +9604,12 @@ function show(v) {
      from a ride - repeatedly for a moment, because the board paints its cards in batches. */
   try { S._scrollMem = S._scrollMem || {}; if (S.view) S._scrollMem[S.view + (S.view === 'rides' && S.showSaved ? ':saved' : '')] = window.scrollY; } catch (e) {}
   const prevView = S.view;
+  /* owner 2026-11-02: "start right there when a site loads" - a new page is AT its top the moment it appears, never
+     scrolled up in front of the rider: the jump happens before the new view is shown, and instantly (no smooth scroll) */
+  const freshPage = (location.hash || '#/') !== S._pageKey && !(v === 'ride' && S._keepScrollY > 0);
+  if (freshPage) { try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); } }
   VIEWS.forEach(x => $('view-' + x).classList.toggle('on', x === v));
-  window.scrollTo({ top: 0 });
+  if (freshPage) { try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); } }
   if (v === 'ride' && S._keepScrollY > 0) { const y0 = S._keepScrollY; S._keepScrollY = 0; const t1 = Date.now();
     const back = () => { if (S.view !== 'ride') return; if (document.documentElement.scrollHeight > y0 + 200 && Math.abs(window.scrollY - y0) > 4) window.scrollTo({ top: y0, behavior: 'instant' }); if (Date.now() - t1 < 900) setTimeout(back, 100); };
     setTimeout(back, 0); }
@@ -13310,7 +13315,7 @@ const WX = {
     const series = (js && js.properties && js.properties.timeseries) || [];
     if (!series.length) return null;
     const out = { timezone: 'UTC', source: 'metno', attribution: this.credit(),
-      hourly: { time: [], temperature_2m: [], precipitation_probability: [], precipitation: [],
+      hourly: { time: [], temperature_2m: [], precipitation_probability: [], precipitation: [], precipitation_hours: [],
         weathercode: [], windspeed_10m: [], winddirection_10m: [], freezing_level_height: [],
         snowfall: [] },
       daily: { sunrise: [], sunset: [], precipitation_probability_max: [] },
@@ -13330,6 +13335,9 @@ const WX = {
       const d = (t.data && t.data.instant && t.data.instant.details) || {};
       /* Beyond ~2.5 days MET gives only 6-hour periods: use them rather than report nothing */
       const n1 = (t.data && (t.data.next_1_hours || t.data.next_6_hours)) || {};
+      /* r32 review (R32-04): an amount is for its period - 1 h or 6 h as MET gives it - and the period travels with it.
+         It is never divided into an hourly profile MET did not give. */
+      const nh = t.data && t.data.next_1_hours ? 1 : t.data && t.data.next_6_hours ? 6 : null;
       const nd = n1.details || {};
       out.hourly.time.push(t.time);
       out.hourly.temperature_2m.push(d.air_temperature != null ? d.air_temperature : null);
@@ -13338,6 +13346,7 @@ const WX = {
       out.hourly.precipitation_probability.push(
         nd.probability_of_precipitation != null ? nd.probability_of_precipitation : null);
       out.hourly.precipitation.push(nd.precipitation_amount != null ? nd.precipitation_amount : null);
+      out.hourly.precipitation_hours.push(nd.precipitation_amount != null ? nh : null);
       out.hourly.weathercode.push(codeOf(n1.summary && n1.summary.symbol_code));
       out.hourly.windspeed_10m.push(d.wind_speed != null ? +(d.wind_speed * 3.6).toFixed(1) : null);
       out.hourly.winddirection_10m.push(d.wind_from_direction != null ? d.wind_from_direction : null);
@@ -13414,10 +13423,13 @@ const ADS = {
              still loading or an unclear answer loads nothing. Consent means storage (purpose 1) AND Google itself
              (TCF vendor 755); outside the GDPR (gdprApplies false) the CMP decides and still has to have loaded. */
           if (!ok || !tc) { this.revoke(); return; }
-          if (tc.cmpStatus && tc.cmpStatus !== 'loaded') { this.revoke(); return; }
+          /* r32 review (R32-05): the ready state is required, not merely "not an error" - a callback without it loads nothing */
+          if (tc.cmpStatus !== 'loaded') { if (this._loaded) this.withdraw(); else this.revoke(); return; }
           if (!(tc.eventStatus === 'tcloaded' || tc.eventStatus === 'useractioncomplete')) return;
           const p1 = !!(tc.purpose && tc.purpose.consents && tc.purpose.consents[1]);
           const g = !!(tc.vendor && tc.vendor.consents && tc.vendor.consents[755]);
+          /* gdprApplies must be answered: true needs storage (purpose 1) and Google (vendor 755); only an explicit false lets the
+             CMP's own regional decision stand, and an undefined answer is treated as "applies" */
           const yes = tc.gdprApplies === false ? true : (p1 && g);
           if (yes) this.load(true);
           else if (this._loaded) this.withdraw();
@@ -17060,10 +17072,15 @@ function alreadyAStop(route, w) {
 
 function getOrderedRouteCountries(route) {
   if (!route) return [];
+  /* r32 review (R32-02): a stop without a usable position is still a stop of the ride - its country is unknown, so the
+     route's countries are unknown, also when a stored country sequence exists. It is no longer filtered out before the
+     check. Shape points are not stops. */
+  const stops = (route.waypoints || []).filter(p => p && p.kind !== 'shape');
+  if (stops.some(p => !(p.lat !== null && p.lon !== null && p.lat !== '' && p.lon !== '' && Number.isFinite(+p.lat) && Number.isFinite(+p.lon)))) return [];
   if (Array.isArray(route.countrySeq) && route.countrySeq.length)
     return route.countrySeq.map(c => String(c).toLowerCase());
   /* every stop must carry its country: one untagged stop means the route's countries are not known */
-  const all = (route.waypoints || []).filter(p => p && Number.isFinite(+p.lat));
+  const all = stops;
   const w = all.filter(p => p.cc);
   if (w.length && w.length === all.length) {
     const out = [];
@@ -29574,9 +29591,9 @@ async function renderRide(id) {
           /* MET Norway's compact forecast gives an amount, not a chance: show what it gave, and a dash
              for nothing at all, never a reassuring "0%" invented from missing data */
           const ppRaw = h.precipitation_probability ? h.precipitation_probability[j] : null;
-          const mmRaw = h.precipitation ? h.precipitation[j] : null;
-          const pp = ppRaw != null ? Math.round(ppRaw) : (mmRaw != null && mmRaw >= 1 ? 60 : 0);
-          const ppTxt = ppRaw != null ? Math.round(ppRaw) + '%' : mmRaw != null ? (+mmRaw).toFixed(mmRaw < 10 ? 1 : 0) + ' mm' : '–';
+          const mmRaw = h.precipitation ? h.precipitation[j] : null, mmH = (h.precipitation_hours && h.precipitation_hours[j]) || 1;
+          const pp = ppRaw != null ? Math.round(ppRaw) : (mmRaw != null && mmRaw / mmH >= 1 ? 60 : 0);
+          const ppTxt = ppRaw != null ? Math.round(ppRaw) + '%' : mmRaw != null ? (+mmRaw).toFixed(mmRaw < 10 ? 1 : 0) + ' mm' + (mmH !== 1 ? '/' + mmH + 'h' : '') : '–';
           const ws = Math.round(h.windspeed_10m[j]);
           const wd = h.winddirection_10m[j];
           cells.push(
@@ -29604,11 +29621,11 @@ async function renderRide(id) {
            if there is rain or nightfall, etc. can otherwise be a little quieter") ----
            At the hour you arrive: rain, snow or a storm, ice, strong wind, and arriving after dark each get a coloured line
            that says it plainly. A fine hour is one quiet line; the hourly strip is a tap away (open by itself when it matters). */
-        const nc = h.weathercode[nearest], nt = Math.round(h.temperature_2m[nearest]), npRaw = h.precipitation_probability ? h.precipitation_probability[nearest] : null, nmm = h.precipitation ? h.precipitation[nearest] : null, np = npRaw != null ? Math.round(npRaw) : (nmm != null && nmm >= 1 ? 60 : 0), nw = Math.round(h.windspeed_10m[nearest]);
+        const nc = h.weathercode[nearest], nt = Math.round(h.temperature_2m[nearest]), npRaw = h.precipitation_probability ? h.precipitation_probability[nearest] : null, nmm = h.precipitation ? h.precipitation[nearest] : null, nmmH = (h.precipitation_hours && h.precipitation_hours[nearest]) || 1, np = npRaw != null ? Math.round(npRaw) : (nmm != null && nmm / nmmH >= 1 ? 60 : 0), nw = Math.round(h.windspeed_10m[nearest]);
         const arrH = String(new Date(h.time[nearest]).getHours()).padStart(2, '0') + ':00', flags = [];
         if (nc >= 95) flags.push(['storm', '⛈ Thunderstorms likely when you arrive (' + arrH + ')']);
         else if ((nc >= 71 && nc <= 77) || nc === 85 || nc === 86) flags.push(['snow', '🌨 Snow when you arrive (' + arrH + ') - check the pass is open']);
-        else if (np >= 50 || (nc >= 61 && nc <= 67) || (nc >= 80 && nc <= 82)) flags.push(['rain', '🌧 Rain likely when you arrive (' + arrH + '): ' + (npRaw != null ? np + '%' : (+nmm).toFixed(1) + ' mm')]);
+        else if (np >= 50 || (nc >= 61 && nc <= 67) || (nc >= 80 && nc <= 82)) flags.push(['rain', '🌧 Rain likely when you arrive (' + arrH + '): ' + (npRaw != null ? np + '%' : (+nmm).toFixed(1) + ' mm' + (nmmH !== 1 ? ' in the ' + nmmH + ' hours from then' : ''))]);
         if (nt <= 3) flags.push(['ice', '❄ ' + nt + '° on arrival - slippery or icy spots possible']);
         if (nw >= 45) flags.push(['wind', '💨 Strong wind on arrival: ' + nw + ' km/h']);
         try { const sm = typeof tripSunset === 'function' ? tripSunset(+w.lat, +w.lon, target) : null; const am = target.getHours() * 60 + target.getMinutes();
@@ -30682,7 +30699,7 @@ function setOfflineBadge() {
 function csPinTop() { try { if (S._pinStop) S._pinStop(); let on = true; const t0 = Date.now();
   const stop = () => { on = false; ['touchstart', 'wheel', 'keydown', 'mousedown'].forEach(e => removeEventListener(e, stop)); if (S._pinStop === stop) S._pinStop = null; };
   ['touchstart', 'wheel', 'keydown', 'mousedown'].forEach(e => addEventListener(e, stop, { passive: true })); S._pinStop = stop;
-  const hold = () => { if (!on) return; if (window.scrollY > 0) window.scrollTo(0, 0); if (Date.now() - t0 < 3000) requestAnimationFrame(hold); else stop(); }; hold(); } catch (e) {} }
+  const hold = () => { if (!on) return; if (window.scrollY > 0) window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); if (Date.now() - t0 < 3000) requestAnimationFrame(hold); else stop(); }; hold(); } catch (e) {} }
 function flash(msg) {
   let t = $('csToast');
   if (!t) { t = document.createElement('div'); t.id = 'csToast'; t.className = 'toast'; document.body.appendChild(t); }
@@ -30807,7 +30824,7 @@ async function boot() {
     /* startup audit 2026-10-26: the footer sat in the empty first screen and jumped down when the view filled (layout shift
        0.78 on a phone). It is shown once the first view has painted. */
     /* owner 2026-10-31: "every site must start at launch on the top" - the browser does not put back an old scroll position */
-    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; if (!/^#\/trip\?/.test(location.hash || '')) scrollTo(0, 0); } catch (e) {}
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; if (!/^#\/trip\?/.test(location.hash || '')) scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) {}
     requestAnimationFrame(() => requestAnimationFrame(() => { try { document.body.classList.add('csBooted'); } catch (e) {} }));
 
     $('boot').classList.add('done');
@@ -30880,7 +30897,7 @@ try {
   window.CACHE = CACHE;
   window.scanServices = scanServices;
   /* read by the release checks (tools/test-nav-integrity.mjs): the camera policy and the points sent to the router */
-  window.cameraDataAllowed = cameraDataAllowed; window.navPointsFor = navPointsFor; window.__csWX = { WX, WMO_ICON };
+  window.cameraDataAllowed = cameraDataAllowed; window.navPointsFor = navPointsFor; window.__csWX = { WX, WMO_ICON }; window.__csGeomSet = (r, line) => { try { S.geomCache.set(geomKey(r), line); } catch (e) {} };   /* release checks: a ride with its road line already known */
 } catch (e) {}
 
 /* Remove stop (owner 2026-10-05). Same rules as the pin's right-click / long-press handler: the stop
