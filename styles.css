@@ -5353,3 +5353,83 @@ html, body { overflow-anchor: none; }
 .csHeroCta .csHeroLink:hover,.csHeroCta .csHeroLink:focus-visible{color:#fff}
 @media (max-width:767px){ .csHeroCta .csHeroLink{flex:0 0 auto} }
 .raHud[hidden]{display:none!important}
+/* r34 CS-UX2: "show on map" opens the map in a local dialog and returns the rider to where he was reading */
+.csMapDlg{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;background:#0b0c0e;padding-top:env(safe-area-inset-top)}
+.csMapDlg>#map{flex:1 1 auto;height:auto!important;min-height:0;width:100%!important;margin:0!important;border-radius:0!important}
+.csMapX{flex:none;min-height:54px;margin:0;border:0;background:#161a20;color:#fff;font:600 16px/1.2 system-ui,sans-serif;cursor:pointer;padding:0 16px;text-align:left}
+html.csMapOpen,html.csMapOpen body{overflow:hidden}
+/* owner 2026-11-07: "the waypoint texts have been shortened - I hate it". Stop, sight and service texts are shown in full
+   on every screen (they were cut to 2-4 lines and opened only on hover, which a phone does not have). */
+.rbPlaceText .ptMore,.tsPlace .ptMore{display:inline!important}.ptRead{display:none!important}
+.atrTxt,.svcSeedRow p,.addRow .addWhy{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}
+/* ==== r35 LAYOUT (UX package CS-UX2-14/15, owner 2026-11-07 "the layout has hardly changed and not improved") ====
+   Four ways in on the welcome photo; a calmer header (Find a ride · Explore · Trips · My world · Saved · Ride); Explore
+   is one place with List / Map / Swipe / Globe on every screen size. Swipe, Atlas, Passport and New search stay where
+   they are reached from (the Explore switch, the board's own view switch, the passport badge, Find) - not as six equal
+   header buttons. */
+header.top .navAlt{display:none!important}
+#csWall .csHeroText{max-width:1060px}
+#csWall .csIntents{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0 6px}
+#csWall .csInt{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-height:132px;padding:16px 16px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.22);
+  background:linear-gradient(160deg,rgba(18,22,30,.62),rgba(8,10,14,.78));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;text-align:left;cursor:pointer;
+  transition:transform .18s ease,border-color .18s ease,background .18s ease;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+#csWall .csInt b{font:800 21px/1.05 var(--display);letter-spacing:.02em;text-transform:uppercase}
+#csWall .csInt small{font-size:14px;line-height:1.3;color:#d5d9e0}
+#csWall .csIntI{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.12);margin-bottom:6px}
+#csWall .csIntI svg{width:24px;height:24px}
+#csWall .csInt.csHeroGo{background:linear-gradient(160deg,rgba(225,27,43,.95),rgba(160,10,24,.92));border-color:rgba(255,120,130,.6)}
+#csWall .csInt.csHeroGo .csIntI{background:rgba(255,255,255,.2)}
+#csWall .csIntRide{border-color:rgba(255,45,85,.85);box-shadow:0 0 0 1px rgba(255,45,85,.35),0 10px 30px rgba(255,45,85,.18)}
+#csWall .csIntRide .csIntI{background:#ff2d55;color:#fff;box-shadow:0 0 16px rgba(255,45,85,.6)}
+@media (hover:hover){#csWall .csInt:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.55)}}
+#csWall .csInt:active{transform:scale(.98)}
+#csWall .csHeroCta{margin-top:8px}
+#csWall .csHeroCta .csHeroLink{padding:10px 4px!important;min-height:44px}
+@media (max-width:900px){#csWall .csIntents{grid-template-columns:1fr 1fr;gap:10px}#csWall .csInt{min-height:112px;padding:13px 13px 12px;border-radius:18px}#csWall .csInt b{font-size:18px}#csWall .csInt small{font-size:13px}
+  #csWall .csIntI{width:36px;height:36px;margin-bottom:4px}#csWall .csIntI svg{width:20px;height:20px}#csWall .csHeroP{font-size:15px}}
+@media (max-width:380px){#csWall .csInt small{display:none}#csWall .csInt{min-height:86px}}
+/* the old under-button Ride card is the fourth tile now */
+#csWall > .cpHero,#csWall .csHeroText > .cpHero{display:none}
+/* Explore switch on every screen */
+@media (min-width:768px){.mModes:not([hidden]){display:flex;gap:6px;max-width:560px;margin:12px auto 0;padding:4px;background:var(--card);border:1px solid var(--edge);border-radius:999px}
+  .mmBtn{flex:1 1 0;min-height:44px;border:0;border-radius:999px;background:none;color:var(--mut);font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:15px;cursor:pointer}
+  .mmBtn.on{background:var(--red);color:#fff}}
+#worldBtnTop{text-decoration:none}#worldBtnTop.cur,#worldBtnTop[aria-current="page"]{background:var(--red);color:#fff;border-color:var(--red)}
+/* ---- r35 RIDE WORKSPACE (UX CS-UX2-08 "the primary map remains part of the working surface: persistent alongside
+   content on roomy screens") ---- from 1200 px the ride page is two columns: everything you read on the left, the map
+   on the right, always in view while you scroll the roadbook. The floating mini-map is not needed there. */
+@media (min-width:1200px){
+  body[data-view="ride"] #view-ride{max-width:none}
+  #rideDetail.rdWide{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(460px,46%);column-gap:26px;align-items:start;max-width:1640px!important;margin-left:auto!important;margin-right:auto!important;padding-left:24px;padding-right:24px}
+  #rideDetail.rdWide > *{grid-column:1;min-width:0}
+  #rideDetail.rdWide > .mapBox:not(.expanded){grid-column:2;grid-row:1 / span 90;position:sticky;top:calc(var(--hdrH,64px) + 12px);align-self:start;margin-top:0;
+    max-height:calc(100vh - var(--hdrH,64px) - 24px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin}
+  #rideDetail.rdWide > .mapBox:not(.expanded) #map{height:calc(100vh - var(--hdrH,64px) - 250px)!important;min-height:420px}
+  body.rdWideOn .miniDock,#rideDetail.rdWide > .mapJump{display:none!important}
+}
+/* r35: the phone ride tabs stay above the stop maps that scroll under them (a stop map's road line showed through) */
+#rideDetail[data-ptabs] > .csPtabs{z-index:1200!important;background:#121418!important}
+/* r36: CarPlay / Android Auto hand-off */
+.cpCar{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;width:100%;margin:8px 0 0;padding:10px 14px;border:1px solid var(--line,#d9d4cc);border-radius:12px;background:var(--card,#fff);color:inherit;font:inherit;text-align:left;cursor:pointer;min-height:44px}
+.cpCar small{flex-basis:100%;opacity:.75;font-size:.82em}
+.csCarPlay{position:fixed;inset:0;z-index:4000;background:rgba(8,6,4,.62);display:flex;align-items:flex-end;justify-content:center;padding:12px}
+.csCarPlay .cpcIn{background:var(--bg,#fffdf8);color:var(--ink,#1b1712);width:min(560px,100%);max-height:calc(100dvh - 24px);overflow:auto;border-radius:18px;padding:18px 16px 14px;box-shadow:0 18px 60px rgba(0,0,0,.4)}
+@media(min-width:700px){.csCarPlay{align-items:center}}
+.csCarPlay h2{margin:0 0 6px;font-size:1.2rem}.cpcLead{margin:0 0 10px;opacity:.85}
+.cpcParts{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cpcRow{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:8px 0 0}
+.cpcBtn{display:block;padding:12px 14px;border-radius:12px;background:#1a73e8;color:#fff;text-decoration:none;min-height:44px}
+.cpcBtn small{display:block;opacity:.88;font-size:.84em;margin-top:2px}
+.cpcBtn.alt{background:var(--card,#f1ece4);color:inherit;border:1px solid var(--line,#d9d4cc)}
+.cpcNote{font-size:.82em;opacity:.78;margin:12px 0 10px;line-height:1.45}
+.cpcX{min-height:44px;padding:8px 18px;border-radius:10px;border:1px solid var(--line,#d9d4cc);background:transparent;color:inherit;font:inherit}
+.cpnHand .car{display:block;width:100%;margin:6px 0;padding:10px;border-radius:10px;border:0;background:#1a73e8;color:#fff;font:inherit}
+/* r36 CS-R34-010: the expanded map keeps its tools */
+.csMapBar{flex:none;display:flex;gap:6px;align-items:stretch;background:#161a20;overflow-x:auto}
+.csMapBar .csMapX{flex:1 1 auto}
+.csMapT{flex:none;min-height:54px;min-width:54px;padding:0 14px;border:0;border-left:1px solid #2a2f37;background:#161a20;color:#fff;font:600 15px/1.2 system-ui,sans-serif;cursor:pointer}
+.csMapT[aria-pressed="true"]{background:#2a2f37}
+/* r36 CS-R34-011: on a phone the ride's sections come right under its name, above the map */
+@media (max-width:767px){ #rideDetail[data-ptabs] > .csPtabs{order:1!important} #rideDetail[data-ptabs] > .dHead{order:1!important} }
+/* r36 CS-R34-012: whole-ride locator beside each roadbook stop */
+.rbLoc{float:right;margin:0 0 6px 10px;color:var(--mut,#8d9199);background:rgba(127,127,127,.08);border-radius:10px}

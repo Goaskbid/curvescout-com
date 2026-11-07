@@ -257,9 +257,9 @@
             L.Util.requestAnimFrame(function () {
                 /* CurveScout 2026-10-11: a map removed during its zoom animation (a swiped-away card) has no size;
                    getBounds() then threw "Invalid LatLng (NaN, NaN)" from this callback. */
-                if (!this._map || !this._map._container || !this._map._container.isConnected || !this._map.getSize().x) return;
-                var zoom = this._map.getZoom();
-                var center = this._map.getCenter();
+                if (!this._map || !this._map._container || !this._map._container.isConnected || !this._map.getSize().x || !this._map.getSize().y) return;
+                /* CurveScout r36: during a window resize the map can be mid-layout with no valid centre - skip this frame */
+                var zoom = this._map.getZoom(), center; try { center = this._map.getCenter(); this._map.getBounds(); } catch (e) { return; }
                 var offset = this._map.latLngToContainerPoint(
                     this._map.getBounds().getNorthWest()
                 );

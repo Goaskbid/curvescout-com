@@ -2,7 +2,12 @@
    App files: network first, cached copy offline. Pictures and libraries: cache-first.
    Ride shards: cached the moment a ride is opened, so it stays readable with no bars.
    Tiles / live APIs: never cached here (they go stale and they're big). */
-const V = 'curvescout-563fb77';
+/* r34 audit CS-R34-008: every release cache is named curvescout-app-<build>, and cleanup recognises exactly that family
+   (plus the two older namings) - a later release can never leave this one behind, and code is only ever read from the
+   current release's own cache (no global caches.match that could hand out an old app.js). */
+const V = 'curvescout-app-r36-20261107';
+const OWN_RELEASE = k => /^curvescout-app-[\w.-]+$/.test(k) || /^curvescout-[0-9a-f]{6,}$/.test(k) || /^curvescout-r\d+-\d{8}$/.test(k);
+const fromV = (req) => caches.open(V).then(c => c.match(req));
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
    Route data was cached in the same versioned cache as the shell, and activation deletes every
    cache but the new version - so each app update silently wiped the routes a rider had taken
@@ -67,7 +72,7 @@ self.addEventListener('activate', e => {
          Removed: earlier app versions (curvescout-<build>) and nothing else - not the saved routes, not the studio voice
          (92 MB the rider chose to download), not the map library's tiles. Before an old version goes, any ride data it
          still holds (older releases saved rides there) is moved into the routes cache, so nothing saved is lost. */
-      .then(keys => { const old = keys.filter(k => k !== V && k !== ROUTES && /^curvescout-[0-9a-f]{6,}$/.test(k));
+      .then(keys => { const old = keys.filter(k => k !== V && k !== ROUTES && OWN_RELEASE(k));
         upgrade = old.length;
         /* r31 audit (CS-R31-009): copy, then VERIFY every copy, and only then delete. Any failure - a full disk, an
            unreadable entry, a copy that is not there afterwards - keeps the old cache: it may be the only complete copy. */
@@ -131,7 +136,7 @@ self.addEventListener('fetch', e => {
   if (shellFile) {
     e.respondWith(new Promise(resolve => {
       let done = false;
-      const fromCache = () => caches.match(req).then(h => h || (req.mode === 'navigate' ? caches.match('./index.html') : null));
+      const fromCache = () => fromV(req).then(h => h || (req.mode === 'navigate' ? fromV(new Request('./index.html')) : null));
       const t = setTimeout(() => fromCache().then(h => { if (h && !done) { done = true; resolve(h); } }), 4000);
       /* cache: 'no-cache' asks the server whether the file changed - GitHub Pages lets browsers keep files 10 minutes,
          which paired a new page with the old app.js */
@@ -145,13 +150,13 @@ self.addEventListener('fetch', e => {
 
   // Everything else from this site: cache-first with a network fallback.
   e.respondWith(
-    caches.match(req).then(hit => hit || fetch(req).then(res => {
+    fromV(req).then(hit => hit || fetch(req).then(res => {
       if (res && res.ok && (res.type === 'basic')) {
         const copy = res.clone();
         caches.open(V).then(c => c.put(req, copy));
       }
       return res;
-    }).catch(() => req.mode === 'navigate' ? caches.match('./index.html') : Response.error()))
+    }).catch(() => req.mode === 'navigate' ? fromV(new Request('./index.html')) : Response.error()))
   );
 });
 

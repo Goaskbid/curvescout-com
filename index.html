@@ -18,7 +18,11 @@
 <!-- one address for one page: a hash route is the same document, so the canonical is
      the site root rather than whatever fragment a rider happened to share. -->
 <meta name="description" content="Plan motorcycle rides ranked by curves. Get a go / caution / not-today verdict from live pass weather, plus a roadbook, GPX and CurveScout Ride, the navigator and tour guide for riders. Free, no account.">
-  <meta name="theme-color" content="#0b0c0e">
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CurveScout">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b0c0e">
   <!-- Declare the scheme. Without this a browser sees a dark-looking page that never said
        it was dark, and applies its OWN auto-dark filter on top - which is what muted the
        map tiles while leaving the photographs alone. -->
@@ -90,13 +94,14 @@
          Three destinations here; the ways of looking at results live with the results. -->
     <nav class="navScroll" aria-label="Main">
       <button class="tbtn" id="boardBtn" data-view="rides" type="button" title="Find a ride">Find a ride</button>
-      <button class="tbtn" id="swipeBtnTop" data-view="swipe" type="button" title="Swipe through rides">Swipe</button>
-      <button class="tbtn" id="atlasBtnTop" data-view="atlas" type="button" title="The whole inventory on one map">Atlas</button>
-      <button class="tbtn" id="exploreBtn" data-view="explore" type="button" title="Explore alternatives">Explore</button>
+      <button class="tbtn navAlt" id="swipeBtnTop" data-view="swipe" type="button" title="Swipe through rides">Swipe</button>
+      <button class="tbtn navAlt" id="atlasBtnTop" data-view="atlas" type="button" title="The whole inventory on one map">Atlas</button>
+      <button class="tbtn" id="exploreBtn" data-view="explore" type="button" title="Explore: list, map, swipe and globe">Explore</button>
       <button class="tbtn" id="tripBtnTop" data-view="trip" type="button" title="Plan a weekend or a holiday">Trips</button>
-      <a class="tbtn" id="passBtnTop" href="#/passport" title="My Road Atlas: your roads, passes, collections, badges and level">Passport</a>
+      <a class="tbtn" id="worldBtnTop" href="#/world" title="My world: your countries and roads on a 3D globe">My world</a>
+      <a class="tbtn navAlt" id="passBtnTop" href="#/passport" title="My Road Atlas: your roads, passes, collections, badges and level">Passport</a>
       <button class="tbtn" id="savedBtn" type="button" title="Your saved rides">Saved</button>
-      <button class="tbtn ghostBtn" id="newSearchBtn" type="button" title="Start a new search">New search</button>
+      <button class="tbtn ghostBtn navAlt" id="newSearchBtn" type="button" title="Start a new search">New search</button>
     </nav>
     <a class="raHud" id="raHud" href="#/passport" aria-label="My Road Atlas"></a>
   </div>
@@ -126,13 +131,14 @@
 <nav class="bottomNav" id="bottomNav" aria-label="Main">
   <button type="button" data-go="#/explore" aria-label="Rides"><span>Rides</span></button>
   <button type="button" data-go="#/trip" aria-label="Plan a trip"><span>Trips</span></button>
-  <button type="button" data-go="#/passport" aria-label="My Road Atlas: level, badges, passport"><span>Passport</span></button>
+  <button type="button" data-go="#/world" aria-label="My world: your countries and roads on a 3D globe, passport"><span>My world</span></button>
   <button type="button" data-go="#/saved" aria-label="Saved"><span>Saved</span></button>
 </nav>
 <div class="mModes" id="mModes" role="tablist" aria-label="How to show the rides" hidden>
   <button type="button" class="mmBtn" data-mm="explore" role="tab">List</button>
   <button type="button" class="mmBtn" data-mm="atlas" role="tab">Map</button>
   <button type="button" class="mmBtn" data-mm="swipe" role="tab">Swipe</button>
+  <button type="button" class="mmBtn" data-mm="world" role="tab">Globe</button>
 </div>
 
 <!-- HOME -->
@@ -367,6 +373,7 @@
 <main class="view" id="view-about"></main>
 <!-- MY ROAD ATLAS: passport, collections, badges (owner 2026-10-13) -->
 <main class="view" id="view-passport"></main>
+<main class="view" id="view-world"></main>
 
 <!-- EXPLORER -->
 <!-- ---- THE WHOLE INVENTORY, ON ONE MAP ----

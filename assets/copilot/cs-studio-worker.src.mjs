@@ -35,9 +35,18 @@ export function normalize(e) {
     .replace(/(?:[A-Za-z]\.){2,} [a-z]/g, m => m.replace(/\./g, '-')).replace(/(?<=[A-Z])\.(?=[A-Z])/gi, '-').trim();
 }
 /* road-speak first: units and signs the model would otherwise spell out */
+/* r33 audit: a sign, a decimal point and a road number carry meaning. They are turned into words HERE, before the text is
+   cut into sentences ("In 1.5 km" was cut at the point) and before numbers are spelled ("-3" and "3" became the same). */
+const LETTER = { A: 'ay', B: 'bee', C: 'see', D: 'dee', E: 'ee', F: 'eff', G: 'gee', H: 'aitch', I: 'eye', J: 'jay', K: 'kay', L: 'ell', M: 'em',
+  N: 'en', O: 'oh', P: 'pee', Q: 'cue', R: 'ar', S: 'ess', T: 'tee', U: 'you', V: 'vee', W: 'double you', X: 'ex', Y: 'why', Z: 'zed' };
 export function roadSpeak(t) {
-  return String(t || '').replace(/(\d)\s?km\/h\b/gi, '$1 kilometres per hour').replace(/(\d)\s?km\b/g, '$1 kilometres').replace(/(\d)\s?m\b/g, '$1 metres')
-    .replace(/(-?\d+)\s?°C/g, '$1 degrees').replace(/\bN(\d+)\b/g, 'N $1').replace(/\s*[⚠🌇🧭•·]\s*/gu, ' ').replace(/&/g, ' and ').replace(/\s+/g, ' ').trim();
+  return String(t || '').replace(/[\u2212\u2013](?=\d)/g, '-')
+    .replace(/(^|[\s(])-(\d)/g, '$1minus $2')
+    .replace(/(\d+)\.(\d+)/g, (m, a, b) => a + ' point ' + b.split('').join(' '))
+    .replace(/(\d+),(\d{1,2})(?=\s?(?:km|m\b|°))/g, (m, a, b) => a + ' point ' + b.split('').join(' '))
+    .replace(/\b([A-Z]{1,3})[ -]?(\d{1,4})\b/g, (m, l, n) => l.split('').map(c => LETTER[c] || c).join(' ') + ' ' + n)
+    .replace(/(\d)\s?km\/h\b/gi, '$1 kilometres per hour').replace(/(\d)\s?km\b/g, '$1 kilometres').replace(/(\d)\s?m\b/g, '$1 metres')
+    .replace(/(\d+)\s?°C/g, '$1 degrees').replace(/\s*[⚠🌇🧭•·]\s*/gu, ' ').replace(/&/g, ' and ').replace(/\s+/g, ' ').trim();
 }
 const PUNCT = ';:,.!?¡¿—…"«»“”(){}[]';
 const PUNCT_RE = new RegExp('(\\s*[' + PUNCT.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ']+\\s*)+', 'g');
