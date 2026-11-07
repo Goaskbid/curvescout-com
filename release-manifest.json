@@ -1,6 +1,6 @@
 {
- "build_id": "2026.45-r37",
- "build_date": "2026-11-07T13:16:47.070Z",
+ "build_id": "2026.45-r39",
+ "build_date": "2026-11-07T21:48:54.807Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -58,8 +58,8 @@
   },
   {
    "path": "about.html",
-   "bytes": 20610,
-   "sha256": "e34c829160ffed0c7d6abcb8e581810b7fe0024b1d5ad03f17d1a0e9c2a15a2b"
+   "bytes": 20635,
+   "sha256": "522222d4474e1a8cf030256b6453834132132997f1ddceba85785e1add826724"
   },
   {
    "path": "ads.txt",
@@ -68,8 +68,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 2499199,
-   "sha256": "b55394a61481b427e7d8183c76c64c1e488c809f6359423bf326d0906558b2c4"
+   "bytes": 2501247,
+   "sha256": "8c718c46ad596d21bcf02a474865cc542c558420486a23032308023cf65ab824"
   },
   {
    "path": "archive.js",
@@ -113,8 +113,8 @@
   },
   {
    "path": "assets/copilot/copilot-runtime.js",
-   "bytes": 233726,
-   "sha256": "a8355ed416160135c63af8cbdae03aca5b4e17f5e604f41b07dba9998940ff32"
+   "bytes": 234430,
+   "sha256": "69e3bf77821d55abbea39261c67937167df5bf1fbf3a2805a5514dba63601ac2"
   },
   {
    "path": "assets/copilot/cs-build-copilot.src.mjs",
@@ -1089,7 +1089,7 @@
   {
    "path": "config.js",
    "bytes": 161556,
-   "sha256": "813e307e9a29436eb460da5a5d12f9af64bf5d47e84ac54f20d94ebbbc51a4ee"
+   "sha256": "a749b4c919a6edfd7cf8787d0d6fcecd593a26534d58bb722a92c61e098a84be"
   },
   {
    "path": "data/cities.txt",
@@ -19048,13 +19048,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 397318,
-   "sha256": "c1b5ff11d168cec21e522d2635eda44304ade9beba333917213d08ad021bc267"
+   "bytes": 399868,
+   "sha256": "41c28c060f409197839b5bdcd6ad9c2916d4e5188597b23646ee343c8bd8aa0a"
   },
   {
    "path": "sw.js",
    "bytes": 10537,
-   "sha256": "62109ad910b54c47e949bcb9e56e9119ff0760c5b000bb9bbc328acc5287e508"
+   "sha256": "5e5e3f9e219f5a82246660e88967006e24f3ead86e45907aa6426030fd179555"
   },
   {
    "path": "thursday.html",
@@ -19129,8 +19129,8 @@
  ],
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
  "file_count": 3819,
- "total_bytes": 450781196,
+ "total_bytes": 450786523,
  "release_date": "2026-11-07",
- "sw_cache": "curvescout-app-r37-20261107",
- "source_parent_commit": "cf014f5"
+ "sw_cache": "curvescout-app-r39-20261107",
+ "source_parent_commit": "bc4b0c9"
 }
