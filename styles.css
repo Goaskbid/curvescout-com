@@ -5433,3 +5433,21 @@ header.top .navAlt{display:none!important}
 @media (max-width:767px){ #rideDetail[data-ptabs] > .csPtabs{order:1!important} #rideDetail[data-ptabs] > .dHead{order:1!important} }
 /* r36 CS-R34-012: whole-ride locator beside each roadbook stop */
 .rbLoc{float:right;margin:0 0 6px 10px;color:var(--mut,#8d9199);background:rgba(127,127,127,.08);border-radius:10px}
+.cpcMine{display:block;font-style:normal;font-size:.75em;font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.9;margin-top:4px}
+.cpcLast{margin:0 0 8px}
+/* r36+ (journey audit): one switch, not two - the four-way List / Map / Swipe / Globe switch replaces the older Cards /
+   Atlas map / Swipe row wherever it is shown (the old buttons stay in the page for links and keyboard shortcuts) */
+body:has(#mModes:not([hidden])) #viewModes{display:none!important}
+/* r36+ (owner 2026-11-07: "the cover page needs more space for beautiful pictures and much less for your fat buttons"):
+   the four ways in are slim glass chips in one row at the foot of the photograph - icon and name only; the headline is
+   smaller and the photograph fills the screen */
+#csWall .csIntents{display:flex!important;flex-wrap:wrap;gap:8px!important;margin:14px 0 4px!important;grid-template-columns:none!important}
+#csWall .csInt{flex:0 1 auto;flex-direction:row!important;align-items:center!important;gap:8px!important;min-height:44px!important;padding:8px 14px 8px 8px!important;border-radius:999px!important;background:rgba(10,12,16,.38)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#csWall .csInt.csHeroGo{background:rgba(225,27,43,.88)!important}
+#csWall .csInt small{display:none!important}
+#csWall .csInt b{font-size:15px!important;line-height:1!important}
+#csWall .csInt .csIntI{width:28px!important;height:28px!important;border-radius:50%!important;flex:none}
+#csWall .csInt .csIntI svg{width:16px;height:16px}
+#csWall .csHeroH{font-size:clamp(30px,5.2vw,64px)!important;line-height:.98!important}
+#csWall .csHeroP{font-size:15px!important;max-width:520px}
+@media (max-width:600px){#csWall .csIntents{position:static}#csWall .csInt{padding:6px 12px 6px 6px!important}#csWall .csInt b{font-size:13.5px!important}}

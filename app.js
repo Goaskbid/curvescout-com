@@ -1842,7 +1842,10 @@ function renderSocialFooter() {
      RSS item pointed into the same folder. The week's road is now chosen in the browser from the scouted rides:
      in season for this month, the same ride for everyone all week, a different one next week - nothing to publish,
      no workflow, nothing that goes stale. */
-  lead.push('<button type="button" class="footWeek" data-week-road="1">\u2605 This week\u2019s road</button>');
+  /* r36+ (audit CS-R36-012): the approved weekly campaign is the THURSDAY RIDE - one ride for everyone; the in-browser pick
+     below depends on where the rider searched, so it is named as what it is: a personal suggestion */
+  lead.unshift('<a class="footThu" href="' + base + 'thursday.html">\u2605 Thursday Ride: this week\u2019s ride</a>');
+  lead.push('<button type="button" class="footWeek" data-week-road="1">Your pick this week (near your search)</button>');
   const mail = [];
   const nl = cfg.channels.newsletter;
   if (nl && nl.public_status === 'ACTIVE' && nl.profile_url)
@@ -1851,7 +1854,7 @@ function renderSocialFooter() {
     mail.push('<a href="mailto:' + esc(cfg.contact_email) + '">' + esc(cfg.contact_email) + '</a>');
   const group = (h, body) => '<div class="footGroup"><div class="footSocialHead">' + h + '</div>' + body + '</div>';
   host.innerHTML =
-    group('Road of the Week', '<div class="footLinks">' + lead.join('') + '</div>') +
+    group('Thursday Ride', '<div class="footLinks">' + lead.join('') + '</div>') +
     (mail.length ? group('Email', '<div class="footLinks">' + mail.join('') + '</div>') : '') +
     (bits.length ? group('Follow CurveScout', '<div class="social">' + bits.join('') + '</div>') : '');
   /* the feed exists only after the first RSS publication: link it once it answers, never before */
@@ -2805,7 +2808,7 @@ async function loadCore(onStep) {
   /* the sourced editorial file is small and the first screens read it, so it arrives with the
      index rather than racing the first paint */
   const [core, pl] = await Promise.all([
-    wantSplit ? jget('data/index/core.json', 20000).then(v => { onStep(1, 2); return v; }).catch(() => null)
+    wantSplit ? ((window.CS_EARLY && window.CS_EARLY.core) ? window.CS_EARLY.core.catch(() => null) : Promise.resolve(null)).then(v => v || jget('data/index/core.json', 20000)).then(v => { onStep(1, 2); return v; }).catch(() => null)
               : Promise.resolve(null),
     (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.places) ? Promise.resolve(window.CURVESCOUT_INLINE.places) : jget('data/places.json', 20000),
   ]);
@@ -3390,6 +3393,17 @@ function csShowOnMap(fn) {
    Fourteen rides changed their section distances with opening order: a ride built from a parent (and every caller that
    decorated a ride it was given) wrote into the very objects the cache kept. Every caller now gets its own copy of the
    canonical record; the cached one is never handed out to be changed. */
+/* the bucket of a ride's small file: FNV-1a of the id, 2048 buckets as <64>/<32> - the same function is in index.html
+   (early fetch) and tools/build-ride-fast.mjs (writer) */
+function csRideBucket(id) { let h = 0x811c9dc5; for (let i = 0; i < id.length; i++) { h ^= id.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } const b = h % 2048; return (b >> 5).toString(16).padStart(2, '0') + '/' + (b & 31).toString(16).padStart(2, '0'); }
+const CS_FAST = new Map();
+function csRideFast(id) { try {
+  id = String(id || ''); if (!id || /[#:]/.test(id) || window.__CS_NO_FAST || (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.summary) || location.protocol === 'file:') return Promise.resolve(null);
+  const b = csRideBucket(id); let pr = CS_FAST.get(b);
+  if (!pr) { const early = window.CS_EARLY && window.CS_EARLY.rideB === b ? window.CS_EARLY.ride : null;
+    pr = (early || Promise.reject()).catch(() => null).then(j => j || jget('data/ride/' + b + '.json', 8000)).catch(() => null); CS_FAST.set(b, pr); }
+  return pr.then(j => (j && j.rides && j.rides[id]) || null).catch(() => null);
+} catch (e) { return Promise.resolve(null); } }
 async function loadFull(id) { const r = await loadFullShared(id); try { return r ? structuredClone(r) : r; } catch (e) { return r; } }
 async function loadFullShared(id) {
   if (/^(cut|travel|combo):/.test(String(id))) { if (S.fullCache.has(id)) return S.fullCache.get(id); const rec = await csSyntheticFull(String(id)); S.fullCache.set(id, rec); return rec; }
@@ -3399,6 +3413,9 @@ async function loadFullShared(id) {
   if (S.imported && S.imported.id === id) return S.imported;
   /* r33 audit: a cache hit returned the raw record while a cold load returned the normalised one (Frederiksoord: 6
      sections warm, 5 cold). Every path now returns the record through the same idempotent normaliser. */
+  /* r36+ (owner 2026-11-07: "a small file per ride, so a shared ride link opens fast"): the ride's canonical record from
+     its small bucket file (tools/build-ride-fast.mjs, made by this very loader) - no region file, no description cell */
+  if (!S.fullCache.has(id)) { const fr = await csRideFast(id); if (fr && !S.fullCache.has(id)) S.fullCache.set(id, fr); }
   if (S.fullCache.has(id)) return withScore(S.fullCache.get(id));
   /* split index: the row's own description (its shard file, its region) comes with its area's cell - fetch it first,
      whoever asks (atlas, trips, minimaps), not only the ride page */
@@ -6147,7 +6164,8 @@ function csPlaceBriefing() { try {
 window.csPlaceBriefing = csPlaceBriefing;
 setInterval(() => { if (location.hash.indexOf('#/ride/') === 0) csPlaceBriefing(); }, 800);
 /* owner 2026-10-07: the logo takes you back to the start page */
-document.addEventListener('click', ev => { const m = ev.target && ev.target.closest && ev.target.closest('header.top .mark'); if (m) { ev.preventDefault(); csShowWall(true); location.hash = '#/'; } });
+/* owner 2026-11-07: "a click on the logo brings me to the home page with the fantastic pictures" - the mark AND the word */
+document.addEventListener('click', ev => { const m = ev.target && ev.target.closest && ev.target.closest('header.top .mark, header.top .word'); if (m) { ev.preventDefault(); if (location.hash && location.hash !== '#/') location.hash = '#/'; csShowWall(true); try { scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) {} } });
 /* owner 2026-10-07: "start like a Hollywood movie" - the welcome is a cinematic opening, then a full-screen
    slideshow of hand-picked, free (Unsplash License) motorcycle landscapes: no tiles, no random category pulls,
    no cars, no traffic, no towns. Each app start opens on the next photo of the curated sequence. */
@@ -6175,7 +6193,15 @@ const csHeroQuick = !!(window.matchMedia && matchMedia('(prefers-reduced-motion:
 (function csIntro() { try {
   /* owner 2026-10-31: "bring back the startup intro" - every time the app is opened on its start page (a refresh within
      20 minutes does not replay it; a deep link to a ride or a trip never shows it) */
-  if (sessionStorage.getItem('csIntroSeen')) return; sessionStorage.setItem('csIntroSeen', '1');
+  /* owner 2026-11-07: "CurveScout starts with an intro and has me arrive at the home page with fantastic pictures - not the
+     last open page". A browser that RESTORES an old tab (reload or session restore after a pause of 30+ minutes) opens the
+     start page with the intro; a link someone opens (a shared ride, a trip) still opens exactly that link. */
+  let idle = false, kind = 'navigate';
+  try { const last = +localStorage.getItem('csLastActive') || 0; idle = !last || Date.now() - last > 30 * 60000; const n = performance.getEntriesByType && performance.getEntriesByType('navigation')[0]; kind = (n && n.type) || 'navigate'; } catch (e) {}
+  const mark = () => { try { localStorage.setItem('csLastActive', String(Date.now())); } catch (e) {} };
+  mark(); setInterval(() => { if (!document.hidden) mark(); }, 60000); addEventListener('pagehide', mark); document.addEventListener('visibilitychange', mark);
+  if (idle && kind !== 'navigate' && location.hash && !/^#\/?$/.test(location.hash)) { try { history.replaceState(null, '', location.pathname + location.search + '#/'); } catch (e) { location.hash = '#/'; } try { sessionStorage.removeItem('csIntroSeen'); } catch (e) {} }
+  if (sessionStorage.getItem('csIntroSeen') && !(idle && kind !== 'navigate')) return; sessionStorage.setItem('csIntroSeen', '1');
   if (location.hash && !/^#\/?$/.test(location.hash)) return;
   /* owner 2026-11-01 "the site intro animation seems gone": the 20-minute pause hid it from anyone opening the site again soon -
      now every fresh opening of the start page plays it (a reload in the same tab does not) */
@@ -7834,7 +7860,7 @@ function tripVerdictHtml(plan) {
   const fix = a.verdict === 'Not feasible with these settings' && b && b.daysNeeded > (plan.opts.days || 0) && b.daysNeeded <= 21
     ? '<button type="button" class="tripWarnBtn" id="tripNeedDays" data-days="' + b.daysNeeded + '">Plan ' + b.daysNeeded + ' days instead</button>' : '';
   return '<div class="tripVerdict v-' + (TRIP_VERDICT_CLS[a.verdict] || 'unv') + '" role="status"><p class="tvHead"><b>' + esc(a.verdict) + '</b>' +
-    (a.estimate ? '<span class="tvEst">estimated from straight lines until the router confirms</span>' : '<span class="tvEst">transfers routed</span>') + '</p>' +
+    (a.estimate ? '<span class="tvEst">' + ((typeof CS_COMMERCIAL === 'function' && CS_COMMERCIAL()) ? 'transfers estimated from the distance between the days' : 'estimated from straight lines until the router confirms') + '</span>' : '<span class="tvEst">transfers routed</span>') + '</p>' +
     '<ul class="tvList">' + rows.join('') + '</ul>' + fix + '</div>';
 }
 /* up to three different trips for the same settings - pick one, the page shows only that one */
@@ -8405,6 +8431,8 @@ function tripRoadStatus(i, st, full) {
       const dayKm = (TRIP.plan && TRIP.plan.days[i] && Math.round(TRIP.plan.days[i].km)) || Math.round(tot);
       if (sc && tot) txt += ' · about ' + Math.min(100, Math.round(sc / tot * 100)) + '% of its ' + dayKm + ' km is scenic sections'; } catch (e) {}
     el.className = 'tripRoadSt ok'; el.textContent = txt; return; }
+  /* r36+: on the ad-supported site the road comes from CurveScout's road files (no public router may be asked) */
+  if (typeof CS_COMMERCIAL === 'function' && CS_COMMERCIAL()) { el.className = 'tripRoadSt bad'; el.textContent = 'Road line coming soon - this ride is being added to our road files. The day\'s start is on the map.'; return; }
   el.className = 'tripRoadSt bad'; el.innerHTML = 'The road line did not load - the routing service is busy. <button type="button" class="tripRetry" data-retry="' + i + '">Try again</button>';
   const b = el.querySelector('[data-retry]'); if (b) b.onclick = () => { try { OSRM.openUntil = 0; OSRM.fails = 0; } catch (e) {} flash('Loading the road again…'); tripDrawMap(); };
 }
@@ -9472,6 +9500,8 @@ async function csNavOpen(mode, r) {
   let M; try { M = await csCpLoad(); } catch (e) { CS_CP.opening = false; try { flash('CurveScout Ride could not load. Check the connection and try again.'); } catch (e2) {} return; } finally { CS_CP.opening = false; }
 
   const ride = mode === 'route' ? csCpRide(r) : null;
+  /* r36+: the ride's own turns from the road files - turn-by-turn without any router */
+  if (ride && ride.line && typeof csStoredSteps === 'function') { try { const wp0 = ride.waypoints[0]; ride.steps = await csStoredSteps(r.id, wp0); } catch (e) {} }
   if (mode === 'route' && (!ride || ride.waypoints.length < 2)) { try { flash('This ride has no waypoints to guide you through yet.'); } catch (e) {} return; }
   /* the ride's start for the first map view; the map follows you as soon as your position arrives */
   const start = ride && ride.waypoints[0] ? [ride.waypoints[0].lat, ride.waypoints[0].lon] : null;
@@ -9526,6 +9556,12 @@ function csCarPlaySheet(title, stops, line, back) {
     '<p class="cpcNote">Why not CurveScout itself on the car screen? Apple allows only native iPhone apps with its CarPlay navigation permission to draw there, and Android Auto also needs a native app. CurveScout runs in the browser, so it hands the ride to the apps that are on your car screen. Your stops go straight to that app; CurveScout sends nothing. Maps apps may route differently from the ride\'s line between stops. Planning aid only: obey signs and local law.</p>' +
     '<button type="button" class="cpcX">Close</button></div>';
   dlg._gpx = gpxText; document.body.appendChild(dlg);
+  /* owner 2026-11-07: "keep the selection, but save the last decision" - the app the rider chose last time comes first */
+  try { const last = localStorage.getItem('csNavApp'); const tag = a => /google/.test(a.href) ? 'google' : /apple/.test(a.href) ? 'apple' : /waze/.test(a.href) ? 'waze' : a.hasAttribute('download') ? 'gpx' : '';
+    dlg.querySelectorAll('a.cpcBtn').forEach(a => { a.dataset.app = tag(a); a.addEventListener('click', () => { try { localStorage.setItem('csNavApp', a.dataset.app); } catch (e) {} }); });
+    if (last && last !== 'google') { const pick = dlg.querySelector('a.cpcBtn[data-app="' + last + '"]'), first = dlg.querySelector('.cpcParts'); if (pick && first) { const row = document.createElement('p'); row.className = 'cpcRow cpcLast'; row.appendChild(pick); first.parentNode.insertBefore(row, first); } }
+    const lb = last && dlg.querySelector('a.cpcBtn[data-app="' + last + '"]'); if (lb) { const t = document.createElement('em'); t.className = 'cpcMine'; t.textContent = 'Your last choice'; lb.appendChild(t); }
+  } catch (e) {}
   const close = () => { dlg.remove(); try { gu && URL.revokeObjectURL(gu); } catch (e) {} try { back && back.focus({ preventScroll: true }); } catch (e) {} };
   dlg.querySelector('.cpcX').onclick = close; dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
   dlg.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); close(); return; } if (e.key !== 'Tab') return;
@@ -13959,7 +13995,13 @@ const CS_GLOBE_DATA = "{\"src\":\"Natural Earth 1:110m (public domain) via world
  * inside app.js (src/modules/globe-data.js) so the globe works offline and in the one-file app too. */
 const CS_GLOBE = (() => {
   const R = Math.PI / 180;
-  let W = null; const world = () => W || (W = JSON.parse(CS_GLOBE_DATA));
+  let W = null, W50 = null, w50Asked = false;
+  /* r36+ (owner 2026-11-07: "the earth is somewhat dull and zooms not enough"): zoom to 40x (a region, not only a
+     continent), with the finer 1:50m outline fetched once the rider zooms in (the 1:110m outline stays in app.js) */
+  const world = () => { if (zoom >= 2.5 && !W50 && !w50Asked && /^https?:$/.test(location.protocol)) { w50Asked = true; fetch('assets/vendor/globe-countries-50m.json').then(r => r.ok ? r.json() : null).then(j => { if (j && j.countries) { W50 = j; dirty = true; kick(); } }).catch(() => {}); }
+    return (zoom >= 2.5 && W50) || W || (W = JSON.parse(CS_GLOBE_DATA)); };
+  const ZMAX = 40;
+  const tint = cc => { let h = 0; for (const ch of String(cc)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return 'hsl(' + (88 + h % 52) + ',' + (24 + h % 14) + '%,' + (30 + h % 9) + '%)'; };
   let host = null, cv = null, ctx = null, dpr = 1, size = 0, pop = null;
   let lam = -8, phi = 38, zoom = 1, vx = 0, vy = 0, dirty = true, raf = 0, idleAt = 0, auto = true, markMode = false, selCC = '';
   const layers = { ridden: true, wish: true, legends: true, passes: true, loops: false };
@@ -13997,9 +14039,9 @@ const CS_GLOBE = (() => {
     /* stars that drift with the turn of the globe */
     if (!stars) { let s = 7; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647; stars = Array.from({ length: 140 }, () => [rnd(), rnd(), rnd() * 1.2 + 0.2]); }
     ctx.fillStyle = '#fff'; for (const [a, b, m] of stars) { const x = ((a * size - lam * 0.6) % size + size) % size, y = b * size; ctx.globalAlpha = 0.15 + m * 0.35; ctx.fillRect(x, y, m, m); } ctx.globalAlpha = 1;
-    const g0 = ctx.createRadialGradient(cx, cy, rr * 0.9, cx, cy, rr * 1.22); g0.addColorStop(0, 'rgba(90,170,255,.42)'); g0.addColorStop(1, 'rgba(90,170,255,0)');
+    const g0 = ctx.createRadialGradient(cx, cy, rr * 0.9, cx, cy, rr * 1.22); g0.addColorStop(0, 'rgba(110,190,255,.62)'); g0.addColorStop(1, 'rgba(110,190,255,0)');
     ctx.fillStyle = g0; ctx.beginPath(); ctx.arc(cx, cy, rr * 1.22, 0, 7); ctx.fill();
-    const g1 = ctx.createRadialGradient(cx - rr * 0.35, cy - rr * 0.4, rr * 0.1, cx, cy, rr); g1.addColorStop(0, '#24598a'); g1.addColorStop(0.65, '#0e2c4b'); g1.addColorStop(1, '#06182b');
+    const g1 = ctx.createRadialGradient(cx - rr * 0.35, cy - rr * 0.4, rr * 0.1, cx, cy, rr); g1.addColorStop(0, '#3b8fd6'); g1.addColorStop(0.55, '#155089'); g1.addColorStop(1, '#071f3d');
     ctx.fillStyle = g1; ctx.beginPath(); ctx.arc(cx, cy, rr, 0, 7); ctx.fill();
     ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, rr, 0, 7); ctx.clip();
     ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.lineWidth = 0.6;
@@ -14008,9 +14050,11 @@ const CS_GLOBE = (() => {
     for (const c of Wd.countries) {
       const rid = data.visited.has(c.c), been = !rid && data.been.has(c.c), sel = c.c === selCC;
       ctx.beginPath(); let any = false; for (const ring of c.r) { if (!ring.some(p => proj(p[0], p[1])[2] > 0)) continue; ringPath(ring); any = true; } if (!any) continue;
-      ctx.fillStyle = rid ? 'rgba(255,196,60,.93)' : been ? 'rgba(232,140,48,.82)' : 'rgba(58,72,88,.95)'; ctx.fill('evenodd');
-      ctx.strokeStyle = sel ? '#ffffff' : rid ? 'rgba(255,230,160,.95)' : been ? 'rgba(255,200,140,.8)' : 'rgba(150,170,190,.35)'; ctx.lineWidth = sel ? 2 : rid || been ? 0.9 : 0.5; ctx.stroke(); }
+      ctx.fillStyle = rid ? 'rgba(255,196,60,.95)' : been ? 'rgba(240,140,48,.88)' : tint(c.c); ctx.fill('evenodd');
+      ctx.strokeStyle = sel ? '#ffffff' : rid ? 'rgba(255,230,160,.95)' : been ? 'rgba(255,200,140,.8)' : 'rgba(225,235,215,.45)'; ctx.lineWidth = sel ? 2 : rid || been ? 0.9 : 0.6; ctx.stroke(); }
     const step = zoom < 1.4 ? 4 : zoom < 2.5 ? 2 : 1;
+    /* a sunlit side: the globe reads as a sphere, not a disc */
+    { const gs = ctx.createRadialGradient(cx - rr * 0.45, cy - rr * 0.5, 0, cx - rr * 0.45, cy - rr * 0.5, rr * 0.9); gs.addColorStop(0, 'rgba(255,255,240,.16)'); gs.addColorStop(1, 'rgba(255,255,240,0)'); ctx.fillStyle = gs; ctx.beginPath(); ctx.arc(cx, cy, rr, 0, 7); ctx.fill(); }
     const stroke = (pts, col, w, dash, glow) => { ctx.beginPath(); const n = linePath(pts, Math.min(step, Math.max(1, Math.floor(pts.length / 6)))); if (!n) return false;
       ctx.setLineDash(dash || []); if (glow) { ctx.shadowColor = col; ctx.shadowBlur = 8; } ctx.strokeStyle = col; ctx.lineWidth = w; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke(); ctx.shadowBlur = 0; ctx.setLineDash([]); return true; };
     const hitAdd = (pts, kind, item) => { const s = []; for (let i = 0; i < pts.length; i += Math.max(1, Math.floor(pts.length / 24))) { const [x, y, z] = proj(pts[i][1], pts[i][0]); if (z > 0.05) s.push([x, y]); } if (s.length) hits.push({ s, kind, item }); };
@@ -14090,14 +14134,14 @@ const CS_GLOBE = (() => {
     cv.addEventListener('pointerdown', e => { try { cv.setPointerCapture(e.pointerId); } catch (er) {} pts.set(e.pointerId, [e.clientX, e.clientY]); auto = false; vx = vy = 0; drag = { x: e.clientX, y: e.clientY, moved: 0 };
       if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch0 = { d: Math.hypot(a[0] - b[0], a[1] - b[1]), z: zoom }; } });
     cv.addEventListener('pointermove', e => { if (!pts.has(e.pointerId)) return; pts.set(e.pointerId, [e.clientX, e.clientY]);
-      if (pts.size === 2 && pinch0) { const [a, b] = [...pts.values()]; zoom = Math.max(0.8, Math.min(8, pinch0.z * Math.hypot(a[0] - b[0], a[1] - b[1]) / (pinch0.d || 1))); kick(); return; }
+      if (pts.size === 2 && pinch0) { const [a, b] = [...pts.values()]; zoom = Math.max(0.8, Math.min(ZMAX, pinch0.z * Math.hypot(a[0] - b[0], a[1] - b[1]) / (pinch0.d || 1))); kick(); return; }
       if (!drag) return; const k = 0.25 / zoom, dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.moved += Math.abs(dx) + Math.abs(dy);
       lam -= dx * k; phi = Math.max(-80, Math.min(80, phi + dy * k)); vx = dx * k; vy = dy * k; drag.x = e.clientX; drag.y = e.clientY; kick(); });
     const up = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch0 = null; if (!drag) return; const tap = drag.moved < 8; drag = null; idleAt = performance.now(); if (tap) { vx = vy = 0; pick(e); } else kick(); };
     cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
-    cv.addEventListener('wheel', e => { e.preventDefault(); zoom = Math.max(0.8, Math.min(8, zoom * (e.deltaY < 0 ? 1.12 : 1 / 1.12))); auto = false; kick(); }, { passive: false });
+    cv.addEventListener('wheel', e => { e.preventDefault(); zoom = Math.max(0.8, Math.min(ZMAX, zoom * (e.deltaY < 0 ? 1.18 : 1 / 1.18))); auto = false; kick(); }, { passive: false });
     host.querySelector('.glZoom').addEventListener('click', e => { const b = e.target.closest('[data-z]'); if (!b) return; const z = +b.dataset.z; auto = false;
-      if (z) { zoom = Math.max(0.8, Math.min(8, zoom * (z > 0 ? 1.4 : 1 / 1.4))); kick(); } else { const all = data.ridden.concat(data.wish).flatMap(x => x.pts); if (all.length) centreOn(all); else { zoom = 1; kick(); } } });
+      if (z) { zoom = Math.max(0.8, Math.min(ZMAX, zoom * (z > 0 ? 1.7 : 1 / 1.7))); kick(); } else { const all = data.ridden.concat(data.wish).flatMap(x => x.pts); if (all.length) centreOn(all); else { zoom = 1; kick(); } } });
     host.querySelector('.glSide').addEventListener('click', e => {
       const ch = e.target.closest('.glChip'); if (ch) { if (ch.dataset.l) { layers[ch.dataset.l] = !layers[ch.dataset.l]; ch.setAttribute('aria-pressed', layers[ch.dataset.l]); } else if (ch.dataset.t) { const t = ch.dataset.t; themesOn.has(t) ? themesOn.delete(t) : themesOn.add(t); ch.setAttribute('aria-pressed', themesOn.has(t)); layers.legends = true; } kick(); return; }
       if (e.target.closest('.glMarkBtn')) { markMode = !markMode; host._paint(); return; }
@@ -14375,13 +14419,21 @@ function loadPasses() {
   PASSES.rows = (inl && inl.passes) || [];
   return PASSES.rows;
 }
+/* r36+ (speed, owner 2026-11-07: "a shared ride link must open fast"): a box around a line, widened by km. A point outside
+   it is certainly more than km from every point of the line, so the exact distance test can be skipped - the results are
+   identical, only the work that could never match is left out (it was 1.5 s of a phone's time on a ride link). */
+function csLineBox(pts, km) { let s = 90, n = -90, w = 180, e = -180; for (const p of pts) { const la = Array.isArray(p) ? +p[0] : +p.lat, lo = Array.isArray(p) ? +p[1] : +p.lon; if (!Number.isFinite(la) || !Number.isFinite(lo)) continue; if (la < s) s = la; if (la > n) n = la; if (lo < w) w = lo; if (lo > e) e = lo; }
+  if (s > n) return null; const dLa = km / 110.5, c = Math.cos(Math.min(89, Math.max(Math.abs(s), Math.abs(n)) + dLa) * Math.PI / 180), dLo = c > 0.01 ? km / (111.4 * c) : 360;
+  return { s: s - dLa, n: n + dLa, w: w - dLo, e: e + dLo }; }
+function csOutBox(b, la, lo) { return !!b && (la < b.s || la > b.n || ((lo < b.w || lo > b.e) && (lo + 360 < b.w || lo + 360 > b.e) && (lo - 360 < b.w || lo - 360 > b.e))); }
 function passesNear(line, km) {
   const rows = loadPasses();
   if (!rows.length || !line || !line.length) return [];
   const R = km || 8, out = [];
-  const step = Math.max(1, Math.floor(line.length / 300));
+  const step = Math.max(1, Math.floor(line.length / 300)), box = csLineBox(line.filter((_, i) => i % step === 0), R);
   for (const p of rows) {
     if (!Array.isArray(p.at)) continue;
+    if (csOutBox(box, +p.at[0], +p.at[1])) continue;
     let best = Infinity;
     for (let i = 0; i < line.length; i += step) {
       const d = hav({ lat: line[i][0], lon: line[i][1] }, { lat: p.at[0], lon: p.at[1] });
@@ -14656,11 +14708,12 @@ function legendsAlong(points, closeKm, cc) {
   const sameCountry = road => { const rc = String(road.cc || road.country || '').toLowerCase();
     return !want || !rc || rc === want || rc.slice(0, 2) === want.slice(0, 2); };
   const roads = (LEGENDS.roads || []).filter(sameCountry);
-  const out = [];
+  const out = [], box = csLineBox(points, closeKm || 12);
   for (const road of roads) {
     let best = Infinity, at = null;
     const ref = legendPoints(road);
     if (!ref.length) continue;
+    if (box && ref.every(q => csOutBox(box, +q[0], +q[1]))) continue;
     for (const p of points) for (const q of ref) {
       const d = hav({ lat: p[0], lon: p[1] }, { lat: q[0], lon: q[1] });
       if (d < best) { best = d; at = q; }
@@ -20065,6 +20118,17 @@ function csAvoidUi(r) { try {
   const a = S.avoid || {};
   box.innerHTML = '<button type="button" data-av="motorway" aria-pressed="' + !!a.motorway + '" class="' + (a.motorway ? 'on' : '') + '">⛔ Avoid motorways</button>' +
     '<button type="button" data-av="toll" aria-pressed="' + !!a.toll + '" class="' + (a.toll ? 'on' : '') + '">⛔ Avoid tolls &amp; vignettes</button><p class="csAvoidNote" hidden></p>';
+  /* owner 2026-11-07 ("when I click avoid motorways the page jumps, the map stretches and the layout crashes"): on the
+     ad-supported site no router may be asked, so the switch cannot re-route here - it must not re-build the page either.
+     It says plainly where the avoid choice works (Google Maps, with every stop of this ride) and changes nothing else. */
+  if (typeof CS_COMMERCIAL === 'function' && CS_COMMERCIAL() && !NET.valhalla) {
+    box.querySelectorAll('button[data-av]').forEach(b => b.onclick = ev => { ev.preventDefault(); const k = b.dataset.av, on = b.getAttribute('aria-pressed') !== 'true';
+      box.querySelectorAll('button[data-av]').forEach(x => { if (x === b) { x.setAttribute('aria-pressed', String(on)); x.classList.toggle('on', on); } });
+      const note = box.querySelector('.csAvoidNote'); const what = k === 'motorway' ? 'motorways' : 'toll roads';
+      if (!on) { note.hidden = true; return; }
+      note.hidden = false; note.innerHTML = 'To ride this without ' + what + ', let Google Maps route it: open it below, then <b>Options › Avoid ' + (k === 'motorway' ? 'highways' : 'tolls') + '</b>. The map here shows the ride as written; motorway and toll stretches are marked under Conditions. <button type="button" class="csAvoidGo">Open in Google Maps / CarPlay</button>';
+      const gb = note.querySelector('.csAvoidGo'); if (gb) gb.onclick = () => { try { window.csCarPlayRide && window.csCarPlayRide(r, gb); } catch (e) {} }; });
+    return; }
   box.querySelectorAll('button[data-av]').forEach(b => b.onclick = () => {
     const k = b.dataset.av; S.avoid = Object.assign({ motorway: false, toll: false }, S.avoid); S.avoid[k] = !S.avoid[k];
     try { sessionStorage.setItem('csAvoid', JSON.stringify(S.avoid)); } catch (e) {}
@@ -20111,6 +20175,13 @@ async function csRoadsIndex() {
   if (CS_ROADS.idx === undefined) CS_ROADS.idx = (async () => { try { if (location.protocol === 'file:') return null; return await jget('data/roads/roads-index.json', 8000); } catch (e) { return null; } })();
   return CS_ROADS.idx;
 }
+/* r36+: the turns of a ride's stored road (steps-<cell>.json, written by the same Codespace road job): [metres along,
+   type, modifier, road, exit] - the navigator guides turn by turn on the ride with no router at all */
+const CS_STEPS = new Map();
+async function csStoredSteps(id, p0) { try { id = String(id || '').split('#')[0]; if (!id || !p0) return null; const idx = await csRoadsIndex(); if (!idx || !idx.cells) return null;
+  const c = csRoadCell(+p0.lat, +p0.lon); if (!idx.cells[c]) return null;
+  if (!CS_STEPS.has(c)) CS_STEPS.set(c, jget('data/roads/steps-' + c + '.json', 12000).catch(() => null));
+  const j = await CS_STEPS.get(c); const v = j && j.steps && j.steps[id]; return Array.isArray(v) && v.length ? v : null; } catch (e) { return null; } }
 async function csStoredRoad(id, pts, km) {
   id = String(id || '').split('#')[0]; if (!id || !pts || pts.length < 2) return null;
   const P = pts.map(p => Array.isArray(p) ? { lat: +p[0], lon: +p[1] } : { lat: +p.lat, lon: +p.lon });
@@ -22232,10 +22303,11 @@ async function nearbyAdditions(r, howMany) {
       }
       return best;
     };
+    const box60 = csLineBox(line.filter((_, i) => i % 2 === 0), 60);
     for (const q of (typeof loadPasses === 'function' ? loadPasses() : [])) {
       if (!Array.isArray(q.at)) continue;
       const la = +q.at[0], lo = +q.at[1];
-      if (!Number.isFinite(la) || have(la, lo, q.n)) continue;
+      if (!Number.isFinite(la) || csOutBox(box60, la, lo) || have(la, lo, q.n)) continue;
       const d = along(la, lo);
       if (d > 60 || d < 1) continue;
       near.push({ la, lo, name: String(q.n || '').slice(0, 80), km: d,
@@ -22250,7 +22322,7 @@ async function nearbyAdditions(r, howMany) {
       for (const road of ((typeof LEGENDS === 'object' && LEGENDS && LEGENDS.roads) || [])) {
         for (const a of (road.anchors || []).slice(0, 2)) {
           const la = +a[0], lo = +a[1];
-          if (!Number.isFinite(la) || have(la, lo, road.name)) continue;
+          if (!Number.isFinite(la) || (typeof box60 !== 'undefined' && csOutBox(box60, la, lo)) || have(la, lo, road.name)) continue;
           /* ---- A ROAD THE RIDE ALREADY RIDES IS NOT A SUGGESTION ----
              "Three Passes Loop: Susten Grimsel Furka" was offered on the Furka-Grimsel-Susten
              ride. The anchor was far enough from any single checkpoint to pass the proximity
@@ -28581,14 +28653,17 @@ function csRideReorder(host) {
   } catch (e) {}
 }
 async function renderRide(id) {
+  try { performance.mark('cs-ride-start'); } catch (e) {}
   await editorialSettled();
+  try { performance.mark('cs-ride-editorial'); } catch (e) {}
   /* opening a ride is the cheapest honest signal there is */
   try { LIVE.bump(id, 'open'); } catch (e) {}
   /* the ride's own shard is named in a card field, so a ride opened straight from a link -
      before any board was drawn - needs its cell first */
   try {
     const row0 = S.byId && S.byId.get(id);
-    if (S._splitIndex && row0 && !row0._cards) await ensureCards([row0]);
+    /* r36+: with the ride's own small file the page does not wait for its area's descriptions - they arrive alongside */
+    if (S._splitIndex && row0 && !row0._cards) { const fr = await csRideFast(String(id)); if (fr) ensureCards([row0]).catch(() => {}); else await ensureCards([row0]); }
   } catch (e) {}
   show('ride');
   const host = $('rideDetail');
@@ -28605,7 +28680,7 @@ async function renderRide(id) {
   }
   host.dataset.ride = String(id);
   let r;
-  try { r = await loadFull(id); }
+  try { r = await loadFull(id); try { performance.mark('cs-ride-loaded'); } catch (e) {} }
   catch (e) {
     /* NAME THE ERROR. This was `catch (e) { ...message... }` with `e` discarded, so any
        failure anywhere in loadFull produced one sentence and no way to tell which. It cost
@@ -28838,6 +28913,7 @@ async function renderRide(id) {
       '</div>'
     : '';
   try { document.title = String(r.title || 'Ride') + ' - ' + Math.round(+r.km || 0) + ' km motorcycle ride | CurveScout'; } catch (e) {}
+  try { performance.mark('cs-ride-html'); } catch (e) {}
   host.innerHTML = addedBanner +
     '<div class="dHead">' +
       '<button class="backBtn" id="backBtn" aria-label="Back to results" ' +
@@ -29966,6 +30042,7 @@ async function renderRide(id) {
 
 
   // A map failure must never take the rest of the page down with it.
+  try { performance.mark('cs-ride-map'); } catch (e) {}
   try { drawMap(r); }
   catch (e) {
     console.warn('CurveScout: map unavailable', e);
@@ -31415,6 +31492,7 @@ async function boot() {
   const bar = $('bootBar'), msg = $('bootMsg'), err = $('bootErr');
   try {
     await loadCore((a, b) => { bar.style.width = Math.round(a / b * 100) + '%'; });
+    try { performance.mark('cs-core'); } catch (e) {}
     msg.textContent = S.routes.length + ' road trips on board.';
     const last = store.get('cs_last', 'session');
     if (last) { try { const j = JSON.parse(last); S.start = j.start; S.range = j.range || 260; S.style = j.style || 'touring';

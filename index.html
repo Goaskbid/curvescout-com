@@ -60,6 +60,12 @@
 "provider":{"@type":"Organization","name":"CurveScout","url":"https://curvescout.com/"}}</script>
   <link rel="icon" type="image/png" href="assets/curvescout-mark-transparent.png">
   <link rel="apple-touch-icon" href="assets/curvescout-mark-192.png">
+  <script>/* r36+: a shared ride link starts its two downloads at once - the ride index and the ride's own small file -
+     instead of after the app has loaded (the app takes them from window.CS_EARLY) */
+  (function () { try { if (location.protocol === 'file:') return; var E = window.CS_EARLY = {}, j = function (u) { return fetch(u).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
+    if (!/[?&]split=0\b/.test(location.search)) E.core = j('data/index/core.json');
+    var m = /^#\/ride\/([^?#&:]+)$/.exec(location.hash || ''); if (m) { var id = decodeURIComponent(m[1]), h = 0x811c9dc5; for (var i = 0; i < id.length; i++) { h ^= id.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+      var b = h % 2048; E.rideB = ('0' + (b >> 5).toString(16)).slice(-2) + '/' + ('0' + (b & 31).toString(16)).slice(-2); E.ride = j('data/ride/' + E.rideB + '.json'); } } catch (e) {} })();</script>
   <link rel="stylesheet" href="assets/vendor/fonts.css">
   <link rel="stylesheet" href="assets/vendor/leaflet.css">
   <link rel="stylesheet" href="styles.css">
