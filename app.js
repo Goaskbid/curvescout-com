@@ -15,7 +15,7 @@
      - leaving a view cancels its outstanding photo and map-data requests (callers with their own signal keep it)
    Success is never rate-limited here - the guard bounds failure, not use. window.CS_NET.state() says what is paused. */
 /* the site carries advertising and has no router of its own: the free demo router must not be used (see csNetGuard) */
-function CS_COMMERCIAL() { try { const r = window.CS_NET && window.CS_NET.router; return !!(window.CS_ADS && window.CS_ADS.publisher) && !(r && !/router\.project-osrm\.org/i.test(String(r))); } catch (e) { return false; } }
+function CS_COMMERCIAL() { try { if (window.CS_NET && window.CS_NET.ownerDemoRouter) return false; /* owner 2026-11-07: "we take the OSRM navi risk for now" - his decision, recorded in config.js */ const r = window.CS_NET && window.CS_NET.router; return !!(window.CS_ADS && window.CS_ADS.publisher) && !(r && !/router\.project-osrm\.org/i.test(String(r))); } catch (e) { return false; } }
 window.CS_COMMERCIAL = CS_COMMERCIAL;
 (function csNetGuard() {
   try {
@@ -14190,7 +14190,7 @@ const CS_GLOBE = (() => {
 .glStage{position:relative;display:flex;justify-content:center;border-radius:24px;background:radial-gradient(ellipse at 50% 40%,#13233a 0%,#05080d 72%);padding:6px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)}
 .glCv{display:block;cursor:grab}.glCv:active{cursor:grabbing}
 .glZoom{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:8px}.glZoom button{width:48px;height:48px;border-radius:16px;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:24px;cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-.glPop{position:absolute;width:230px;padding:12px 14px;border-radius:14px;background:rgba(10,16,24,.95);color:#fff;font-size:14px;line-height:1.35;box-shadow:0 10px 28px #000b;z-index:2}
+.glPop{position:absolute;width:190px;max-width:60%;max-height:45%;overflow:auto;padding:8px 10px;border-radius:12px;background:rgba(10,16,24,.9);color:#fff;font-size:12.5px;line-height:1.3;box-shadow:0 10px 28px #000b;z-index:2}
 .glPop b{display:block;font-size:16px}.glPop span{display:block;opacity:.75;font-size:13px}.glPop p{margin:6px 0 0;font-size:13px;opacity:.85}.glPop a{display:inline-flex;align-items:center;min-height:44px;color:#ffcf4a;font-weight:700}.glPop img{width:22px;height:auto;border-radius:3px;margin-bottom:4px}
 .glSide{color:#e8ebef}.glBig{display:flex;align-items:center;gap:14px;margin:4px 0 12px}.glSide .glBig b{font:800 72px/0.9 var(--display,system-ui)!important;color:#ffcf4a;letter-spacing:-.02em}.glBig span{font-size:18px;font-weight:700;line-height:1.2}.glBig i{font-style:normal;font-weight:500;opacity:.7;font-size:14px}
 .glSum{display:grid;grid-template-columns:1fr 1fr;gap:8px}.glSum div{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.06)}.glSide .glSum b{display:block;font:800 26px/1.1 var(--display,system-ui)!important}.glSum span{display:block;font-size:13px;opacity:.75}
@@ -17676,7 +17676,7 @@ const SERVICE_REGISTRY = [
     licenceUrl: 'https://registry.opendata.aws/terrain-tiles/', mode: 'direct', retention: 'their policy applies' },
   /* r34 audit CS-R34-020 / owner 2026-11-07: the one routing service in use, described as it is used */
   { id: 'osrm', name: 'Project OSRM demo server (router.project-osrm.org)', purpose: 'the road between checkpoints, route previews, the A-to-B ways in CurveScout Ride (including "no motorways", "no tolls" and "no ferries", which it excludes), and rejoining a ride you left',
-    sends: 'the coordinates of the route', trigger: 'NOT USED while this site carries advertising (the demo server is for non-commercial use only): ride roads then come from CurveScout\'s own road files, and turn-by-turn from your own maps app. Used only on an ad-free build - when a route, a trip or a saved ride is drawn, or in CurveScout Ride - at most one request per second',
+    sends: 'the coordinates of the route', trigger: 'when a route, a trip or a saved ride is drawn, or in CurveScout Ride - at most one request per second; CurveScout\'s own road files are used first where they exist',
     sees: 'The coordinates of the route you opened - also of a ride you saved on this device, when it is drawn again. In CurveScout Ride, your current position when it routes you from where you are.',
     privacy: 'https://github.com/Project-OSRM/osrm-backend/wiki/Demo-server', licence: 'BSD-2-Clause software; OpenStreetMap data (ODbL); demo server: reasonable, non-commercial use, at most 1 request per second', licenceUrl: 'https://github.com/Project-OSRM/osrm-backend/wiki/Demo-server',
     mode: 'gateway', retention: 'unknown' },
@@ -20153,7 +20153,10 @@ function csAvoidUi(r) { try {
     S._keepScrollY = window.scrollY;
     S.routeLine = null; S.roadBase = null; S.fitLine = null; S.speedCache.delete(r.id);
     try { flash(S.avoid[k] ? (k === 'motorway' ? 'Re-routing without motorways…' : 'Re-routing without toll roads…') : 'Back to the route with ' + (k === 'motorway' ? 'motorways' : 'toll roads') + ' allowed.'); } catch (e) {}
+    const y0 = window.scrollY, mb = document.querySelector('#rideDetail .mapBox'), h0 = mb ? mb.offsetHeight : 0;
     go('#/ride/' + encodeURIComponent(r.id));
+    /* owner 2026-11-07: with routing on, the re-route rebuilt the page and it jumped - hold the map's height and the rider's place */
+    [0, 120, 400, 900, 1600, 2600].forEach(ms => setTimeout(() => { try { const m2 = document.querySelector('#rideDetail .mapBox'); if (m2 && h0) m2.style.minHeight = h0 + 'px'; if (Math.abs(window.scrollY - y0) > 4) window.scrollTo(0, y0); } catch (e) {} }, ms));
   });
   const res = S.avoidResult, note = box.querySelector('.csAvoidNote'), asked = csAvoidList();
   if (asked.length && res && res.id === r.id) {

@@ -5469,3 +5469,11 @@ body:has(#mModes:not([hidden])) #viewModes{display:none!important}
 #csWall .csHeroLink{background:none!important;border:0!important;padding:6px 0!important;color:rgba(255,255,255,.82)!important;font:600 13px/1.2 system-ui,sans-serif!important;letter-spacing:.02em!important;text-transform:none!important;text-decoration:none!important}
 #csWall .csHeroLink:hover{color:#fff!important;text-decoration:underline!important}
 @media (max-width:700px){#csWall .csIntents{grid-template-columns:1fr 1fr!important}}
+/* owner 2026-11-07 23:06: buttons lower so the photograph shows; "Scout my rides" visible without scrolling */
+#csWall .csHeroText{bottom:14px!important}
+#csWall .csHeroH{font-size:clamp(26px,6.4vw,52px)!important;margin:0 0 6px!important}
+#csWall .csHeroP{margin:0 0 4px!important}
+#csWall .csIntents{margin:10px 0 2px!important}
+#csWall .csHeroCta .csHeroLink{min-height:36px!important;padding:6px 4px!important}
+#goBtn.goBtn{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom));z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.55)}
+@media (min-width:901px){#goBtn.goBtn{bottom:16px}}
