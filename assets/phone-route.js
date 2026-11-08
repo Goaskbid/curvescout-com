@@ -18,14 +18,14 @@
       G.adj[a].push(id); if (!(e[i + 6] & 1)) G.adj[b].push(-id - 1); } }
   var pending = {};
   function load(c, major) { var k = (major ? 'm' : 'f') + c; if (G.loaded['f' + c] || G.loaded[k]) return Promise.resolve(true); if (pending[k]) return pending[k];
-    return (pending[k] = fetch('/data/net/net' + (major ? 'm' : '') + '-' + c + '.json.gz').then(function (r) { if (!r.ok || !window.DecompressionStream) return null; return new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json(); }).then(function (j) { if (j && j.e) { addCell(j); G.loaded[k] = 1; return true; } return false; }).catch(function () { return false; })); }
+    return (pending[k] = fetch('/data/net/net' + (major ? 'm' : '') + '-' + c + '.json.gz').then(function (r) { if (!r.ok || !window.DecompressionStream) return null; return new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json(); }).then(function (j) { if (j && j.e) { addCell(j); G.loaded[k] = 1; return true; } delete pending[k]; return false; }).catch(function () { delete pending[k]; return false; }));   /* audit r44: a missing square is asked again next time, not remembered as failed */ }
   /* squares near start and end in full detail, the corridor between them with the main roads only */
   function cellsFor(pts) { var full = {}, major = {}; pts.forEach(function (p) { for (var dl = -1; dl <= 1; dl++) for (var dn = -1; dn <= 1; dn++) full[(Math.floor(p[0]) + dl) + '_' + (Math.floor(p[1]) + dn)] = 1; });
     for (var i = 1; i < pts.length; i++) { var a = pts[i - 1], b = pts[i], n = Math.max(1, Math.ceil(hav(a, b) / 40000)); for (var s = 0; s <= n; s++) { var la = a[0] + (b[0] - a[0]) * s / n, lo = a[1] + (b[1] - a[1]) * s / n; for (var dl = -1; dl <= 1; dl++) for (var dn = -1; dn <= 1; dn++) { var c = (Math.floor(la) + dl) + '_' + (Math.floor(lo) + dn); if (!full[c]) major[c] = 1; } } }
     return { full: Object.keys(full), major: Object.keys(major) }; }
   function snap(p) { var best = -1, bd = Infinity, la = Math.round(p[0] * 1e5), lo = Math.round(p[1] * 1e5); for (var dl = -1; dl <= 1; dl++) for (var dn = -1; dn <= 1; dn++) { var list = G.byCell[(Math.floor(p[0]) + dl) + '_' + (Math.floor(p[1]) + dn)] || [];
       for (var i = 0; i < list.length; i++) { var n = list[i]; if (!G.adj[n].length) continue; var d = Math.pow(G.la[n] - la, 2) + Math.pow((G.lo[n] - lo) * Math.cos(p[0] * rad), 2); if (d < bd) { bd = d; best = n; } } }
-    return bd < Math.pow(5000, 2) ? best : -1; } /* within about 5 km */
+    return bd < Math.pow(800, 2) ? best : -1; } /* audit r44: a stop is never moved more than about 800 m to reach the network - otherwise no route, never a silent move */
   /* A* with a binary heap */
   function astar(s, t, o) { var vmax = 110 / 3.6, tla = G.la[t] / 1e5, tlo = G.lo[t] / 1e5; var g = new Map(), prev = new Map(), H = [], done = new Set();
     function h(n) { return hav([G.la[n] / 1e5, G.lo[n] / 1e5], [tla, tlo]) / vmax; }
@@ -57,8 +57,9 @@
   function route(pts, o) { var cs = cellsFor(pts);
     return Promise.all(cs.full.map(function (c) { return load(c, false); }).concat(cs.major.map(function (c) { return load(c, true); }))).then(function () {
       var ids = pts.map(snap); if (ids.some(function (x) { return x < 0; })) return { code: 'NoSegment', message: 'Not in CurveScout\'s road network yet' };
+      for (var q = 1; q < ids.length; q++) if (ids[q] === ids[q - 1] && hav(pts[q - 1], pts[q]) > 150) return { code: 'NoRoute', message: 'Two stops fall on the same point of the network' };   /* audit r44: never an empty Ok route */
       var legs = [], coords = [];
-      for (var i = 1; i < ids.length; i++) { var p = astar(ids[i - 1], ids[i], o); if (!p) return { code: 'NoRoute', message: 'No route in CurveScout\'s road network' }; var L = leg(p); coords = coords.length ? coords.concat(L.coords.slice(1)) : L.coords; delete L.coords; legs.push(L); }
+      for (var i = 1; i < ids.length; i++) { var p = astar(ids[i - 1], ids[i], o); if (!p || (!p.length && hav(pts[i - 1], pts[i]) > 150)) return { code: 'NoRoute', message: 'No route in CurveScout\'s road network' }; if (!p.length) continue; var L = leg(p); coords = coords.length ? coords.concat(L.coords.slice(1)) : L.coords; delete L.coords; legs.push(L); }
       var D = legs.reduce(function (a, l) { return a + l.distance; }, 0), T = legs.reduce(function (a, l) { return a + l.duration; }, 0);
       return { code: 'Ok', source: 'curvescout-phone', routes: [{ distance: D, duration: T, weight: T, weight_name: 'routability', legs: legs, geometry: { type: 'LineString', coordinates: coords.map(function (p) { return [p[1], p[0]]; }) } }],
         waypoints: ids.map(function (n) { return { location: [G.lo[n] / 1e5, G.la[n] / 1e5], name: '' }; }) }; }); }
@@ -73,10 +74,11 @@
   function answer(p) { return route(p.pts, p.o).then(function (j) { window.CS_PHONE_ROUTE.last = j.code; return new Response(JSON.stringify(j), { status: j.code === 'Ok' ? 200 : 400, headers: { 'content-type': 'application/json' } }); }); }
   window.fetch = function (input, init) { var url = typeof input === 'string' ? input : (input && input.url) || '';
     var p = /\/route\/v1\//.test(url) && /^https?:\/\/(router\.project-osrm\.org|routing\.openstreetmap\.de)\//.test(url) ? parse(url) : null; if (!p || window.CS_PHONE_ROUTE.off) return orig(input, init);
-    if (phoneOnly() || window.CS_PHONE_ROUTE.force) return answer(p);
+    if (window.CS_PHONE_ROUTE.force) return answer(p);
+    if (phoneOnly()) return answer(p).then(function (mine) { if (mine.status === 200) return mine; try { sessionStorage.removeItem(KEY); } catch (e) {} fails = 0; return orig(input, init); });   /* audit r44: no local network here -> the online router is asked again, no 30-minute trap */
     var timer, timeout = new Promise(function (res) { timer = setTimeout(function () { res('timeout'); }, 7000); });
     return Promise.race([orig(input, init).then(function (r) { return r; }, function () { return 'error'; }), timeout]).then(function (r) { clearTimeout(timer);
       if (r && r !== 'timeout' && r !== 'error' && r.status !== 429 && r.status !== 403 && r.status < 500) { fails = 0; return r; }
-      fail(); return answer(p).then(function (mine) { return mine.status === 200 || r === 'timeout' || r === 'error' ? mine : r; }); }); };
+      return answer(p).then(function (mine) { if (mine.status === 200) { fail(); return mine; } return r === 'timeout' || r === 'error' ? mine : r; }); }); };   /* only a local success counts towards staying on the phone */
   window.CS_PHONE_ROUTE = { route: route, graph: G, force: false, off: false, last: null };
 })();
