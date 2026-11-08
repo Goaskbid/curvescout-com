@@ -1,6 +1,6 @@
 {
- "build_id": "2026.45-r41",
- "build_date": "2026-11-07T23:11:34.937Z",
+ "build_id": "2026.45-r42",
+ "build_date": "2026-11-08T05:50:59.849Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -68,8 +68,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 2505272,
-   "sha256": "815686168b3eba82384a82bc8f80d603bd50296b60f8df80c80a337164ad5ae7"
+   "bytes": 2505832,
+   "sha256": "a49e4cd86a1153a16deadca7df3a3f1fbf176a092d2c2e166225e273355d1bd3"
   },
   {
    "path": "archive.js",
@@ -225,6 +225,11 @@
    "path": "assets/page.css",
    "bytes": 12867,
    "sha256": "ce379053fcafefc554283b112d6ee0e74718452f5ed20a85972f148e11967d09"
+  },
+  {
+   "path": "assets/phone-route.js",
+   "bytes": 11951,
+   "sha256": "fa4fff3546284411f7f72dcf5599132e38df5f2bccb4db6446c2dfdb7a40367e"
   },
   {
    "path": "assets/scouts/elise/elise_approve.webp",
@@ -1089,7 +1094,7 @@
   {
    "path": "config.js",
    "bytes": 161764,
-   "sha256": "34aa7307ac71b18a244e92bc98e974de1ba88e267d7053fea11c88c0ee4a398f"
+   "sha256": "031931e74562568c15abc8d97675b7a25240d9db149d2d4a9b61bdc06856551a"
   },
   {
    "path": "data/cities.txt",
@@ -14953,8 +14958,8 @@
   },
   {
    "path": "index.html",
-   "bytes": 37861,
-   "sha256": "7d8231fe2afdd753d8bcb3b909e4741276544e25ca78e90863acee9c5ba16615"
+   "bytes": 37907,
+   "sha256": "0932cac803e40f990808d62252136d51f7c0a35fb635c29b687128880b942b0b"
   },
   {
    "path": "manifest.webmanifest",
@@ -19054,7 +19059,7 @@
   {
    "path": "sw.js",
    "bytes": 10537,
-   "sha256": "b8ec2ec3199a510ad033e2546f0570cd171754dde97ef74ef0d8ee01f529a61c"
+   "sha256": "86565539a214f93ed58d2530ca595cc76bb0fff1139ba5c8e911a301b2af59ed"
   },
   {
    "path": "thursday.html",
@@ -19128,9 +19133,9 @@
   }
  ],
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
- "file_count": 3819,
- "total_bytes": 450791752,
+ "file_count": 3820,
+ "total_bytes": 450804309,
  "release_date": "2026-11-08",
- "sw_cache": "curvescout-app-r41-20261108",
- "source_parent_commit": "d53a98f"
+ "sw_cache": "curvescout-app-r42-20261108",
+ "source_parent_commit": "79fb1be"
 }
