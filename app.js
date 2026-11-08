@@ -8341,7 +8341,12 @@ async function tripDrawMap() {
     const dots = L.layerGroup(w.slice(1).map(p => L.circleMarker(p, { radius: 4, color: '#fff', weight: 1.5, fillColor: col, fillOpacity: 1 }).on('click', () => tripFocus(i, true)))).addTo(g);
     (TRIP.dots = TRIP.dots || [])[i] = dots;
     outline.on('click', () => tripFocus(i, true));
-    L.marker(d.start, { icon: L.divIcon({ className: '', iconSize: [24, 24], iconAnchor: [12, 12], html: '<div class="tripPin" style="background:' + col + '">' + (i + 1) + '</div>' }), zIndexOffset: 1000 + i }).addTo(gPins).on('click', () => tripFocus(i, true));
+    /* owner 2026-11-07: day numbers 3-6 of a 7-day A->B trip sat under the bed icons, and two days starting at the same
+       place covered each other. The numbers get their own pane above every other marker, and a day that starts where an
+       earlier day started is shifted sideways so both numbers can be read. */
+    if (!m.getPane('tripPins')) { const pn = m.createPane('tripPins'); pn.style.zIndex = 690; }
+    const same = (TRIP._pinAt = i === 0 ? [] : (TRIP._pinAt || [])).filter(q => Math.abs(q[0] - d.start[0]) < 0.02 && Math.abs(q[1] - d.start[1]) < 0.02).length; TRIP._pinAt.push(d.start);
+    L.marker(d.start, { pane: 'tripPins', icon: L.divIcon({ className: '', iconSize: [24, 24], iconAnchor: [12 - same * 26, 12], html: '<div class="tripPin" style="background:' + col + '">' + (i + 1) + '</div>' }), zIndexOffset: 1000 + i }).addTo(gPins).on('click', () => tripFocus(i, true));
     /* moving tour: the way from last night's stop to this start, as a thin dotted line - an estimate, not a route */
     /* transfers are drawn only as routed roads (tripTransfers below) - never as a straight line */
     if (o.mode !== 'base') L.marker(d.night, { icon: L.divIcon({ className: '', iconSize: [22, 22], iconAnchor: [11, 11], html: '<div class="tripBed">🛏</div>' }) }).addTo(gNight).bindTooltip('Night ' + (i + 1));
@@ -8369,9 +8374,9 @@ async function tripDrawMap() {
   /* the map may sit in the closed Map tab (0 x 0): framing a zero-size map gives NaN and every later mark throws, so it
      gets a plain view now and is framed when its tab opens (tripShowTab) */
   const sized = () => { const z = m.getSize(); return z.x > 0 && z.y > 0; };
-  try { if (sized()) m.fitBounds(L.latLngBounds(all).pad(0.12)); else m.setView(base, 7); } catch (e) { m.setView(base, 8); }
+  try { if (sized()) m.fitBounds(L.latLngBounds(all).pad(0.12), { paddingTopLeft: [16, 64], paddingBottomRight: [16, 24] }); else m.setView(base, 7); } catch (e) { m.setView(base, 8); }
   /* the result is laid out after the map is created (grid on desktop, fonts on phones): measure again, then frame the trip */
-  setTimeout(() => { if (TRIP.map !== m) return; try { m.invalidateSize(false); if (sized() && TRIP.focus == null && !TRIP.anim) m.fitBounds(L.latLngBounds(all).pad(0.12)); } catch (e) {} }, 260);
+  setTimeout(() => { if (TRIP.map !== m) return; try { m.invalidateSize(false); if (sized() && TRIP.focus == null && !TRIP.anim) m.fitBounds(L.latLngBounds(all).pad(0.12), { paddingTopLeft: [16, 64], paddingBottomRight: [16, 24] }); } catch (e) {} }, 260);
 }
 /* the key under the trip map: every mark named, the days in their colours (a tap shows that day), and switches for the
    layers a rider may want out of the way. Transfers appear in the key only once one is drawn. */
@@ -14109,12 +14114,23 @@ const CS_GLOBE = (() => {
     const themes = {}; data.legends.forEach(x => x.themes.forEach(t => { themes[t] = (themes[t] || 0) + 1; }));
     const topT = Object.entries(themes).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([t]) => t);
     const L = [['ridden', 'Ridden roads', '#ff2d55'], ['wish', 'Wish list', '#5aa9ff'], ['legends', 'Legendary roads', '#78e6dc'], ['passes', 'Passes', '#ffffff'], ['loops', 'Top loops', '#cfd6de']];
-    return '<div class="glBig"><b>' + n + '</b><span>' + (n === 1 ? 'country' : 'countries') + '<br><i>' + pct + '% of the world</i></span></div>' +
-      '<div class="glSum">' + [[st.ridden || 0, 'rides ridden'], [(st.km || 0).toLocaleString('en-GB'), 'km ridden'], [(st.passes || []).length, 'passes'], [st.want || 0, 'on the wish list']].map(([b, l]) => '<div><b>' + b + '</b><span>' + l + '</span></div>').join('') + '</div>' +
-      '<ul class="glCont">' + bars + '</ul>' +
-      '<div class="glMark"><button type="button" class="glMarkBtn" aria-pressed="' + markMode + '">' + (markMode ? '✓ Done marking' : '✎ Mark countries I have been to') + '</button><p>' + (markMode ? 'Tap a country on the globe to mark it, tap again to unmark.' : 'Gold: countries your logged rides are in. Amber: countries you marked yourself.') + '</p></div>' +
-      (list ? '<ul class="glList">' + list + '</ul>' : '<p class="glNote">No countries yet. Mark the ones you have ridden, or log a ride with “I rode it” on any ride page.</p>') +
-      '<h3 class="glH3">Layers</h3><div class="glChips" role="group" aria-label="Layers">' + L.map(([k, t, c]) => '<button type="button" class="glChip" data-l="' + k + '" aria-pressed="' + layers[k] + '"><i style="background:' + c + '"></i>' + t + '</button>').join('') + '</div>' +
+    /* owner 2026-11-07 "my world can almost not be understood and used - redo all": one clear order - what you can do
+       (three big actions), what the globe shows (layer switches right under it), then your numbers; a new rider sees how
+       to start instead of a wall of zeros. */
+    const acts = '<div class="wdActs">' +
+      '<button type="button" class="wdAct glMarkBtn' + (markMode ? ' on' : '') + '" aria-pressed="' + markMode + '"><b>' + (markMode ? '✓ Done marking' : '✎ Mark my countries') + '</b><span>' + (markMode ? 'Tap countries on the globe' : 'Tap the ones you have ridden') + '</span></button>' +
+      '<a class="wdAct" href="#/explore"><b>＋ Log a ride</b><span>Open a ride, tap “I rode it”</span></a>' +
+      '<button type="button" class="wdAct wdLeg"><b>★ Legendary roads</b><span>Show them on the globe</span></button></div>' +
+      (markMode ? '<p class="wdHint">Marking: tap a country on the globe to add it, tap again to remove it.</p>' : '');
+    const lay = '<h3 class="glH3">On the globe</h3><div class="glChips" role="group" aria-label="Layers">' + L.map(([k, t, c]) => '<button type="button" class="glChip" data-l="' + k + '" aria-pressed="' + layers[k] + '"><i style="background:' + c + '"></i>' + t + '</button>').join('') + '</div>';
+    const empty = !n && !(st.ridden || 0) && !(st.want || 0);
+    const mine = empty
+      ? '<div class="wdStart"><b>Your world is still empty.</b><ol><li>Tap <em>Mark my countries</em>, then the countries you have ridden.</li><li>On any ride page tap <em>I rode it</em> - its road turns red here.</li><li>Tap <em>Want to ride</em> on rides you dream of - they turn blue.</li></ol></div>'
+      : '<h3 class="glH3">Your numbers</h3><div class="glBig"><b>' + n + '</b><span>' + (n === 1 ? 'country' : 'countries') + '<br><i>' + pct + '% of the world</i></span></div>' +
+        '<div class="glSum">' + [[st.ridden || 0, 'rides ridden'], [(st.km || 0).toLocaleString('en-GB'), 'km ridden'], [(st.passes || []).length, 'passes'], [st.want || 0, 'on the wish list']].map(([b2, l]) => '<div><b>' + b2 + '</b><span>' + l + '</span></div>').join('') + '</div>' +
+        '<ul class="glCont">' + bars + '</ul>' + (list ? '<h3 class="glH3">Your countries</h3><ul class="glList">' + list + '</ul>' : '') +
+        '<p class="glNote">Gold: countries your logged rides are in. Amber: countries you marked yourself.</p>';
+    return acts + lay + mine +
       (topT.length ? '<h3 class="glH3">Legendary roads by kind</h3><div class="glChips" role="group" aria-label="Kinds of road">' + topT.map(t => '<button type="button" class="glChip glTheme" data-t="' + esc3(t) + '" aria-pressed="' + themesOn.has(t) + '">' + esc3(t.replace(/[-_]/g, ' ')) + '</button>').join('') + '</div>' : '') +
       '<p class="glLinks"><a href="#/passport">Passport: badges, collections, ride log →</a><a href="#/atlas">Flat map of every ride →</a></p>';
   }
@@ -14149,6 +14165,7 @@ const CS_GLOBE = (() => {
     host.querySelector('.glSide').addEventListener('click', e => {
       const ch = e.target.closest('.glChip'); if (ch) { if (ch.dataset.l) { layers[ch.dataset.l] = !layers[ch.dataset.l]; ch.setAttribute('aria-pressed', layers[ch.dataset.l]); } else if (ch.dataset.t) { const t = ch.dataset.t; themesOn.has(t) ? themesOn.delete(t) : themesOn.add(t); ch.setAttribute('aria-pressed', themesOn.has(t)); layers.legends = true; } kick(); return; }
       if (e.target.closest('.glMarkBtn')) { markMode = !markMode; host._paint(); return; }
+      if (e.target.closest('.wdLeg')) { layers.legends = true; auto = false; try { host._paint(); } catch (x) {} try { host.querySelector('.glStage').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (x) {} return; }
       const cty = e.target.closest('.glCty'); if (cty) { const c = world().countries.find(x => x.c === cty.dataset.cc); if (c) { selCC = c.c; centreOn(c.r.flat().map(p => [p[1], p[0]]), 2.4); } } });
     addEventListener('resize', resize);
   }
@@ -14173,7 +14190,7 @@ const CS_GLOBE = (() => {
   function page() {
     const v = document.getElementById('view-world'); if (!v) return;
     v.innerHTML = '<div class="wdWrap"><header class="wdHead"><p class="wdKick">My world</p><h1>Every road you rode, on one planet.</h1>' +
-      '<p class="wdSub">Your ridden roads in red, your countries in gold, your wish list in blue, and the legendary roads of the world to explore - tap anything.</p></header><div id="wdGlobe"></div></div>';
+      '<p class="wdSub">Red: roads you rode. Gold: your countries. Blue: your wish list. Drag to turn, pinch or +/− to zoom, tap a road or country.</p></header><div id="wdGlobe"></div></div>';
     open(v.querySelector('#wdGlobe'));
   }
   /* the Atlas and the Passport each get a clear way in */
@@ -14195,7 +14212,7 @@ const CS_GLOBE = (() => {
 .glSide{color:#e8ebef}.glBig{display:flex;align-items:center;gap:14px;margin:4px 0 12px}.glSide .glBig b{font:800 72px/0.9 var(--display,system-ui)!important;color:#ffcf4a;letter-spacing:-.02em}.glBig span{font-size:18px;font-weight:700;line-height:1.2}.glBig i{font-style:normal;font-weight:500;opacity:.7;font-size:14px}
 .glSum{display:grid;grid-template-columns:1fr 1fr;gap:8px}.glSum div{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.06)}.glSide .glSum b{display:block;font:800 26px/1.1 var(--display,system-ui)!important}.glSum span{display:block;font-size:13px;opacity:.75}
 .glCont{list-style:none;margin:14px 0;padding:0;display:grid;gap:7px}.glCont li{display:grid;grid-template-columns:118px 1fr 44px;align-items:center;gap:8px;font-size:13px}.glCont i{height:8px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden}.glCont s{display:block;height:100%;background:linear-gradient(90deg,#e88c30,#ffcf4a);border-radius:9px}.glCont b{text-align:right;font-variant-numeric:tabular-nums}
-.glMark{margin:6px 0 10px}.glMarkBtn{width:100%;min-height:50px;border-radius:14px;border:1px solid #ffcf4a;background:rgba(255,207,74,.08);color:#ffcf4a;font:700 15px/1.2 system-ui;cursor:pointer}.glMarkBtn[aria-pressed="true"]{background:#ffcf4a;color:#111}.glMark p{margin:6px 2px 0;font-size:13px;opacity:.75}
+.wdActs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 10px}.wdAct{display:flex;flex-direction:column;gap:3px;align-items:flex-start;justify-content:center;min-height:62px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);color:#fff;text-decoration:none;font:inherit;text-align:left;cursor:pointer}.wdAct b{font:700 15px/1.15 system-ui,sans-serif}.wdAct span{font-size:12.5px;line-height:1.25;color:#b9c0ca}.wdAct.glMarkBtn{width:auto;border-color:#ffcf4a;background:rgba(255,207,74,.08);color:#ffcf4a}.wdAct.glMarkBtn.on{background:#ffcf4a;color:#111}.wdAct.glMarkBtn.on span{color:#333}.wdAct:hover{border-color:rgba(255,255,255,.5)}.wdHint{margin:0 0 10px;padding:8px 12px;border-radius:10px;background:#ffcf4a;color:#111;font-weight:600}.wdStart{margin:12px 0;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14)}.wdStart ol{margin:8px 0 0 18px;padding:0;line-height:1.5}.wdStart em{font-style:normal;color:#ffcf4a}body[data-view="world"] #viewModes,body[data-view="world"] #mModes{display:none!important}@media (max-width:600px){.wdActs{grid-template-columns:1fr}.wdAct{min-height:54px;flex-direction:row;align-items:center;justify-content:space-between}.wdAct span{text-align:right}}.glMark{margin:6px 0 10px}.glMarkBtn{width:100%;min-height:50px;border-radius:14px;border:1px solid #ffcf4a;background:rgba(255,207,74,.08);color:#ffcf4a;font:700 15px/1.2 system-ui;cursor:pointer}.glMarkBtn[aria-pressed="true"]{background:#ffcf4a;color:#111}.glMark p{margin:6px 2px 0;font-size:13px;opacity:.75}
 .glList{list-style:none;margin:8px 0 12px;padding:0;display:grid;gap:6px;max-height:280px;overflow:auto}.glCty{display:flex;align-items:center;gap:10px;width:100%;min-height:46px;padding:6px 10px;border-radius:12px;border:0;background:rgba(255,255,255,.05);color:inherit;font:inherit;text-align:left;cursor:pointer}.glCty img{width:24px;height:auto;border-radius:3px}.glCty span{flex:1;font-weight:600}.glCty em{font-style:normal;font-size:12px;opacity:.7}
 .glH3{margin:14px 0 6px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
 .glChips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}.glChip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:transparent;color:inherit;font:inherit;font-size:14px;cursor:pointer;opacity:.6;text-transform:capitalize}
@@ -20156,7 +20173,7 @@ function csAvoidUi(r) { try {
     const y0 = window.scrollY, mb = document.querySelector('#rideDetail .mapBox'), h0 = mb ? mb.offsetHeight : 0;
     go('#/ride/' + encodeURIComponent(r.id));
     /* owner 2026-11-07: with routing on, the re-route rebuilt the page and it jumped - hold the map's height and the rider's place */
-    [0, 120, 400, 900, 1600, 2600].forEach(ms => setTimeout(() => { try { const m2 = document.querySelector('#rideDetail .mapBox'); if (m2 && h0) m2.style.minHeight = h0 + 'px'; if (Math.abs(window.scrollY - y0) > 4) window.scrollTo(0, y0); } catch (e) {} }, ms));
+    [0, 120, 400, 900, 1600, 2600].forEach(ms => setTimeout(() => { try { if (window.csRideWide) csRideWide(); const m2 = document.querySelector('#rideDetail .mapBox'); if (m2 && h0) m2.style.minHeight = h0 + 'px'; if (Math.abs(window.scrollY - y0) > 4) window.scrollTo(0, y0); } catch (e) {} }, ms));
   });
   const res = S.avoidResult, note = box.querySelector('.csAvoidNote'), asked = csAvoidList();
   if (asked.length && res && res.id === r.id) {

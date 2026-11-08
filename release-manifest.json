@@ -1,6 +1,6 @@
 {
- "build_id": "2026.45-r40",
- "build_date": "2026-11-07T22:20:34.064Z",
+ "build_id": "2026.45-r41",
+ "build_date": "2026-11-07T23:11:34.937Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -68,8 +68,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 2501806,
-   "sha256": "01799ac6e5c6224b582e7b57ca33aa0f77e6fe060b1df4f9de3c57f900cf7142"
+   "bytes": 2505272,
+   "sha256": "815686168b3eba82384a82bc8f80d603bd50296b60f8df80c80a337164ad5ae7"
   },
   {
    "path": "archive.js",
@@ -1089,7 +1089,7 @@
   {
    "path": "config.js",
    "bytes": 161764,
-   "sha256": "b13df8bd639d0c28b85cbef7a5f0b5e4fee23b866e45d4df9ebd23a213561217"
+   "sha256": "34aa7307ac71b18a244e92bc98e974de1ba88e267d7053fea11c88c0ee4a398f"
   },
   {
    "path": "data/cities.txt",
@@ -19048,13 +19048,13 @@
   },
   {
    "path": "styles.css",
-   "bytes": 400464,
-   "sha256": "25f58fa06fe785c8f68507a87c15bc56e245e6c76fd786d56379a67e4ca306a1"
+   "bytes": 400864,
+   "sha256": "26a8193b39b983bf5f0f23e2314b87e56baafd85f61a96f1836f89f739c8c0e8"
   },
   {
    "path": "sw.js",
    "bytes": 10537,
-   "sha256": "60daea738462e627fcd658ac2770d944dce44a67d78b09b97a759786a428e3bd"
+   "sha256": "b8ec2ec3199a510ad033e2546f0570cd171754dde97ef74ef0d8ee01f529a61c"
   },
   {
    "path": "thursday.html",
@@ -19129,8 +19129,8 @@
  ],
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
  "file_count": 3819,
- "total_bytes": 450787886,
- "release_date": "2026-11-07",
- "sw_cache": "curvescout-app-r40-20261107",
- "source_parent_commit": "0dc3a69"
+ "total_bytes": 450791752,
+ "release_date": "2026-11-08",
+ "sw_cache": "curvescout-app-r41-20261108",
+ "source_parent_commit": "d53a98f"
 }

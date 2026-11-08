@@ -5477,3 +5477,9 @@ body:has(#mModes:not([hidden])) #viewModes{display:none!important}
 #csWall .csHeroCta .csHeroLink{min-height:36px!important;padding:6px 4px!important}
 #goBtn.goBtn{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom));z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.55)}
 @media (min-width:901px){#goBtn.goBtn{bottom:16px}}
+
+/* owner 2026-11-07: the Play button covered day 1 at the top of the trip map - it sits at the bottom now */
+.tripPlay{top:auto!important;bottom:28px!important;right:10px!important}
+
+/* owner 2026-11-07: the map column followed the content width and jumped after "Avoid motorways" - now tied to the window */
+#rideDetail.rdWide{grid-template-columns:minmax(0,1fr) clamp(460px,42vw,720px)!important}
