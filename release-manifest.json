@@ -1,6 +1,6 @@
 {
- "build_id": "2026.45-r42",
- "build_date": "2026-11-08T05:50:59.849Z",
+ "build_id": "2026.45-r43",
+ "build_date": "2026-11-08T06:37:19.744Z",
  "release_profile": "pages-safe",
  "permitted_network_hosts": [
   "same-origin",
@@ -68,8 +68,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 2505832,
-   "sha256": "a49e4cd86a1153a16deadca7df3a3f1fbf176a092d2c2e166225e273355d1bd3"
+   "bytes": 2508204,
+   "sha256": "3c4c6db0b7ae9742adfd8d0518d562524d0137105e95868a22ba47b1e630f903"
   },
   {
    "path": "archive.js",
@@ -113,8 +113,8 @@
   },
   {
    "path": "assets/copilot/copilot-runtime.js",
-   "bytes": 234430,
-   "sha256": "69e3bf77821d55abbea39261c67937167df5bf1fbf3a2805a5514dba63601ac2"
+   "bytes": 235792,
+   "sha256": "b057cf5ccd8b83bcfc02855bb0dc7945bd7f22d919c8c2fe70d5a939f8dae7ad"
   },
   {
    "path": "assets/copilot/cs-build-copilot.src.mjs",
@@ -1094,7 +1094,7 @@
   {
    "path": "config.js",
    "bytes": 161764,
-   "sha256": "031931e74562568c15abc8d97675b7a25240d9db149d2d4a9b61bdc06856551a"
+   "sha256": "bdfa1bf2c7967846661442a8911ee7b7e8aee6963f0922d3905d656b413deda2"
   },
   {
    "path": "data/cities.txt",
@@ -19059,7 +19059,7 @@
   {
    "path": "sw.js",
    "bytes": 10537,
-   "sha256": "86565539a214f93ed58d2530ca595cc76bb0fff1139ba5c8e911a301b2af59ed"
+   "sha256": "17b1813a6625603968c2d565ad60e982f0a2447c300e35de6085bb9d66115be8"
   },
   {
    "path": "thursday.html",
@@ -19134,8 +19134,8 @@
  ],
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
  "file_count": 3820,
- "total_bytes": 450804309,
+ "total_bytes": 450808043,
  "release_date": "2026-11-08",
- "sw_cache": "curvescout-app-r42-20261108",
- "source_parent_commit": "79fb1be"
+ "sw_cache": "curvescout-app-r43-20261108",
+ "source_parent_commit": "3405380"
 }

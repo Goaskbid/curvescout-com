@@ -7169,6 +7169,9 @@ const CS_SUGGEST = (() => {
     const wrap = input.parentNode; if (getComputedStyle(wrap).position === 'static') wrap.style.position = 'relative'; wrap.appendChild(box);
     let rows = [], act = -1, t = null, ctl = null, seq = 0;
     const close = () => { box.hidden = true; input.setAttribute('aria-expanded', 'false'); act = -1; };
+    /* audit CS-R41-011: a form that moves on (submit, edit, leave) closes every list and ignores answers still on their way */
+    box._csKill = () => { seq++; try { ctl && ctl.abort(); } catch (e) {} clearTimeout(t); close(); };
+    input.addEventListener('blur', () => setTimeout(() => { if (document.activeElement !== input && !box.contains(document.activeElement)) box._csKill(); }, 250));
     const paint = (note) => {
       if (!rows.length) { if (note) { box.innerHTML = '<li class="csSugNote">' + esc(note) + '</li>'; box.hidden = false; } else close(); return; }
       box.innerHTML = rows.map((r, i) => '<li role="option" id="' + box.id + i + '" class="csSugRow' + (i === act ? ' on' : '') + '" data-i="' + i + '" aria-selected="' + (i === act) + '"><span class="csSugF">' + flag(r.cc) + '</span><span class="csSugT"><b>' + esc(r.name) + '</b><small>' + esc(sub(r, rows)) + '</small></span></li>').join('') +
@@ -7219,6 +7222,9 @@ const CS_SUGGEST = (() => {
   return { attach, resolve, merge, sub, setNear, _local: local, _matches: matches };
 })();
 if (typeof window !== 'undefined') window.CS_SUGGEST = CS_SUGGEST;
+
+window.csSugCloseAll = () => document.querySelectorAll('.csSug').forEach(b => { try { b._csKill ? b._csKill() : (b.hidden = true); } catch (e) {} });
+window.addEventListener('hashchange', () => { try { window.csSugCloseAll(); } catch (e) {} });
 
 /* ---- MY ROAD ATLAS (owner 2026-10-13: "vom Routenplaner zum persönlichen Road Atlas") ----
  * CurveScout plans the next ride; this module remembers the rides behind you. First version, as agreed:
@@ -7728,7 +7734,7 @@ function tripPaint() {
     try { const r = await Platform.location.getCurrentLocation(); if (r.ok) { f.start = [r.lat, r.lon]; const town = tripTownNear([r.lat, r.lon], 20); f.label = town || 'My location'; $('tripStart').value = f.label; $('tripMsg').textContent = ''; }
       else $('tripMsg').textContent = r.code === 'DENIED' ? 'Location is blocked in this browser - type a town instead.' : 'Location unavailable - type a town instead.'; }
     catch (e) { $('tripMsg').textContent = 'Location unavailable - type a town instead.'; } };
-  form.onsubmit = async ev => { ev.preventDefault(); const msg = $('tripMsg');
+  form.onsubmit = async ev => { ev.preventDefault(); try { window.csSugCloseAll && csSugCloseAll(); } catch (e) {} const msg = $('tripMsg');
     const typed = $('tripStart').value.trim();
     if (!typed) { msg.textContent = 'Choose a start: type a town or a pass, or use My location.'; $('tripStart').focus(); return; }
     if (f.from && f.to && f.to < f.from) { msg.textContent = 'The end date is before the start date.'; return; }
@@ -8292,8 +8298,10 @@ function tripWire() {
       const orient = (t, tag, d) => { const re = new RegExp('<' + tag + '\\b[^>]*?(?:/>|>[\\s\\S]*?</' + tag + '>)', 'g'), pts = t.match(re) || []; if (pts.length < 2) return t;
         let o = pts.slice(); if (d.rev) o.reverse();
         if (d.loop && d.start) { const ll = q => { const m = q.match(/lat="([-\d.]+)"\s+lon="([-\d.]+)"/); return m ? [+m[1], +m[2]] : null; };
-          let bk = 0, bd = Infinity; o.forEach((q, k) => { const p = ll(q); if (!p) return; const dd = CS_TRIPS._dist(p, d.start); if (dd < bd) { bd = dd; bk = k; } }); if (bk > 0) o = o.slice(bk).concat(o.slice(0, bk)); }
-        let k = 0; return t.replace(re, () => o[k++]); };
+          let bk = 0, bd = Infinity; o.forEach((q, k) => { const p = ll(q); if (!p) return; const dd = CS_TRIPS._dist(p, d.start); if (dd < bd) { bd = dd; bk = k; } }); if (bk > 0 && bk < o.length - 1) { /* audit CS-R41-006: A-B-C-A entered at B is ridden B-C-A-B: the closing point is dropped from the ring and the ride closes back at its entry */
+            const closes = o.length > 2 && (() => { const a = ll(o[0]), b = ll(o[o.length - 1]); return a && b && CS_TRIPS._dist(a, b) < 3; })(); const ring = closes ? o.slice(0, -1) : o;
+            o = ring.slice(bk).concat(ring.slice(0, bk)); o.push(o[0]); } }
+        let k = 0; return t.replace(re, () => (k++ === 0 ? o.join('') : '')); };
       const xleg = (x, name) => x && x.km > 0 && x.from && x.to ? '<rte><name>' + esc(name) + ' (' + (x.routed ? 'routed' : 'straight line - let your device route it') + ', ' + x.km + ' km)</name>' +
         (x.line && x.line.length > 1 ? x.line : [x.from].concat(tripVia(x).map(p => p.at), [x.to])).map(p => '<rtept lat="' + (+p[0]).toFixed(5) + '" lon="' + (+p[1]).toFixed(5) + '"></rtept>').join('') + '</rte>' : '';
       const rtes = xs.map((x, i) => { const d = plan.days[i]; return [xleg(d.transferIn, 'Day ' + (i + 1) + ': transfer to the start')].concat((x.match(/<rte>[\s\S]*?<\/rte>/g) || []).map(t => orient(t, 'rtept', d).replace(/<name>/, '<name>Day ' + (i + 1) + ': '))).concat([xleg(d.transferOut, 'Day ' + (i + 1) + ': transfer to the night')]).filter(Boolean).join('\n'); }).join('\n');
@@ -8473,9 +8481,9 @@ function tripPlay() {
   btn.textContent = '■ Stop'; btn.classList.add('on');
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const calm = tripCalm();
-  (async () => {
+  (async () => { const played = [];   /* audit CS-R41-008: a day whose road is not there is skipped, never shown as completed */
     for (let i = 0; i < plan.days.length && !anim.stop; i++) {
-      const d = plan.days[i], line = (TRIP.lines[i] || []).filter(p => p && Number.isFinite(p[0])); if (line.length < 2 || (TRIP.roadSt || [])[i] !== 'ok') continue;
+      const d = plan.days[i], line = (TRIP.lines[i] || []).filter(p => p && Number.isFinite(p[0])); if (line.length < 2 || (TRIP.roadSt || [])[i] !== 'ok') { const fx = $('tripFill' + i); if (fx) fx.style.width = '0'; continue; } played.push(i);
       const col = TRIP_COL[i % TRIP_COL.length], date = o.from ? tripDate(o.from, i) : null;
       try { if (TRIP.trail) TRIP.trail.remove(); if (TRIP.bike) TRIP.bike.remove(); } catch (e) {} TRIP.trail = TRIP.bike = null;
       tripFocus(i, false); document.querySelectorAll('.tripSegFill').forEach((x, k) => x.style.width = k < i ? '100%' : '0');
@@ -8504,8 +8512,10 @@ function tripPlay() {
       await sleep(calm ? 900 : 650);
     }
     if (anim.stop) return;
-    document.querySelectorAll('.tripSegFill').forEach(x => x.style.width = '100%');
-    cap.innerHTML = '<span class="tripCapT"><b>' + plan.totalKm.toLocaleString('en-GB') + ' km over ' + plan.days.length + ' days</b><span>' + tripFmtMin(plan.totalMin) + ' of riding · tap a day to see it again</span></span>';
+    document.querySelectorAll('.tripSegFill').forEach((x, k) => x.style.width = played.includes(k) ? '100%' : '0');
+    if (!played.length) { cap.hidden = false; cap.innerHTML = '<span class="tripCapT"><b>Nothing to play yet</b><span>The roads of these days are still loading or could not be drawn - try again in a moment.</span></span>'; TRIP.anim = null; btn.textContent = '▶ Play trip'; btn.classList.remove('on'); return; }
+    const skipped = plan.days.length - played.length;
+    cap.innerHTML = '<span class="tripCapT"><b>' + plan.totalKm.toLocaleString('en-GB') + ' km over ' + plan.days.length + ' days</b><span>' + tripFmtMin(plan.totalMin) + ' of riding · ' + (skipped ? skipped + (skipped === 1 ? ' day' : ' days') + ' without its road yet, not played' : 'tap a day to see it again') + '</span></span>';
     try { if (TRIP.bike) TRIP.bike.remove(); if (TRIP.trail) TRIP.trail.remove(); } catch (e) {} TRIP.bike = TRIP.trail = null;
     TRIP.focus = null; tripFocus(null, true); TRIP.anim = null; btn.textContent = '↻ Play again'; btn.classList.remove('on');
   })();
@@ -8932,7 +8942,7 @@ function tripTabs(plan) { try {
   const form = $('tripForm'); if (form) { form.classList.add('tripFolded'); let bar = form.querySelector('.tripFoldBar');
     if (!bar) { bar = document.createElement('div'); bar.className = 'tripFoldBar'; form.prepend(bar); }
     const o = TRIP.opts; bar.innerHTML = '<span><b>' + esc(o.mode === 'a2b' && o.dest ? (o.label || 'A') + ' → ' + (o.dest[2] || 'B') : o.label || 'Your trip') + '</b> · ' + n + (n === 1 ? ' day' : ' days') + '</span><button type="button" class="ghost2 tripFoldBtn">✎ Change trip</button>';
-    bar.querySelector('button').onclick = () => { const open = form.classList.toggle('tripFolded') === false; bar.querySelector('button').textContent = open ? '✕ Close' : '✎ Change trip'; if (open) scrollTo(0, 0); }; }
+    bar.querySelector('button').onclick = () => { try { window.csSugCloseAll && csSugCloseAll(); } catch (e) {} const open = form.classList.toggle('tripFolded') === false; bar.querySelector('button').textContent = open ? '✕ Close' : '✎ Change trip'; if (open) scrollTo(0, 0); }; }
   /* the panes */
   const pane = (k) => { const d = document.createElement('div'); d.className = 'tripPane'; d.dataset.pane = k; d.setAttribute('role', 'tabpanel'); d.id = 'tripPane-' + k; return d; };
   const P = { ov: pane('ov'), days: pane('days'), map: pane('map'), info: pane('info') };
@@ -20174,7 +20184,9 @@ function csAvoidUi(r) { try {
     const y0 = window.scrollY, mb = document.querySelector('#rideDetail .mapBox'), h0 = mb ? mb.offsetHeight : 0;
     go('#/ride/' + encodeURIComponent(r.id));
     /* owner 2026-11-07: with routing on, the re-route rebuilt the page and it jumped - hold the map's height and the rider's place */
-    [0, 120, 400, 900, 1600, 2600].forEach(ms => setTimeout(() => { try { if (window.csRideWide) csRideWide(); const m2 = document.querySelector('#rideDetail .mapBox'); if (m2 && h0) m2.style.minHeight = h0 + 'px'; if (Math.abs(window.scrollY - y0) > 4) window.scrollTo(0, y0); } catch (e) {} }, ms));
+    /* audit CS-R41-002: one restore, only while this ride is still open and the rider has not scrolled or left since */
+    { const hash = location.hash; let moved = false; const off = () => { moved = true; }; ['wheel', 'touchmove', 'keydown'].forEach(ev => addEventListener(ev, off, { once: true, passive: true }));
+      requestAnimationFrame(() => requestAnimationFrame(() => { try { if (!moved && location.hash === hash) { if (window.csRideWide) csRideWide(); const m2 = document.querySelector('#rideDetail .mapBox'); if (m2 && h0) m2.style.minHeight = h0 + 'px'; if (Math.abs(window.scrollY - y0) > 4) window.scrollTo(0, y0); setTimeout(() => { if (m2) m2.style.minHeight = ''; }, 1500); } } catch (e) {} ['wheel', 'touchmove', 'keydown'].forEach(ev => removeEventListener(ev, off)); })); }
   });
   const res = S.avoidResult, note = box.querySelector('.csAvoidNote'), asked = csAvoidList();
   if (asked.length && res && res.id === r.id) {
