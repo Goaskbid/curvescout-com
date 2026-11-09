@@ -20252,7 +20252,22 @@
   "places-terebowiec-stream-valley-polonina-wetlinska-and-smerek-2": 1,
   "places-polonina-wetlinska-and-smerek-terebowiec-stream-valley-2": 1,
   "pl-bieszczady-great-loop": 1,
-  "legend-bieszczady-loop": 1
+  "legend-bieszczady-loop": 1,
+  "vancouver-sea-to-sky-and-duffey-lake": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope": 1,
+  "vancouver-british-columbia-kootenay-rockies-weekend": 1,
+  "vancouver-british-columbia-sea-to-sky-and-whistler": 1,
+  "sea-to-sky-highway": 1,
+  "sea-to-sky-to-duffey-loop-vancouver-pemberton": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope-part-1": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope-part-2": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope-arc": 1,
+  "vancouver-british-columbia-duffy-lake-road-loop-part-1": 1,
+  "vancouver-british-columbia-duffy-lake-road-loop-part-3": 1,
+  "vancouver-british-columbia-mount-baker-cross-border-loop-part-1": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope-and-vancouver-british-": 1,
+  "ca-sea-to-sky-highway": 1,
+  "legend-sea-to-sky-highway": 1
  },
  "failed": {
   "romania": [
@@ -21739,6 +21754,10 @@
    "places-parc-national-de-masoala-rainforests-of-the-atsinanana-2: ends do not match",
    "places-parc-national-de-masoala-parc-national-de-masoala-2: length 2913 km vs 246 km",
    "places-parc-national-de-masoala-parc-national-de-masoala-4: length 1744 km vs 201 km"
+  ],
+  "southcoast-admreg": [
+   "vancouver-british-columbia-duffy-lake-road-loop-part-1: ends do not match",
+   "vancouver-british-columbia-duffy-lake-road-loop-part-3: ends do not match"
   ]
  },
  "tooBig": [
@@ -40709,7 +40728,22 @@
   "places-terebowiec-stream-valley-polonina-wetlinska-and-smerek-2": 1,
   "places-polonina-wetlinska-and-smerek-terebowiec-stream-valley-2": 1,
   "pl-bieszczady-great-loop": 1,
-  "legend-bieszczady-loop": 1
+  "legend-bieszczady-loop": 1,
+  "vancouver-sea-to-sky-and-duffey-lake": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope": 1,
+  "vancouver-british-columbia-kootenay-rockies-weekend": 1,
+  "vancouver-british-columbia-sea-to-sky-and-whistler": 1,
+  "sea-to-sky-highway": 1,
+  "sea-to-sky-to-duffey-loop-vancouver-pemberton": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope-part-1": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope-part-2": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope-arc": 1,
+  "vancouver-british-columbia-duffy-lake-road-loop-part-1": 1,
+  "vancouver-british-columbia-duffy-lake-road-loop-part-3": 1,
+  "vancouver-british-columbia-mount-baker-cross-border-loop-part-1": 1,
+  "vancouver-british-columbia-fraser-canyon-and-hope-and-vancouver-british-": 1,
+  "ca-sea-to-sky-highway": 1,
+  "legend-sea-to-sky-highway": 1
  },
  "netDone": {
   "south-korea": 1,
