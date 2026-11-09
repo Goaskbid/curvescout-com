@@ -20723,7 +20723,11 @@
   "places-elarmekora-mount-iboundji": 1,
   "places-mount-iboundji-elarmekora": 1,
   "places-elarmekora-mount-iboundji-2": 1,
-  "places-mount-iboundji-elarmekora-2": 1
+  "places-mount-iboundji-elarmekora-2": 1,
+  "places-parc-national-de-la-salonga-nord-parc-national-de-la-salonga-sud": 1,
+  "places-parc-national-de-la-salonga-sud-parc-national-de-la-salonga-nord": 1,
+  "places-parc-national-de-la-salonga-nord-parc-national-de-la-salonga-sud-2": 1,
+  "places-parc-national-de-la-salonga-sud-parc-national-de-la-salonga-nord-2": 1
  },
  "failed": {
   "romania": [
@@ -22242,6 +22246,12 @@
   ],
   "castilla-y-leon": [
    "ruta-de-la-plata-salamanca-leon: length 208 km vs 464 km"
+  ],
+  "congo-democratic-republic": [
+   "places-parc-national-de-la-salonga-sud-parc-national-de-la-salonga-nord-2: length 3223 km vs 372 km",
+   "places-parc-national-de-la-salonga-nord-parc-national-de-la-salonga-sud: length 3223 km vs 372 km",
+   "places-parc-national-de-la-salonga-sud-parc-national-de-la-salonga-nord: length 3223 km vs 372 km",
+   "places-parc-national-de-la-salonga-nord-parc-national-de-la-salonga-sud-2: length 3223 km vs 372 km"
   ]
  },
  "tooBig": [
@@ -41728,7 +41738,11 @@
   "places-elarmekora-mount-iboundji": 1,
   "places-mount-iboundji-elarmekora": 1,
   "places-elarmekora-mount-iboundji-2": 1,
-  "places-mount-iboundji-elarmekora-2": 1
+  "places-mount-iboundji-elarmekora-2": 1,
+  "places-parc-national-de-la-salonga-nord-parc-national-de-la-salonga-sud": 1,
+  "places-parc-national-de-la-salonga-sud-parc-national-de-la-salonga-nord": 1,
+  "places-parc-national-de-la-salonga-nord-parc-national-de-la-salonga-sud-2": 1,
+  "places-parc-national-de-la-salonga-sud-parc-national-de-la-salonga-nord-2": 1
  },
  "netDone": {
   "south-korea": 1,
