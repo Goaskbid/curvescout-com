@@ -20031,7 +20031,25 @@
   "places-old-town-lunenburg-joggins-fossil-cliffs-4": 1,
   "ca-lighthouse-route": 1,
   "ca-evangeline-trail": 1,
-  "legend-cabot-trail": 1
+  "legend-cabot-trail": 1,
+  "tahiti-coastal-circle-road": 1,
+  "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka": 1,
+  "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva": 1,
+  "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku": 1,
+  "places-ensemble-mixte-de-nuku-hiva-aire-marine-cotiere-de-ua-huka": 1,
+  "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou": 1,
+  "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka-2": 1,
+  "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva-2": 1,
+  "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku-2": 1,
+  "places-ensemble-mixte-de-nuku-hiva-aire-marine-cotiere-de-ua-huka-2": 1,
+  "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou-2": 1,
+  "places-ensemble-mixte-de-hiva-oa-tahuata-aire-marine-cotiere-de-ua-huka": 1,
+  "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka-3": 1,
+  "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva-3": 1,
+  "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku-3": 1,
+  "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou-3": 1,
+  "places-ensemble-mixte-de-hiva-oa-tahuata-aire-marine-cotiere-de-ua-huka-2": 1,
+  "legend-tahiti-coastal-circle-road": 1
  },
  "failed": {
   "romania": [
@@ -21476,6 +21494,24 @@
    "places-the-sundarbans-historic-mosque-city-of-bagerhat-2: ends do not match",
    "places-the-sundarbans-historic-mosque-city-of-bagerhat: ends do not match",
    "places-sundarbans-west-wildlife-sanctuary-historic-mosque-city-of-bagerhat: ends do not match"
+  ],
+  "polynesie-francaise": [
+   "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva: length 0 km vs 215 km",
+   "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku: length 0 km vs 215 km",
+   "places-ensemble-mixte-de-nuku-hiva-aire-marine-cotiere-de-ua-huka: length 80 km vs 376 km",
+   "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka: length 94 km vs 335 km",
+   "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva-2: length 0 km vs 215 km",
+   "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou: length 94 km vs 335 km",
+   "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka-2: length 94 km vs 335 km",
+   "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku-2: length 0 km vs 215 km",
+   "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka-3: length 94 km vs 335 km",
+   "places-ensemble-mixte-de-nuku-hiva-aire-marine-cotiere-de-ua-huka-2: length 80 km vs 376 km",
+   "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou-2: length 94 km vs 335 km",
+   "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou-3: length 94 km vs 335 km",
+   "places-ensemble-mixte-de-hiva-oa-tahuata-aire-marine-cotiere-de-ua-huka: length 0 km vs 365 km",
+   "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku-3: length 0 km vs 215 km",
+   "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva-3: length 0 km vs 215 km",
+   "places-ensemble-mixte-de-hiva-oa-tahuata-aire-marine-cotiere-de-ua-huka-2: length 0 km vs 365 km"
   ]
  },
  "tooBig": [
@@ -40221,7 +40257,25 @@
   "places-old-town-lunenburg-joggins-fossil-cliffs-4": 1,
   "ca-lighthouse-route": 1,
   "ca-evangeline-trail": 1,
-  "legend-cabot-trail": 1
+  "legend-cabot-trail": 1,
+  "tahiti-coastal-circle-road": 1,
+  "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka": 1,
+  "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva": 1,
+  "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku": 1,
+  "places-ensemble-mixte-de-nuku-hiva-aire-marine-cotiere-de-ua-huka": 1,
+  "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou": 1,
+  "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka-2": 1,
+  "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva-2": 1,
+  "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku-2": 1,
+  "places-ensemble-mixte-de-nuku-hiva-aire-marine-cotiere-de-ua-huka-2": 1,
+  "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou-2": 1,
+  "places-ensemble-mixte-de-hiva-oa-tahuata-aire-marine-cotiere-de-ua-huka": 1,
+  "places-ensemble-mixte-de-ua-pou-aire-marine-cotiere-de-ua-huka-3": 1,
+  "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva-3": 1,
+  "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku-3": 1,
+  "places-aire-marine-cotiere-de-ua-huka-ensemble-mixte-de-ua-pou-3": 1,
+  "places-ensemble-mixte-de-hiva-oa-tahuata-aire-marine-cotiere-de-ua-huka-2": 1,
+  "legend-tahiti-coastal-circle-road": 1
  },
  "netDone": {
   "south-korea": 1,
