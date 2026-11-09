@@ -20607,7 +20607,14 @@
   "bow-valley-parkway": 1,
   "city-calgary-longday": 1,
   "legend-icefields-parkway": 1,
-  "legend-bow-valley-parkway": 1
+  "legend-bow-valley-parkway": 1,
+  "ethiopia-simien-mountains-road": 1,
+  "ethiopia-bale-mountains-road": 1,
+  "city-addis-ababa-afternoon": 1,
+  "city-addis-ababa-dayout": 1,
+  "city-addis-ababa-longday": 1,
+  "legend-ethiopia-simien-mountains-road": 1,
+  "legend-ethiopia-bale-mountains-road": 1
  },
  "failed": {
   "romania": [
@@ -41462,7 +41469,14 @@
   "bow-valley-parkway": 1,
   "city-calgary-longday": 1,
   "legend-icefields-parkway": 1,
-  "legend-bow-valley-parkway": 1
+  "legend-bow-valley-parkway": 1,
+  "ethiopia-simien-mountains-road": 1,
+  "ethiopia-bale-mountains-road": 1,
+  "city-addis-ababa-afternoon": 1,
+  "city-addis-ababa-dayout": 1,
+  "city-addis-ababa-longday": 1,
+  "legend-ethiopia-simien-mountains-road": 1,
+  "legend-ethiopia-bale-mountains-road": 1
  },
  "netDone": {
   "south-korea": 1,
