@@ -20576,7 +20576,15 @@
   "core-barkhamsted-reservoir-and-saville-dam": 1,
   "core-mystic-coast-and-stonington-villages": 1,
   "core-northeast-hills-and-pomfret-roads": 1,
-  "core-essex-to-old-saybrook-shoreline": 1
+  "core-essex-to-old-saybrook-shoreline": 1,
+  "badlands-loop-state-scenic-byway": 1,
+  "spearfish-canyon-scenic-byway": 1,
+  "peter-norbeck-scenic-byway": 1,
+  "legend-badlands-loop-state-scenic-byway": 1,
+  "legend-peter-norbeck-scenic-byway": 1,
+  "legend-spearfish-canyon-scenic-byway": 1,
+  "core-needles-highway-and-iron-mountain-road": 1,
+  "core-spearfish-canyon-and-vanocker-canyon": 1
  },
  "failed": {
   "romania": [
@@ -22099,7 +22107,8 @@
   "quebec",
   "us/texas",
   "tanzania",
-  "ontario"
+  "ontario",
+  "siberian-fed-district"
  ],
  "sizes": {
   "europe": 35389153230,
@@ -41396,7 +41405,15 @@
   "core-barkhamsted-reservoir-and-saville-dam": 1,
   "core-mystic-coast-and-stonington-villages": 1,
   "core-northeast-hills-and-pomfret-roads": 1,
-  "core-essex-to-old-saybrook-shoreline": 1
+  "core-essex-to-old-saybrook-shoreline": 1,
+  "badlands-loop-state-scenic-byway": 1,
+  "spearfish-canyon-scenic-byway": 1,
+  "peter-norbeck-scenic-byway": 1,
+  "legend-badlands-loop-state-scenic-byway": 1,
+  "legend-peter-norbeck-scenic-byway": 1,
+  "legend-spearfish-canyon-scenic-byway": 1,
+  "core-needles-highway-and-iron-mountain-road": 1,
+  "core-spearfish-canyon-and-vanocker-canyon": 1
  },
  "netDone": {
   "south-korea": 1,
