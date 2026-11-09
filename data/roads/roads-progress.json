@@ -19994,7 +19994,26 @@
   "lv-latgale-lakes-and-aglona-loop": 1,
   "legend-vidzeme-seacoast-road": 1,
   "legend-gauja-national-park-loop": 1,
-  "legend-kurzeme-coast-run": 1
+  "legend-kurzeme-coast-run": 1,
+  "places-historic-mosque-city-of-bagerhat-sundarbans-west-wildlife-sanctuary": 1,
+  "places-historic-mosque-city-of-bagerhat-sundarbans-west-wildlife-sanctuary-2": 1,
+  "places-the-sundarbans-sundarbans-south-sanctuary": 1,
+  "places-the-sundarbans-sundarbans-east-sanctuary": 1,
+  "places-sundarbans-east-sanctuary-sundarbans-west-wildlife-sanctuary": 1,
+  "places-sundarbans-east-sanctuary-the-sundarbans": 1,
+  "places-sundarbans-south-sanctuary-the-sundarbans": 1,
+  "places-sundarbans-west-wildlife-sanctuary-the-sundarbans": 1,
+  "city-dhaka-longday": 1,
+  "places-historic-mosque-city-of-bagerhat-sundarbans-west-wildlife-sanctuary-3": 1,
+  "places-historic-mosque-city-of-bagerhat-sundarbans-west-wildlife-sanctuary-4": 1,
+  "places-the-sundarbans-sundarbans-south-sanctuary-2": 1,
+  "places-the-sundarbans-sundarbans-east-sanctuary-2": 1,
+  "places-the-sundarbans-historic-mosque-city-of-bagerhat": 1,
+  "places-the-sundarbans-historic-mosque-city-of-bagerhat-2": 1,
+  "places-sundarbans-east-sanctuary-sundarbans-west-wildlife-sanctuary-3": 1,
+  "places-sundarbans-south-sanctuary-the-sundarbans-2": 1,
+  "places-sundarbans-west-wildlife-sanctuary-sundarbans-east-sanctuary-2": 1,
+  "places-sundarbans-west-wildlife-sanctuary-historic-mosque-city-of-bagerhat": 1
  },
  "failed": {
   "romania": [
@@ -21423,6 +21442,22 @@
   ],
   "latvia": [
    "kurzeme-coast-run: length 132 km vs 311 km"
+  ],
+  "bangladesh": [
+   "places-sundarbans-south-sanctuary-the-sundarbans: ends do not match",
+   "places-the-sundarbans-sundarbans-south-sanctuary: ends do not match",
+   "places-sundarbans-west-wildlife-sanctuary-the-sundarbans: ends do not match",
+   "places-the-sundarbans-sundarbans-south-sanctuary-2: ends do not match",
+   "places-the-sundarbans-sundarbans-east-sanctuary: length 565 km vs 216 km",
+   "places-sundarbans-east-sanctuary-the-sundarbans: length 565 km vs 216 km",
+   "places-sundarbans-east-sanctuary-sundarbans-west-wildlife-sanctuary: length 565 km vs 162 km",
+   "places-sundarbans-south-sanctuary-the-sundarbans-2: ends do not match",
+   "places-the-sundarbans-sundarbans-east-sanctuary-2: length 565 km vs 216 km",
+   "places-sundarbans-east-sanctuary-sundarbans-west-wildlife-sanctuary-3: length 565 km vs 162 km",
+   "places-sundarbans-west-wildlife-sanctuary-sundarbans-east-sanctuary-2: length 565 km vs 162 km",
+   "places-the-sundarbans-historic-mosque-city-of-bagerhat-2: ends do not match",
+   "places-the-sundarbans-historic-mosque-city-of-bagerhat: ends do not match",
+   "places-sundarbans-west-wildlife-sanctuary-historic-mosque-city-of-bagerhat: ends do not match"
   ]
  },
  "tooBig": [
@@ -40130,7 +40165,26 @@
   "lv-latgale-lakes-and-aglona-loop": 1,
   "legend-vidzeme-seacoast-road": 1,
   "legend-gauja-national-park-loop": 1,
-  "legend-kurzeme-coast-run": 1
+  "legend-kurzeme-coast-run": 1,
+  "places-historic-mosque-city-of-bagerhat-sundarbans-west-wildlife-sanctuary": 1,
+  "places-historic-mosque-city-of-bagerhat-sundarbans-west-wildlife-sanctuary-2": 1,
+  "places-the-sundarbans-sundarbans-south-sanctuary": 1,
+  "places-the-sundarbans-sundarbans-east-sanctuary": 1,
+  "places-sundarbans-east-sanctuary-sundarbans-west-wildlife-sanctuary": 1,
+  "places-sundarbans-east-sanctuary-the-sundarbans": 1,
+  "places-sundarbans-south-sanctuary-the-sundarbans": 1,
+  "places-sundarbans-west-wildlife-sanctuary-the-sundarbans": 1,
+  "city-dhaka-longday": 1,
+  "places-historic-mosque-city-of-bagerhat-sundarbans-west-wildlife-sanctuary-3": 1,
+  "places-historic-mosque-city-of-bagerhat-sundarbans-west-wildlife-sanctuary-4": 1,
+  "places-the-sundarbans-sundarbans-south-sanctuary-2": 1,
+  "places-the-sundarbans-sundarbans-east-sanctuary-2": 1,
+  "places-the-sundarbans-historic-mosque-city-of-bagerhat": 1,
+  "places-the-sundarbans-historic-mosque-city-of-bagerhat-2": 1,
+  "places-sundarbans-east-sanctuary-sundarbans-west-wildlife-sanctuary-3": 1,
+  "places-sundarbans-south-sanctuary-the-sundarbans-2": 1,
+  "places-sundarbans-west-wildlife-sanctuary-sundarbans-east-sanctuary-2": 1,
+  "places-sundarbans-west-wildlife-sanctuary-historic-mosque-city-of-bagerhat": 1
  },
  "netDone": {
   "south-korea": 1,
