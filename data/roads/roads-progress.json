@@ -20416,7 +20416,19 @@
   "city-asheville-longday": 1,
   "us-blue-ridge-parkway-south": 1,
   "us-forest-heritage-scenic-byway": 1,
-  "legend-outer-banks-scenic-byway": 1
+  "legend-outer-banks-scenic-byway": 1,
+  "k-hlung-hills-and-baltic-balcony": 1,
+  "fischland-dar-coast-ride": 1,
+  "mecklenburg-switzerland-manor-roads": 1,
+  "baltic-coast-k-hlung-hills-wismar": 1,
+  "dar-peninsula-air-and-bodden-roads": 1,
+  "schwerin-lakes-and-manor-roads": 1,
+  "rugen-island-scenic-loop": 1,
+  "schwerin-lakes-and-manor-roads-part-1": 1,
+  "schwerin-lakes-and-manor-roads-part-2": 1,
+  "schwerin-lakes-and-manor-roads-arc": 1,
+  "k-hlung-hills-and-baltic-balcony-and-dar-peninsula-air-and-bodden-roads": 1,
+  "legend-rugen-island-scenic-loop": 1
  },
  "failed": {
   "romania": [
@@ -21910,6 +21922,12 @@
   ],
   "us/utah": [
    "road-scenic-byway-12-arc: length 123 km vs 291 km"
+  ],
+  "mecklenburg-vorpommern": [
+   "schwerin-lakes-and-manor-roads-part-1: length 91 km vs 227 km",
+   "schwerin-lakes-and-manor-roads-part-2: length 92 km vs 227 km",
+   "schwerin-lakes-and-manor-roads: length 183 km vs 424 km",
+   "schwerin-lakes-and-manor-roads-arc: length 61 km vs 297 km"
   ]
  },
  "tooBig": [
@@ -41060,7 +41078,19 @@
   "city-asheville-longday": 1,
   "us-blue-ridge-parkway-south": 1,
   "us-forest-heritage-scenic-byway": 1,
-  "legend-outer-banks-scenic-byway": 1
+  "legend-outer-banks-scenic-byway": 1,
+  "k-hlung-hills-and-baltic-balcony": 1,
+  "fischland-dar-coast-ride": 1,
+  "mecklenburg-switzerland-manor-roads": 1,
+  "baltic-coast-k-hlung-hills-wismar": 1,
+  "dar-peninsula-air-and-bodden-roads": 1,
+  "schwerin-lakes-and-manor-roads": 1,
+  "rugen-island-scenic-loop": 1,
+  "schwerin-lakes-and-manor-roads-part-1": 1,
+  "schwerin-lakes-and-manor-roads-part-2": 1,
+  "schwerin-lakes-and-manor-roads-arc": 1,
+  "k-hlung-hills-and-baltic-balcony-and-dar-peninsula-air-and-bodden-roads": 1,
+  "legend-rugen-island-scenic-loop": 1
  },
  "netDone": {
   "south-korea": 1,
