@@ -21736,15 +21736,15 @@
   ],
   "java": "Command failed: docker run --rm -v /tmp/cs-roads:/data ghcr.io/project-osrm/osrm-backend:v5.27.1 osrm-extract -p /opt/car.lua /data/r.osm.pbf",
   "senegal-and-gambia": [
-   "places-niokolo-koba-national-park-peul-dindefello: ends do not match",
-   "places-niokolo-koba-national-park-peul-dindefello-2: ends do not match",
    "places-bedik-bandafassi-niokolo-koba-national-park-3: length 608 km vs 253 km",
-   "places-niokolo-koba-national-park-bedik-bandafassi: ends do not match",
-   "places-niokolo-koba-national-park-peul-dindefello-3: ends do not match",
+   "places-niokolo-koba-national-park-peul-dindefello-2: ends do not match",
+   "places-niokolo-koba-national-park-peul-dindefello: ends do not match",
    "places-niokolo-koba-national-park-peul-dindefello-4: ends do not match",
-   "places-niokolo-koba-national-park-peul-dindefello-5: ends do not match",
    "places-niokolo-koba-national-park-bedik-bandafassi-2: ends do not match",
-   "places-niokolo-koba-national-park-peul-dindefello-6: ends do not match"
+   "places-niokolo-koba-national-park-bedik-bandafassi: ends do not match",
+   "places-niokolo-koba-national-park-peul-dindefello-6: ends do not match",
+   "places-niokolo-koba-national-park-peul-dindefello-3: ends do not match",
+   "places-niokolo-koba-national-park-peul-dindefello-5: ends do not match"
   ],
   "castilla-la-mancha": [
    "places-cueva-del-gitano-las-covachicas: length 189 km vs 67 km",
@@ -41351,7 +41351,16 @@
   "places-itsandra-mutsamudu": 1,
   "places-ntsudjini-mutsamudu": 1,
   "places-domoni-moroni-3": 1,
-  "places-mutsamudu-moroni-2": 1
+  "places-mutsamudu-moroni-2": 1,
+  "places-niokolo-koba-national-park-peul-dindefello": 1,
+  "places-niokolo-koba-national-park-peul-dindefello-2": 1,
+  "places-bedik-bandafassi-niokolo-koba-national-park-3": 1,
+  "places-niokolo-koba-national-park-peul-dindefello-3": 1,
+  "places-niokolo-koba-national-park-bedik-bandafassi": 1,
+  "places-niokolo-koba-national-park-peul-dindefello-4": 1,
+  "places-niokolo-koba-national-park-peul-dindefello-5": 1,
+  "places-niokolo-koba-national-park-bedik-bandafassi-2": 1,
+  "places-niokolo-koba-national-park-peul-dindefello-6": 1
  },
  "netDone": {
   "south-korea": 1,
