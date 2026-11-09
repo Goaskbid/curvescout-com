@@ -20493,7 +20493,17 @@
   "fr-corsica-bavella-and-alta-rocca": 1,
   "legend-corsica-west-coast-d81": 1,
   "legend-corsica-bavella-route": 1,
-  "core-calanques-de-piana-and-porto-gulf": 1
+  "core-calanques-de-piana-and-porto-gulf": 1,
+  "green-mountain-byway": 1,
+  "legend-green-mountain-byway": 1,
+  "smugglers-notch-road": 1,
+  "core-vermont-route-100-central": 1,
+  "core-vermont-route-100-north": 1,
+  "core-smugglers-notch-to-champlain-islands": 1,
+  "core-mad-river-and-granville-gulf": 1,
+  "core-lake-champlain-islands-byway": 1,
+  "core-northeast-kingdom-byway": 1,
+  "core-crossroad-of-vermont": 1
  },
  "failed": {
   "romania": [
@@ -41221,7 +41231,17 @@
   "fr-corsica-bavella-and-alta-rocca": 1,
   "legend-corsica-west-coast-d81": 1,
   "legend-corsica-bavella-route": 1,
-  "core-calanques-de-piana-and-porto-gulf": 1
+  "core-calanques-de-piana-and-porto-gulf": 1,
+  "green-mountain-byway": 1,
+  "legend-green-mountain-byway": 1,
+  "smugglers-notch-road": 1,
+  "core-vermont-route-100-central": 1,
+  "core-vermont-route-100-north": 1,
+  "core-smugglers-notch-to-champlain-islands": 1,
+  "core-mad-river-and-granville-gulf": 1,
+  "core-lake-champlain-islands-byway": 1,
+  "core-northeast-kingdom-byway": 1,
+  "core-crossroad-of-vermont": 1
  },
  "netDone": {
   "south-korea": 1,
