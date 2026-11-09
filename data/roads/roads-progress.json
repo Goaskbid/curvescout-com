@@ -19739,7 +19739,31 @@
   "legend-norwegian-scenic-route-andoya": 1,
   "legend-norwegian-scenic-route-havoysund": 1,
   "legend-norwegian-scenic-route-senja": 1,
-  "legend-norwegian-scenic-route-varanger": 1
+  "legend-norwegian-scenic-route-varanger": 1,
+  "places-the-central-marshes-ur-archaeological-city": 1,
+  "places-the-west-hammar-marshes-the-east-hammar-marshes": 1,
+  "places-the-east-hammar-marshes-ur-archaeological-city": 1,
+  "places-tell-eridu-archaeological-site-the-west-hammar-marshes": 1,
+  "places-the-ahwar-of-southern-iraq-refuge-of-biod-the-east-hammar-marshes": 1,
+  "places-the-central-marshes-ur-archaeological-city-2": 1,
+  "places-the-central-marshes-the-west-hammar-marshes": 1,
+  "places-the-iraqi-side-of-huwaizah-marshes-the-east-hammar-marshes": 1,
+  "places-ur-archaeological-city-the-central-marshes": 1,
+  "places-the-west-hammar-marshes-the-east-hammar-marshes-2": 1,
+  "places-the-east-hammar-marshes-ur-archaeological-city-2": 1,
+  "places-the-east-hammar-marshes-the-ahwar-of-southern-iraq-refuge-of-biod": 1,
+  "places-tell-eridu-archaeological-site-the-west-hammar-marshes-2": 1,
+  "places-the-ahwar-of-southern-iraq-refuge-of-biod-the-east-hammar-marshes-2": 1,
+  "places-the-central-marshes-ur-archaeological-city-3": 1,
+  "places-the-central-marshes-the-ahwar-of-southern-iraq-refuge-of-biod": 1,
+  "places-the-iraqi-side-of-huwaizah-marshes-the-east-hammar-marshes-2": 1,
+  "places-ur-archaeological-city-the-central-marshes-2": 1,
+  "places-ur-archaeological-city-the-east-hammar-marshes": 1,
+  "places-the-west-hammar-marshes-the-east-hammar-marshes-3": 1,
+  "places-the-west-hammar-marshes-uruk-archaeological-city": 1,
+  "places-the-east-hammar-marshes-ur-archaeological-city-3": 1,
+  "places-the-east-hammar-marshes-the-ahwar-of-southern-iraq-refuge-of-biod-2": 1,
+  "places-tell-eridu-archaeological-site-the-west-hammar-marshes-3": 1
  },
  "failed": {
   "romania": [
@@ -21117,6 +21141,12 @@
   ],
   "nord-norge": [
    "road-lofoten-norwegian-scenic-route-arc: length 126 km vs 284 km"
+  ],
+  "iraq": [
+   "places-the-ahwar-of-southern-iraq-refuge-of-biod-the-east-hammar-marshes: ends do not match",
+   "places-the-iraqi-side-of-huwaizah-marshes-the-east-hammar-marshes: ends do not match",
+   "places-the-ahwar-of-southern-iraq-refuge-of-biod-the-east-hammar-marshes-2: ends do not match",
+   "places-the-iraqi-side-of-huwaizah-marshes-the-east-hammar-marshes-2: ends do not match"
   ]
  },
  "tooBig": [
@@ -39568,7 +39598,31 @@
   "legend-norwegian-scenic-route-andoya": 1,
   "legend-norwegian-scenic-route-havoysund": 1,
   "legend-norwegian-scenic-route-senja": 1,
-  "legend-norwegian-scenic-route-varanger": 1
+  "legend-norwegian-scenic-route-varanger": 1,
+  "places-the-central-marshes-ur-archaeological-city": 1,
+  "places-the-west-hammar-marshes-the-east-hammar-marshes": 1,
+  "places-the-east-hammar-marshes-ur-archaeological-city": 1,
+  "places-tell-eridu-archaeological-site-the-west-hammar-marshes": 1,
+  "places-the-ahwar-of-southern-iraq-refuge-of-biod-the-east-hammar-marshes": 1,
+  "places-the-central-marshes-ur-archaeological-city-2": 1,
+  "places-the-central-marshes-the-west-hammar-marshes": 1,
+  "places-the-iraqi-side-of-huwaizah-marshes-the-east-hammar-marshes": 1,
+  "places-ur-archaeological-city-the-central-marshes": 1,
+  "places-the-west-hammar-marshes-the-east-hammar-marshes-2": 1,
+  "places-the-east-hammar-marshes-ur-archaeological-city-2": 1,
+  "places-the-east-hammar-marshes-the-ahwar-of-southern-iraq-refuge-of-biod": 1,
+  "places-tell-eridu-archaeological-site-the-west-hammar-marshes-2": 1,
+  "places-the-ahwar-of-southern-iraq-refuge-of-biod-the-east-hammar-marshes-2": 1,
+  "places-the-central-marshes-ur-archaeological-city-3": 1,
+  "places-the-central-marshes-the-ahwar-of-southern-iraq-refuge-of-biod": 1,
+  "places-the-iraqi-side-of-huwaizah-marshes-the-east-hammar-marshes-2": 1,
+  "places-ur-archaeological-city-the-central-marshes-2": 1,
+  "places-ur-archaeological-city-the-east-hammar-marshes": 1,
+  "places-the-west-hammar-marshes-the-east-hammar-marshes-3": 1,
+  "places-the-west-hammar-marshes-uruk-archaeological-city": 1,
+  "places-the-east-hammar-marshes-ur-archaeological-city-3": 1,
+  "places-the-east-hammar-marshes-the-ahwar-of-southern-iraq-refuge-of-biod-2": 1,
+  "places-tell-eridu-archaeological-site-the-west-hammar-marshes-3": 1
  },
  "netDone": {
   "south-korea": 1,
