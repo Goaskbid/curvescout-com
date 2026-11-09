@@ -20451,7 +20451,18 @@
   "new-york-hudson-valley-rides-finger-lakes-overnight-part-2": 1,
   "new-york-hudson-valley-rides-jersey-highlands-and-greenwood-lake-part-1": 1,
   "new-york-hudson-valley-rides-hawk-s-nest-and-upper-delaware-part-2": 1,
-  "legend-delaware-river-scenic-byway": 1
+  "legend-delaware-river-scenic-byway": 1,
+  "acadia-all-american-road": 1,
+  "legend-acadia-all-american-road": 1,
+  "us-katahdin-woods-and-waters-loop": 1,
+  "core-acadia-park-loop-and-cadillac-mountain": 1,
+  "core-schoodic-peninsula-ocean-edge": 1,
+  "core-rangeley-lakes-and-height-of-land": 1,
+  "core-moosehead-lake-and-jackman-road": 1,
+  "core-katahdin-woods-and-millinocket": 1,
+  "core-bold-coast-to-quoddy-head": 1,
+  "core-penobscot-bay-harbors": 1,
+  "core-midcoast-lighthouses-and-pemaquid": 1
  },
  "failed": {
   "romania": [
@@ -21973,7 +21984,8 @@
   "us/florida",
   "quebec",
   "us/texas",
-  "tanzania"
+  "tanzania",
+  "ontario"
  ],
  "sizes": {
   "europe": 35389153230,
@@ -41136,7 +41148,18 @@
   "new-york-hudson-valley-rides-finger-lakes-overnight-part-2": 1,
   "new-york-hudson-valley-rides-jersey-highlands-and-greenwood-lake-part-1": 1,
   "new-york-hudson-valley-rides-hawk-s-nest-and-upper-delaware-part-2": 1,
-  "legend-delaware-river-scenic-byway": 1
+  "legend-delaware-river-scenic-byway": 1,
+  "acadia-all-american-road": 1,
+  "legend-acadia-all-american-road": 1,
+  "us-katahdin-woods-and-waters-loop": 1,
+  "core-acadia-park-loop-and-cadillac-mountain": 1,
+  "core-schoodic-peninsula-ocean-edge": 1,
+  "core-rangeley-lakes-and-height-of-land": 1,
+  "core-moosehead-lake-and-jackman-road": 1,
+  "core-katahdin-woods-and-millinocket": 1,
+  "core-bold-coast-to-quoddy-head": 1,
+  "core-penobscot-bay-harbors": 1,
+  "core-midcoast-lighthouses-and-pemaquid": 1
  },
  "netDone": {
   "south-korea": 1,
