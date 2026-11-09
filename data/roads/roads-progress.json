@@ -20085,7 +20085,24 @@
   "places-iwami-ginzan-kaido-yunotsu-okidomarido-itsukushima-shinto-shrine": 1,
   "city-hiroshima-dayout": 1,
   "city-hiroshima-longday": 1,
-  "jp-tsunoshima-and-akiyoshidai-loop": 1
+  "jp-tsunoshima-and-akiyoshidai-loop": 1,
+  "new-york-hawk-s-nest-and-delaware-river-cut": 1,
+  "new-york-catskills-route-23a-and-kaaterskill-high-road": 1,
+  "catskills-mountain-sweep": 1,
+  "lakes-to-locks-passage": 1,
+  "lakes-to-locks-passage-waterford-new-york-ticonderoga": 1,
+  "seaway-trail-niagara-falls-rochester-new-york": 1,
+  "seaway-trail-rochester-new-york-cape-vincent": 1,
+  "seaway-trail-buffalo-oswego": 1,
+  "catskills-mountain-sweep-part-1": 1,
+  "catskills-mountain-sweep-part-2": 1,
+  "new-york-hudson-valley-rides-shawangunk-ridge-and-minnewaska-part-1": 1,
+  "new-york-hudson-valley-rides-vermont-green-mountains-weekend-part-2": 1,
+  "new-york-hudson-valley-rides-catskills-high-peaks-sweep-part-3": 1,
+  "legend-lakes-to-locks-passage": 1,
+  "us-taconic-state-parkway": 1,
+  "us-shawangunk-ridge-loop": 1,
+  "us-great-lakes-seaway-trail-east": 1
  },
  "failed": {
   "romania": [
@@ -21548,6 +21565,12 @@
    "places-ensemble-mixte-de-fatu-iva-ensemble-mixte-de-fatu-uku-3: length 0 km vs 215 km",
    "places-ensemble-mixte-de-fatu-uku-ensemble-mixte-de-fatu-iva-3: length 0 km vs 215 km",
    "places-ensemble-mixte-de-hiva-oa-tahuata-aire-marine-cotiere-de-ua-huka-2: length 0 km vs 365 km"
+  ],
+  "us/new-york": [
+   "new-york-hawk-s-nest-and-delaware-river-cut: length 92 km vs 236 km",
+   "new-york-catskills-route-23a-and-kaaterskill-high-road: length 121 km vs 401 km",
+   "catskills-mountain-sweep-part-1: length 147 km vs 374 km",
+   "catskills-mountain-sweep-part-2: length 178 km vs 430 km"
   ]
  },
  "tooBig": [
@@ -40347,7 +40370,24 @@
   "places-iwami-ginzan-kaido-yunotsu-okidomarido-itsukushima-shinto-shrine": 1,
   "city-hiroshima-dayout": 1,
   "city-hiroshima-longday": 1,
-  "jp-tsunoshima-and-akiyoshidai-loop": 1
+  "jp-tsunoshima-and-akiyoshidai-loop": 1,
+  "new-york-hawk-s-nest-and-delaware-river-cut": 1,
+  "new-york-catskills-route-23a-and-kaaterskill-high-road": 1,
+  "catskills-mountain-sweep": 1,
+  "lakes-to-locks-passage": 1,
+  "lakes-to-locks-passage-waterford-new-york-ticonderoga": 1,
+  "seaway-trail-niagara-falls-rochester-new-york": 1,
+  "seaway-trail-rochester-new-york-cape-vincent": 1,
+  "seaway-trail-buffalo-oswego": 1,
+  "catskills-mountain-sweep-part-1": 1,
+  "catskills-mountain-sweep-part-2": 1,
+  "new-york-hudson-valley-rides-shawangunk-ridge-and-minnewaska-part-1": 1,
+  "new-york-hudson-valley-rides-vermont-green-mountains-weekend-part-2": 1,
+  "new-york-hudson-valley-rides-catskills-high-peaks-sweep-part-3": 1,
+  "legend-lakes-to-locks-passage": 1,
+  "us-taconic-state-parkway": 1,
+  "us-shawangunk-ridge-loop": 1,
+  "us-great-lakes-seaway-trail-east": 1
  },
  "netDone": {
   "south-korea": 1,
