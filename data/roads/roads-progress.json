@@ -20639,7 +20639,13 @@
   "kluane-scenic-drive": 1,
   "kluane-scenic-drive-haines-junction-beaver-creek": 1,
   "kluane-scenic-drive-whitehorse-kluane-lake": 1,
-  "road-dempster-highway-part-1": 1
+  "road-dempster-highway-part-1": 1,
+  "sikkim-silk-route": 1,
+  "tawang-road-via-sela-pass": 1,
+  "legend-sikkim-silk-route": 1,
+  "legend-tawang-road-via-sela-pass": 1,
+  "core-meghalaya-waterfalls-and-living-bridges": 1,
+  "core-sikkim-old-silk-route": 1
  },
  "failed": {
   "romania": [
@@ -22145,6 +22151,9 @@
   ],
   "us/virginia": [
    "shenandoah-skyline-drive-ridge-day: length 142 km vs 317 km"
+  ],
+  "north-eastern-zone": [
+   "legend-sikkim-silk-route: length 154 km vs 50 km"
   ]
  },
  "tooBig": [
@@ -41536,7 +41545,13 @@
   "kluane-scenic-drive": 1,
   "kluane-scenic-drive-haines-junction-beaver-creek": 1,
   "kluane-scenic-drive-whitehorse-kluane-lake": 1,
-  "road-dempster-highway-part-1": 1
+  "road-dempster-highway-part-1": 1,
+  "sikkim-silk-route": 1,
+  "tawang-road-via-sela-pass": 1,
+  "legend-sikkim-silk-route": 1,
+  "legend-tawang-road-via-sela-pass": 1,
+  "core-meghalaya-waterfalls-and-living-bridges": 1,
+  "core-sikkim-old-silk-route": 1
  },
  "netDone": {
   "south-korea": 1,
