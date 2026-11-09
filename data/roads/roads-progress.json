@@ -20614,7 +20614,14 @@
   "city-addis-ababa-dayout": 1,
   "city-addis-ababa-longday": 1,
   "legend-ethiopia-simien-mountains-road": 1,
-  "legend-ethiopia-bale-mountains-road": 1
+  "legend-ethiopia-bale-mountains-road": 1,
+  "lahemaa-coastal-road": 1,
+  "saaremaa-island-circuit": 1,
+  "city-haapsalu-dayout": 1,
+  "city-viljandi-dayout": 1,
+  "city-viljandi-longday": 1,
+  "legend-lahemaa-coastal-road": 1,
+  "legend-saaremaa-island-circuit": 1
  },
  "failed": {
   "romania": [
@@ -41476,7 +41483,14 @@
   "city-addis-ababa-dayout": 1,
   "city-addis-ababa-longday": 1,
   "legend-ethiopia-simien-mountains-road": 1,
-  "legend-ethiopia-bale-mountains-road": 1
+  "legend-ethiopia-bale-mountains-road": 1,
+  "lahemaa-coastal-road": 1,
+  "saaremaa-island-circuit": 1,
+  "city-haapsalu-dayout": 1,
+  "city-viljandi-dayout": 1,
+  "city-viljandi-longday": 1,
+  "legend-lahemaa-coastal-road": 1,
+  "legend-saaremaa-island-circuit": 1
  },
  "netDone": {
   "south-korea": 1,
