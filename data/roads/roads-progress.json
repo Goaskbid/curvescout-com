@@ -20503,7 +20503,17 @@
   "core-mad-river-and-granville-gulf": 1,
   "core-lake-champlain-islands-byway": 1,
   "core-northeast-kingdom-byway": 1,
-  "core-crossroad-of-vermont": 1
+  "core-crossroad-of-vermont": 1,
+  "places-gola-north-gola-tiwai-complex": 1,
+  "places-gola-central-gola-tiwai-complex": 1,
+  "places-gola-south-gola-north": 1,
+  "places-gola-north-gola-tiwai-complex-2": 1,
+  "places-gola-central-gola-tiwai-complex-2": 1,
+  "places-gola-tiwai-complex-gola-north": 1,
+  "places-gola-south-gola-north-2": 1,
+  "places-tiwai-island-gola-north": 1,
+  "places-gola-north-gola-south": 1,
+  "places-gola-central-gola-tiwai-complex-3": 1
  },
  "failed": {
   "romania": [
@@ -41241,7 +41251,17 @@
   "core-mad-river-and-granville-gulf": 1,
   "core-lake-champlain-islands-byway": 1,
   "core-northeast-kingdom-byway": 1,
-  "core-crossroad-of-vermont": 1
+  "core-crossroad-of-vermont": 1,
+  "places-gola-north-gola-tiwai-complex": 1,
+  "places-gola-central-gola-tiwai-complex": 1,
+  "places-gola-south-gola-north": 1,
+  "places-gola-north-gola-tiwai-complex-2": 1,
+  "places-gola-central-gola-tiwai-complex-2": 1,
+  "places-gola-tiwai-complex-gola-north": 1,
+  "places-gola-south-gola-north-2": 1,
+  "places-tiwai-island-gola-north": 1,
+  "places-gola-north-gola-south": 1,
+  "places-gola-central-gola-tiwai-complex-3": 1
  },
  "netDone": {
   "south-korea": 1,
