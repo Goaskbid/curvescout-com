@@ -20013,7 +20013,25 @@
   "places-sundarbans-east-sanctuary-sundarbans-west-wildlife-sanctuary-3": 1,
   "places-sundarbans-south-sanctuary-the-sundarbans-2": 1,
   "places-sundarbans-west-wildlife-sanctuary-sundarbans-east-sanctuary-2": 1,
-  "places-sundarbans-west-wildlife-sanctuary-historic-mosque-city-of-bagerhat": 1
+  "places-sundarbans-west-wildlife-sanctuary-historic-mosque-city-of-bagerhat": 1,
+  "cabot-trail-highlands-loop": 1,
+  "cabot-trail-baddeck-pleasant-bay": 1,
+  "cabot-trail-baddeck-cape-north": 1,
+  "cabot-trail": 1,
+  "cabot-trail-highlands-loop-part-1": 1,
+  "cabot-trail-highlands-loop-part-2": 1,
+  "cabot-trail-highlands-loop-part-3": 1,
+  "places-old-town-lunenburg-joggins-fossil-cliffs": 1,
+  "places-old-town-lunenburg-joggins-fossil-cliffs-2": 1,
+  "city-halifax-dayout": 1,
+  "city-halifax-longday": 1,
+  "places-joggins-fossil-cliffs-old-town-lunenburg": 1,
+  "places-joggins-fossil-cliffs-old-town-lunenburg-2": 1,
+  "places-old-town-lunenburg-joggins-fossil-cliffs-3": 1,
+  "places-old-town-lunenburg-joggins-fossil-cliffs-4": 1,
+  "ca-lighthouse-route": 1,
+  "ca-evangeline-trail": 1,
+  "legend-cabot-trail": 1
  },
  "failed": {
   "romania": [
@@ -21473,7 +21491,8 @@
   "sea",
   "south-america",
   "asia",
-  "southern-zone"
+  "southern-zone",
+  "central-fed-district"
  ],
  "sizes": {
   "europe": 35389153230,
@@ -40184,7 +40203,25 @@
   "places-sundarbans-east-sanctuary-sundarbans-west-wildlife-sanctuary-3": 1,
   "places-sundarbans-south-sanctuary-the-sundarbans-2": 1,
   "places-sundarbans-west-wildlife-sanctuary-sundarbans-east-sanctuary-2": 1,
-  "places-sundarbans-west-wildlife-sanctuary-historic-mosque-city-of-bagerhat": 1
+  "places-sundarbans-west-wildlife-sanctuary-historic-mosque-city-of-bagerhat": 1,
+  "cabot-trail-highlands-loop": 1,
+  "cabot-trail-baddeck-pleasant-bay": 1,
+  "cabot-trail-baddeck-cape-north": 1,
+  "cabot-trail": 1,
+  "cabot-trail-highlands-loop-part-1": 1,
+  "cabot-trail-highlands-loop-part-2": 1,
+  "cabot-trail-highlands-loop-part-3": 1,
+  "places-old-town-lunenburg-joggins-fossil-cliffs": 1,
+  "places-old-town-lunenburg-joggins-fossil-cliffs-2": 1,
+  "city-halifax-dayout": 1,
+  "city-halifax-longday": 1,
+  "places-joggins-fossil-cliffs-old-town-lunenburg": 1,
+  "places-joggins-fossil-cliffs-old-town-lunenburg-2": 1,
+  "places-old-town-lunenburg-joggins-fossil-cliffs-3": 1,
+  "places-old-town-lunenburg-joggins-fossil-cliffs-4": 1,
+  "ca-lighthouse-route": 1,
+  "ca-evangeline-trail": 1,
+  "legend-cabot-trail": 1
  },
  "netDone": {
   "south-korea": 1,
