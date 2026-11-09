@@ -21878,10 +21878,10 @@
   ],
   "schleswig-holstein": [
    "kiel-eckernfoerde-damp-coastline: length 52 km vs 171 km",
-   "kiel-rendsburg-schleswig-viking-roads: length 85 km vs 195 km",
    "kiel-danish-wahld-gettorf-evening: length 31 km vs 110 km",
    "kiel-boknis-schlei-north-loop: length 70 km vs 216 km",
-   "kiel-malente-bungsberg-eutin-hills: length 59 km vs 189 km"
+   "kiel-malente-bungsberg-eutin-hills: length 59 km vs 189 km",
+   "kiel-rendsburg-schleswig-viking-roads: length 85 km vs 195 km"
   ],
   "niedersachsen": [
    "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of: ends do not match",
@@ -41590,7 +41590,12 @@
   "x-ls-katse-dam-road": 1,
   "x-ls-thaba-tseka-to-semonkong": 1,
   "x-ls-maletsunyane-falls-road": 1,
-  "x-ls-sehlabathebe-road": 1
+  "x-ls-sehlabathebe-road": 1,
+  "kiel-eckernfoerde-damp-coastline": 1,
+  "kiel-rendsburg-schleswig-viking-roads": 1,
+  "kiel-boknis-schlei-north-loop": 1,
+  "kiel-malente-bungsberg-eutin-hills": 1,
+  "kiel-danish-wahld-gettorf-evening": 1
  },
  "netDone": {
   "south-korea": 1,
