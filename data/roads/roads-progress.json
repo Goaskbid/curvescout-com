@@ -20703,7 +20703,11 @@
   "places-herwen-de-bijland-elst-grote-kerk-2": 1,
   "places-fort-pannerden-tiel-inundation-canal": 1,
   "places-nijmegen-valkhof-area-hunnerpark-herwen-de-bijland": 1,
-  "places-nijmegen-valkhof-area-valkhofpark-herwen-de-bijland": 1
+  "places-nijmegen-valkhof-area-valkhofpark-herwen-de-bijland": 1,
+  "ruta-de-la-plata-salamanca-leon": 1,
+  "city-salamanca-dayout": 1,
+  "city-salamanca-longday": 1,
+  "es-sierra-de-gredos-loop": 1
  },
  "failed": {
   "romania": [
@@ -22219,6 +22223,9 @@
   "bhutan": [
    "legend-bhutan-chele-la-road: length 67 km vs 16 km",
    "legend-bhutan-east-west-highway: length 605 km vs 221 km"
+  ],
+  "castilla-y-leon": [
+   "ruta-de-la-plata-salamanca-leon: length 208 km vs 464 km"
   ]
  },
  "tooBig": [
@@ -41684,7 +41691,11 @@
   "places-herwen-de-bijland-elst-grote-kerk-2": 1,
   "places-fort-pannerden-tiel-inundation-canal": 1,
   "places-nijmegen-valkhof-area-hunnerpark-herwen-de-bijland": 1,
-  "places-nijmegen-valkhof-area-valkhofpark-herwen-de-bijland": 1
+  "places-nijmegen-valkhof-area-valkhofpark-herwen-de-bijland": 1,
+  "ruta-de-la-plata-salamanca-leon": 1,
+  "city-salamanca-dayout": 1,
+  "city-salamanca-longday": 1,
+  "es-sierra-de-gredos-loop": 1
  },
  "netDone": {
   "south-korea": 1,
