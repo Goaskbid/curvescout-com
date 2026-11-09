@@ -19916,7 +19916,27 @@
   "places-pyramid-fields-from-giza-to-dahshur-site-of-memphis": 1,
   "places-nubian-monuments-from-abu-simbel-to-philae-wadi-sebua-3": 1,
   "places-abu-simbel-wadi-sebua-3": 1,
-  "places-wadi-sebua-nubian-monuments-from-abu-simbel-to-philae-3": 1
+  "places-wadi-sebua-nubian-monuments-from-abu-simbel-to-philae-3": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong": 1,
+  "places-mosquee-de-kouto-mosquee-de-tengrela": 1,
+  "places-mosquee-de-nambira-ou-namboura-missiri-kor-sudanese-style-mosques-in-northern-cote-d": 1,
+  "places-grande-mosquee-de-kong-comoe-national-park": 1,
+  "places-petite-mosquee-de-kong-comoe-national-park": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong-2": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong-3": 1,
+  "places-sudanese-style-mosques-in-northern-cote-d-mosquee-de-nambira-ou-namboura-missiri-kor": 1,
+  "places-mosquee-de-tengrela-mosquee-de-nambira-ou-namboura-missiri-kor": 1,
+  "places-mosquee-de-kouto-mosquee-de-tengrela-2": 1,
+  "places-mosquee-de-kaouara-mosquee-de-kouto": 1,
+  "places-mosquee-de-nambira-ou-namboura-missiri-kor-sudanese-style-mosques-in-northern-cote-d-2": 1,
+  "places-grande-mosquee-de-kong-comoe-national-park-2": 1,
+  "places-petite-mosquee-de-kong-comoe-national-park-2": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong-4": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong-5": 1,
+  "places-mosquee-de-kouto-mosquee-de-kaouara": 1,
+  "places-mosquee-de-kaouara-mosquee-de-kouto-2": 1,
+  "places-grande-mosquee-de-kong-comoe-national-park-3": 1,
+  "places-petite-mosquee-de-kong-comoe-national-park-3": 1
  },
  "failed": {
   "romania": [
@@ -21329,6 +21349,19 @@
    "places-sissarluttoq-kujataa-greenland-norse-and-inuit-farming-2: http 400",
    "places-qaqortukulooq-igaliku-3: http 400",
    "places-tasikuluulik-kujataa-greenland-norse-and-inuit-farming-2: http 400"
+  ],
+  "ivory-coast": [
+   "places-comoe-national-park-grande-mosquee-de-kong: length 865 km vs 262 km",
+   "places-petite-mosquee-de-kong-comoe-national-park: length 940 km vs 262 km",
+   "places-comoe-national-park-grande-mosquee-de-kong-3: length 865 km vs 262 km",
+   "places-grande-mosquee-de-kong-comoe-national-park: length 940 km vs 262 km",
+   "places-comoe-national-park-grande-mosquee-de-kong-2: length 1423 km vs 329 km",
+   "places-grande-mosquee-de-kong-comoe-national-park-2: length 940 km vs 262 km",
+   "places-grande-mosquee-de-kong-comoe-national-park-3: length 940 km vs 262 km",
+   "places-petite-mosquee-de-kong-comoe-national-park-2: length 940 km vs 262 km",
+   "places-comoe-national-park-grande-mosquee-de-kong-5: length 865 km vs 262 km",
+   "places-comoe-national-park-grande-mosquee-de-kong-4: length 1423 km vs 329 km",
+   "places-petite-mosquee-de-kong-comoe-national-park-3: length 940 km vs 262 km"
   ]
  },
  "tooBig": [
@@ -39958,7 +39991,27 @@
   "places-pyramid-fields-from-giza-to-dahshur-site-of-memphis": 1,
   "places-nubian-monuments-from-abu-simbel-to-philae-wadi-sebua-3": 1,
   "places-abu-simbel-wadi-sebua-3": 1,
-  "places-wadi-sebua-nubian-monuments-from-abu-simbel-to-philae-3": 1
+  "places-wadi-sebua-nubian-monuments-from-abu-simbel-to-philae-3": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong": 1,
+  "places-mosquee-de-kouto-mosquee-de-tengrela": 1,
+  "places-mosquee-de-nambira-ou-namboura-missiri-kor-sudanese-style-mosques-in-northern-cote-d": 1,
+  "places-grande-mosquee-de-kong-comoe-national-park": 1,
+  "places-petite-mosquee-de-kong-comoe-national-park": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong-2": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong-3": 1,
+  "places-sudanese-style-mosques-in-northern-cote-d-mosquee-de-nambira-ou-namboura-missiri-kor": 1,
+  "places-mosquee-de-tengrela-mosquee-de-nambira-ou-namboura-missiri-kor": 1,
+  "places-mosquee-de-kouto-mosquee-de-tengrela-2": 1,
+  "places-mosquee-de-kaouara-mosquee-de-kouto": 1,
+  "places-mosquee-de-nambira-ou-namboura-missiri-kor-sudanese-style-mosques-in-northern-cote-d-2": 1,
+  "places-grande-mosquee-de-kong-comoe-national-park-2": 1,
+  "places-petite-mosquee-de-kong-comoe-national-park-2": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong-4": 1,
+  "places-comoe-national-park-grande-mosquee-de-kong-5": 1,
+  "places-mosquee-de-kouto-mosquee-de-kaouara": 1,
+  "places-mosquee-de-kaouara-mosquee-de-kouto-2": 1,
+  "places-grande-mosquee-de-kong-comoe-national-park-3": 1,
+  "places-petite-mosquee-de-kong-comoe-national-park-3": 1
  },
  "netDone": {
   "south-korea": 1,
