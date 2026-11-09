@@ -20657,7 +20657,13 @@
   "lt-nemunas-loops-and-kaunas-route": 1,
   "lt-dzukija-and-trakai-forest-loop": 1,
   "legend-curonian-spit-road": 1,
-  "legend-aukstaitija-lakes-route": 1
+  "legend-aukstaitija-lakes-route": 1,
+  "x-ls-sani-pass-lesotho-descent": 1,
+  "x-ls-moteng-and-mahlasela-passes": 1,
+  "x-ls-katse-dam-road": 1,
+  "x-ls-thaba-tseka-to-semonkong": 1,
+  "x-ls-maletsunyane-falls-road": 1,
+  "x-ls-sehlabathebe-road": 1
  },
  "failed": {
   "romania": [
@@ -22166,6 +22172,9 @@
   ],
   "north-eastern-zone": [
    "legend-sikkim-silk-route: length 154 km vs 50 km"
+  ],
+  "lesotho": [
+   "x-ls-thaba-tseka-to-semonkong: length 208 km vs 64 km"
   ]
  },
  "tooBig": [
@@ -41575,7 +41584,13 @@
   "lt-nemunas-loops-and-kaunas-route": 1,
   "lt-dzukija-and-trakai-forest-loop": 1,
   "legend-curonian-spit-road": 1,
-  "legend-aukstaitija-lakes-route": 1
+  "legend-aukstaitija-lakes-route": 1,
+  "x-ls-sani-pass-lesotho-descent": 1,
+  "x-ls-moteng-and-mahlasela-passes": 1,
+  "x-ls-katse-dam-road": 1,
+  "x-ls-thaba-tseka-to-semonkong": 1,
+  "x-ls-maletsunyane-falls-road": 1,
+  "x-ls-sehlabathebe-road": 1
  },
  "netDone": {
   "south-korea": 1,
