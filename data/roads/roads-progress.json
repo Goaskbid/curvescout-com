@@ -20668,7 +20668,12 @@
   "bhutan-east-west-highway-paro-trongsa": 1,
   "bhutan-east-west-highway-trongsa-trashigang": 1,
   "legend-bhutan-east-west-highway": 1,
-  "legend-bhutan-chele-la-road": 1
+  "legend-bhutan-chele-la-road": 1,
+  "luxembourg-mullerthal-route": 1,
+  "lu-mullerthal-little-switzerland-loop": 1,
+  "lu-luxembourg-ardennes-loop": 1,
+  "lu-moselle-luxembourg-route": 1,
+  "legend-luxembourg-mullerthal-route": 1
  },
  "failed": {
   "romania": [
@@ -41609,7 +41614,12 @@
   "bhutan-east-west-highway-paro-trongsa": 1,
   "bhutan-east-west-highway-trongsa-trashigang": 1,
   "legend-bhutan-east-west-highway": 1,
-  "legend-bhutan-chele-la-road": 1
+  "legend-bhutan-chele-la-road": 1,
+  "luxembourg-mullerthal-route": 1,
+  "lu-mullerthal-little-switzerland-loop": 1,
+  "lu-luxembourg-ardennes-loop": 1,
+  "lu-moselle-luxembourg-route": 1,
+  "legend-luxembourg-mullerthal-route": 1
  },
  "netDone": {
   "south-korea": 1,
