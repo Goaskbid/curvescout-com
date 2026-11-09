@@ -20378,7 +20378,20 @@
   "places-colline-de-vezelay-the-climats": 1,
   "fr-morvan-lakes-and-forests": 1,
   "fr-burgundy-wine-road": 1,
-  "legend-burgundy-grand-cru-route": 1
+  "legend-burgundy-grand-cru-route": 1,
+  "places-armenian-monastic-ensembles-of-iran-the-baran-village": 1,
+  "places-chupan-chapel-the-baran-village": 1,
+  "places-darresham-chapel-the-baran-village": 1,
+  "places-the-main-church-the-baran-village": 1,
+  "places-khoy-the-baran-village": 1,
+  "places-armenian-monastic-ensembles-of-iran-khoy": 1,
+  "places-darresham-chapel-khoy": 1,
+  "places-the-main-church-khoy": 1,
+  "places-khoy-darresham-chapel": 1,
+  "places-armenian-monastic-ensembles-of-iran-khoy-2": 1,
+  "places-darresham-chapel-khoy-2": 1,
+  "places-the-main-church-khoy-2": 1,
+  "places-khoy-darresham-chapel-2": 1
  },
  "failed": {
   "romania": [
@@ -21892,7 +21905,9 @@
   "india",
   "russia",
   "us/florida",
-  "quebec"
+  "quebec",
+  "us/texas",
+  "tanzania"
  ],
  "sizes": {
   "europe": 35389153230,
@@ -40982,7 +40997,20 @@
   "places-colline-de-vezelay-the-climats": 1,
   "fr-morvan-lakes-and-forests": 1,
   "fr-burgundy-wine-road": 1,
-  "legend-burgundy-grand-cru-route": 1
+  "legend-burgundy-grand-cru-route": 1,
+  "places-armenian-monastic-ensembles-of-iran-the-baran-village": 1,
+  "places-chupan-chapel-the-baran-village": 1,
+  "places-darresham-chapel-the-baran-village": 1,
+  "places-the-main-church-the-baran-village": 1,
+  "places-khoy-the-baran-village": 1,
+  "places-armenian-monastic-ensembles-of-iran-khoy": 1,
+  "places-darresham-chapel-khoy": 1,
+  "places-the-main-church-khoy": 1,
+  "places-khoy-darresham-chapel": 1,
+  "places-armenian-monastic-ensembles-of-iran-khoy-2": 1,
+  "places-darresham-chapel-khoy-2": 1,
+  "places-the-main-church-khoy-2": 1,
+  "places-khoy-darresham-chapel-2": 1
  },
  "netDone": {
   "south-korea": 1,
