@@ -19714,7 +19714,32 @@
   "places-fort-near-heemstede-dutch-water-defence-lines-2": 1,
   "places-coastal-fort-near-ijmuiden-seventeenth-century-canal-ring-area-of-ams-4": 1,
   "places-fort-werk-iv-seventeenth-century-canal-ring-area-of-ams-2": 1,
-  "places-fort-along-the-pampus-fort-near-heemstede-2": 1
+  "places-fort-along-the-pampus-fort-near-heemstede-2": 1,
+  "road-lofoten-norwegian-scenic-route": 1,
+  "norwegian-scenic-route-andoya": 1,
+  "norwegian-scenic-route-havoysund": 1,
+  "norwegian-scenic-route-helgelandskysten": 1,
+  "norwegian-scenic-route-helgelandskysten-holm-sandnessjoen": 1,
+  "norwegian-scenic-route-helgelandskysten-sandnessjoen-glomfjord": 1,
+  "norwegian-scenic-route-helgelandskysten-holm-jektvik": 1,
+  "norwegian-scenic-route-helgelandskysten-jektvik-godoysund-near-bodo": 1,
+  "norwegian-scenic-route-lofoten": 1,
+  "norwegian-scenic-route-senja": 1,
+  "norwegian-scenic-route-varanger": 1,
+  "road-lofoten-norwegian-scenic-route-arc": 1,
+  "places-fuglenaes-fuglenes-lille-reipas-raipas": 1,
+  "places-transferdalen-lohdizhjokki-luvdiidcohkka": 1,
+  "places-fuglenaes-fuglenes-lille-reipas-raipas-2": 1,
+  "city-tromso-longday": 1,
+  "places-rock-art-of-alta-lohdizhjokki-luvdiidcohkka": 1,
+  "places-lohdizhjokki-luvdiidcohkka-fuglenaes-fuglenes": 1,
+  "places-hjemmeluft-lohdizhjokki-luvdiidcohkka": 1,
+  "places-ka-fjord-lohdizhjokki-luvdiidcohkka": 1,
+  "places-transferdalen-lohdizhjokki-luvdiidcohkka-2": 1,
+  "legend-norwegian-scenic-route-andoya": 1,
+  "legend-norwegian-scenic-route-havoysund": 1,
+  "legend-norwegian-scenic-route-senja": 1,
+  "legend-norwegian-scenic-route-varanger": 1
  },
  "failed": {
   "romania": [
@@ -21089,6 +21114,9 @@
    "places-besh-aral-state-nature-reserve-shandalas-besh-aral-state-nature-reserve-main-part: ends do not match",
    "places-besh-aral-state-nature-reserve-shandalas-sary-chelek-state-biosphere-nature-reserve-3: length 671 km vs 214 km",
    "places-besh-aral-state-nature-reserve-shandalas-besh-aral-state-nature-reserve-main-part-2: ends do not match"
+  ],
+  "nord-norge": [
+   "road-lofoten-norwegian-scenic-route-arc: length 126 km vs 284 km"
   ]
  },
  "tooBig": [
@@ -39515,7 +39543,32 @@
   "places-fort-near-heemstede-dutch-water-defence-lines-2": 1,
   "places-coastal-fort-near-ijmuiden-seventeenth-century-canal-ring-area-of-ams-4": 1,
   "places-fort-werk-iv-seventeenth-century-canal-ring-area-of-ams-2": 1,
-  "places-fort-along-the-pampus-fort-near-heemstede-2": 1
+  "places-fort-along-the-pampus-fort-near-heemstede-2": 1,
+  "road-lofoten-norwegian-scenic-route": 1,
+  "norwegian-scenic-route-andoya": 1,
+  "norwegian-scenic-route-havoysund": 1,
+  "norwegian-scenic-route-helgelandskysten": 1,
+  "norwegian-scenic-route-helgelandskysten-holm-sandnessjoen": 1,
+  "norwegian-scenic-route-helgelandskysten-sandnessjoen-glomfjord": 1,
+  "norwegian-scenic-route-helgelandskysten-holm-jektvik": 1,
+  "norwegian-scenic-route-helgelandskysten-jektvik-godoysund-near-bodo": 1,
+  "norwegian-scenic-route-lofoten": 1,
+  "norwegian-scenic-route-senja": 1,
+  "norwegian-scenic-route-varanger": 1,
+  "road-lofoten-norwegian-scenic-route-arc": 1,
+  "places-fuglenaes-fuglenes-lille-reipas-raipas": 1,
+  "places-transferdalen-lohdizhjokki-luvdiidcohkka": 1,
+  "places-fuglenaes-fuglenes-lille-reipas-raipas-2": 1,
+  "city-tromso-longday": 1,
+  "places-rock-art-of-alta-lohdizhjokki-luvdiidcohkka": 1,
+  "places-lohdizhjokki-luvdiidcohkka-fuglenaes-fuglenes": 1,
+  "places-hjemmeluft-lohdizhjokki-luvdiidcohkka": 1,
+  "places-ka-fjord-lohdizhjokki-luvdiidcohkka": 1,
+  "places-transferdalen-lohdizhjokki-luvdiidcohkka-2": 1,
+  "legend-norwegian-scenic-route-andoya": 1,
+  "legend-norwegian-scenic-route-havoysund": 1,
+  "legend-norwegian-scenic-route-senja": 1,
+  "legend-norwegian-scenic-route-varanger": 1
  },
  "netDone": {
   "south-korea": 1,
