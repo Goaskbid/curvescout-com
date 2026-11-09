@@ -20136,7 +20136,24 @@
   "rs-golija-and-studenica-route": 1,
   "rs-fruska-gora-loop": 1,
   "rs-ovcar-kablar-gorge": 1,
-  "legend-serbia-danube-iron-gates-route": 1
+  "legend-serbia-danube-iron-gates-route": 1,
+  "madagascar-rn7": 1,
+  "madagascar-rn7-ranomafana-isalo": 1,
+  "madagascar-rn7-antananarivo-ranomafana": 1,
+  "madagascar-rn7-ranomafana-toliara": 1,
+  "places-rainforests-of-the-atsinanana-parc-national-de-masoala": 1,
+  "places-parc-national-de-marojejy-parc-national-de-masoala": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-5": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-6": 1,
+  "places-rainforests-of-the-atsinanana-parc-national-de-masoala-2": 1,
+  "places-parc-national-de-marojejy-parc-national-de-masoala-2": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-2": 1,
+  "places-parc-national-de-masoala-rainforests-of-the-atsinanana": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-3": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-4": 1,
+  "places-parc-national-de-masoala-rainforests-of-the-atsinanana-2": 1,
+  "legend-madagascar-avenue-of-the-baobabs-route": 1
  },
  "failed": {
   "romania": [
@@ -21611,6 +21628,18 @@
    "historic-route-66-holbrook-flagstaff: length 146 km vs 357 km",
    "historic-route-66-flagstaff-kingman: length 241 km vs 559 km",
    "legend-apache-trail: length 214 km vs 49 km"
+  ],
+  "madagascar": [
+   "places-parc-national-de-masoala-parc-national-de-masoala: ends do not match",
+   "places-parc-national-de-marojejy-parc-national-de-masoala: ends do not match",
+   "places-rainforests-of-the-atsinanana-parc-national-de-masoala: ends do not match",
+   "places-parc-national-de-masoala-parc-national-de-masoala-6: length 639 km vs 262 km",
+   "places-rainforests-of-the-atsinanana-parc-national-de-masoala-2: ends do not match",
+   "places-parc-national-de-marojejy-parc-national-de-masoala-2: ends do not match",
+   "places-parc-national-de-masoala-rainforests-of-the-atsinanana: ends do not match",
+   "places-parc-national-de-masoala-rainforests-of-the-atsinanana-2: ends do not match",
+   "places-parc-national-de-masoala-parc-national-de-masoala-2: length 2913 km vs 246 km",
+   "places-parc-national-de-masoala-parc-national-de-masoala-4: length 1744 km vs 201 km"
   ]
  },
  "tooBig": [
@@ -40461,7 +40490,24 @@
   "rs-golija-and-studenica-route": 1,
   "rs-fruska-gora-loop": 1,
   "rs-ovcar-kablar-gorge": 1,
-  "legend-serbia-danube-iron-gates-route": 1
+  "legend-serbia-danube-iron-gates-route": 1,
+  "madagascar-rn7": 1,
+  "madagascar-rn7-ranomafana-isalo": 1,
+  "madagascar-rn7-antananarivo-ranomafana": 1,
+  "madagascar-rn7-ranomafana-toliara": 1,
+  "places-rainforests-of-the-atsinanana-parc-national-de-masoala": 1,
+  "places-parc-national-de-marojejy-parc-national-de-masoala": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-5": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-6": 1,
+  "places-rainforests-of-the-atsinanana-parc-national-de-masoala-2": 1,
+  "places-parc-national-de-marojejy-parc-national-de-masoala-2": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-2": 1,
+  "places-parc-national-de-masoala-rainforests-of-the-atsinanana": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-3": 1,
+  "places-parc-national-de-masoala-parc-national-de-masoala-4": 1,
+  "places-parc-national-de-masoala-rainforests-of-the-atsinanana-2": 1,
+  "legend-madagascar-avenue-of-the-baobabs-route": 1
  },
  "netDone": {
   "south-korea": 1,
