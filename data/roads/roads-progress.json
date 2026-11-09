@@ -20600,7 +20600,14 @@
   "places-plateau-de-carnac-bassin-du-gouyanzeur-confluence-des-trois-rivieres": 1,
   "places-presqu-ile-de-quiberon-bassin-de-kerboul-confluence-des-trois-rivieres-2": 1,
   "places-confluence-des-trois-rivieres-presqu-ile-de-quiberon-bassin-de-kerboul-2": 1,
-  "fr-pink-granite-coast": 1
+  "fr-pink-granite-coast": 1,
+  "icefields-parkway": 1,
+  "icefields-parkway-lake-louise-columbia-icefield": 1,
+  "icefields-parkway-columbia-icefield-jasper": 1,
+  "bow-valley-parkway": 1,
+  "city-calgary-longday": 1,
+  "legend-icefields-parkway": 1,
+  "legend-bow-valley-parkway": 1
  },
  "failed": {
   "romania": [
@@ -22100,6 +22107,9 @@
    "schwerin-lakes-and-manor-roads-part-2: length 92 km vs 227 km",
    "schwerin-lakes-and-manor-roads: length 183 km vs 424 km",
    "schwerin-lakes-and-manor-roads-arc: length 61 km vs 297 km"
+  ],
+  "alberta": [
+   "icefields-parkway-lake-louise-columbia-icefield: length 130 km vs 292 km"
   ]
  },
  "tooBig": [
@@ -41445,7 +41455,14 @@
   "places-plateau-de-carnac-bassin-du-gouyanzeur-confluence-des-trois-rivieres": 1,
   "places-presqu-ile-de-quiberon-bassin-de-kerboul-confluence-des-trois-rivieres-2": 1,
   "places-confluence-des-trois-rivieres-presqu-ile-de-quiberon-bassin-de-kerboul-2": 1,
-  "fr-pink-granite-coast": 1
+  "fr-pink-granite-coast": 1,
+  "icefields-parkway": 1,
+  "icefields-parkway-lake-louise-columbia-icefield": 1,
+  "icefields-parkway-columbia-icefield-jasper": 1,
+  "bow-valley-parkway": 1,
+  "city-calgary-longday": 1,
+  "legend-icefields-parkway": 1,
+  "legend-bow-valley-parkway": 1
  },
  "netDone": {
   "south-korea": 1,
