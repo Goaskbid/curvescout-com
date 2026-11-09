@@ -20220,7 +20220,23 @@
   "me-montenegro-adriatic-coast": 1,
   "me-prokletije-and-grebaje-valley": 1,
   "legend-durmitor-ring": 1,
-  "legend-montenegro-durmitor-ring": 1
+  "legend-montenegro-durmitor-ring": 1,
+  "hokkaido-patchwork-road": 1,
+  "places-kiusu-earthwork-burial-circles-ofune-site": 1,
+  "city-sapporo-dayout": 1,
+  "city-sapporo-longday": 1,
+  "places-ofune-site-irie-site": 1,
+  "places-ofune-site-kiusu-earthwork-burial-circles": 1,
+  "places-kakinoshima-site-irie-site": 1,
+  "places-kakinoshima-site-kiusu-earthwork-burial-circles": 1,
+  "places-irie-site-ofune-site": 1,
+  "places-kitakogane-site-ofune-site": 1,
+  "places-takasago-burial-site-ofune-site": 1,
+  "places-kiusu-earthwork-burial-circles-ofune-site-2": 1,
+  "jp-furano-and-biei-panorama-loop": 1,
+  "legend-shiretoko-pass-road": 1,
+  "legend-hokkaido-patchwork-road": 1,
+  "core-shiretoko-peninsula-and-pass": 1
  },
  "failed": {
   "romania": [
@@ -21725,7 +21741,9 @@
   "southern-zone",
   "central-fed-district",
   "india",
-  "russia"
+  "russia",
+  "us/florida",
+  "quebec"
  ],
  "sizes": {
   "europe": 35389153230,
@@ -40643,7 +40661,23 @@
   "me-montenegro-adriatic-coast": 1,
   "me-prokletije-and-grebaje-valley": 1,
   "legend-durmitor-ring": 1,
-  "legend-montenegro-durmitor-ring": 1
+  "legend-montenegro-durmitor-ring": 1,
+  "hokkaido-patchwork-road": 1,
+  "places-kiusu-earthwork-burial-circles-ofune-site": 1,
+  "city-sapporo-dayout": 1,
+  "city-sapporo-longday": 1,
+  "places-ofune-site-irie-site": 1,
+  "places-ofune-site-kiusu-earthwork-burial-circles": 1,
+  "places-kakinoshima-site-irie-site": 1,
+  "places-kakinoshima-site-kiusu-earthwork-burial-circles": 1,
+  "places-irie-site-ofune-site": 1,
+  "places-kitakogane-site-ofune-site": 1,
+  "places-takasago-burial-site-ofune-site": 1,
+  "places-kiusu-earthwork-burial-circles-ofune-site-2": 1,
+  "jp-furano-and-biei-panorama-loop": 1,
+  "legend-shiretoko-pass-road": 1,
+  "legend-hokkaido-patchwork-road": 1,
+  "core-shiretoko-peninsula-and-pass": 1
  },
  "netDone": {
   "south-korea": 1,
