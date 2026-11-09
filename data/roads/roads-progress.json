@@ -20719,7 +20719,11 @@
   "sichuan-tibet-highway-g318-chengdu-litang": 1,
   "sichuan-tibet-highway-g318-chengdu-batang": 1,
   "city-chengdu-dayout": 1,
-  "city-chengdu-longday": 1
+  "city-chengdu-longday": 1,
+  "places-elarmekora-mount-iboundji": 1,
+  "places-mount-iboundji-elarmekora": 1,
+  "places-elarmekora-mount-iboundji-2": 1,
+  "places-mount-iboundji-elarmekora-2": 1
  },
  "failed": {
   "romania": [
@@ -22262,7 +22266,8 @@
   "us/texas",
   "tanzania",
   "ontario",
-  "siberian-fed-district"
+  "siberian-fed-district",
+  "norcal"
  ],
  "sizes": {
   "europe": 35389153230,
@@ -41719,7 +41724,11 @@
   "sichuan-tibet-highway-g318-chengdu-litang": 1,
   "sichuan-tibet-highway-g318-chengdu-batang": 1,
   "city-chengdu-dayout": 1,
-  "city-chengdu-longday": 1
+  "city-chengdu-longday": 1,
+  "places-elarmekora-mount-iboundji": 1,
+  "places-mount-iboundji-elarmekora": 1,
+  "places-elarmekora-mount-iboundji-2": 1,
+  "places-mount-iboundji-elarmekora-2": 1
  },
  "netDone": {
   "south-korea": 1,
