@@ -19852,7 +19852,29 @@
   "places-lac-de-chalain-saline-royale-d-arc-et-senans-3": 1,
   "places-saline-de-salins-les-bains-fortifications-of-vauban": 1,
   "places-saline-royale-d-arc-et-senans-lac-de-chalain-3": 1,
-  "fr-jura-lakes-and-high-roads": 1
+  "fr-jura-lakes-and-high-roads": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-kichikdash-mountain": 1,
+  "places-boyukdash-mountain-walled-city-of-baku-with-the-shirvanshah-s": 1,
+  "places-kichikdash-mountain-walled-city-of-baku-with-the-shirvanshah-s-2": 1,
+  "places-kichikdash-mountain-walled-city-of-baku-with-the-shirvanshah-s-3": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-kichikdash-mountain-2": 1,
+  "city-baku-afternoon": 1,
+  "city-baku-dayout": 1,
+  "city-baku-longday": 1,
+  "places-cultural-landscape-of-khinalig-people-and-walled-city-of-baku-with-the-shirvanshah-s": 1,
+  "places-cultural-landscape-of-khinalig-people-and-walled-city-of-baku-with-the-shirvanshah-s-2": 1,
+  "places-gobustan-rock-art-cultural-landscape-cultural-landscape-of-khinalig-people-and": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-kichikdash-mountain-3": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-cultural-landscape-of-khinalig-people-and": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-cultural-landscape-of-khinalig-people-and-2": 1,
+  "places-boyukdash-mountain-cultural-landscape-of-khinalig-people-and": 1,
+  "places-kichikdash-mountain-walled-city-of-baku-with-the-shirvanshah-s": 1,
+  "places-kichikdash-mountain-cultural-landscape-of-khinalig-people-and": 1,
+  "places-jinghindagh-mountain-yazylytepe-hill-cultural-landscape-of-khinalig-people-and": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-kichikdash-mountain-4": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-cultural-landscape-of-khinalig-people-and-3": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-cultural-landscape-of-khinalig-people-and-4": 1,
+  "legend-azerbaijan-khinaliq-road": 1
  },
  "failed": {
   "romania": [
@@ -21239,6 +21261,9 @@
   ],
   "us/oregon": [
    "highway-101-coos-bay-newport-oregon: length 158 km vs 361 km"
+  ],
+  "azerbaijan": [
+   "legend-azerbaijan-khinaliq-road: length 162 km vs 46 km"
   ]
  },
  "tooBig": [
@@ -39804,7 +39829,29 @@
   "places-lac-de-chalain-saline-royale-d-arc-et-senans-3": 1,
   "places-saline-de-salins-les-bains-fortifications-of-vauban": 1,
   "places-saline-royale-d-arc-et-senans-lac-de-chalain-3": 1,
-  "fr-jura-lakes-and-high-roads": 1
+  "fr-jura-lakes-and-high-roads": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-kichikdash-mountain": 1,
+  "places-boyukdash-mountain-walled-city-of-baku-with-the-shirvanshah-s": 1,
+  "places-kichikdash-mountain-walled-city-of-baku-with-the-shirvanshah-s-2": 1,
+  "places-kichikdash-mountain-walled-city-of-baku-with-the-shirvanshah-s-3": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-kichikdash-mountain-2": 1,
+  "city-baku-afternoon": 1,
+  "city-baku-dayout": 1,
+  "city-baku-longday": 1,
+  "places-cultural-landscape-of-khinalig-people-and-walled-city-of-baku-with-the-shirvanshah-s": 1,
+  "places-cultural-landscape-of-khinalig-people-and-walled-city-of-baku-with-the-shirvanshah-s-2": 1,
+  "places-gobustan-rock-art-cultural-landscape-cultural-landscape-of-khinalig-people-and": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-kichikdash-mountain-3": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-cultural-landscape-of-khinalig-people-and": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-cultural-landscape-of-khinalig-people-and-2": 1,
+  "places-boyukdash-mountain-cultural-landscape-of-khinalig-people-and": 1,
+  "places-kichikdash-mountain-walled-city-of-baku-with-the-shirvanshah-s": 1,
+  "places-kichikdash-mountain-cultural-landscape-of-khinalig-people-and": 1,
+  "places-jinghindagh-mountain-yazylytepe-hill-cultural-landscape-of-khinalig-people-and": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-kichikdash-mountain-4": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-cultural-landscape-of-khinalig-people-and-3": 1,
+  "places-walled-city-of-baku-with-the-shirvanshah-s-cultural-landscape-of-khinalig-people-and-4": 1,
+  "legend-azerbaijan-khinaliq-road": 1
  },
  "netDone": {
   "south-korea": 1,
