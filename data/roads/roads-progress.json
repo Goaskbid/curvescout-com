@@ -19975,7 +19975,26 @@
   "legend-taiwan-central-cross-island-highway": 1,
   "legend-taiwan-suhua-highway": 1,
   "legend-taiwan-east-rift-valley": 1,
-  "core-alishan-mountain-road": 1
+  "core-alishan-mountain-road": 1,
+  "vidzeme-seacoast-road": 1,
+  "kurzeme-coast-run": 1,
+  "gauja-national-park-loop": 1,
+  "places-jacobstadt-jekabpils-historic-centre-of-riga": 1,
+  "city-liepaja-dayout": 1,
+  "city-jurmala-afternoon": 1,
+  "city-jurmala-dayout": 1,
+  "city-sigulda-afternoon": 1,
+  "city-ventspils-afternoon": 1,
+  "city-ventspils-dayout": 1,
+  "city-ventspils-longday": 1,
+  "city-rezekne-dayout": 1,
+  "places-jacobstadt-jekabpils-historic-centre-of-riga-2": 1,
+  "lv-gauja-national-park-loop": 1,
+  "lv-abava-valley-and-kuldiga-route": 1,
+  "lv-latgale-lakes-and-aglona-loop": 1,
+  "legend-vidzeme-seacoast-road": 1,
+  "legend-gauja-national-park-loop": 1,
+  "legend-kurzeme-coast-run": 1
  },
  "failed": {
   "romania": [
@@ -21401,6 +21420,9 @@
    "places-comoe-national-park-grande-mosquee-de-kong-5: length 865 km vs 262 km",
    "places-comoe-national-park-grande-mosquee-de-kong-4: length 1423 km vs 329 km",
    "places-petite-mosquee-de-kong-comoe-national-park-3: length 940 km vs 262 km"
+  ],
+  "latvia": [
+   "kurzeme-coast-run: length 132 km vs 311 km"
   ]
  },
  "tooBig": [
@@ -40089,7 +40111,26 @@
   "legend-taiwan-central-cross-island-highway": 1,
   "legend-taiwan-suhua-highway": 1,
   "legend-taiwan-east-rift-valley": 1,
-  "core-alishan-mountain-road": 1
+  "core-alishan-mountain-road": 1,
+  "vidzeme-seacoast-road": 1,
+  "kurzeme-coast-run": 1,
+  "gauja-national-park-loop": 1,
+  "places-jacobstadt-jekabpils-historic-centre-of-riga": 1,
+  "city-liepaja-dayout": 1,
+  "city-jurmala-afternoon": 1,
+  "city-jurmala-dayout": 1,
+  "city-sigulda-afternoon": 1,
+  "city-ventspils-afternoon": 1,
+  "city-ventspils-dayout": 1,
+  "city-ventspils-longday": 1,
+  "city-rezekne-dayout": 1,
+  "places-jacobstadt-jekabpils-historic-centre-of-riga-2": 1,
+  "lv-gauja-national-park-loop": 1,
+  "lv-abava-valley-and-kuldiga-route": 1,
+  "lv-latgale-lakes-and-aglona-loop": 1,
+  "legend-vidzeme-seacoast-road": 1,
+  "legend-gauja-national-park-loop": 1,
+  "legend-kurzeme-coast-run": 1
  },
  "netDone": {
   "south-korea": 1,
