@@ -19786,7 +19786,29 @@
   "places-town-area-porcelain-production-center-gaoling-porcelain-clay-mining-site-2": 1,
   "places-town-area-porcelain-production-center-gaoling-porcelain-clay-mining-site-3": 1,
   "places-changling-porcelain-stone-mining-site-hutian-ancient-kiln-site": 1,
-  "places-changling-porcelain-stone-mining-site-mount-sanqingshan-national-park-2": 1
+  "places-changling-porcelain-stone-mining-site-mount-sanqingshan-national-park-2": 1,
+  "portland-columbia-gorge-and-mount-hood": 1,
+  "highway-101-coos-bay-newport-oregon": 1,
+  "highway-101-brookings-florence-oregon": 1,
+  "highway-101-florence-oregon-cannon-beach": 1,
+  "highway-101-coos-bay-cannon-beach": 1,
+  "historic-columbia-river-highway": 1,
+  "hells-canyon-scenic-byway": 1,
+  "mount-hood-scenic-byway": 1,
+  "rogue-umpqua-scenic-byway": 1,
+  "rogue-umpqua-scenic-byway-roseburg-diamond-lake": 1,
+  "rogue-umpqua-scenic-byway-diamond-lake-gold-hill": 1,
+  "rogue-umpqua-scenic-byway-roseburg-crater-lake": 1,
+  "cascade-lakes-scenic-byway": 1,
+  "mckenzie-pass-santiam-pass-scenic-byway": 1,
+  "legend-historic-columbia-river-highway": 1,
+  "legend-hells-canyon-scenic-byway": 1,
+  "legend-mount-hood-scenic-byway": 1,
+  "legend-cascade-lakes-scenic-byway": 1,
+  "legend-mckenzie-pass-santiam-pass-scenic-byway": 1,
+  "legend-rogue-umpqua-scenic-byway": 1,
+  "core-mckenzie-pass-and-aufderheide-loop": 1,
+  "core-hells-canyon-and-wallowa-mountain-loop": 1
  },
  "failed": {
   "romania": [
@@ -21170,6 +21192,9 @@
    "places-the-iraqi-side-of-huwaizah-marshes-the-east-hammar-marshes: ends do not match",
    "places-the-ahwar-of-southern-iraq-refuge-of-biod-the-east-hammar-marshes-2: ends do not match",
    "places-the-iraqi-side-of-huwaizah-marshes-the-east-hammar-marshes-2: ends do not match"
+  ],
+  "us/oregon": [
+   "highway-101-coos-bay-newport-oregon: length 158 km vs 361 km"
   ]
  },
  "tooBig": [
@@ -39668,7 +39693,29 @@
   "places-town-area-porcelain-production-center-gaoling-porcelain-clay-mining-site-2": 1,
   "places-town-area-porcelain-production-center-gaoling-porcelain-clay-mining-site-3": 1,
   "places-changling-porcelain-stone-mining-site-hutian-ancient-kiln-site": 1,
-  "places-changling-porcelain-stone-mining-site-mount-sanqingshan-national-park-2": 1
+  "places-changling-porcelain-stone-mining-site-mount-sanqingshan-national-park-2": 1,
+  "portland-columbia-gorge-and-mount-hood": 1,
+  "highway-101-coos-bay-newport-oregon": 1,
+  "highway-101-brookings-florence-oregon": 1,
+  "highway-101-florence-oregon-cannon-beach": 1,
+  "highway-101-coos-bay-cannon-beach": 1,
+  "historic-columbia-river-highway": 1,
+  "hells-canyon-scenic-byway": 1,
+  "mount-hood-scenic-byway": 1,
+  "rogue-umpqua-scenic-byway": 1,
+  "rogue-umpqua-scenic-byway-roseburg-diamond-lake": 1,
+  "rogue-umpqua-scenic-byway-diamond-lake-gold-hill": 1,
+  "rogue-umpqua-scenic-byway-roseburg-crater-lake": 1,
+  "cascade-lakes-scenic-byway": 1,
+  "mckenzie-pass-santiam-pass-scenic-byway": 1,
+  "legend-historic-columbia-river-highway": 1,
+  "legend-hells-canyon-scenic-byway": 1,
+  "legend-mount-hood-scenic-byway": 1,
+  "legend-cascade-lakes-scenic-byway": 1,
+  "legend-mckenzie-pass-santiam-pass-scenic-byway": 1,
+  "legend-rogue-umpqua-scenic-byway": 1,
+  "core-mckenzie-pass-and-aufderheide-loop": 1,
+  "core-hells-canyon-and-wallowa-mountain-loop": 1
  },
  "netDone": {
   "south-korea": 1,
