@@ -20627,7 +20627,13 @@
   "skyline-drive": 1,
   "us-virginia-back-of-the-dragon": 1,
   "legend-skyline-drive": 1,
-  "legend-colonial-parkway": 1
+  "legend-colonial-parkway": 1,
+  "route-des-vins-d-alsace": 1,
+  "route-des-cretes-vosges": 1,
+  "fr-route-des-cretes-vosges": 1,
+  "fr-alsace-wine-route": 1,
+  "legend-route-des-vins-d-alsace": 1,
+  "legend-route-des-cretes-vosges": 1
  },
  "failed": {
   "romania": [
@@ -41512,7 +41518,13 @@
   "skyline-drive": 1,
   "us-virginia-back-of-the-dragon": 1,
   "legend-skyline-drive": 1,
-  "legend-colonial-parkway": 1
+  "legend-colonial-parkway": 1,
+  "route-des-vins-d-alsace": 1,
+  "route-des-cretes-vosges": 1,
+  "fr-route-des-cretes-vosges": 1,
+  "fr-alsace-wine-route": 1,
+  "legend-route-des-vins-d-alsace": 1,
+  "legend-route-des-cretes-vosges": 1
  },
  "netDone": {
   "south-korea": 1,
