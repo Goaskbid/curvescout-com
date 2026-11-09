@@ -20584,7 +20584,15 @@
   "legend-peter-norbeck-scenic-byway": 1,
   "legend-spearfish-canyon-scenic-byway": 1,
   "core-needles-highway-and-iron-mountain-road": 1,
-  "core-spearfish-canyon-and-vanocker-canyon": 1
+  "core-spearfish-canyon-and-vanocker-canyon": 1,
+  "uruguay-atlantic-coast-route": 1,
+  "uruguay-atlantic-coast-route-piriapolis-cabo-polonio": 1,
+  "uruguay-atlantic-coast-route-montevideo-punta-del-este": 1,
+  "uruguay-atlantic-coast-route-punta-del-este-cabo-polonio": 1,
+  "uruguay-atlantic-coast-route-montevideo-cabo-polonio": 1,
+  "city-montevideo-afternoon": 1,
+  "city-montevideo-dayout": 1,
+  "legend-uruguay-atlantic-coast-route": 1
  },
  "failed": {
   "romania": [
@@ -41413,7 +41421,15 @@
   "legend-peter-norbeck-scenic-byway": 1,
   "legend-spearfish-canyon-scenic-byway": 1,
   "core-needles-highway-and-iron-mountain-road": 1,
-  "core-spearfish-canyon-and-vanocker-canyon": 1
+  "core-spearfish-canyon-and-vanocker-canyon": 1,
+  "uruguay-atlantic-coast-route": 1,
+  "uruguay-atlantic-coast-route-piriapolis-cabo-polonio": 1,
+  "uruguay-atlantic-coast-route-montevideo-punta-del-este": 1,
+  "uruguay-atlantic-coast-route-punta-del-este-cabo-polonio": 1,
+  "uruguay-atlantic-coast-route-montevideo-cabo-polonio": 1,
+  "city-montevideo-afternoon": 1,
+  "city-montevideo-dayout": 1,
+  "legend-uruguay-atlantic-coast-route": 1
  },
  "netDone": {
   "south-korea": 1,
