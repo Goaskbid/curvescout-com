@@ -20339,7 +20339,20 @@
   "places-university-and-historic-precinct-of-alcala-monastery-and-site-of-the-escurial": 1,
   "places-aranjuez-cultural-landscape-monastery-and-site-of-the-escurial-2": 1,
   "places-university-and-historic-precinct-of-alcala-aranjuez-cultural-landscape-2": 1,
-  "places-university-and-historic-precinct-of-alcala-monastery-and-site-of-the-escurial-2": 1
+  "places-university-and-historic-precinct-of-alcala-monastery-and-site-of-the-escurial-2": 1,
+  "road-scenic-byway-12": 1,
+  "zion-mount-carmel-highway": 1,
+  "utah-scenic-byway-12": 1,
+  "bicentennial-highway": 1,
+  "flaming-gorge-uintas-scenic-byway": 1,
+  "road-scenic-byway-12-part-1": 1,
+  "road-scenic-byway-12-part-2": 1,
+  "road-scenic-byway-12-part-3": 1,
+  "road-scenic-byway-12-arc": 1,
+  "legend-zion-mount-carmel-highway": 1,
+  "legend-utah-scenic-byway-12": 1,
+  "legend-bicentennial-highway": 1,
+  "legend-flaming-gorge-uintas-scenic-byway": 1
  },
  "failed": {
   "romania": [
@@ -21830,6 +21843,9 @@
   "southcoast-admreg": [
    "vancouver-british-columbia-duffy-lake-road-loop-part-1: ends do not match",
    "vancouver-british-columbia-duffy-lake-road-loop-part-3: ends do not match"
+  ],
+  "us/utah": [
+   "road-scenic-byway-12-arc: length 123 km vs 291 km"
   ]
  },
  "tooBig": [
@@ -40901,7 +40917,20 @@
   "places-university-and-historic-precinct-of-alcala-monastery-and-site-of-the-escurial": 1,
   "places-aranjuez-cultural-landscape-monastery-and-site-of-the-escurial-2": 1,
   "places-university-and-historic-precinct-of-alcala-aranjuez-cultural-landscape-2": 1,
-  "places-university-and-historic-precinct-of-alcala-monastery-and-site-of-the-escurial-2": 1
+  "places-university-and-historic-precinct-of-alcala-monastery-and-site-of-the-escurial-2": 1,
+  "road-scenic-byway-12": 1,
+  "zion-mount-carmel-highway": 1,
+  "utah-scenic-byway-12": 1,
+  "bicentennial-highway": 1,
+  "flaming-gorge-uintas-scenic-byway": 1,
+  "road-scenic-byway-12-part-1": 1,
+  "road-scenic-byway-12-part-2": 1,
+  "road-scenic-byway-12-part-3": 1,
+  "road-scenic-byway-12-arc": 1,
+  "legend-zion-mount-carmel-highway": 1,
+  "legend-utah-scenic-byway-12": 1,
+  "legend-bicentennial-highway": 1,
+  "legend-flaming-gorge-uintas-scenic-byway": 1
  },
  "netDone": {
   "south-korea": 1,
