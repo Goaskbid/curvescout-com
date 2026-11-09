@@ -20673,7 +20673,12 @@
   "lu-mullerthal-little-switzerland-loop": 1,
   "lu-luxembourg-ardennes-loop": 1,
   "lu-moselle-luxembourg-route": 1,
-  "legend-luxembourg-mullerthal-route": 1
+  "legend-luxembourg-mullerthal-route": 1,
+  "door-county-coastal-byway": 1,
+  "legend-door-county-coastal-byway": 1,
+  "us-wisconsin-driftless-loop": 1,
+  "kettle-moraine-road": 1,
+  "core-wildcat-mountain-and-kickapoo-valleys": 1
  },
  "failed": {
   "romania": [
@@ -41619,7 +41624,12 @@
   "lu-mullerthal-little-switzerland-loop": 1,
   "lu-luxembourg-ardennes-loop": 1,
   "lu-moselle-luxembourg-route": 1,
-  "legend-luxembourg-mullerthal-route": 1
+  "legend-luxembourg-mullerthal-route": 1,
+  "door-county-coastal-byway": 1,
+  "legend-door-county-coastal-byway": 1,
+  "us-wisconsin-driftless-loop": 1,
+  "kettle-moraine-road": 1,
+  "core-wildcat-mountain-and-kickapoo-valleys": 1
  },
  "netDone": {
   "south-korea": 1,
