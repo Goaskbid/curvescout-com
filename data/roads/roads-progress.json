@@ -19635,7 +19635,34 @@
   "places-aqaba-marine-reserve-petra-2": 1,
   "places-quseir-amra-as-salt-the-place-of-tolerance-and-urban": 1,
   "places-quseir-amra-as-salt-the-place-of-tolerance-and-urban-2": 1,
-  "legend-jordan-kings-highway": 1
+  "legend-jordan-kings-highway": 1,
+  "places-mausoleum-of-the-first-qin-emperor-silk-roads-the-routes-network-of-chang-an": 1,
+  "places-pits-of-terracotta-army-silk-roads-the-routes-network-of-chang-an": 1,
+  "places-site-of-daming-palace-in-chang-an-city-of-mausoleum-of-the-first-qin-emperor": 1,
+  "places-mausoleum-of-the-first-qin-emperor-xingjiaosi-pagodas": 1,
+  "places-mausoleum-of-the-first-qin-emperor-small-wild-goose-pagoda": 1,
+  "places-xingjiaosi-pagodas-silk-roads-the-routes-network-of-chang-an": 1,
+  "places-pits-of-terracotta-army-xingjiaosi-pagodas": 1,
+  "places-pits-of-terracotta-army-small-wild-goose-pagoda": 1,
+  "places-mausoleum-of-the-first-qin-emperor-xingjiaosi-pagodas-2": 1,
+  "places-mausoleum-of-the-first-qin-emperor-small-wild-goose-pagoda-2": 1,
+  "places-silk-roads-the-routes-network-of-chang-an-mausoleum-of-the-first-qin-emperor": 1,
+  "places-great-wild-goose-pagoda-xingjiaosi-pagodas": 1,
+  "places-site-of-weiyang-palace-in-chang-an-city-of-mausoleum-of-the-first-qin-emperor": 1,
+  "city-xian-afternoon": 1,
+  "places-mausoleum-of-the-first-qin-emperor-xingjiaosi-pagodas-3": 1,
+  "places-xingjiaosi-pagodas-silk-roads-the-routes-network-of-chang-an-2": 1,
+  "places-xingjiaosi-pagodas-mausoleum-of-the-first-qin-emperor": 1,
+  "places-xingjiaosi-pagodas-mausoleum-of-the-first-qin-emperor-2": 1,
+  "places-pits-of-terracotta-army-xingjiaosi-pagodas-2": 1,
+  "places-mausoleum-of-the-first-qin-emperor-xingjiaosi-pagodas-4": 1,
+  "places-silk-roads-the-routes-network-of-chang-an-xingjiaosi-pagodas": 1,
+  "places-silk-roads-the-routes-network-of-chang-an-mausoleum-of-the-first-qin-emperor-2": 1,
+  "places-great-wild-goose-pagoda-xingjiaosi-pagodas-2": 1,
+  "places-small-wild-goose-pagoda-mausoleum-of-the-first-qin-emperor": 1,
+  "places-site-of-daming-palace-in-chang-an-city-of-mausoleum-of-the-first-qin-emperor-2": 1,
+  "places-site-of-weiyang-palace-in-chang-an-city-of-xingjiaosi-pagodas": 1,
+  "places-site-of-weiyang-palace-in-chang-an-city-of-mausoleum-of-the-first-qin-emperor-2": 1
  },
  "failed": {
   "romania": [
@@ -21001,7 +21028,8 @@
   "vestlandet": [
    "trollstigen-geiranger-golden-route-arc: length 55 km vs 263 km",
    "legend-aursjovegen: length 93 km vs 31 km"
-  ]
+  ],
+  "nordeste": "Command failed: docker run --rm -v /tmp/cs-roads:/data ghcr.io/project-osrm/osrm-backend:v5.27.1 osrm-extract -p /opt/car.lua /data/r.osm.pbf"
  },
  "tooBig": [
   "mexico",
@@ -21013,7 +21041,9 @@
   "brazil",
   "indonesia",
   "europe",
-  "sea"
+  "sea",
+  "south-america",
+  "asia"
  ],
  "sizes": {
   "europe": 35389153230,
@@ -39346,7 +39376,34 @@
   "places-aqaba-marine-reserve-petra-2": 1,
   "places-quseir-amra-as-salt-the-place-of-tolerance-and-urban": 1,
   "places-quseir-amra-as-salt-the-place-of-tolerance-and-urban-2": 1,
-  "legend-jordan-kings-highway": 1
+  "legend-jordan-kings-highway": 1,
+  "places-mausoleum-of-the-first-qin-emperor-silk-roads-the-routes-network-of-chang-an": 1,
+  "places-pits-of-terracotta-army-silk-roads-the-routes-network-of-chang-an": 1,
+  "places-site-of-daming-palace-in-chang-an-city-of-mausoleum-of-the-first-qin-emperor": 1,
+  "places-mausoleum-of-the-first-qin-emperor-xingjiaosi-pagodas": 1,
+  "places-mausoleum-of-the-first-qin-emperor-small-wild-goose-pagoda": 1,
+  "places-xingjiaosi-pagodas-silk-roads-the-routes-network-of-chang-an": 1,
+  "places-pits-of-terracotta-army-xingjiaosi-pagodas": 1,
+  "places-pits-of-terracotta-army-small-wild-goose-pagoda": 1,
+  "places-mausoleum-of-the-first-qin-emperor-xingjiaosi-pagodas-2": 1,
+  "places-mausoleum-of-the-first-qin-emperor-small-wild-goose-pagoda-2": 1,
+  "places-silk-roads-the-routes-network-of-chang-an-mausoleum-of-the-first-qin-emperor": 1,
+  "places-great-wild-goose-pagoda-xingjiaosi-pagodas": 1,
+  "places-site-of-weiyang-palace-in-chang-an-city-of-mausoleum-of-the-first-qin-emperor": 1,
+  "city-xian-afternoon": 1,
+  "places-mausoleum-of-the-first-qin-emperor-xingjiaosi-pagodas-3": 1,
+  "places-xingjiaosi-pagodas-silk-roads-the-routes-network-of-chang-an-2": 1,
+  "places-xingjiaosi-pagodas-mausoleum-of-the-first-qin-emperor": 1,
+  "places-xingjiaosi-pagodas-mausoleum-of-the-first-qin-emperor-2": 1,
+  "places-pits-of-terracotta-army-xingjiaosi-pagodas-2": 1,
+  "places-mausoleum-of-the-first-qin-emperor-xingjiaosi-pagodas-4": 1,
+  "places-silk-roads-the-routes-network-of-chang-an-xingjiaosi-pagodas": 1,
+  "places-silk-roads-the-routes-network-of-chang-an-mausoleum-of-the-first-qin-emperor-2": 1,
+  "places-great-wild-goose-pagoda-xingjiaosi-pagodas-2": 1,
+  "places-small-wild-goose-pagoda-mausoleum-of-the-first-qin-emperor": 1,
+  "places-site-of-daming-palace-in-chang-an-city-of-mausoleum-of-the-first-qin-emperor-2": 1,
+  "places-site-of-weiyang-palace-in-chang-an-city-of-xingjiaosi-pagodas": 1,
+  "places-site-of-weiyang-palace-in-chang-an-city-of-mausoleum-of-the-first-qin-emperor-2": 1
  },
  "netDone": {
   "south-korea": 1,
