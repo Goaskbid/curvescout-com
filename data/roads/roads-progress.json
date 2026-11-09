@@ -20651,7 +20651,13 @@
   "core-newport-ocean-drive-and-sakonnet": 1,
   "core-narragansett-to-watch-hill-coast": 1,
   "core-blackstone-valley-and-scituate-reservoir": 1,
-  "core-east-bay-and-bristol-peninsula": 1
+  "core-east-bay-and-bristol-peninsula": 1,
+  "lt-curonian-spit-route": 1,
+  "lt-aukstaitija-lakes-loop": 1,
+  "lt-nemunas-loops-and-kaunas-route": 1,
+  "lt-dzukija-and-trakai-forest-loop": 1,
+  "legend-curonian-spit-road": 1,
+  "legend-aukstaitija-lakes-route": 1
  },
  "failed": {
   "romania": [
@@ -41563,7 +41569,13 @@
   "core-newport-ocean-drive-and-sakonnet": 1,
   "core-narragansett-to-watch-hill-coast": 1,
   "core-blackstone-valley-and-scituate-reservoir": 1,
-  "core-east-bay-and-bristol-peninsula": 1
+  "core-east-bay-and-bristol-peninsula": 1,
+  "lt-curonian-spit-route": 1,
+  "lt-aukstaitija-lakes-loop": 1,
+  "lt-nemunas-loops-and-kaunas-route": 1,
+  "lt-dzukija-and-trakai-forest-loop": 1,
+  "legend-curonian-spit-road": 1,
+  "legend-aukstaitija-lakes-route": 1
  },
  "netDone": {
   "south-korea": 1,
