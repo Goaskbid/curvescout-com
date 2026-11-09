@@ -20153,7 +20153,24 @@
   "places-parc-national-de-masoala-parc-national-de-masoala-3": 1,
   "places-parc-national-de-masoala-parc-national-de-masoala-4": 1,
   "places-parc-national-de-masoala-rainforests-of-the-atsinanana-2": 1,
-  "legend-madagascar-avenue-of-the-baobabs-route": 1
+  "legend-madagascar-avenue-of-the-baobabs-route": 1,
+  "places-the-rocas-of-sao-tome-and-principe-coloni-diogo-vaz": 1,
+  "places-sao-joao-the-rocas-of-sao-tome-and-principe-coloni": 1,
+  "places-agua-ize-the-rocas-of-sao-tome-and-principe-coloni": 1,
+  "places-diogo-vaz-the-rocas-of-sao-tome-and-principe-coloni": 1,
+  "places-monte-cafe-the-rocas-of-sao-tome-and-principe-coloni": 1,
+  "places-sao-joao-monte-cafe": 1,
+  "places-sao-joao-the-rocas-of-sao-tome-and-principe-coloni-2": 1,
+  "places-agua-ize-monte-cafe": 1,
+  "places-diogo-vaz-agua-ize": 1,
+  "places-monte-cafe-sao-joao": 1,
+  "places-sao-joao-monte-cafe-2": 1,
+  "places-sao-joao-the-rocas-of-sao-tome-and-principe-coloni-3": 1,
+  "places-agua-ize-diogo-vaz": 1,
+  "places-agua-ize-the-rocas-of-sao-tome-and-principe-coloni-2": 1,
+  "places-diogo-vaz-agua-ize-2": 1,
+  "places-diogo-vaz-the-rocas-of-sao-tome-and-principe-coloni-2": 1,
+  "places-monte-cafe-sao-joao-2": 1
  },
  "failed": {
   "romania": [
@@ -21656,7 +21673,9 @@
   "south-america",
   "asia",
   "southern-zone",
-  "central-fed-district"
+  "central-fed-district",
+  "india",
+  "russia"
  ],
  "sizes": {
   "europe": 35389153230,
@@ -40507,7 +40526,24 @@
   "places-parc-national-de-masoala-parc-national-de-masoala-3": 1,
   "places-parc-national-de-masoala-parc-national-de-masoala-4": 1,
   "places-parc-national-de-masoala-rainforests-of-the-atsinanana-2": 1,
-  "legend-madagascar-avenue-of-the-baobabs-route": 1
+  "legend-madagascar-avenue-of-the-baobabs-route": 1,
+  "places-the-rocas-of-sao-tome-and-principe-coloni-diogo-vaz": 1,
+  "places-sao-joao-the-rocas-of-sao-tome-and-principe-coloni": 1,
+  "places-agua-ize-the-rocas-of-sao-tome-and-principe-coloni": 1,
+  "places-diogo-vaz-the-rocas-of-sao-tome-and-principe-coloni": 1,
+  "places-monte-cafe-the-rocas-of-sao-tome-and-principe-coloni": 1,
+  "places-sao-joao-monte-cafe": 1,
+  "places-sao-joao-the-rocas-of-sao-tome-and-principe-coloni-2": 1,
+  "places-agua-ize-monte-cafe": 1,
+  "places-diogo-vaz-agua-ize": 1,
+  "places-monte-cafe-sao-joao": 1,
+  "places-sao-joao-monte-cafe-2": 1,
+  "places-sao-joao-the-rocas-of-sao-tome-and-principe-coloni-3": 1,
+  "places-agua-ize-diogo-vaz": 1,
+  "places-agua-ize-the-rocas-of-sao-tome-and-principe-coloni-2": 1,
+  "places-diogo-vaz-agua-ize-2": 1,
+  "places-diogo-vaz-the-rocas-of-sao-tome-and-principe-coloni-2": 1,
+  "places-monte-cafe-sao-joao-2": 1
  },
  "netDone": {
   "south-korea": 1,
