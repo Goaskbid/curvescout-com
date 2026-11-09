@@ -21914,11 +21914,11 @@
    "kiel-rendsburg-schleswig-viking-roads: length 85 km vs 195 km"
   ],
   "niedersachsen": [
-   "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of: ends do not match",
    "places-national-park-wadden-sea-niedersachsen-wadden-sea: ends do not match",
+   "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of: ends do not match",
+   "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of-3: ends do not match",
    "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of-2: ends do not match",
-   "places-national-park-wadden-sea-niedersachsen-wadden-sea-2: ends do not match",
-   "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of-3: ends do not match"
+   "places-national-park-wadden-sea-niedersachsen-wadden-sea-2: ends do not match"
   ],
   "morocco": [
    "x-ma-todra-gorge-road: length 65 km vs 19 km"
@@ -41659,7 +41659,12 @@
   "new-caledonia-grand-terre-west-coast-bourail-koumac": 1,
   "new-caledonia-grand-terre-west-coast-noumea-kone": 1,
   "new-caledonia-grand-terre-west-coast-kone-poum": 1,
-  "legend-new-caledonia-grand-terre-west-coast": 1
+  "legend-new-caledonia-grand-terre-west-coast": 1,
+  "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of": 1,
+  "places-national-park-wadden-sea-niedersachsen-wadden-sea": 1,
+  "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of-2": 1,
+  "places-national-park-wadden-sea-niedersachsen-wadden-sea-2": 1,
+  "places-national-park-wadden-sea-niedersachsen-town-hall-and-roland-on-the-marketplace-of-3": 1
  },
  "netDone": {
   "south-korea": 1,
