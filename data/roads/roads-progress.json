@@ -20707,7 +20707,11 @@
   "ruta-de-la-plata-salamanca-leon": 1,
   "city-salamanca-dayout": 1,
   "city-salamanca-longday": 1,
-  "es-sierra-de-gredos-loop": 1
+  "es-sierra-de-gredos-loop": 1,
+  "north-macedonia-mavrovo-and-galicnik-route": 1,
+  "mk-mavrovo-to-debar": 1,
+  "mk-krusevo-mountain-road": 1,
+  "legend-north-macedonia-mavrovo-and-galicnik-route": 1
  },
  "failed": {
   "romania": [
@@ -41695,7 +41699,11 @@
   "ruta-de-la-plata-salamanca-leon": 1,
   "city-salamanca-dayout": 1,
   "city-salamanca-longday": 1,
-  "es-sierra-de-gredos-loop": 1
+  "es-sierra-de-gredos-loop": 1,
+  "north-macedonia-mavrovo-and-galicnik-route": 1,
+  "mk-mavrovo-to-debar": 1,
+  "mk-krusevo-mountain-road": 1,
+  "legend-north-macedonia-mavrovo-and-galicnik-route": 1
  },
  "netDone": {
   "south-korea": 1,
