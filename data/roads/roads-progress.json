@@ -20102,7 +20102,24 @@
   "legend-lakes-to-locks-passage": 1,
   "us-taconic-state-parkway": 1,
   "us-shawangunk-ridge-loop": 1,
-  "us-great-lakes-seaway-trail-east": 1
+  "us-great-lakes-seaway-trail-east": 1,
+  "phoenix-apache-trail-and-salt-river": 1,
+  "historic-route-66-holbrook-flagstaff": 1,
+  "historic-route-66-flagstaff-kingman": 1,
+  "historic-route-66-winslow-seligman": 1,
+  "apache-trail": 1,
+  "coronado-trail-scenic-byway": 1,
+  "red-rock-scenic-byway": 1,
+  "desert-view-drive-grand-canyon": 1,
+  "city-flagstaff-dayout": 1,
+  "city-flagstaff-longday": 1,
+  "legend-apache-trail": 1,
+  "legend-coronado-trail-scenic-byway": 1,
+  "legend-kaibab-plateau-north-rim-parkway": 1,
+  "legend-desert-view-drive-grand-canyon": 1,
+  "core-coronado-trail-az-191": 1,
+  "core-mount-lemmon-catalina-highway": 1,
+  "core-jerome-and-mingus-mountain": 1
  },
  "failed": {
   "romania": [
@@ -21571,6 +21588,12 @@
    "new-york-catskills-route-23a-and-kaaterskill-high-road: length 121 km vs 401 km",
    "catskills-mountain-sweep-part-1: length 147 km vs 374 km",
    "catskills-mountain-sweep-part-2: length 178 km vs 430 km"
+  ],
+  "us/arizona": [
+   "historic-route-66-winslow-seligman: length 214 km vs 512 km",
+   "historic-route-66-holbrook-flagstaff: length 146 km vs 357 km",
+   "historic-route-66-flagstaff-kingman: length 241 km vs 559 km",
+   "legend-apache-trail: length 214 km vs 49 km"
   ]
  },
  "tooBig": [
@@ -40387,7 +40410,24 @@
   "legend-lakes-to-locks-passage": 1,
   "us-taconic-state-parkway": 1,
   "us-shawangunk-ridge-loop": 1,
-  "us-great-lakes-seaway-trail-east": 1
+  "us-great-lakes-seaway-trail-east": 1,
+  "phoenix-apache-trail-and-salt-river": 1,
+  "historic-route-66-holbrook-flagstaff": 1,
+  "historic-route-66-flagstaff-kingman": 1,
+  "historic-route-66-winslow-seligman": 1,
+  "apache-trail": 1,
+  "coronado-trail-scenic-byway": 1,
+  "red-rock-scenic-byway": 1,
+  "desert-view-drive-grand-canyon": 1,
+  "city-flagstaff-dayout": 1,
+  "city-flagstaff-longday": 1,
+  "legend-apache-trail": 1,
+  "legend-coronado-trail-scenic-byway": 1,
+  "legend-kaibab-plateau-north-rim-parkway": 1,
+  "legend-desert-view-drive-grand-canyon": 1,
+  "core-coronado-trail-az-191": 1,
+  "core-mount-lemmon-catalina-highway": 1,
+  "core-jerome-and-mingus-mountain": 1
  },
  "netDone": {
   "south-korea": 1,
