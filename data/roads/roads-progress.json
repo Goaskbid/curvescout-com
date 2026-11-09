@@ -20621,7 +20621,13 @@
   "city-viljandi-dayout": 1,
   "city-viljandi-longday": 1,
   "legend-lahemaa-coastal-road": 1,
-  "legend-saaremaa-island-circuit": 1
+  "legend-saaremaa-island-circuit": 1,
+  "shenandoah-skyline-drive-ridge-day": 1,
+  "blue-ridge-parkway-shenandoah-rockfish-gap-mabry-mill": 1,
+  "skyline-drive": 1,
+  "us-virginia-back-of-the-dragon": 1,
+  "legend-skyline-drive": 1,
+  "legend-colonial-parkway": 1
  },
  "failed": {
   "romania": [
@@ -22124,6 +22130,9 @@
   ],
   "alberta": [
    "icefields-parkway-lake-louise-columbia-icefield: length 130 km vs 292 km"
+  ],
+  "us/virginia": [
+   "shenandoah-skyline-drive-ridge-day: length 142 km vs 317 km"
   ]
  },
  "tooBig": [
@@ -41497,7 +41506,13 @@
   "places-ruska-bystra-udava": 1,
   "places-udava-vihorlat": 1,
   "places-udava-vihorlat-2": 1,
-  "places-havesova-primeval-forest-udava": 1
+  "places-havesova-primeval-forest-udava": 1,
+  "shenandoah-skyline-drive-ridge-day": 1,
+  "blue-ridge-parkway-shenandoah-rockfish-gap-mabry-mill": 1,
+  "skyline-drive": 1,
+  "us-virginia-back-of-the-dragon": 1,
+  "legend-skyline-drive": 1,
+  "legend-colonial-parkway": 1
  },
  "netDone": {
   "south-korea": 1,
