@@ -21776,13 +21776,13 @@
    "croatian-adriatic-highway-split-dubrovnik: length 273 km vs 690 km"
   ],
   "slovakia": [
-   "places-ruska-bystra-stuzica-bukovske-vrchy: length 466 km vs 180 km",
+   "places-havesova-primeval-forest-udava: length 351 km vs 119 km",
    "places-udava-stuzica-bukovske-vrchy: length 470 km vs 188 km",
    "places-ruska-bystra-vihorlat: length 261 km vs 88 km",
-   "places-ruska-bystra-udava: length 494 km vs 185 km",
+   "places-ruska-bystra-stuzica-bukovske-vrchy: length 466 km vs 180 km",
    "places-udava-vihorlat: length 264 km vs 95 km",
    "places-udava-vihorlat-2: length 264 km vs 95 km",
-   "places-havesova-primeval-forest-udava: length 351 km vs 119 km"
+   "places-ruska-bystra-udava: length 494 km vs 185 km"
   ],
   "western-zone": [
    "places-raigad-suvarnadurg: length 760 km vs 311 km",
@@ -41490,7 +41490,14 @@
   "city-viljandi-dayout": 1,
   "city-viljandi-longday": 1,
   "legend-lahemaa-coastal-road": 1,
-  "legend-saaremaa-island-circuit": 1
+  "legend-saaremaa-island-circuit": 1,
+  "places-ruska-bystra-stuzica-bukovske-vrchy": 1,
+  "places-udava-stuzica-bukovske-vrchy": 1,
+  "places-ruska-bystra-vihorlat": 1,
+  "places-ruska-bystra-udava": 1,
+  "places-udava-vihorlat": 1,
+  "places-udava-vihorlat-2": 1,
+  "places-havesova-primeval-forest-udava": 1
  },
  "netDone": {
   "south-korea": 1,
