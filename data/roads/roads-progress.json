@@ -20663,7 +20663,12 @@
   "x-ls-katse-dam-road": 1,
   "x-ls-thaba-tseka-to-semonkong": 1,
   "x-ls-maletsunyane-falls-road": 1,
-  "x-ls-sehlabathebe-road": 1
+  "x-ls-sehlabathebe-road": 1,
+  "bhutan-east-west-highway": 1,
+  "bhutan-east-west-highway-paro-trongsa": 1,
+  "bhutan-east-west-highway-trongsa-trashigang": 1,
+  "legend-bhutan-east-west-highway": 1,
+  "legend-bhutan-chele-la-road": 1
  },
  "failed": {
   "romania": [
@@ -22175,6 +22180,10 @@
   ],
   "lesotho": [
    "x-ls-thaba-tseka-to-semonkong: length 208 km vs 64 km"
+  ],
+  "bhutan": [
+   "legend-bhutan-chele-la-road: length 67 km vs 16 km",
+   "legend-bhutan-east-west-highway: length 605 km vs 221 km"
   ]
  },
  "tooBig": [
@@ -41595,7 +41604,12 @@
   "kiel-rendsburg-schleswig-viking-roads": 1,
   "kiel-boknis-schlei-north-loop": 1,
   "kiel-malente-bungsberg-eutin-hills": 1,
-  "kiel-danish-wahld-gettorf-evening": 1
+  "kiel-danish-wahld-gettorf-evening": 1,
+  "bhutan-east-west-highway": 1,
+  "bhutan-east-west-highway-paro-trongsa": 1,
+  "bhutan-east-west-highway-trongsa-trashigang": 1,
+  "legend-bhutan-east-west-highway": 1,
+  "legend-bhutan-chele-la-road": 1
  },
  "netDone": {
   "south-korea": 1,
