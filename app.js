@@ -9452,7 +9452,12 @@ function csCpLoad() {
   const p = (window.CS_CP_SRC && location.protocol === 'file:') ? fromPage() : import(csCpUrl()).catch(e => { if (window.CS_CP_SRC) return fromPage(); throw e; });
   return (CS_CP.loading = p.catch(e => { CS_CP.loading = null; throw e; }));
 }
-const csCpStore = { get(k, f) { try { const v = localStorage.getItem(k); return v === null ? f : v; } catch (e) { return f; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+/* navigator settings (audit 2026-11-09, package 08): every save is read back; when the phone refuses to store (private mode,
+   storage full, blocked) the choice still holds for this session and the rider is told once instead of finding it reset later */
+const csCpMem = new Map();
+const csCpStore = { get(k, f) { if (csCpMem.has(k)) return csCpMem.get(k); try { const v = localStorage.getItem(k); return v === null ? f : v; } catch (e) { return f; } },
+  set(k, v) { v = String(v); csCpMem.set(k, v); try { localStorage.setItem(k, v); if (localStorage.getItem(k) !== v) throw new Error('readback'); csCpMem.delete(k); return { ok: true }; }
+    catch (e) { if (!csCpStore.warned) { csCpStore.warned = true; try { console.warn('CurveScout: navigator settings could not be saved in this browser; they apply until the tab closes.'); csCpStore.failed = true; } catch (x) {} } return { ok: false }; } } };
 /* the ride as the navigator needs it: named waypoints in order and the road line the map already shows */
 function csCpRide(r) {
   if (!r) return null;
@@ -20220,6 +20225,16 @@ function csAvoidUi(r) { try {
 const CS_ROADS = { idx: undefined, cells: new Map() };
 function csPolyDecode(s) { const out = []; let i = 0, la = 0, lo = 0; s = String(s || ''); while (i < s.length) { for (let k = 0; k < 2; k++) { let r = 0, sh = 0, b; do { b = s.charCodeAt(i++) - 63; r |= (b & 0x1f) << sh; sh += 5; } while (b >= 0x20 && i < s.length + 1); const d = r & 1 ? ~(r >> 1) : r >> 1; if (k) lo += d; else la += d; } out.push([la / 1e5, lo / 1e5]); } return out; }
 const csRoadCell = (la, lo) => (Math.floor(la / 3) + 30) + '-' + (Math.floor(lo / 3) + 60);
+/* r46 (GitHub 1 GB rule): road and turn files are stored gzip-compressed (*.json.gz, about a quarter of the size) and unpacked
+   here; an uncompressed file is still read when no compressed one exists, so both kinds work during the switch-over */
+async function csJgetGz(path, ms) {
+  /* both kinds are read and merged: the road job may add new rides to an uncompressed file after a square was compressed */
+  const gz = (async () => { try { if (!window.DecompressionStream) return null; const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms || 12000);
+      const r = await fetch(path + '.gz', { signal: ctl.signal }); clearTimeout(t); return r.ok ? await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json() : null; } catch (e) { return null; } })();
+  const plain = jget(path, ms).catch(() => null);
+  const [a, b] = await Promise.all([gz, plain]); if (!a) { if (b) return b; throw new Error('no file'); } if (!b) return a;
+  const out = Object.assign({}, a); for (const k of Object.keys(b)) out[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k] && typeof a[k] === 'object') ? Object.assign({}, a[k], b[k]) : b[k]; return out; }
+try { window.csJgetGz = csJgetGz; } catch (e) {}
 async function csRoadsIndex() {
   if (CS_ROADS.idx === undefined) CS_ROADS.idx = (async () => { try { if (location.protocol === 'file:') return null; return await jget('data/roads/roads-index.json', 8000); } catch (e) { return null; } })();
   return CS_ROADS.idx;
@@ -20229,7 +20244,7 @@ async function csRoadsIndex() {
 const CS_STEPS = new Map();
 async function csStoredSteps(id, p0) { try { id = String(id || '').split('#')[0]; if (!id || !p0) return null; const idx = await csRoadsIndex(); if (!idx || !idx.cells) return null;
   const c = csRoadCell(+p0.lat, +p0.lon); if (!idx.cells[c]) return null;
-  if (!CS_STEPS.has(c)) CS_STEPS.set(c, jget('data/roads/steps-' + c + '.json', 12000).catch(() => null));
+  if (!CS_STEPS.has(c)) CS_STEPS.set(c, csJgetGz('data/roads/steps-' + c + '.json', 12000).catch(() => null));
   const j = await CS_STEPS.get(c); const v = j && j.steps && j.steps[id]; return Array.isArray(v) && v.length ? v : null; } catch (e) { return null; } }
 async function csStoredRoad(id, pts, km) {
   id = String(id || '').split('#')[0]; if (!id || !pts || pts.length < 2) return null;
@@ -20238,7 +20253,7 @@ async function csStoredRoad(id, pts, km) {
   const a = P[0], z = P[P.length - 1];
   const tries = [...new Set([[0, 0], [0.01, 0.01], [-0.01, -0.01], [0.01, -0.01], [-0.01, 0.01]].map(([d, e]) => csRoadCell(a.lat + d, a.lon + e)))].filter(c => idx.cells[c]);
   for (const c of tries) {
-    if (!CS_ROADS.cells.has(c)) CS_ROADS.cells.set(c, (async () => { try { return await jget('data/roads/roads-' + c + '.json', 12000); } catch (e) { return null; } })());
+    if (!CS_ROADS.cells.has(c)) CS_ROADS.cells.set(c, (async () => { try { return await csJgetGz('data/roads/roads-' + c + '.json', 12000); } catch (e) { return null; } })());
     const j = await CS_ROADS.cells.get(c); const v = j && j.roads && j.roads[id]; if (!v) continue;
     const line = csPolyDecode(v[0]); if (line.length < 2) return null;
     const okEnds = hav({ lat: line[0][0], lon: line[0][1] }, a) < 8 && hav({ lat: line[line.length - 1][0], lon: line[line.length - 1][1] }, z) < 8;

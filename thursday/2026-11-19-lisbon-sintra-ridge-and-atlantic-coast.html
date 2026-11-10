@@ -21,7 +21,7 @@ header.tb a.brand{display:flex;gap:8px;align-items:center;color:var(--ink);text-
   function roadLine() { var s0 = T.stops[0]; if (!s0) return Promise.resolve(null);
     if (T.road) return Promise.resolve(dec(T.road));
     var c = cell(s0.lat, s0.lon);
-    return fetch('/data/roads/roads-' + c + '.json').then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { var v = j && j.roads && j.roads[T.id]; return v ? dec(v[0]) : null; }).catch(function () { return null; }); }
+    return fetch('/data/roads/roads-' + c + '.json.gz').then(function (r) { return r.ok && window.DecompressionStream ? new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json() : null; }).catch(function () { return null; }).then(function (j) { return j || fetch('/data/roads/roads-' + c + '.json').then(function (r) { return r.ok ? r.json() : null; }); }).then(function (j) { var v = j && j.roads && j.roads[T.id]; return v ? dec(v[0]) : null; }).catch(function () { return null; }); }
   /* the map */
   function drawMap(line) { var el = document.getElementById('tmap'); if (!el || !window.maplibregl) return;
     var pts = (line && line.length > 1 ? line : T.stops.map(function (s) { return [s.lat, s.lon]; }));

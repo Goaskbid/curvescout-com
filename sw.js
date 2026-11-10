@@ -5,7 +5,7 @@
 /* r34 audit CS-R34-008: every release cache is named curvescout-app-<build>, and cleanup recognises exactly that family
    (plus the two older namings) - a later release can never leave this one behind, and code is only ever read from the
    current release's own cache (no global caches.match that could hand out an old app.js). */
-const V = 'curvescout-app-r45-20261108';
+const V = 'curvescout-app-r47-20261109';
 const OWN_RELEASE = k => /^curvescout-app-[\w.-]+$/.test(k) || /^curvescout-[0-9a-f]{6,}$/.test(k) || /^curvescout-r\d+-\d{8}$/.test(k);
 const fromV = (req) => caches.open(V).then(c => c.match(req));
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
