@@ -3401,7 +3401,7 @@ function csRideFast(id) { try {
   id = String(id || ''); if (!id || /[#:]/.test(id) || window.__CS_NO_FAST || (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.summary) || location.protocol === 'file:') return Promise.resolve(null);
   const b = csRideBucket(id); let pr = CS_FAST.get(b);
   if (!pr) { const early = window.CS_EARLY && window.CS_EARLY.rideB === b ? window.CS_EARLY.ride : null;
-    pr = (early || Promise.reject()).catch(() => null).then(j => j || jget('data/ride/' + b + '.json', 8000)).catch(() => null); CS_FAST.set(b, pr); }
+    pr = (early || Promise.reject()).catch(() => null).then(j => j || csJgetZ('data/ride/' + b + '.json', 8000)).catch(() => null); CS_FAST.set(b, pr); }
   return pr.then(j => (j && j.rides && j.rides[id]) || null).catch(() => null);
 } catch (e) { return Promise.resolve(null); } }
 async function loadFull(id) { const r = await loadFullShared(id); try { return r ? structuredClone(r) : r; } catch (e) { return r; } }
@@ -3512,7 +3512,7 @@ async function loadFullShared(id) {
   /* only this route's own shard, so the wait is a fraction of a second rather than the archive */
   if (!S.shardCache.has(s.f) && typeof S.whenShard === 'function') { try { await S.whenShard(s.f); } catch (e) {} }
   let shard = S.shardCache.get(s.f);
-  if (!shard) { shard = await jget('data/' + s.f, 20000); S.shardCache.set(s.f, shard); }
+  if (!shard) { shard = await (/^(routes|ride)\//.test(s.f) ? csJgetZ('data/' + s.f, 20000) : jget('data/' + s.f, 20000)); S.shardCache.set(s.f, shard); }
   /* ---- ONE RIDE, ONE JOURNEY, WHATEVER WAS OPENED FIRST (r33 audit: Route Napoleon) ----
      30,605 rides have a recipe AND a stored record in a shard. Reading a shard used to put every record in it into the
      ride cache, so a ride opened after a neighbour came back as the stored one-way record, and opened first came back
@@ -20227,10 +20227,23 @@ function csPolyDecode(s) { const out = []; let i = 0, la = 0, lo = 0; s = String
 const csRoadCell = (la, lo) => (Math.floor(la / 3) + 30) + '-' + (Math.floor(lo / 3) + 60);
 /* r46 (GitHub 1 GB rule): road and turn files are stored gzip-compressed (*.json.gz, about a quarter of the size) and unpacked
    here; an uncompressed file is still read when no compressed one exists, so both kinds work during the switch-over */
+/* r48 (audit R47-17, GitHub Pages 1 GB): ride and region files are stored gzip-compressed (.json.gz). Pages may serve them
+   raw (gzip magic bytes) or already decoded; both are read. Browsers without DecompressionStream (older iPhones) load a small
+   MIT inflater (pako) once, so no browser loses ride data. */
+let CS_PAKO = null;
+function csPako() { if (window.pako && window.pako.ungzip) return Promise.resolve(window.pako); if (!CS_PAKO) CS_PAKO = new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = 'assets/vendor/pako-inflate.min.js'; sc.onload = () => window.pako ? ok(window.pako) : no(new Error('pako')); sc.onerror = () => { CS_PAKO = null; no(new Error('pako')); }; document.head.appendChild(sc); }); return CS_PAKO; }
+async function csGunzipJson(buf) { const u = new Uint8Array(buf); if (!(u[0] === 0x1f && u[1] === 0x8b)) return JSON.parse(new TextDecoder().decode(u));
+  if (window.DecompressionStream) return await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).json();
+  const pk = await csPako(); return JSON.parse(pk.ungzip(u, { to: 'string' })); }
+async function csJgetZ(path, ms) {
+  try { const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms || 12000); const r = await fetch(path + '.gz', { signal: ctl.signal }); clearTimeout(t);
+    if (r.ok) return await csGunzipJson(await r.arrayBuffer()); } catch (e) {}
+  return jget(path, ms); }
+try { window.csJgetZ = csJgetZ; } catch (e) {}
 async function csJgetGz(path, ms) {
   /* both kinds are read and merged: the road job may add new rides to an uncompressed file after a square was compressed */
-  const gz = (async () => { try { if (!window.DecompressionStream) return null; const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms || 12000);
-      const r = await fetch(path + '.gz', { signal: ctl.signal }); clearTimeout(t); return r.ok ? await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json() : null; } catch (e) { return null; } })();
+  const gz = (async () => { try { const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms || 12000);
+      const r = await fetch(path + '.gz', { signal: ctl.signal }); clearTimeout(t); return r.ok ? await csGunzipJson(await r.arrayBuffer()) : null; } catch (e) { return null; } })();
   const plain = jget(path, ms).catch(() => null);
   const [a, b] = await Promise.all([gz, plain]); if (!a) { if (b) return b; throw new Error('no file'); } if (!b) return a;
   const out = Object.assign({}, a); for (const k of Object.keys(b)) out[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k] && typeof a[k] === 'object') ? Object.assign({}, a[k], b[k]) : b[k]; return out; }
@@ -31450,7 +31463,7 @@ const OfflineRepository = {
     for (const id of [].concat(ids)) {
       const r = (S.routes || []).find(x => x.i === id);
       /* on the folder-free site data/routes/x.json is served as data__routes__x.json (audit 2026-10-11: 0 of 1 stored) */
-      if (r && r.f) files.add(typeof window.CS_FLAT_URL === 'function' ? window.CS_FLAT_URL('data/' + r.f) : 'data/' + r.f);
+      if (r && r.f) { files.add(typeof window.CS_FLAT_URL === 'function' ? window.CS_FLAT_URL('data/' + r.f) : 'data/' + r.f); if (/^(routes|ride)\//.test(r.f)) files.add('data/' + r.f + '.gz'); }  /* r48: compressed copy */
     }
     if (!files.size) return { ok: false, code: 'NOTHING_TO_STORE' };
     this._sw().postMessage({ type: 'cacheRides', urls: [...files], pack: OFFLINE_PACK_VERSION });

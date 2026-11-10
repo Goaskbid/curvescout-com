@@ -5,7 +5,7 @@
 /* r34 audit CS-R34-008: every release cache is named curvescout-app-<build>, and cleanup recognises exactly that family
    (plus the two older namings) - a later release can never leave this one behind, and code is only ever read from the
    current release's own cache (no global caches.match that could hand out an old app.js). */
-const V = 'curvescout-app-r47-20261109';
+const V = 'curvescout-app-r48-20261110';
 const OWN_RELEASE = k => /^curvescout-app-[\w.-]+$/.test(k) || /^curvescout-[0-9a-f]{6,}$/.test(k) || /^curvescout-r\d+-\d{8}$/.test(k);
 const fromV = (req) => caches.open(V).then(c => c.match(req));
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
@@ -169,8 +169,10 @@ self.addEventListener('message', e => {
     caches.open(ROUTES)
       .then(c => Promise.allSettled(d.urls.map(u => c.add(u))))
       .then(rs => {
-        const okCount = rs.filter(x => x.status === 'fulfilled').length;
-        if (e.source) e.source.postMessage({ type: 'cached', ok: okCount, total: d.urls.length });
+        /* r48: a ride file may exist plain or compressed (.gz); one of the two counts as stored */
+        const base = u => String(u).replace(/\.gz$/, ''), okSet = new Set(d.urls.filter((u, i) => rs[i].status === 'fulfilled').map(base));
+        const okCount = okSet.size;
+        if (e.source) e.source.postMessage({ type: 'cached', ok: okCount, total: new Set(d.urls.map(base)).size });
       })
   );
 });

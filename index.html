@@ -65,7 +65,7 @@
   (function () { try { if (location.protocol === 'file:') return; var E = window.CS_EARLY = {}, j = function (u) { return fetch(u).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }); };
     if (!/[?&]split=0\b/.test(location.search)) E.core = j('data/index/core.json');
     var m = /^#\/ride\/([^?#&:]+)$/.exec(location.hash || ''); if (m) { var id = decodeURIComponent(m[1]), h = 0x811c9dc5; for (var i = 0; i < id.length; i++) { h ^= id.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
-      var b = h % 2048; E.rideB = ('0' + (b >> 5).toString(16)).slice(-2) + '/' + ('0' + (b & 31).toString(16)).slice(-2); E.ride = j('data/ride/' + E.rideB + '.json'); } } catch (e) {} })();</script>
+      var b = h % 2048; E.rideB = ('0' + (b >> 5).toString(16)).slice(-2) + '/' + ('0' + (b & 31).toString(16)).slice(-2); E.ride = window.DecompressionStream ? fetch('data/ride/' + E.rideB + '.json.gz').then(function (r) { return r.ok ? r.arrayBuffer() : null; }).then(function (b) { if (!b) return null; var u = new Uint8Array(b); if (!(u[0] === 31 && u[1] === 139)) return JSON.parse(new TextDecoder().decode(u)); return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).json(); }).catch(function () { return null; }) : null; }  /* r48: ride files are compressed; the app falls back by itself */ } catch (e) {} })();</script>
   <link rel="stylesheet" href="assets/vendor/fonts.css">
   <link rel="stylesheet" href="assets/vendor/leaflet.css">
   <link rel="stylesheet" href="styles.css">

@@ -57,10 +57,12 @@
   function route(pts, o) { var cs = cellsFor(pts);
     return Promise.all(cs.full.map(function (c) { return load(c, false); }).concat(cs.major.map(function (c) { return load(c, true); }))).then(function () {
       var ids = pts.map(snap); if (ids.some(function (x) { return x < 0; })) return { code: 'NoSegment', message: 'Not in CurveScout\'s road network yet' };
-      for (var q = 1; q < ids.length; q++) if (ids[q] === ids[q - 1] && hav(pts[q - 1], pts[q]) > 150) return { code: 'NoRoute', message: 'Two stops fall on the same point of the network' };   /* audit r44: never an empty Ok route */
+      for (var q = 1; q < ids.length; q++) if (ids[q] === ids[q - 1] && hav(pts[q - 1], pts[q]) > 20) return { code: 'NoRoute', message: 'Two stops fall on the same point of the network' };   /* audit r44: never an empty Ok route */
       var legs = [], coords = [];
-      for (var i = 1; i < ids.length; i++) { var p = astar(ids[i - 1], ids[i], o); if (!p || (!p.length && hav(pts[i - 1], pts[i]) > 150)) return { code: 'NoRoute', message: 'No route in CurveScout\'s road network' }; if (!p.length) continue; var L = leg(p); coords = coords.length ? coords.concat(L.coords.slice(1)) : L.coords; delete L.coords; legs.push(L); }
+      for (var i = 1; i < ids.length; i++) { var p = astar(ids[i - 1], ids[i], o); if (!p || (!p.length && hav(pts[i - 1], pts[i]) > 20)) return { code: 'NoRoute', message: 'No route in CurveScout\'s road network' }; if (!p.length) continue; var L = leg(p); coords = coords.length ? coords.concat(L.coords.slice(1)) : L.coords; delete L.coords; legs.push(L); }
       var D = legs.reduce(function (a, l) { return a + l.distance; }, 0), T = legs.reduce(function (a, l) { return a + l.duration; }, 0);
+      /* audit R47-04: distinct stops never get an 'Ok' with an empty or one-point road (78 m case) */
+      if (coords.length < 2 && hav(pts[0], pts[pts.length - 1]) > 20) return { code: 'NoRoute', message: 'No usable road between these points in CurveScout\'s network' };
       return { code: 'Ok', source: 'curvescout-phone', routes: [{ distance: D, duration: T, weight: T, weight_name: 'routability', legs: legs, geometry: { type: 'LineString', coordinates: coords.map(function (p) { return [p[1], p[0]]; }) } }],
         waypoints: ids.map(function (n) { return { location: [G.lo[n] / 1e5, G.la[n] / 1e5], name: '' }; }) }; }); }
   /* ---- the switch-over: every OSRM route request goes out as before; if OSRM blocks, refuses or is silent, the
