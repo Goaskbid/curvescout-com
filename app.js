@@ -20249,7 +20249,7 @@ async function csJgetGz(path, ms) {
   const out = Object.assign({}, a); for (const k of Object.keys(b)) out[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k] && typeof a[k] === 'object') ? Object.assign({}, a[k], b[k]) : b[k]; return out; }
 try { window.csJgetGz = csJgetGz; } catch (e) {}
 async function csRoadsIndex() {
-  if (CS_ROADS.idx === undefined) CS_ROADS.idx = (async () => { try { if (location.protocol === 'file:') return null; return await jget('data/roads/roads-index.json', 8000); } catch (e) { return null; } })();
+  if (CS_ROADS.idx === undefined) CS_ROADS.idx = (async () => { try { if (location.protocol === 'file:') return null; return await csJgetGz('data/roads/roads-index.json', 8000);  /* r49: the index may be stored compressed (live since r47) */ } catch (e) { return null; } })();
   return CS_ROADS.idx;
 }
 /* r36+: the turns of a ride's stored road (steps-<cell>.json, written by the same Codespace road job): [metres along,
