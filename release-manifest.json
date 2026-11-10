@@ -1,6 +1,6 @@
 {
- "build_id": "2026.46-r49",
- "build_date": "2026-11-10T08:58:49.007Z",
+ "build_id": "2026.46-r50",
+ "build_date": "2026-11-10T09:33:09.276Z",
  "release_profile": "local-seo-candidate-not-qualified",
  "permitted_network_hosts": [
   "same-origin",
@@ -233,8 +233,8 @@
   },
   {
    "path": "assets/phone-route.js",
-   "bytes": 13112,
-   "sha256": "5399eef64b18bb03b5af737400a75d89f264c7cfa658c5ef844d3edf09a73890"
+   "bytes": 14303,
+   "sha256": "4c67ed808eec9651343af8c7e9bf0a15d8b8193c3b91b2117df765f6d3c9b654"
   },
   {
    "path": "assets/scouts/elise/elise_approve.webp",
@@ -59104,7 +59104,7 @@
   {
    "path": "config.js",
    "bytes": 161764,
-   "sha256": "2f5687a8ce098ec487634897dccdfbb956d6b90a14edc11b5cff330cc87b9e28"
+   "sha256": "8916a4857b74480447c61558783568bf9433d0e1f42f6afe662bd11fae8517b7"
   },
   {
    "path": "data/cities.txt",
@@ -251284,7 +251284,7 @@
   {
    "path": "sw.js",
    "bytes": 10757,
-   "sha256": "aaf3358ea6ce5ca3866e10b3a81659595a1a36080bbf5c13cd822218ad0914bf"
+   "sha256": "c56c9f5a701b25d1500c03329aad02a7e409fe0e8237da160b36f4cb7cca622e"
   },
   {
    "path": "thursday.html",
@@ -251939,10 +251939,10 @@
  ],
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
  "file_count": 50381,
- "total_bytes": 921897791,
+ "total_bytes": 921898982,
  "release_date": "2026-11-10",
- "sw_cache": "curvescout-app-r49-20261110",
- "source_parent_commit": "c11264b",
+ "sw_cache": "curvescout-app-r50-20261110",
+ "source_parent_commit": "bbcd91f",
  "base_runtime_build_id": "2026.45-r47",
  "release_status": "HOLD",
  "seo_audit_date": "2026-11-10",
