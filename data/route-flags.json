@@ -1,0 +1,3256 @@
+{
+ "made": "2026-09-28",
+ "why": "routes that cannot be ridden as described",
+ "blocked": {
+  "sydney-old-pacific-highway-and-hunter-backroads": [
+   "held: 61 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "california-sierra-nevada-yosemite-doorway": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "s-o-paulo-serra-do-mar-and-ubatuba-coast": [
+   "held: 72 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "vancouver-british-columbia-sunshine-coast-ferry-ride": [
+   "held: 68 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "road-avenue-of-the-volcanoes": [
+   "held: 48 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "georgia-svaneti-road": [
+   "held: 54 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "ecuador-avenue-of-the-volcanoes": [
+   "held: 46 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "ecuador-avenue-of-the-volcanoes-latacunga-riobamba": [
+   "held: 34 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "ecuador-avenue-of-the-volcanoes-quito-chimborazo-reserve": [
+   "held: 34 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "ecuador-avenue-of-the-volcanoes-quito-riobamba": [
+   "held: 34 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "vancouver-british-columbia-sunshine-coast-ferry-ride-part-1": [
+   "held: 68 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "vancouver-british-columbia-sunshine-coast-ferry-ride-arc": [
+   "held: 68 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "road-avenue-of-the-volcanoes-part-1": [
+   "held: 34 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "road-avenue-of-the-volcanoes-part-4": [
+   "held: 48 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "road-avenue-of-the-volcanoes-arc": [
+   "held: 48 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "vancouver-british-columbia-kootenay-rockies-weekend-and-vancouver-britis": [
+   "held: 68 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-ciudadela-vinoyaco-grande-segment-botija-paqui-botija-paqui": [
+   "held: 64 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-jasmund-m-ns-klint": [
+   "held: 56 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-turi-norte-segment-camar-sur": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-catarpe-norte-segment-cupo-topain": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-caragshillo-canaro-tuncarta-historic-centre-of-santa-ana-de-los-rios-d": [
+   "held: 64 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-peine-norte-segment-turi-norte": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-camar-sur-segment-turi-norte": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-camar-sur-segment-turi-norte-2": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-camar-sur-segment-turi-norte-3": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-camar-sur-segment-turi-norte-4": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-chapitre-castello-di-rivoli": [
+   "held: 32 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "city-puerto-montt-dayout": [
+   "held: 42 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "city-puerto-montt-longday": [
+   "held: 42 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "city-dublin-longday": [
+   "held: 112 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "city-jeju-dayout": [
+   "held: 105 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "city-edinburgh-dayout": [
+   "held: 48 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-alamut-castle-and-related-fortifications-yengeh-emam": [
+   "crosses open water for 41 km",
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sams-kelayeh-fortification-yengeh-emam": [
+   "crosses open water for 41 km",
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gamzigrad-romuliana-domogled-valea-cernei-domogled-coronin": [
+   "held: 44 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-gamzigrad-romuliana-domogled-valea-cernei-domogled-coronin-2": [
+   "held: 44 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-dodong-seowon-tongdosa-temple": [
+   "held: 38 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-historic-centre-of-santa-ana-de-los-rios-d-segment-caragshillo-canaro-tuncarta": [
+   "held: 64 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-historic-centre-of-santa-ana-de-los-rios-d-segment-caragshillo-canaro-tuncarta-2": [
+   "held: 64 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-jasmund-m-ns-klint-2": [
+   "held: 56 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-historic-villages-of-korea-hahoe-and-yang-sansa": [
+   "held: 38 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-seowon-yeongneung-cluster": [
+   "held: 58 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-sosu-seowon-baekje-historic-areas": [
+   "held: 38 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-dosan-seowon-yeongneung-cluster": [
+   "held: 58 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-byeongsan-seowon-sansa": [
+   "held: 38 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-bongjeongsa-temple-yeongneung-cluster": [
+   "held: 58 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-hahoe-cluster-hahoe-village-sansa": [
+   "held: 38 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-hahoe-cluster-byeongsanseowon-confucian-a-sansa": [
+   "held: 38 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-seolleung-cluster-royal-tombs-of-the-joseon-dynasty": [
+   "held: 58 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-quanzhou-emporium-of-the-world-in-song-yu-fujian-tulou": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-shihu-dock-fujian-tulou": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-anping-bridge-fujian-tulou": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-wanshou-pagoda-fujian-tulou": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-liusheng-pagoda-fujian-tulou": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-statue-of-mani-in-cao-an-temple-fujian-tulou": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-sites-of-cizao-kilns-fujian-tulou": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-old-and-new-towns-of-edinburgh-the-roman-fort-and-associated-civil-settle": [
+   "held: 30 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-old-and-new-towns-of-edinburgh-the-roman-fort-and-associated-civil-settle-2": [
+   "held: 30 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-borgring-historic-centres-of-stralsund-and-wismar": [
+   "held: 56 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-royal-tombs-of-the-joseon-dynasty-yangdong-cluster-oksanseowon-confucian-aca": [
+   "held: 36 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-jangneung-cluster-yangdong-cluster-oksanseowon-confucian-aca": [
+   "held: 36 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-socotra-c-darsa": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-greater-and-lesser-nagym-kalas-yeradzhi": [
+   "held: 56 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-central-balkan-peesh-skali-reserve-corabia-sucidava-celei": [
+   "held: 50 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-remains-of-villages-on-nozaki-island-ono-village-in-sotome": [
+   "held: 61 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-turi-norte-segment-camar-sur-2": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-cupo-topain-segment-camar-sur": [
+   "held: 56 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-catarpe-norte-segment-lasana-norte": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-lasana-norte-segment-camar-sur": [
+   "held: 61 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-lasana-norte-segment-camar-sur-2": [
+   "held: 57 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-lasana-norte-segment-camar-sur-3": [
+   "held: 58 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-el-tambo-honorato-vasquez-segment-caragshillo-canaro-tuncarta": [
+   "held: 66 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-caragshillo-canaro-tuncarta-segment-cerro-de-cojitambo": [
+   "held: 64 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-peine-norte-segment-turi-norte-2": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-camar-sur-segment-turi-norte-5": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-segment-camar-sur-segment-turi-norte-6": [
+   "held: 55 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-hegui-lou-kulangsu": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-huaiyuan-lou-kulangsu": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-gaobei-tulou-cluster-kulangsu": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-hekeng-tulou-cluster-kulangsu": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-tianloukeng-tulou-cluster-kulangsu": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-la-place-forte-de-mont-dauphin-lac-d-aiguebelette": [
+   "held: 32 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-chapitre-castello-di-rivoli-2": [
+   "held: 32 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-central-balkan-kozya-stena-reserve-traian-la-cula": [
+   "held: 32 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "places-ilha-do-mel-ecological-station-jacupiranga-state-park": [
+   "held: 61 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "au-thunderbolts-way": [
+   "held: 99 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "au-bunya-mountains-route": [
+   "held: 52 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "legend-avenue-of-the-volcanoes": [
+   "held: 48 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "legend-georgia-svaneti-road": [
+   "held: 54 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "legend-ecuador-avenue-of-the-volcanoes": [
+   "held: 46 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "x-ru-a-121-ladoga-and-sortavala": [
+   "crosses open water for 66 km",
+   "runs through a country riders must not be sent to"
+  ],
+  "x-pe-cusco-to-abancay-andes-road": [
+   "held: 48 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "x-ge-kutaisi-to-mestia": [
+   "held: 60 km between two checkpoints with no known place on land - a sea crossing is not ruled out until the road is routed"
+  ],
+  "venezuela-trans-andean-highway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "iran-chalus-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "iran-asalem-khalkhal-road": [
+   "runs through a country riders must not be sent to",
+   "fewer than two waypoints"
+  ],
+  "aukstaitija-lakes-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lambesar-castle-navizarsah-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-navizarsah-castle-lambesar-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qostinlar-fortification-navizarsah-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sa-adossaltaneh-alamut-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-naqa-archaeological-sites-of-the-island-of-mero": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-musawwarat-es-sufra-archaeological-sites-of-the-island-of-mero": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-nuri-el-kurru": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gonbad-e-qabus-jahan-nama": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hyrcanian-forests-abr": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-golestan-abr": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-farasfaj-hegmataneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hasam-abad-e-moshir-qanat-anjireh-sangi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gaz-mahyar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mahyar-sheikhali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-old-city-of-sana-a-ancient-dam-of-ma-rib-northern-bank": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kaldar-cave-chameshk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chameshk-yafteh-cave": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-samarra-south-zone-samarra-north-zone-al-mutawakkiliyya": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-shushtar-historical-hydraulic-system": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ardeshir-palace-shushtar-historical-hydraulic-system": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-archaeological-complex-shushtar-historical-hydraulic-system": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-kuchak-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-karvangah-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-dur-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fenjanabad-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-seh-tappeh-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qush-khaneh-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-qal-eh-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chelebi-oghlu-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-emamzadeh-dur-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ruins-and-kilns-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-dome-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mollah-hassan-kashi-tomb-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-pasture-including-mostafa-khan-titi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mehr-miandasht": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-titi-seh-tappeh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gast-roudkhan-qostinlar-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yengeh-emam-qostinlar-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-historic-city-of-yazd": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-rashti-anjireh-sangi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-miandasht-mehr": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mayamey-mazinan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abr-jahan-nama": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-neyestanak-masjed-e-jame-of-isfahan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-izadkhast-gaz": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gabr-abad-qasr-e-bahram": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-vazvan-masjed-e-jame-of-isfahan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ganjali-khan-bagh-e-shahzadeh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-gowhariz-ganjali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-shahzadeh-ganjali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-petroglyphs-of-the-white-sea-solovetsky-island": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-abas-abad-ahovan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chahar-bagh-qostinlar-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-khoshk-e-daran-qostinlar-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abr-golestan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-siahroud-e-roudbar-sirkuh-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tupischki-tupishki-vilnius-historic-centre": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-road-of-life-koltushskoe-highway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-alamut-castle-and-related-fortifications-sa-adossaltaneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lambesar-castle-sirkuh-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lambesar-castle-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-navizarsah-castle-sirkuh-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-navizarsah-castle-sams-kelayeh-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-navizarsah-castle-kojoor": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ilan-fortification-qostinlar-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sirkuh-fortification-lambesar-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qostinlar-fortification-sirkuh-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qostinlar-fortification-sams-kelayeh-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qostinlar-fortification-yengeh-emam": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qostinlar-fortification-navizarsah-castle-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sa-adossaltaneh-lambesar-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sa-adossaltaneh-navizarsah-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sa-adossaltaneh-alamut-castle-and-related-fortifications": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sa-adossaltaneh-yengeh-emam": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mir-castle-complex-beresnaki-paliepiukai": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mir-castle-complex-beresnaki-paliepiukai-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-assumption-cathedral-and-monastery-of-the-historic-and-architectural-complex-of-the-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-engelhardt-astronomical-observatory-historic-and-architectural-complex-of-the-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-assumption-cathedral-and-monastery-of-the-historic-and-architectural-complex-of-the-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-astronomical-observatories-of-kazan-federa-assumption-cathedral-and-monastery-of-the-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-and-architectural-complex-of-the-assumption-cathedral-and-monastery-of-the-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kazan-city-astronomical-observatory-assumption-cathedral-and-monastery-of-the-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-and-architectural-complex-of-the-assumption-cathedral-and-monastery-of-the-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-nuri-zuma": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zuma-nuri": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-persian-caravanserai-golestan-palace": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-trans-iranian-railway-parand": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-deyr-e-gachin-golestan-palace": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-trans-iranian-railway-parand-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hyrcanian-forests-gonbad-e-qabus": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hyrcanian-forests-abr-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-golestan-abr-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-golestan-abr-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-farasfaj-taj-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-farasfaj-hegmataneh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-taj-abad-farasfaj": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-and-re-vyborgskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-blocade-ring-koltushskoe-highway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-blocade-ring-historic-centre-of-saint-petersburg-and-re": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskaya-elevation-historic-centre-of-saint-petersburg": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-neva-river-with-banks-the-village-of-olgino": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-moskovskaya-road-the-ensemble-of-the-oreshek-fortress": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-steinbok-fermor-s-estate-vyborgskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-vyborgskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ligovsky-prospect-the-ensemble-of-the-zinoviev-s-datcha": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-zinoviev-s-datcha-ligovsky-prospect": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-palace-and-park-of-the-mikhailovskaya-vyborgskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-city-of-yazd-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-city-of-yazd-anjireh-sangi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-city-of-yazd-anjireh-sangi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-area-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-anjireh-ajori": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-meybod": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-1-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-1-anjireh-sangi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-1-anjireh-sangi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-2-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-2-anjireh-sangi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-2-anjireh-sangi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-3-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-3-anjireh-sangi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-3-anjireh-sangi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-zarch-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-zarch-anjireh-sangi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-zarch-anjireh-sangi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hasam-abad-e-moshir-qanat-anjireh-ajori": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hasam-abad-e-moshir-qanat-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hasam-abad-e-moshir-qanat-anjireh-sangi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-dolat-abad-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-dolat-abad-anjireh-sangi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-dolat-abad-anjireh-sangi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kernave-archaeological-site-vilnius-historic-centre-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kernave-archaeological-site-vilnius-historic-centre-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gaz-sheikhali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mahyar-meidan-emam": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mahyar-mozd-abad-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikhali-khan-masjed-e-jame-of-isfahan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikhali-khan-mahyar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-old-city-of-sana-a-ancient-dam-of-ma-rib-northern-bank-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-old-city-of-sana-a-ancient-dam-of-ma-rib-northern-bank-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-eram-persepolis": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-eram-sarvestan-sarvestan-monument": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kaldar-cave-yafteh-cave": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yafteh-cave-chameshk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chameshk-kaldar-cave": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-samarra-archaeological-city-al-istablat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-samarra-south-zone-samarra-archaeological-city": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-al-huwaysilat-upper-samarra-centre-zone": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-al-huwaysilat-lower-samarra-centre-zone": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-samarra-north-zone-al-mutawakkiliyya-al-istablat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikh-safi-al-din-khanegah-and-shrine-ens-dangyaband": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-dangyaband-sheikh-safi-al-din-khanegah-and-shrine-ens": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-dangyaband-saeen": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-dangyaband-saeen-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-istisuchay-valley-saeen": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-istisuchay-valley-sheikh-safi-al-din-khanegah-and-shrine-ens": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikh-safi-al-din-khanegah-and-shrine-ens-dangyaband-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-shushtar-historical-hydraulic-system-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-tchogha-zanbil": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-shushtar-historical-hydraulic-system-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ardeshir-palace-shushtar-historical-hydraulic-system-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ardeshir-palace-tchogha-zanbil": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ardeshir-palace-shushtar-historical-hydraulic-system-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-archaeological-complex-shushtar-historical-hydraulic-system-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-archaeological-complex-tchogha-zanbil": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-archaeological-complex-shushtar-historical-hydraulic-system-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-kuchak-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-kuchak-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-karvangah-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-karvangah-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-dur-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-dur-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fenjanabad-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fenjanabad-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-seh-tappeh-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-seh-tappeh-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qush-khaneh-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qush-khaneh-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-qal-eh-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-qal-eh-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chelebi-oghlu-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chelebi-oghlu-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-emamzadeh-dur-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-emamzadeh-dur-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ruins-and-kilns-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ruins-and-kilns-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-dome-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-dome-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mollah-hassan-kashi-tomb-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mollah-hassan-kashi-tomb-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-pasture-including-mostafa-khan-titi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-pasture-including-mostafa-khan-siahroud-e-roudbar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meschkanzi-meskonys-kernave-archaeological-site-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-beresnaki-paliepiukai-kernave-archaeological-site": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-beresnaki-paliepiukai-tupischki-tupishki": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-white-monuments-of-vladimir-and-suzdal-church-of-sts-boris-and-gleb": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-prince-castle-in-bogolyubovo-the-golden-gate": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-golden-gate-church-of-sts-boris-and-gleb": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-golden-gate-church-of-sts-boris-and-gleb-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-cathedral-of-st-demetrius-church-of-sts-boris-and-gleb": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-cathedral-of-the-assumption-church-of-sts-boris-and-gleb": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-church-of-sts-boris-and-gleb-the-golden-gate": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-monastery-of-our-savior-and-st-euthymius-the-golden-gate": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-church-of-the-intercession-on-the-river-ne-kremlin-of-suzdal-and-cathedral-of-the-nat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kremlin-of-suzdal-and-cathedral-of-the-nat-the-golden-gate": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mehr-abbas-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mehr-miandasht-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-titi-gast-roudkhan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-titi-seh-tappeh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-titi-navizarsah-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gast-roudkhan-lambesar-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gast-roudkhan-lambesar-castle-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-parand-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yengeh-emam-qostinlar-fortification-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yengeh-emam-qostinlar-fortification-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yengeh-emam-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meybod-hasam-abad-e-moshir-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-qanat-of-zarch": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-anjireh-ajori": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-historic-city-of-yazd-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-meybod": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-anjireh-sangi-area-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-saeen-dangyaband": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-saeen-lisar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-rashti-anjireh-ajori": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-rashti-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-rashti-anjireh-sangi-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-rashti-hasam-abad-e-moshir-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mazinan-miandasht": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-miandasht-mazinan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-miandasht-mehr-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abbas-abad-mayamey": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abbas-abad-abr": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abbas-abad-abr-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mayamey-abbas-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mayamey-mazinan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abr-gonbad-e-qabus": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abr-hyrcanian-forests": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-maranjab-qanat-of-vazvan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-maranjab-qanat-of-vazvan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sarayan-the-persian-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sarayan-fakhr-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kuhpayeh-qanat-of-the-moon": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kuhpayeh-mahyar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-neyestanak-mozd-abad-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-amin-abad-meidan-emam": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-izadkhast-meidan-emam": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gabr-abad-qasr-e-bahram-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-vazvan-gaz": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-vazvan-mozd-abad-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mozd-abad-qanat-bagh-e-fin": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mozd-abad-qanat-qanat-of-vazvan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-fin-mozd-abad-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-fin-qasr-e-bahram": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-jamal-abad-sheikh-safi-al-din-khanegah-and-shrine-ens": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ganjali-khan-bagh-e-shahzadeh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-gowhariz-ganjali-khan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-shahzadeh-ganjali-khan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qasr-e-bahram-gabr-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qasr-e-bahram-bagh-e-fin": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-sheikh-golestan-palace": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-boola-bagh-e-abas-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-abas-abad-ahovan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lisar-dangyaband": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lisar-saeen": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kojoor-alimestan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kojoor-vaz": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kojoor-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chahar-bagh-qostinlar-fortification-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chahar-bagh-qostinlar-fortification-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chahar-bagh-lambesar-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-khoshk-e-daran-qostinlar-fortification-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-khoshk-e-daran-qostinlar-fortification-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-khoshk-e-daran-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vaz-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vaz-kojoor-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-jahan-nama-abr": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-jahan-nama-gonbad-e-qabus": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-siahroud-e-roudbar-sirkuh-fortification-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sarvestan-sarvestan-monument-bagh-e-eram": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-the-moon-kuhpayeh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tupischki-tupishki-vilnius-historic-centre-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-big-zayatski-island-big-mucksalma-island": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-primorskoe-highway-northern-battery-no-7": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lindulovskaya-roshcha-fort-totleben": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-road-of-life-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-road-of-life-koltushskaya-elevation": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vyborgskaya-road-historic-centre-of-saint-petersburg-and-re": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-e-i-lopukhina-s-historic-centre-of-saint-petersburg": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-schlisselburg-old-ladoga-and-new-ladoga-c-koltushskaya-elevation": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-oreshek-fortress-historic-centre-of-saint-petersburg-and-re": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-kabul-longday": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-minsk-dayout": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-minsk-longday": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-vilnius-afternoon": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-kaunas-dayout": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-kaunas-longday": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-trakai-afternoon": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-trakai-dayout": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-moscow-dayout": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-moscow-longday": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-saint-petersburg-afternoon": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-saint-petersburg-longday": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-kazan-afternoon": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-kazan-dayout": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-kazan-longday": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-sochi-afternoon": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-sochi-dayout": [
+   "runs through a country riders must not be sent to"
+  ],
+  "city-lviv-afternoon": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-alamut-castle-and-related-fortifications-qostinlar-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-alamut-castle-and-related-fortifications-sa-adossaltaneh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-alamut-castle-sirkuh-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-alamut-castle-sa-adossaltaneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-alamut-castle-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lambesar-castle-sirkuh-fortification-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lambesar-castle-khoshk-e-daran": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lambesar-castle-chahar-bagh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-navizarsah-castle-sirkuh-fortification-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-navizarsah-castle-sa-adossaltaneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-navizarsah-castle-kojoor-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ilan-fortification-qostinlar-fortification-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ilan-fortification-sa-adossaltaneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ilan-fortification-kojoor": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sirkuh-fortification-lambesar-castle-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sirkuh-fortification-sa-adossaltaneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sirkuh-fortification-kojoor": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sirkuh-fortification-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qostinlar-fortification-sams-kelayeh-fortification-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qostinlar-fortification-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qostinlar-fortification-chahar-bagh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sams-kelayeh-fortification-qostinlar-fortification": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sams-kelayeh-fortification-sa-adossaltaneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sa-adossaltaneh-lambesar-castle-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sa-adossaltaneh-navizarsah-castle-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sa-adossaltaneh-yengeh-emam-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mir-castle-complex-beresnaki-paliepiukai-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mir-castle-complex-beresnaki-paliepiukai-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-assumption-cathedral-and-monastery-of-the-historic-and-architectural-complex-of-the": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-assumption-cathedral-and-monastery-of-the-bolgar-historical-and-archaeological-compl": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-engelhardt-astronomical-observatory-historic-and-architectural-complex-of-the": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-assumption-cathedral-and-monastery-of-the-historic-and-architectural-complex-of-the-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-assumption-cathedral-and-monastery-of-the-bolgar-historical-and-archaeological-compl-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-astronomical-observatories-of-kazan-federa-assumption-cathedral-and-monastery-of-the": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-astronomical-observatories-of-kazan-federa-bolgar-historical-and-archaeological-compl": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-and-architectural-complex-of-the-assumption-cathedral-and-monastery-of-the": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-and-architectural-complex-of-the-bolgar-historical-and-archaeological-compl": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kazan-city-astronomical-observatory-assumption-cathedral-and-monastery-of-the": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kazan-city-astronomical-observatory-bolgar-historical-and-archaeological-compl": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-and-architectural-complex-of-the-assumption-cathedral-and-monastery-of-the-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-and-architectural-complex-of-the-bolgar-historical-and-archaeological-compl-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bisotun-hegmataneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bisotun-hegmataneh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bisotun-hegmataneh-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-cultural-and-historic-ensemble-of-the-solo-small-mucksalma-island": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-solovetsky-island-small-mucksalma-island": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-big-mucksalma-island-big-zayatski-island": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-nuri-zuma-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zuma-nuri-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-golestan-palace-yengeh-emam": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-persian-caravanserai-golestan-palace-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-trans-iranian-railway-navizarsah-castle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-trans-iranian-railway-qasr-e-bahram": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-deyr-e-gachin-golestan-palace-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-trans-iranian-railway-navizarsah-castle-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-trans-iranian-railway-qasr-e-bahram-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-golestan-palace-yengeh-emam-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gonbad-e-qabus-jahan-nama-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hyrcanian-forests-abr-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-golestan-abr-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-golestan-abr-5": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gonbad-e-qabus-jahan-nama-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hegmataneh-farasfaj": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hegmataneh-bisotun": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hegmataneh-farasfaj-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hegmataneh-bisotun-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-taj-abad-farasfaj-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-taj-abad-bisotun": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-and-re-northern-battery-no-6": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-and-re-the-ensemble-of-the-oreshek-fortress": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-and-re-lindulovskaya-roshcha": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-and-re-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-blocade-ring-koltushskoe-highway-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-blocade-ring-yukkovskaya-elevation": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-blocade-ring-fort-seraya-loshad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-blocade-ring-fort-seraya-loshad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskoe-highway-moskovskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskoe-highway-the-palace-and-park-ensemble-of-the-villag": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskoe-highway-fort-seraya-loshad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskoe-highway-fort-seraya-loshad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskaya-elevation-moskovskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskaya-elevation-the-i-repin-estate-the-penates": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskaya-elevation-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-koltushskaya-elevation-park-the-menagerie": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-neva-river-with-banks-the-village-of-olgino-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-neva-river-with-banks-the-barrier-of-pile": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-neva-river-with-banks-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-neva-river-with-banks-fort-krasnaya-gorka-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-moskovskaya-road-the-english-park": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-moskovskaya-road-the-ensemble-of-the-oreshek-fortress-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-moskovskaya-road-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-steinbok-fermor-s-estate-koltushskoe-highway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-steinbok-fermor-s-estate-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-steinbok-fermor-s-estate-fort-seraya-loshad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-steinbok-fermor-s-estate-the-road-of-life": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-northern-battery-no-6": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-the-ensemble-of-the-oreshek-fortress": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-lindulovskaya-roshcha": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-centre-of-saint-petersburg-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ligovsky-prospect-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ligovsky-prospect-southern-battery-no-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ligovsky-prospect-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-scientific-town-institution-of-physiologis-moskovskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-scientific-town-institution-of-physiologis-the-i-repin-estate-the-penates": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-scientific-town-institution-of-physiologis-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-zinoviev-s-datcha-ligovsky-prospect-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-zinoviev-s-datcha-ropshinskoe-highway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-zinoviev-s-datcha-fort-seraya-loshad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-palace-and-park-of-the-mikhailovskaya-northern-battery-no-7": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-palace-and-park-of-the-mikhailovskaya-oranienbaumsky-springboard": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-palace-and-park-of-the-mikhailovskaya-lindulovskaya-roshcha": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-palace-and-park-of-the-mikhailovskaya-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-city-of-yazd-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-historic-city-of-yazd-kharanaq-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-area-2-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-anjireh-ajori-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-kharanaq-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zeynoddin-meybod-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-1-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-1-kharanaq-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-2-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-2-kharanaq-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-3-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-area-3-kharanaq-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-zarch-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-zarch-kharanaq-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hasam-abad-e-moshir-qanat-anjireh-ajori-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hasam-abad-e-moshir-qanat-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-hasam-abad-e-moshir-qanat-rashti": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-dolat-abad-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-dolat-abad-kharanaq-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-pahlavanpur-anjireh-ajori": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-pahlavanpur-kharanaq": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-pahlavanpur-rashti": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kernave-archaeological-site-vilnius-historic-centre": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kernave-archaeological-site-modernist-kaunas-architecture-of-optimism": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kernave-archaeological-site-modernist-kaunas-architecture-of-optimism-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kernave-archaeological-site-vilnius-historic-centre-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kernave-archaeological-site-modernist-kaunas-architecture-of-optimism-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kernave-archaeological-site-modernist-kaunas-architecture-of-optimism-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-landmarks-of-the-ancient-kingdom-of-saba-old-city-of-sana-a": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-awam-temple-old-city-of-sana-a": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bar-an-temple-old-city-of-sana-a": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ancient-city-of-ma-rib-old-city-of-sana-a": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ancient-dam-of-ma-rib-northern-bank-old-city-of-sana-a": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ancient-dam-of-ma-rib-southern-bank-old-city-of-sana-a": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ancient-dam-of-ma-rib-dam-of-aljufaynah-old-city-of-sana-a": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-masjed-e-jame-of-isfahan-sheikhali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-masjed-e-jame-of-isfahan-qanat-of-vazvan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-masjed-e-jame-of-isfahan-amin-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meidan-emam-sheikhali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meidan-emam-mozd-abad-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meidan-emam-amin-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gaz-sheikhali-khan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gaz-mozd-abad-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gaz-gabr-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gaz-gabr-abad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mahyar-sheikhali-khan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mahyar-mozd-abad-qanat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikhali-khan-masjed-e-jame-of-isfahan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikhali-khan-mahyar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikhali-khan-amin-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikhali-khan-gabr-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-masjed-e-jame-of-isfahan-sheikhali-khan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-masjed-e-jame-of-isfahan-qanat-of-vazvan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-masjed-e-jame-of-isfahan-amin-abad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-chehel-sotun-sheikhali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-chehel-sotun-qanat-of-vazvan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-chehel-sotun-amin-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meidan-emam-sheikhali-khan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meidan-emam-mozd-abad-qanat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meidan-emam-amin-abad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-old-city-of-sana-a-ancient-dam-of-ma-rib-northern-bank-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-old-city-of-sana-a-ancient-dam-of-ma-rib-northern-bank-5": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-pasargadae-bagh-e-eram": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-persian-garden-bagh-e-eram": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ancient-garden-of-pasargadae-bagh-e-eram": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-pasargadae-bagh-e-eram-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-persepolis-firuzabad-qaleh-dokhtar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-eram-the-persian-garden": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-eram-sarvestan-sarvestan-monument-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-persepolis-firuzabad-qaleh-dokhtar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-prehistoric-sites-of-the-khorramabad-valle-chameshk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kunji-cave-chameshk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kaldar-cave-chameshk-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yafteh-cave-chameshk-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ghamari-cave-chameshk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gar-arjeneh-rock-shelter-chameshk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chameshk-kaldar-cave-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-samarra-archaeological-city-samarra-south-zone": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-al-quwayr-samarra-south-zone": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-al-istablat-samarra-archaeological-city": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-samarra-south-zone-samarra-archaeological-city-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-samarra-centre-zone-samarra-archaeological-city": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qubbat-al-sulaibiyya-samarra-south-zone": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-samarra-north-zone-al-mutawakkiliyya-samarra-south-zone": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikh-safi-al-din-khanegah-and-shrine-ens-dangyaband-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikh-safi-al-din-khanegah-and-shrine-ens-jamal-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-dangyaband-sheikh-safi-al-din-khanegah-and-shrine-ens-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-dangyaband-saeen-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-dangyaband-saeen-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-istisuchay-valley-saeen-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-istisuchay-valley-saeen-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikh-safi-al-din-khanegah-and-shrine-ens-dangyaband-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sheikh-safi-al-din-khanegah-and-shrine-ens-jamal-abad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-shushtar-historical-hydraulic-system-susa-archaeological-complex": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-shushtar-historical-hydraulic-system-the-ahwar-of-southern-iraq-refuge-of-biod": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-shushtar-historical-hydraulic-system-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tchogha-zanbil-ardeshir-palace": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-afzal-susa-archaeological-complex": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-afzal-the-ahwar-of-southern-iraq-refuge-of-biod": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ardeshir-palace-shushtar-historical-hydraulic-system-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-susa-archaeological-complex-shushtar-historical-hydraulic-system-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-shushtar-historical-hydraulic-system-susa-archaeological-complex-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-shushtar-historical-hydraulic-system-the-ahwar-of-southern-iraq-refuge-of-biod-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tchogha-zanbil-ardeshir-palace-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-kuchak-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-kuchak-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-karvangah-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-karvangah-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-dur-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-dur-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fenjanabad-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fenjanabad-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-seh-tappeh-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-seh-tappeh-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qush-khaneh-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qush-khaneh-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-qal-eh-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-qal-eh-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chelebi-oghlu-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chelebi-oghlu-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-emamzadeh-dur-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-emamzadeh-dur-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ruins-and-kilns-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ruins-and-kilns-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-dome-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-dome-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tappeh-nur-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mollah-hassan-kashi-tomb-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mollah-hassan-kashi-tomb-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-pasture-including-mostafa-khan-titi-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-soltaniyeh-pasture-including-mostafa-khan-siahroud-e-roudbar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tabriz-historic-bazaar-complex-saeen": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-center-saeen": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sorkhab-saeen": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kabood-mosque-saeen": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-persian-qanat-sarayan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fakhr-abad-sarayan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qasabeh-gonabad-sarayan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-baladeh-fakhr-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vilnius-historic-centre-kernave-archaeological-site": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meschkanzi-meskonys-tupischki-tupishki": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-beresnaki-paliepiukai-kernave-archaeological-site-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-beresnaki-paliepiukai-tupischki-tupishki-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vilnius-historic-centre-kernave-archaeological-site-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-prince-castle-in-bogolyubovo-the-golden-gate-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-golden-gate-church-of-sts-boris-and-gleb-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-church-of-sts-boris-and-gleb-the-golden-gate-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-monastery-of-our-savior-and-st-euthymius-the-golden-gate-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-church-of-the-intercession-on-the-river-ne-kremlin-of-suzdal-and-cathedral-of-the-nat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kremlin-of-suzdal-and-cathedral-of-the-nat-the-golden-gate-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mehr-abbas-abad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mehr-miandasht-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-titi-gast-roudkhan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-titi-seh-tappeh-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-titi-navizarsah-castle-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gast-roudkhan-lambesar-castle-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gast-roudkhan-lambesar-castle-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-parand-the-persian-caravanserai": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-parand-chahar-bagh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yengeh-emam-qostinlar-fortification-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yengeh-emam-chahar-bagh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-meybod-hasam-abad-e-moshir-qanat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-qanat-of-zarch-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-hasam-abad-e-moshir-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-zeynoddin": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kharanaq-meybod-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-anjireh-sangi-hasam-abad-e-moshir-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-anjireh-sangi-zeynoddin": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-anjireh-sangi-hasam-abad-e-moshir-qanat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-anjireh-ajori-hasam-abad-e-moshir-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-anjireh-ajori-zeynoddin": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-saeen-dangyaband-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-saeen-lisar-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-rashti-anjireh-ajori-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-rashti-kharanaq-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-rashti-hasam-abad-e-moshir-qanat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mazinan-miandasht-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-miandasht-mazinan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-miandasht-mehr-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abbas-abad-mayamey-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abbas-abad-abr-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abbas-abad-abr-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mayamey-abbas-abad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mayamey-mazinan-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abr-hyrcanian-forests-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ahovan-bagh-e-abas-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-noushirvan-bagh-e-abas-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-maranjab-qanat-of-vazvan-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-maranjab-qanat-of-vazvan-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sarayan-the-persian-qanat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sarayan-fakhr-abad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sarayan-fakhr-abad-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kuhpayeh-qanat-of-the-moon-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kuhpayeh-mozd-abad-qanat": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-neyestanak-mozd-abad-qanat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-amin-abad-sheikhali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-amin-abad-meidan-emam-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-izadkhast-meidan-emam-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gabr-abad-qasr-e-bahram-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-gabr-abad-sheikhali-khan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-vazvan-gaz-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-vazvan-maranjab": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mozd-abad-qanat-bagh-e-fin-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-mozd-abad-qanat-mahyar": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-fin-mozd-abad-qanat-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-fin-qasr-e-bahram-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-jamal-abad-sheikh-safi-al-din-khanegah-and-shrine-ens-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-ganjali-khan-bagh-e-shahzadeh-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-gowhariz-ganjali-khan-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-shahzadeh-ganjali-khan-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qasr-e-bahram-bagh-e-fin-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-sheikh-trans-iranian-railway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-sheikh-golestan-palace-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-boola-bagh-e-abas-abad-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-bagh-e-abas-abad-ahovan-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lisar-saeen-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kojoor-alimestan-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-kojoor-golestan-palace": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chahar-bagh-qostinlar-fortification-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chahar-bagh-sa-adossaltaneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-chahar-bagh-lambesar-castle-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-khoshk-e-daran-qostinlar-fortification-4": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-khoshk-e-daran-sa-adossaltaneh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-khoshk-e-daran-chahar-bagh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-alimestan-chahar-bagh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-alimestan-chahar-bagh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vaz-chahar-bagh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vaz-khoshk-e-daran": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-abr-bagh-e-abas-abad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-jahan-nama-gonbad-e-qabus-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-siahroud-e-roudbar-sirkuh-fortification-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-siahroud-e-roudbar-seh-tappeh": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sarvestan-sarvestan-monument-bagh-e-eram-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-qanat-of-the-moon-kuhpayeh-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-uruk-archaeological-city-the-west-hammar-marshes": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-tupischki-tupishki-meschkanzi-meskonys": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-small-zayatsky-big-mucksalma-island": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-big-zayatski-island-big-mucksalma-island-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zelenogorsky-historical-centre-of-the-town-of-lomonosov": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zelenogorsky-ligovsky-prospect": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-zelenogorsky-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-park-dubki-southern-battery-no-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-park-dubki-volkhonskoe-highway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-park-dubki-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-primorskoe-highway-northern-battery-no-7-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-primorskoe-highway-historical-centre-of-the-town-of-lomonosov": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-primorskoe-highway-the-ensemble-of-the-zinoviev-s-datcha": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-terioki-the-coastal-fort-reef": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-terioki-peterhofskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-terioki-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-terioki-park-the-menagerie": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lindulovskaya-roshcha-fort-totleben-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lindulovskaya-roshcha-the-park-alexandria": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lindulovskaya-roshcha-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-lindulovskaya-roshcha-the-blocade-ring-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-northern-battery-no-6-the-mordvinov-s-estate": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-northern-battery-no-6-railway-saint-petersburg-pavlovsk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-northern-battery-no-6-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-northern-battery-no-7-the-palace-and-park-ensemble-sergievka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-northern-battery-no-7-the-palace-and-park-ensemble-of-the-villag": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-northern-battery-no-7-park-the-menagerie": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-i-repin-estate-the-penates-fort-alexander-i": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-i-repin-estate-the-penates-peterhofskaya-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-i-repin-estate-the-penates-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-i-repin-estate-the-penates-historical-centre-of-the-town-of-gatchina": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fort-totleben-the-palace-and-park-ensemble-sobstvennaya": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fort-totleben-the-palace-and-park-ensemble-of-the-villag": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-fort-totleben-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-cemetery-of-the-village-of-komarovo-fort-peter-i": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-cemetery-of-the-village-of-komarovo-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-cemetery-of-the-village-of-komarovo-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-road-of-life-the-blocade-ring-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-road-of-life-p-k-alexandrov-s-datcha": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-road-of-life-park-the-menagerie": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-road-of-life-dudergof": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sestroretsky-razliv-the-maximov-s-datcha": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sestroretsky-razliv-krasnoe-selo": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sestroretsky-razliv-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-sestroretsky-razliv-schlisselburg-old-ladoga-and-new-ladoga-c": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-village-of-olgino-the-neva-river-with-banks": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-village-of-olgino-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-village-of-olgino-fort-seraya-loshad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yukkovskaya-elevation-historic-centre-of-saint-petersburg-and-re": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yukkovskaya-elevation-dudergofskaya-elevation": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yukkovskaya-elevation-prioratsky-park": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-yukkovskaya-elevation-yu-p-samoilova-s-villa": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-park-nearest-dubki-fort-peter-i": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-park-nearest-dubki-dudergof": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-park-nearest-dubki-schlisselburg-old-ladoga-and-new-ladoga-c": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vyborgskaya-road-northern-battery-no-6": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vyborgskaya-road-oranienbaumsky-springboard": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vyborgskaya-road-fort-krasnaya-gorka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-vyborgskaya-road-fort-krasnaya-gorka-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-shuvalov-s-northern-battery-no-6": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-shuvalov-s-the-maximov-s-datcha": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-shuvalov-s-the-palace-and-park-ensemble-of-the-villag": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-shuvalov-s-fort-seraya-loshad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-e-i-lopukhina-s-northern-battery-no-3": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-e-i-lopukhina-s-the-blocade-ring": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-e-i-lopukhina-s-the-palace-and-park-ensemble-of-the-villag": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-schlisselburg-old-ladoga-and-new-ladoga-c-scientific-town-institution-of-physiologis": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-schlisselburg-old-ladoga-and-new-ladoga-c-the-e-i-lopukhina-s": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-schlisselburg-old-ladoga-and-new-ladoga-c-highway-pushkin-gatchina": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-schlisselburg-old-ladoga-and-new-ladoga-c-sestroretsky-razliv": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-oreshek-fortress-scientific-town-institution-of-physiologis": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-oreshek-fortress-historic-centre-of-saint-petersburg-and-re-2": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-oreshek-fortress-highway-pushkin-gatchina": [
+   "runs through a country riders must not be sent to"
+  ],
+  "places-the-ensemble-of-the-oreshek-fortress-sestroretsky-razliv": [
+   "runs through a country riders must not be sent to"
+  ],
+  "is-snaefellsnes-peninsula": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-nordkapp-e69": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-lofoten-norwegian-scenic-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-arctic-coast-way": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-norwegian-scenic-route-helgelandskysten": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-norwegian-scenic-route-lofoten": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-snaefellsnes-peninsula-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-westfjords-route-60-and-61": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-diamond-circle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-eastfjords-coastal-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-kjolur-highland-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-sprengisandur-highland-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-venezuela-trans-andean-highway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-iran-chalus-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "legend-iran-asalem-khalkhal-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ruskeala-and-pitkyaranta-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-road-of-life-to-lake-ladoga": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-priozersk-to-lahdenpohja-lake-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-impilahti-and-ladoga-skerries": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-petrozavodsk-to-sortavala-lake-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kivach-and-onega-north-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-white-sea-canal-and-velikaya-guba": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kizhi-road-approach-from-petrozavodsk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-onega-petroglyphs-road-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-solovetsky-ferry-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-segezha-to-white-sea": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kostomuksha-to-kalevala-forest-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kargopol-to-kenozero": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ferapontovo-and-belozersk-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-vologda-to-kirillov-monastery-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-arkhangelsk-to-onega-white-sea-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-petrozavodsk-to-pudozh-onega-shore": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-saint-petersburg-imperial-shore": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-shlisselburg-and-road-of-life-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-murmansk-to-teriberka-arctic-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-khibiny-mountains-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-apatity-and-monchegorsk-lakes-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kandalaksha-to-umba-white-sea-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-umba-to-varzuga-tersky-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-lovozero-tundra-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-murmansk-to-pechenga-arctic-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sredny-and-rybachy-peninsula-track": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kandalaksha-to-monchegorsk-arctic-circle": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sovereigns-road-solnechnogorsk-to-tver": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sovereigns-road-tver-to-vyshny-volochyok": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sovereigns-road-valdai-to-novgorod": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-valdai-and-staraya-russa-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-pskov-izborsk-and-pechory-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-vladimir-suzdal-white-monuments-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-suzdal-to-yuryev-polsky-backroad": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-pereslavl-rostov-and-yaroslavl": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-yaroslavl-kostroma-and-plyos": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-uglich-myshkin-and-rybinsk-volga-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sergiev-posad-to-pereslavl": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-moscow-sergiev-posad-and-alexandrov": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-vologda-ferapontovo-heritage-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-vladimir-to-murom-oka-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kolomna-to-ryazan-oka-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-moscow-unesco-monuments-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-novgorod-and-ilmen-lake-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-moscow-to-kolomna-heritage-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kazan-to-sviyazhsk-volga-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kazan-observatories-and-sviyazhsk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kazan-to-bolgar-volga-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-samara-bend-and-zhiguli-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-shiryaevo-volga-cliffs-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-saratov-to-khvalynsk-volga-hills": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-nizhny-novgorod-gorodets-and-chkalovsk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ulyanovsk-to-sengiley-volga-upland": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ufa-inzer-and-beloretsk-mountain-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-beloretsk-abzakovo-and-magnitogorsk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sterlitamak-to-nugush-reservoir": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-shulgan-tash-cave-road-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ufa-to-shulgan-tash-expedition": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-demidov-route-yekaterinburg-to-nizhny-tagil": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-yekaterinburg-to-revda-ural-hills": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-zlatoust-satka-and-zyuratkul": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kyshtym-karabash-and-miass-lake-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-perm-to-kungur-karst-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-usva-and-gubakha-ural-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-virgin-komi-forest-road-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ufa-to-zlatoust-ural-crossing": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-samara-bend-full-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sochi-to-tuapse-black-sea-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-tuapse-dzhubga-and-gelendzhik-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-gelendzhik-novorossiysk-and-abrau-dyurso": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-novorossiysk-to-anapa-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-maikop-dakhovskaya-and-lago-naki": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-maikop-to-guzeripl-mountain-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-apsheronsk-to-guamka-gorge": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kislovodsk-to-dzhily-su-elbrus-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kislovodsk-to-bermamyt-plateau": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-dombay-mountain-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-cherkessk-to-arkhyz": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-nalchik-to-elbrus-and-azau": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-chegem-gorge-and-eltyubyu": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-aktoprak-pass-to-upper-balkaria": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-blue-lakes-and-upper-balkaria": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-fiagdon-and-dargavs-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-vladikavkaz-to-tsey-gorge": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-vladikavkaz-to-mamison-gorge": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sulak-canyon-gimri-and-gunib": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-gunib-gamsutl-and-chokh-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-makhachkala-to-derbent-caspian-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-derbent-to-samur-forest-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-grozny-to-kezenoy-am": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-dzhubga-to-sochi-full-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-teberda-arkhyz-mountain-traverse": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-biysk-to-gorno-altaysk-gateway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-gorno-altaysk-to-ust-sema": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-chemal-and-oroktoy-katun-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-seminsky-pass-climb": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-chike-taman-pass-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-chuya-and-katun-confluence-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kalbak-tash-to-aktash": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-aktash-to-kosh-agach-high-steppe": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kosh-agach-to-tashanta-border-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kyzyl-chin-mars-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ulagan-pass-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-katu-yaryk-pass-track": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-teletskoye-lake-north-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-teletskoye-south-shore-track": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-belokurikha-denisova-cave-route": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-belokurikha-altayskoye-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-full-chuysky-trakt-scenic-core": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-irkutsk-to-listvyanka-baikal-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-irkutsk-slyudyanka-and-baikalsk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-tunkinsky-trakt-to-arshan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-arshan-to-mondy-sayan-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-irkutsk-to-olkhon-ferry": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-olkhon-ferry-to-khuzhir": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-khuzhir-to-cape-khoboy": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ulan-ude-to-goryachinsk-baikal-shore": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ulan-ude-to-ust-barguzin": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-barguzin-valley-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ulan-ude-to-kyakhta-tea-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-krasnoyarsk-to-divnogorsk-yenisei-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-yenisei-highway-abakan-to-kyzyl": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kyzyl-to-ak-dovurak-tuva-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kyzyl-to-erzin-uvs-nuur-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kyzyl-to-handagayty-western-tuva": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-chita-to-dauria-reserve": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-russky-island-coastal-loop": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-vladivostok-to-nakhodka-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-lazovsky-coast-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-gamov-peninsula-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-ussuriysk-to-arsenyev-sikhote-alin-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-arsenyev-to-rudnaya-pristan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-dalnegorsk-plastun-and-terney-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-khabarovsk-to-sikachi-alyan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-khabarovsk-to-komsomolsk-on-amur": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-komsomolsk-to-sovetskaya-gavan": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-yuzhno-sakhalinsk-to-kholmsk": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-aniva-bay-coastal-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-sakhalin-east-coast-highway": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-tikhaya-bay-and-zhdanko-road-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-vilyuchinsky-pass-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-khalaktyrsky-pacific-coast-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kamchatka-central-road-to-milkovo": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kamchatka-volcano-road-to-klyuchi": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kamchatka-okhotsk-coast-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-magadan-to-ola-okhotsk-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kolyma-highway-magadan-to-yagodnoye": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kolyma-highway-yakutsk-to-khandyga": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-lena-highway-yakutsk-to-neryungri": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-lena-pillars-road-and-boat-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-tynda-to-neryungri-bam-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-norilsk-to-talnakh-putorana-approach": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-curonian-spit-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "x-ru-kaliningrad-to-baltiysk-baltic-coast": [
+   "runs through a country riders must not be sent to"
+  ],
+  "golden-ring-east": [
+   "runs through a country riders must not be sent to"
+  ],
+  "vladimir-and-suzdal-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "kolomna-and-the-oka": [
+   "runs through a country riders must not be sent to"
+  ],
+  "zvenigorod-and-new-jerusalem": [
+   "runs through a country riders must not be sent to"
+  ],
+  "borodino-and-mozhaysk-road": [
+   "wanders more than 3.2x the ground it covers (audit 2026-10-12)"
+  ],
+  "dmitrov-and-the-volga-canal": [
+   "runs through a country riders must not be sent to"
+  ],
+  "tula-and-yasnaya-polyana": [
+   "runs through a country riders must not be sent to"
+  ],
+  "uglich-and-the-upper-volga": [
+   "runs through a country riders must not be sent to"
+  ],
+  "ryazan-and-the-meshchera": [
+   "runs through a country riders must not be sent to"
+  ],
+  "tver-to-torzhok": [
+   "runs through a country riders must not be sent to"
+  ],
+  "valdai-hills-road": [
+   "runs through a country riders must not be sent to"
+  ],
+  "serpukhov-and-the-oka-bend": [
+   "runs through a country riders must not be sent to"
+  ],
+  "klin-and-the-zavidovo-woods": [
+   "runs through a country riders must not be sent to"
+  ],
+  "susten-pass": [
+   "ride record cannot be resolved (audit 2026-10-12)"
+  ],
+  "tail-of-the-dragon": [
+   "fewer than two waypoints"
+  ],
+  "pig-trail-scenic-byway": [
+   "fewer than two waypoints"
+  ],
+  "serra-do-rio-do-rastro": [
+   "fewer than two waypoints"
+  ],
+  "transpantaneira": [
+   "fewer than two waypoints"
+  ],
+  "hai-van-pass": [
+   "fewer than two waypoints"
+  ],
+  "shiretoko-pass-road": [
+   "fewer than two waypoints"
+  ],
+  "swartberg-pass": [
+   "fewer than two waypoints"
+  ],
+  "spreetshoogte-pass": [
+   "fewer than two waypoints"
+  ],
+  "dades-gorge-road": [
+   "fewer than two waypoints"
+  ],
+  "todra-gorge-road": [
+   "fewer than two waypoints"
+  ],
+  "fluela-pass-road": [
+   "fewer than two waypoints"
+  ],
+  "villach-alpine-road": [
+   "fewer than two waypoints"
+  ],
+  "malta-high-alpine-road": [
+   "fewer than two waypoints"
+  ],
+  "hahntennjoch-route": [
+   "fewer than two waypoints"
+  ],
+  "passo-manghen-road": [
+   "fewer than two waypoints"
+  ],
+  "sardinia-alghero-to-bosa-coast-road": [
+   "fewer than two waypoints"
+  ],
+  "norwegian-scenic-route-gamle-strynefjellsvegen": [
+   "fewer than two waypoints"
+  ],
+  "aursjovegen": [
+   "fewer than two waypoints"
+  ],
+  "kjolur-highland-road": [
+   "fewer than two waypoints"
+  ],
+  "bealach-na-ba-road": [
+   "fewer than two waypoints"
+  ],
+  "kirkstone-pass-road": [
+   "fewer than two waypoints"
+  ],
+  "snake-pass": [
+   "fewer than two waypoints"
+  ],
+  "cat-and-fiddle-road": [
+   "fewer than two waypoints"
+  ],
+  "black-mountain-pass": [
+   "fewer than two waypoints"
+  ],
+  "naranjo-de-bulnes-and-cares-approach": [
+   "fewer than two waypoints"
+  ],
+  "monserrat-mountain-road": [
+   "fewer than two waypoints"
+  ],
+  "slovenia-mangart-saddle-road": [
+   "fewer than two waypoints"
+  ],
+  "colonial-parkway": [
+   "fewer than two waypoints"
+  ],
+  "kaibab-plateau-north-rim-parkway": [
+   "fewer than two waypoints"
+  ],
+  "mount-blue-sky-scenic-byway": [
+   "fewer than two waypoints"
+  ],
+  "guanella-pass-scenic-byway": [
+   "fewer than two waypoints"
+  ],
+  "salmon-river-scenic-byway": [
+   "fewer than two waypoints"
+  ],
+  "serra-do-corvo-branco": [
+   "fewer than two waypoints"
+  ],
+  "estrada-da-graciosa": [
+   "fewer than two waypoints"
+  ],
+  "meiringspoort-road": [
+   "fewer than two waypoints"
+  ],
+  "bainskloof-pass": [
+   "fewer than two waypoints"
+  ],
+  "franschhoek-pass": [
+   "fewer than two waypoints"
+  ],
+  "long-tom-pass-and-panorama-link": [
+   "fewer than two waypoints"
+  ],
+  "tunisia-chott-el-jerid-road": [
+   "fewer than two waypoints"
+  ],
+  "madagascar-avenue-of-the-baobabs-route": [
+   "fewer than two waypoints"
+  ],
+  "bhutan-chele-la-road": [
+   "fewer than two waypoints"
+  ],
+  "azerbaijan-khinaliq-road": [
+   "fewer than two waypoints"
+  ],
+  "guoliang-tunnel-road": [
+   "fewer than two waypoints"
+  ],
+  "aso-panorama-line": [
+   "fewer than two waypoints"
+  ],
+  "bokor-mountain-road": [
+   "fewer than two waypoints"
+  ],
+  "oman-musandam-khasab-road": [
+   "fewer than two waypoints"
+  ],
+  "jebel-jais-road": [
+   "fewer than two waypoints"
+  ],
+  "black-spur-drive": [
+   "fewer than two waypoints"
+  ],
+  "queen-charlotte-drive": [
+   "fewer than two waypoints"
+  ],
+  "highway-101": [
+   "a span no day ride can cover"
+  ],
+  "alaska-highway": [
+   "a span no day ride can cover"
+  ],
+  "great-river-road-mississippi-river": [
+   "a span no day ride can cover"
+  ],
+  "cape-ann-coast-loop": [
+   "checkpoint chain crosses its own start part way through (audit 2026-10-12)"
+  ],
+  "places-gisozi-a-gisakura-natural-forest": [
+   "a memorial site, not a ride to offer"
+  ],
+  "places-gisozi-b-gisakura-natural-forest": [
+   "a memorial site, not a ride to offer"
+  ],
+  "places-slaveni-la-cetate-necropolis-stolniceni-buridava-romana": [
+   "a memorial site, not a ride to offer"
+  ],
+  "places-slaveni-la-cetate-auxiliary-fort-stolniceni-buridava-romana": [
+   "a memorial site, not a ride to offer"
+  ],
+  "places-gisozi-a-nyungwe-national-park-2": [
+   "a memorial site, not a ride to offer"
+  ],
+  "places-gisozi-a-gisakura-natural-forest-2": [
+   "a memorial site, not a ride to offer"
+  ],
+  "places-gisozi-b-nyungwe-national-park-2": [
+   "a memorial site, not a ride to offer"
+  ],
+  "places-gisozi-b-gisakura-natural-forest-2": [
+   "a memorial site, not a ride to offer"
+  ]
+ }
+}

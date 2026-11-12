@@ -1,0 +1,21 @@
+# CurveScout: shrink the repository history to one fresh commit (the website stays exactly the same).
+# Start by hand: Actions > "CurveScout clean history" > Run workflow. Do not run it while the road job is running.
+name: CurveScout clean history
+on: { workflow_dispatch: {} }
+permissions: { contents: write }
+concurrency: { group: cs-roads, cancel-in-progress: false }
+jobs:
+  squash:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: One fresh commit with the current site, replacing the old history
+        run: |
+          git config user.name "curvescout-clean"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          BEFORE=$(git rev-parse HEAD); N=$(git ls-files | wc -l)
+          git checkout -q --orphan fresh && git add -A && git commit -qm "CurveScout site (history cleaned $(date -u +%F))"
+          [ "$(git ls-files | wc -l)" = "$N" ] || { echo "STOP: file count changed"; exit 1; }
+          [ -z "$(git diff --stat $BEFORE fresh)" ] || { echo "STOP: content differs"; exit 1; }
+          git push -q --force origin fresh:main && echo "History cleaned: same $N files, one commit."

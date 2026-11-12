@@ -1,0 +1,962 @@
+{
+ "enabled": true,
+ "contentVersion": "1",
+ "label": "CurveScout guide",
+ "poseFor": {
+  "intro": "neutral",
+  "action": "point",
+  "brief": "explain",
+  "good": "approve",
+  "warning": "caution"
+ },
+ "sizes": {
+  "feature": [
+   132,
+   220
+  ],
+  "featureMobile": 116,
+  "card": [
+   56,
+   72
+  ],
+  "roadbook": [
+   64,
+   80
+  ]
+ },
+ "poses": [
+  "neutral",
+  "point",
+  "explain",
+  "approve",
+  "caution"
+ ],
+ "guides": [
+  {
+   "id": "mara_line",
+   "name": "Mara",
+   "descriptor": "The Line",
+   "domain": "sporty_curvy",
+   "required": [
+    "routed_geometry",
+    "curve_metrics"
+   ],
+   "templates": [
+    "The best flow runs from {{segment_start}} to {{segment_end}}.",
+    "{{bend_section_km}} km of sustained bends. {{traffic_timing_note}}",
+    "Reverse it when {{direction_reason}}."
+   ],
+   "icon": "🏍️",
+   "accentHex": "#c81d2a"
+  },
+  {
+   "id": "kenji_view",
+   "name": "Kenji",
+   "descriptor": "The View",
+   "domain": "scenic",
+   "required": [
+    "routed_or_verified_corridor",
+    "verified_viewpoint_or_landscape_tag"
+   ],
+   "templates": [
+    "The view opens after {{location_name}}. Stop before the descent.",
+    "{{viewpoint_name}} adds about {{detour_minutes}} minutes.",
+    "Best light around {{light_window}}, based on your departure time."
+   ],
+   "icon": "⛰️",
+   "accentHex": "#3f8f8a"
+  },
+  {
+   "id": "elise_stop",
+   "name": "Elise",
+   "descriptor": "The Stop",
+   "domain": "food_stopovers",
+   "required": [
+    "stop_location",
+    "detour_or_on_route_distance"
+   ],
+   "templates": [
+    "{{place_name}} sits on the line - worth the stop for {{verified_reason}}.",
+    "{{place_name}} is {{detour_minutes}} minutes off the line and worth the stop for {{verified_reason}}.",
+    "You should reach {{place_name}} around {{arrival_time}}. {{opening_status_with_timestamp}}",
+    "Fuel before {{route_section}}. The next confirmed option is {{fuel_gap_km}} km later."
+   ],
+   "icon": "🍴",
+   "accentHex": "#c1913a"
+  },
+  {
+   "id": "leon_story",
+   "name": "Leon",
+   "descriptor": "The Story",
+   "domain": "history_culture",
+   "required": [
+    "historical_source",
+    "poi_location"
+   ],
+   "templates": [
+    "{{place_name}} is a named road in its own right: {{documented_note}}",
+    "{{place_name}} matters because {{verified_history_fact}}.",
+    "Stop on the {{parking_side}} side. The detour adds {{detour_minutes}} minutes.",
+    "This section follows {{verified_road_history_summary}}."
+   ],
+   "icon": "🏰",
+   "accentHex": "#8e2c43"
+  },
+  {
+   "id": "noor_brief",
+   "name": "Noor",
+   "descriptor": "The Brief",
+   "domain": "conditions_day_fit",
+   "required": [
+    "route_duration"
+   ],
+   "templates": [
+    "Leave by {{latest_departure}} to be home by {{back_by}}.",
+    "Summit forecast: {{summit_temp_c}} C, freezing level {{freezing_level_m}} m. Checked {{weather_checked_at}}.",
+    "{{verdict_label}} because {{verdict_reason}}."
+   ],
+   "icon": "🌦️",
+   "accentHex": "#d99a1e"
+  },
+  {
+   "id": "tomas_detour",
+   "name": "Tomas",
+   "descriptor": "The Detour",
+   "domain": "adventure_remote",
+   "required": [
+    "surface_or_route_classification"
+   ],
+   "templates": [
+    "{{surface_summary}}. {{surface_confidence_note}}",
+    "Save the roadbook before {{low_signal_section_name}}.",
+    "Fuel before {{remote_section_name}}. The next confirmed option is {{fuel_gap_km}} km later."
+   ],
+   "icon": "🧭",
+   "accentHex": "#6b8e3d"
+  }
+ ],
+ "mapping": {
+  "sport": "mara_line",
+  "touring": "noor_brief",
+  "easy": "kenji_view",
+  "adventure": "tomas_detour",
+  "food_or_fuel_module": "elise_stop",
+  "historical_poi_module": "leon_story"
+ },
+ "posesByGuide": {
+  "mara_line": [
+   "neutral",
+   "point",
+   "explain",
+   "approve",
+   "caution",
+   "reading_the_line",
+   "hairpin_call",
+   "direction_choice",
+   "gear_check",
+   "pace_note",
+   "corner_entry",
+   "road_shape",
+   "rhythm",
+   "technical_load",
+   "sign_off"
+  ],
+  "kenji_view": [
+   "neutral",
+   "point",
+   "explain",
+   "approve",
+   "caution",
+   "framing_the_view",
+   "light_window",
+   "stop_here",
+   "ridge_line",
+   "lens_down",
+   "horizon",
+   "photo_stop",
+   "summit_look",
+   "colour_hour",
+   "sign_off"
+  ],
+  "elise_stop": [
+   "neutral",
+   "point",
+   "explain",
+   "approve",
+   "caution",
+   "coffee_break",
+   "fuel_check",
+   "water_top_up",
+   "lunch_stop",
+   "timing_note",
+   "helmet_off",
+   "queue_warning",
+   "provisions",
+   "rest_reminder",
+   "sign_off"
+  ],
+  "leon_story": [
+   "neutral",
+   "point",
+   "explain",
+   "approve",
+   "caution",
+   "old_road",
+   "bridge_note",
+   "archive_page",
+   "named_road",
+   "pass_history",
+   "stone_marker",
+   "map_in_hand",
+   "context",
+   "provenance",
+   "sign_off"
+  ],
+  "noor_brief": [
+   "neutral",
+   "point",
+   "explain",
+   "approve",
+   "caution",
+   "forecast_read",
+   "altitude_warning",
+   "daylight_check",
+   "official_status",
+   "layer_up",
+   "return_time",
+   "freezing_level",
+   "window_closing",
+   "go_decision",
+   "sign_off"
+  ],
+  "tomas_detour": [
+   "neutral",
+   "point",
+   "explain",
+   "approve",
+   "caution"
+  ]
+ },
+ "assets": {
+  "mara_line/neutral": {
+   "path": "assets/scouts/mara/mara_neutral.webp",
+   "status": "final",
+   "sha256": "e0f39a270ddee5d34d734d8f5009b7d0d9b21328c04e726643ef5b9dbd30b6ea",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_neutral.png",
+   "core": true
+  },
+  "mara_line/point": {
+   "path": "assets/scouts/mara/mara_point.webp",
+   "status": "final",
+   "sha256": "9bb8f03db619d0953a976fbbf0bcb9dd43ae32c05d03860258c3d0935234ecc2",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_point.png",
+   "core": true
+  },
+  "mara_line/explain": {
+   "path": "assets/scouts/mara/mara_explain.webp",
+   "status": "final",
+   "sha256": "62f4898a9e52305fdd32163d86ec346eae97100050df5bb0e1fd45a8348f4220",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_explain.png",
+   "core": true
+  },
+  "mara_line/approve": {
+   "path": "assets/scouts/mara/mara_approve.webp",
+   "status": "final",
+   "sha256": "3b1cb3e63a191c2bf2a65fc3ad8a097dd72d5dfd9d83f387fa40c3e839b3d78c",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_approve.png",
+   "core": true
+  },
+  "mara_line/caution": {
+   "path": "assets/scouts/mara/mara_caution.webp",
+   "status": "final",
+   "sha256": "a62007fa385c09fe97672a8a12119aaeebf7a99d9ea42866bf62bc39b9f7fb4e",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_caution.png",
+   "core": true
+  },
+  "mara_line/reading_the_line": {
+   "path": "assets/scouts/mara/mara_reading_the_line.webp",
+   "status": "final",
+   "sha256": "cf4a21db7fb7c7c9d526b023c098a4e3edf741db17601b491bdb22c4dcea029a",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_reading_the_line.png",
+   "core": false
+  },
+  "mara_line/hairpin_call": {
+   "path": "assets/scouts/mara/mara_hairpin_call.webp",
+   "status": "final",
+   "sha256": "94afaff76184d4c2e88bf964597ca4e4d97db1aea6d863ca8b2f522db24dce06",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_hairpin_call.png",
+   "core": false
+  },
+  "mara_line/direction_choice": {
+   "path": "assets/scouts/mara/mara_direction_choice.webp",
+   "status": "final",
+   "sha256": "80659a8384807bc063554b31d110ef822658107186d1365245814bee08b02a94",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_direction_choice.png",
+   "core": false
+  },
+  "mara_line/gear_check": {
+   "path": "assets/scouts/mara/mara_gear_check.webp",
+   "status": "final",
+   "sha256": "93acb746079825b559287e2098dabc2b9473a1d2d0bf48a88a0bc1e249e0aad7",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_gear_check.png",
+   "core": false
+  },
+  "mara_line/pace_note": {
+   "path": "assets/scouts/mara/mara_pace_note.webp",
+   "status": "final",
+   "sha256": "814c36bf95a07c02615fd332e72eb9d2929ad628d9c2ccc9fb4353338fd15084",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_pace_note.png",
+   "core": false
+  },
+  "mara_line/corner_entry": {
+   "path": "assets/scouts/mara/mara_corner_entry.webp",
+   "status": "final",
+   "sha256": "8cd4354ce24d18d950717deae6057fe08583740dac6b6677a882f44c2f382316",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_corner_entry.png",
+   "core": false
+  },
+  "mara_line/road_shape": {
+   "path": "assets/scouts/mara/mara_road_shape.webp",
+   "status": "final",
+   "sha256": "5b48dfcf55731d245339593514ad7b4f77e23647d80a15f46218688e7387ce70",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_road_shape.png",
+   "core": false
+  },
+  "mara_line/rhythm": {
+   "path": "assets/scouts/mara/mara_rhythm.webp",
+   "status": "final",
+   "sha256": "975307bc79bf4927ea632839fbde833e772c7670a06c85e4b787b052c9a4c45f",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_rhythm.png",
+   "core": false
+  },
+  "mara_line/technical_load": {
+   "path": "assets/scouts/mara/mara_technical_load.webp",
+   "status": "final",
+   "sha256": "11faec4f227b26096cd44d4758c3ade7dc3e880b2c80d4fd4c8b328c10edb150",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_technical_load.png",
+   "core": false
+  },
+  "mara_line/sign_off": {
+   "path": "assets/scouts/mara/mara_sign_off.webp",
+   "status": "final",
+   "sha256": "efd4c97c66eed2036d6d8a11217ed246812d49ea0fd01ed58e09399ab3eea99d",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/mara/mara_sign_off.png",
+   "core": false
+  },
+  "kenji_view/neutral": {
+   "path": "assets/scouts/kenji/kenji_neutral.webp",
+   "status": "final",
+   "sha256": "c8002edd32561a53aa91a7f65f362168063fe10fbcb60a4d2084c68b951f5b8f",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_neutral.png",
+   "core": true
+  },
+  "kenji_view/point": {
+   "path": "assets/scouts/kenji/kenji_point.webp",
+   "status": "final",
+   "sha256": "4c3d6d7ca6328c748d3e9f5be0372a72bbb818ea97a48f4969598232dcd9cd7a",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_point.png",
+   "core": true
+  },
+  "kenji_view/explain": {
+   "path": "assets/scouts/kenji/kenji_explain.webp",
+   "status": "final",
+   "sha256": "86ca94d5d70368c560e4f7609ab5e2a802e78733a4c3eb8f9b27f61f3eac87b0",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_explain.png",
+   "core": true
+  },
+  "kenji_view/approve": {
+   "path": "assets/scouts/kenji/kenji_approve.webp",
+   "status": "final",
+   "sha256": "15f55666366b7758fe43119ed8836b571d2a2a301f6bcfd804e70cdcf14ac30f",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_approve.png",
+   "core": true
+  },
+  "kenji_view/caution": {
+   "path": "assets/scouts/kenji/kenji_caution.webp",
+   "status": "final",
+   "sha256": "c873f02a85924e5da963fc26b116ab9c030ff167f9147526898254f5646ced54",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_caution.png",
+   "core": true
+  },
+  "kenji_view/framing_the_view": {
+   "path": "assets/scouts/kenji/kenji_framing_the_view.webp",
+   "status": "final",
+   "sha256": "32f473389d75abbb330af84967425342dc75e76044b4f3b550d44771801139b3",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_framing_the_view.png",
+   "core": false
+  },
+  "kenji_view/light_window": {
+   "path": "assets/scouts/kenji/kenji_light_window.webp",
+   "status": "final",
+   "sha256": "46573ae84dcf9ba319984f1d32b2763ab9c1b0a1a3e051d3581ff4a38d78c3ae",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_light_window.png",
+   "core": false
+  },
+  "kenji_view/stop_here": {
+   "path": "assets/scouts/kenji/kenji_stop_here.webp",
+   "status": "final",
+   "sha256": "330ed4f18f285a349531fd870c3ef188aabb7081a3a3544248c2fa685c8de9b8",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_stop_here.png",
+   "core": false
+  },
+  "kenji_view/ridge_line": {
+   "path": "assets/scouts/kenji/kenji_ridge_line.webp",
+   "status": "final",
+   "sha256": "a29168d24ad3785c46d694be7bb529b98157956cc9edf351d15055b91d2d427c",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_ridge_line.png",
+   "core": false
+  },
+  "kenji_view/lens_down": {
+   "path": "assets/scouts/kenji/kenji_lens_down.webp",
+   "status": "final",
+   "sha256": "01c95190ee4b4c1588f63810e0d0bb2be84923cf3a8eedafe991179fa806ae26",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_lens_down.png",
+   "core": false
+  },
+  "kenji_view/horizon": {
+   "path": "assets/scouts/kenji/kenji_horizon.webp",
+   "status": "final",
+   "sha256": "e4bad5ca136d167a8e864a21b480f4efa6ca30f7c7a339538ce659ca2d81b31b",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_horizon.png",
+   "core": false
+  },
+  "kenji_view/photo_stop": {
+   "path": "assets/scouts/kenji/kenji_photo_stop.webp",
+   "status": "final",
+   "sha256": "2244904d588c88e178f9a57fd3bff85d2cd29b4f25f53406e2d07f0d8563964e",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_photo_stop.png",
+   "core": false
+  },
+  "kenji_view/summit_look": {
+   "path": "assets/scouts/kenji/kenji_summit_look.webp",
+   "status": "final",
+   "sha256": "632dbe0aa6af8b64684ae4df18b84a9804551f444ad488168b5be1fe1feb4783",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_summit_look.png",
+   "core": false
+  },
+  "kenji_view/colour_hour": {
+   "path": "assets/scouts/kenji/kenji_colour_hour.webp",
+   "status": "final",
+   "sha256": "c1cc1093dcfd94077bfe2417ffe29bbda5de09eff7df2380f6a0294e94438b6d",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_colour_hour.png",
+   "core": false
+  },
+  "kenji_view/sign_off": {
+   "path": "assets/scouts/kenji/kenji_sign_off.webp",
+   "status": "final",
+   "sha256": "0aa14d23cc79ba7f0127a9589b237b6475e5ea6232562698300a063d5e1e045a",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/kenji/kenji_sign_off.png",
+   "core": false
+  },
+  "elise_stop/neutral": {
+   "path": "assets/scouts/elise/elise_neutral.webp",
+   "status": "final",
+   "sha256": "27a5f0bcabbff776b47eebdff50c657fad5701b75885174da7535341525d6ee6",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_neutral.png",
+   "core": true
+  },
+  "elise_stop/point": {
+   "path": "assets/scouts/elise/elise_point.webp",
+   "status": "final",
+   "sha256": "d2b9409439a47cfbfe1c9d65ec7969b67dc9ed07d9123fb03b4fb33c818c32e3",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_point.png",
+   "core": true
+  },
+  "elise_stop/explain": {
+   "path": "assets/scouts/elise/elise_explain.webp",
+   "status": "final",
+   "sha256": "271323ff1041c5169da16131567ed99eb7402545fffd97f11662a3f3559447ef",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_explain.png",
+   "core": true
+  },
+  "elise_stop/approve": {
+   "path": "assets/scouts/elise/elise_approve.webp",
+   "status": "final",
+   "sha256": "ebeab0940b1b24ccc034956df26c6845518d788ac577a37a7f461bb49299b57d",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_approve.png",
+   "core": true
+  },
+  "elise_stop/caution": {
+   "path": "assets/scouts/elise/elise_caution.webp",
+   "status": "final",
+   "sha256": "35148143809c545756f897d27d4087ec7fc44c58c437c4a927c6d512429c41d3",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_caution.png",
+   "core": true
+  },
+  "elise_stop/coffee_break": {
+   "path": "assets/scouts/elise/elise_coffee_break.webp",
+   "status": "final",
+   "sha256": "52537a49aa7928b245c6e9c60519502d0af5913d6f59dc382d73fefd5de1bef2",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_coffee_break.png",
+   "core": false
+  },
+  "elise_stop/fuel_check": {
+   "path": "assets/scouts/elise/elise_fuel_check.webp",
+   "status": "final",
+   "sha256": "c9b2107e1fd79504bdaf06c649e5bdc279953a6ea8eb339bba0045c3fb672727",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_fuel_check.png",
+   "core": false
+  },
+  "elise_stop/water_top_up": {
+   "path": "assets/scouts/elise/elise_water_top_up.webp",
+   "status": "final",
+   "sha256": "9d978467e6288d6017a182b612f98aae60be92be4d02af8e3663a597c275ebab",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_water_top_up.png",
+   "core": false
+  },
+  "elise_stop/lunch_stop": {
+   "path": "assets/scouts/elise/elise_lunch_stop.webp",
+   "status": "final",
+   "sha256": "288e96d8449f534c5bce6a28c18733c1416a9e7fe35eb31513110a166e2c3a2e",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_lunch_stop.png",
+   "core": false
+  },
+  "elise_stop/timing_note": {
+   "path": "assets/scouts/elise/elise_timing_note.webp",
+   "status": "final",
+   "sha256": "07753db7c8ee8b7ea11894ca248b5b2bdc892326b31bb65ad6e51f755c32bff5",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_timing_note.png",
+   "core": false
+  },
+  "elise_stop/helmet_off": {
+   "path": "assets/scouts/elise/elise_helmet_off.webp",
+   "status": "final",
+   "sha256": "6030a98e1306e3b0efabb22558dc0fa5f01d07b1da7f5b36422ddad56470f0cd",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_helmet_off.png",
+   "core": false
+  },
+  "elise_stop/queue_warning": {
+   "path": "assets/scouts/elise/elise_queue_warning.webp",
+   "status": "final",
+   "sha256": "3a693444db4ffc48baccc5c201de8a000bec3c98c698d43d3ce3eb9314ffd3d8",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_queue_warning.png",
+   "core": false
+  },
+  "elise_stop/provisions": {
+   "path": "assets/scouts/elise/elise_provisions.webp",
+   "status": "final",
+   "sha256": "74729d503a32e74cbcc7bd477d31c8e948fc74ecc60ff0338487acb90949a00b",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_provisions.png",
+   "core": false
+  },
+  "elise_stop/rest_reminder": {
+   "path": "assets/scouts/elise/elise_rest_reminder.webp",
+   "status": "final",
+   "sha256": "9946adae46f0cdb87ae4af324562f6d75b183d47e523235456beb6db483affbb",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_rest_reminder.png",
+   "core": false
+  },
+  "elise_stop/sign_off": {
+   "path": "assets/scouts/elise/elise_sign_off.webp",
+   "status": "final",
+   "sha256": "8d5c09cde8db448a434fcaed9905b2873a991e6b729810f5e5e55eb7e9453d59",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/elise/elise_sign_off.png",
+   "core": false
+  },
+  "leon_story/neutral": {
+   "path": "assets/scouts/leon/leon_neutral.webp",
+   "status": "final",
+   "sha256": "f63bfe6b066e41b3434ca756816405d188cbbd103ad00a5ff7f4bb138c71705a",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_neutral.png",
+   "core": true
+  },
+  "leon_story/point": {
+   "path": "assets/scouts/leon/leon_point.webp",
+   "status": "final",
+   "sha256": "54d54459c6c838d15ab5bd4cfc014d47118c8fffdbca0ea8bf0013e5eed658fa",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_point.png",
+   "core": true
+  },
+  "leon_story/explain": {
+   "path": "assets/scouts/leon/leon_explain.webp",
+   "status": "final",
+   "sha256": "4ad6bc069a6ed9d287f9d37162b048147a90194e49270046a747d21b48980f78",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_explain.png",
+   "core": true
+  },
+  "leon_story/approve": {
+   "path": "assets/scouts/leon/leon_approve.webp",
+   "status": "final",
+   "sha256": "62fb74e622c3bf7f72455486211a36c8e4c3fdf25f44601c275295655dd463bf",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_approve.png",
+   "core": true
+  },
+  "leon_story/caution": {
+   "path": "assets/scouts/leon/leon_caution.webp",
+   "status": "final",
+   "sha256": "1bd2b9606cf8aa8d7a632fad52b184b01ee33fd8245905c4f36c2c55971a2665",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_caution.png",
+   "core": true
+  },
+  "leon_story/old_road": {
+   "path": "assets/scouts/leon/leon_old_road.webp",
+   "status": "final",
+   "sha256": "36a88cb1a6d86bd6d655b5ea232232863b41d905e7a69c2a1c4785e361fcb405",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_old_road.png",
+   "core": false
+  },
+  "leon_story/bridge_note": {
+   "path": "assets/scouts/leon/leon_bridge_note.webp",
+   "status": "final",
+   "sha256": "1a1e24f0681e92ff4b28f27c575fe21193a401fe62a997b43f73147fa56f0336",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_bridge_note.png",
+   "core": false
+  },
+  "leon_story/archive_page": {
+   "path": "assets/scouts/leon/leon_archive_page.webp",
+   "status": "final",
+   "sha256": "de643b9e77b2bf441a2a6e238e918c0a4c8990e3756f6fae2e4819a3ed6d463e",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_archive_page.png",
+   "core": false
+  },
+  "leon_story/named_road": {
+   "path": "assets/scouts/leon/leon_named_road.webp",
+   "status": "final",
+   "sha256": "0b605d7ecfa78afd5bc3248b75fdf3054dd68fc27b210641bfdb3166e78ab0d0",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_named_road.png",
+   "core": false
+  },
+  "leon_story/pass_history": {
+   "path": "assets/scouts/leon/leon_pass_history.webp",
+   "status": "final",
+   "sha256": "5a2b9684bcfefb45bf4419c4f83ec7c4c81b298bbb5abd3aa898259e21e3ebc5",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_pass_history.png",
+   "core": false
+  },
+  "leon_story/stone_marker": {
+   "path": "assets/scouts/leon/leon_stone_marker.webp",
+   "status": "final",
+   "sha256": "0a75cad97a97d508e168b6c3d19a8f5c1d6f3210b0c20a48474dac1680f2de47",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_stone_marker.png",
+   "core": false
+  },
+  "leon_story/map_in_hand": {
+   "path": "assets/scouts/leon/leon_map_in_hand.webp",
+   "status": "final",
+   "sha256": "6d2d1b1276f86ef0df4fc5d9a1176f4258e29210732370e5be4099407c3743f9",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_map_in_hand.png",
+   "core": false
+  },
+  "leon_story/context": {
+   "path": "assets/scouts/leon/leon_context.webp",
+   "status": "final",
+   "sha256": "8aa3b8a4d7345c6abe28b8dc4f18aabd4be7c932af1f51a45517a22f5ff496d2",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_context.png",
+   "core": false
+  },
+  "leon_story/provenance": {
+   "path": "assets/scouts/leon/leon_provenance.webp",
+   "status": "final",
+   "sha256": "e9da13fc80649cb4f487839cdbe35e410f4617c0dc2d2c378118647945cc0f21",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_provenance.png",
+   "core": false
+  },
+  "leon_story/sign_off": {
+   "path": "assets/scouts/leon/leon_sign_off.webp",
+   "status": "final",
+   "sha256": "707dff8bca090734f50fc98b7fa5bd6b65f50cf3ef3d5e10b68c49cb47a17e9d",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/leon/leon_sign_off.png",
+   "core": false
+  },
+  "noor_brief/neutral": {
+   "path": "assets/scouts/noor/noor_neutral.webp",
+   "status": "final",
+   "sha256": "ea9ec51dee79cbf9aa80bc5218060358b3032f53b67fd587c9d1599ee343212d",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_neutral.png",
+   "core": true
+  },
+  "noor_brief/point": {
+   "path": "assets/scouts/noor/noor_point.webp",
+   "status": "final",
+   "sha256": "7b0026b8439e7f42817126d809d328a6b26bdeae80ae757cc906ad4e0310b05f",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_point.png",
+   "core": true
+  },
+  "noor_brief/explain": {
+   "path": "assets/scouts/noor/noor_explain.webp",
+   "status": "final",
+   "sha256": "7af50a3cc8f922055f116e76ff7c4b416055de4d219a8c28bda7b258d0880b46",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_explain.png",
+   "core": true
+  },
+  "noor_brief/approve": {
+   "path": "assets/scouts/noor/noor_approve.webp",
+   "status": "final",
+   "sha256": "29edfe1b5e478511bb84ffdd77f3f947d930200107ac520438006fef159119d8",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_approve.png",
+   "core": true
+  },
+  "noor_brief/caution": {
+   "path": "assets/scouts/noor/noor_caution.webp",
+   "status": "final",
+   "sha256": "21d9e45c5c21fa742086df00e4d2e4ff4fc3ac6f09c23a5f9106c8c5af0a6d25",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_caution.png",
+   "core": true
+  },
+  "noor_brief/forecast_read": {
+   "path": "assets/scouts/noor/noor_forecast_read.webp",
+   "status": "final",
+   "sha256": "c369f2c322c498ae805fa96b5ecbc6006488b0a5e863fdd85c4e3dfb2ba688ca",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_forecast_read.png",
+   "core": false
+  },
+  "noor_brief/altitude_warning": {
+   "path": "assets/scouts/noor/noor_altitude_warning.webp",
+   "status": "final",
+   "sha256": "338f232c2a8d2b4bcb704907c7abcadd54914e98edae10ad226f8b5f164e7f39",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_altitude_warning.png",
+   "core": false
+  },
+  "noor_brief/daylight_check": {
+   "path": "assets/scouts/noor/noor_daylight_check.webp",
+   "status": "final",
+   "sha256": "da1635be67fb75eb8e542f859cabd43ac81d0720ed87b050f249b74bcc9e3e67",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_daylight_check.png",
+   "core": false
+  },
+  "noor_brief/official_status": {
+   "path": "assets/scouts/noor/noor_official_status.webp",
+   "status": "final",
+   "sha256": "8ee67183d5108d5458d692222b227da06c9ecffd1ab85f1303d73226214b3112",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_official_status.png",
+   "core": false
+  },
+  "noor_brief/layer_up": {
+   "path": "assets/scouts/noor/noor_layer_up.webp",
+   "status": "final",
+   "sha256": "b1b6e3f62ebf61e7094db7dc56497f0770d0db2ea8f932e9c77ac751076ed8f7",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_layer_up.png",
+   "core": false
+  },
+  "noor_brief/return_time": {
+   "path": "assets/scouts/noor/noor_return_time.webp",
+   "status": "final",
+   "sha256": "e711084c3f3a8e942a68d192490327badba03acbdd8215f8a29d82eecf963245",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_return_time.png",
+   "core": false
+  },
+  "noor_brief/freezing_level": {
+   "path": "assets/scouts/noor/noor_freezing_level.webp",
+   "status": "final",
+   "sha256": "cc68f91ac2a74d62854bbcc0b512a7f329ae45051b7d73aa969db60fce517f64",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_freezing_level.png",
+   "core": false
+  },
+  "noor_brief/window_closing": {
+   "path": "assets/scouts/noor/noor_window_closing.webp",
+   "status": "final",
+   "sha256": "021ae1485a44d5933bccad4297284e4048444f0f34a5faf9eee387ce3a92db87",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_window_closing.png",
+   "core": false
+  },
+  "noor_brief/go_decision": {
+   "path": "assets/scouts/noor/noor_go_decision.webp",
+   "status": "final",
+   "sha256": "7a63bd1aeca734808c8053369d0e7f0c6507921d3972c64baa5b428effc79a59",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_go_decision.png",
+   "core": false
+  },
+  "noor_brief/sign_off": {
+   "path": "assets/scouts/noor/noor_sign_off.webp",
+   "status": "final",
+   "sha256": "be74ec6cf4872b196011926301c6c9c9795a5fa2532ba9f3998160a4d0950b3b",
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/noor/noor_sign_off.png",
+   "core": false
+  },
+  "tomas_detour/neutral": {
+   "path": "assets/scouts/tomas/tomas_neutral.webp",
+   "status": "missing",
+   "sha256": null,
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/tomas/tomas_neutral.png",
+   "core": true
+  },
+  "tomas_detour/point": {
+   "path": "assets/scouts/tomas/tomas_point.webp",
+   "status": "missing",
+   "sha256": null,
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/tomas/tomas_point.png",
+   "core": true
+  },
+  "tomas_detour/explain": {
+   "path": "assets/scouts/tomas/tomas_explain.webp",
+   "status": "missing",
+   "sha256": null,
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/tomas/tomas_explain.png",
+   "core": true
+  },
+  "tomas_detour/approve": {
+   "path": "assets/scouts/tomas/tomas_approve.webp",
+   "status": "missing",
+   "sha256": null,
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/tomas/tomas_approve.png",
+   "core": true
+  },
+  "tomas_detour/caution": {
+   "path": "assets/scouts/tomas/tomas_caution.webp",
+   "status": "missing",
+   "sha256": null,
+   "width": 640,
+   "height": 640,
+   "master": "assets/scouts/masters/tomas/tomas_caution.png",
+   "core": true
+  }
+ }
+}
