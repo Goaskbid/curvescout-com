@@ -1,86 +1,98 @@
-/* CurveScout phone router (r42) - the backup when the public OSRM server blocks, refuses or does not answer.
-   It routes on CurveScout's own road network files (data/net, built by the road job from OpenStreetMap, ODbL) right
-   here on the rider's phone, and answers in exactly OSRM's format, so maps, trips, avoid-motorways and the navigator
-   (turn-by-turn, bends) keep working unchanged. Nothing is sent anywhere; no service is asked. */
+/* CurveScout phone-router repair, 2026-11-11.
+ * Local computation uses downloaded same-origin OSM-derived network tiles.
+ * The host sees tile requests and normal connection metadata. Online routing,
+ * when selected, sends coordinates to the configured routing provider first.
+ * Compatibility: legacy v1 compact tiles; optional stable node_ids in newer tiles.
+ * This reader cannot reconstruct missing OSM access/turn-restriction metadata.
+ * Preserve graph provenance and qualify the source graph separately for guidance.
+ */
 (function () {
   'use strict';
   if (window.CS_PHONE_ROUTE) return;
-  var rad = Math.PI / 180, SPEED = [110, 60, 90, 50, 75, 45, 65, 40, 55, 35, 45, 30, 10]; /* km/h by road class, see net-export.mjs */
-  var MAJOR_MAX = 7; /* motorway .. secondary_link are in the "major" files */
-  function hav(a, b) { var dLa = (b[0] - a[0]) * rad, dLo = (b[1] - a[1]) * rad; var s = Math.pow(Math.sin(dLa / 2), 2) + Math.cos(a[0] * rad) * Math.cos(b[0] * rad) * Math.pow(Math.sin(dLo / 2), 2); return 12742017.6 * Math.asin(Math.sqrt(s)); }
-  function bearing(a, b) { var y = Math.sin((b[1] - a[1]) * rad) * Math.cos(b[0] * rad), x = Math.cos(a[0] * rad) * Math.sin(b[0] * rad) - Math.sin(a[0] * rad) * Math.cos(b[0] * rad) * Math.cos((b[1] - a[1]) * rad); return (Math.atan2(y, x) / rad + 360) % 360; }
-  function dec(s) { var out = [], i = 0, la = 0, lo = 0; while (i < s.length) { for (var k = 0; k < 2; k++) { var r = 0, sh = 0, b; do { b = s.charCodeAt(i++) - 63; r |= (b & 31) << sh; sh += 5; } while (b >= 32); var d = (r & 1) ? ~(r >> 1) : (r >> 1); if (k === 0) la += d; else lo += d; } out.push([la, lo]); } return out; }
-  /* ---- the graph, filled square by square ---- */
-  var G = { key: new Map(), la: [], lo: [], adj: [], E: [], loaded: {}, byCell: {} };
-  function node(la, lo) { var k = la + ',' + lo, i = G.key.get(k); if (i === undefined) { i = G.la.length; G.key.set(k, i); G.la.push(la); G.lo.push(lo); G.adj.push([]); var c = Math.floor(la / 1e5) + '_' + Math.floor(lo / 1e5); (G.byCell[c] = G.byCell[c] || []).push(i); } return i; }
-  function addCell(j) { var e = j.e, nm = j.names || []; for (var i = 0; i < e.length; i += 10) { var a = node(e[i], e[i + 1]), b = node(e[i + 2], e[i + 3]); var id = G.E.length;
-      G.E.push({ a: a, b: b, len: e[i + 4], cls: e[i + 5], fl: e[i + 6], cv: e[i + 7], name: nm[e[i + 8]] || '', g: e[i + 9] });
-      G.adj[a].push(id); if (!(e[i + 6] & 1)) G.adj[b].push(-id - 1); } }
-  var pending = {};
-  function load(c, major) { var k = (major ? 'm' : 'f') + c; if (G.loaded['f' + c] || G.loaded[k]) return Promise.resolve(true); if (pending[k]) return pending[k];
-    return (pending[k] = fetch('/data/net/net' + (major ? 'm' : '') + '-' + c + '.json.gz').then(function (r) { if (!r.ok || !window.DecompressionStream) return null; return new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json(); }).then(function (j) { if (j && j.e) { addCell(j); G.loaded[k] = 1; return true; } delete pending[k]; return false; }).catch(function () { delete pending[k]; return false; }));   /* audit r44: a missing square is asked again next time, not remembered as failed */ }
-  /* squares near start and end in full detail, the corridor between them with the main roads only */
-  function cellsFor(pts) { var full = {}, major = {}; pts.forEach(function (p) { for (var dl = -1; dl <= 1; dl++) for (var dn = -1; dn <= 1; dn++) full[(Math.floor(p[0]) + dl) + '_' + (Math.floor(p[1]) + dn)] = 1; });
-    for (var i = 1; i < pts.length; i++) { var a = pts[i - 1], b = pts[i], n = Math.max(1, Math.ceil(hav(a, b) / 40000)); for (var s = 0; s <= n; s++) { var la = a[0] + (b[0] - a[0]) * s / n, lo = a[1] + (b[1] - a[1]) * s / n; for (var dl = -1; dl <= 1; dl++) for (var dn = -1; dn <= 1; dn++) { var c = (Math.floor(la) + dl) + '_' + (Math.floor(lo) + dn); if (!full[c]) major[c] = 1; } } }
-    return { full: Object.keys(full), major: Object.keys(major) }; }
-  function snap(p) { var best = -1, bd = Infinity, la = Math.round(p[0] * 1e5), lo = Math.round(p[1] * 1e5); for (var dl = -1; dl <= 1; dl++) for (var dn = -1; dn <= 1; dn++) { var list = G.byCell[(Math.floor(p[0]) + dl) + '_' + (Math.floor(p[1]) + dn)] || [];
-      for (var i = 0; i < list.length; i++) { var n = list[i]; if (!G.adj[n].length) continue; var d = Math.pow(G.la[n] - la, 2) + Math.pow((G.lo[n] - lo) * Math.cos(p[0] * rad), 2); if (d < bd) { bd = d; best = n; } } }
-    return bd < Math.pow(800, 2) ? best : -1; } /* audit r44: a stop is never moved more than about 800 m to reach the network - otherwise no route, never a silent move */
-  /* A* with a binary heap */
-  function astar(s, t, o) { var vmax = 110 / 3.6, tla = G.la[t] / 1e5, tlo = G.lo[t] / 1e5; var g = new Map(), prev = new Map(), H = [], done = new Set();
-    function h(n) { return hav([G.la[n] / 1e5, G.lo[n] / 1e5], [tla, tlo]) / vmax; }
-    function push(x) { H.push(x); var i = H.length - 1; while (i > 0) { var p = (i - 1) >> 1; if (H[p][0] <= H[i][0]) break; var t2 = H[p]; H[p] = H[i]; H[i] = t2; i = p; } }
-    function pop() { var top = H[0], last = H.pop(); if (H.length) { H[0] = last; var i = 0; for (;;) { var l = 2 * i + 1, r = l + 1, m = i; if (l < H.length && H[l][0] < H[m][0]) m = l; if (r < H.length && H[r][0] < H[m][0]) m = r; if (m === i) break; var t3 = H[m]; H[m] = H[i]; H[i] = t3; i = m; } } return top; }
-    g.set(s, 0); push([h(s), s]); var it = 0;
-    while (H.length) { var cur = pop(), u = cur[1]; if (done.has(u)) continue; done.add(u); if (u === t) break; if (++it > 3e6) break;
-      var gu = g.get(u), A = G.adj[u];
-      for (var k = 0; k < A.length; k++) { var id = A[k], rev = id < 0, e = G.E[rev ? -id - 1 : id], v = rev ? e.a : e.b;
-        if (o.motorway && (e.fl & 4)) continue; if (o.toll && (e.fl & 2)) continue;
-        var w = e.len / (SPEED[e.cls] / 3.6); if (o.curvy) { w *= (e.fl & 4) ? 1.8 : (e.cls >= 4 && e.cls <= 10 ? 1.15 - e.cv / 255 * 0.55 : 1.05); }
-        var gv = gu + w; if (gv < (g.has(v) ? g.get(v) : Infinity)) { g.set(v, gv); prev.set(v, id); push([gv + h(v), v]); } } }
-    if (!prev.has(t) && s !== t) return null; var path = [], n = t; while (n !== s) { var id2 = prev.get(n); path.push(id2); var e2 = G.E[id2 < 0 ? -id2 - 1 : id2]; n = id2 < 0 ? e2.b : e2.a; } return path.reverse(); }
-  function edgePts(id) { var rev = id < 0, e = G.E[rev ? -id - 1 : id]; var mid = e.g ? dec(e.g) : []; var pts = [[G.la[e.a], G.lo[e.a]]].concat(mid, [[G.la[e.b], G.lo[e.b]]]).map(function (p) { return [p[0] / 1e5, p[1] / 1e5]; }); return { e: e, pts: rev ? pts.reverse() : pts }; }
-  function mod(d) { d = ((d + 540) % 360) - 180; var a = Math.abs(d); return a < 20 ? 'straight' : a < 45 ? (d > 0 ? 'slight right' : 'slight left') : a < 135 ? (d > 0 ? 'right' : 'left') : (d > 0 ? 'sharp right' : 'sharp left'); }
-  /* OSRM-shaped answer: legs with steps, each step its geometry and maneuver */
-  function leg(path) { var steps = [], cur = null, dist = 0, dur = 0, all = [];
-    path.forEach(function (id, i) { var x = edgePts(id), e = x.e, pts = x.pts, d = e.len, t = d / (SPEED[e.cls] / 3.6); dist += d; dur += t;
-      all = all.length ? all.concat(pts.slice(1)) : pts.slice();
-      var bIn = cur ? bearing(cur.pts[cur.pts.length - 2], cur.pts[cur.pts.length - 1]) : 0, bOut = bearing(pts[0], pts[1]);
-      var newStep = !cur || e.name !== cur.name || Math.abs(((bOut - bIn + 540) % 360) - 180) > 60;
-      if (newStep) { if (cur) steps.push(cur.s); var m = mod(bOut - bIn), type = !cur ? 'depart' : (e.name === cur.name ? 'continue' : (m === 'straight' ? 'new name' : 'turn'));
-        if ((e.fl & 4) && cur && !(cur.fl & 4)) type = 'on ramp'; else if (!(e.fl & 4) && cur && (cur.fl & 4)) type = 'off ramp';
-        cur = { name: e.name, fl: e.fl, pts: pts.slice(), s: { distance: d, duration: t, name: e.name, mode: 'driving', geometry: { type: 'LineString', coordinates: pts.map(function (p) { return [p[1], p[0]]; }) }, maneuver: { type: type, modifier: !cur ? undefined : m, location: [pts[0][1], pts[0][0]], bearing_before: Math.round(bIn), bearing_after: Math.round(bOut) } } }; }
-      else { cur.s.distance += d; cur.s.duration += t; cur.pts = cur.pts.concat(pts.slice(1)); cur.s.geometry.coordinates = cur.s.geometry.coordinates.concat(pts.slice(1).map(function (p) { return [p[1], p[0]]; })); cur.fl = e.fl; } });
-    if (cur) steps.push(cur.s); var end = all[all.length - 1] || [0, 0];
-    steps.push({ distance: 0, duration: 0, name: '', mode: 'driving', geometry: { type: 'LineString', coordinates: [[end[1], end[0]], [end[1], end[0]]] }, maneuver: { type: 'arrive', location: [end[1], end[0]], bearing_before: 0, bearing_after: 0 } });
-    return { distance: dist, duration: dur, steps: steps, summary: '', weight: dur, coords: all }; }
-  function route(pts, o) { var cs = cellsFor(pts);
-    return Promise.all(cs.full.map(function (c) { return load(c, false); }).concat(cs.major.map(function (c) { return load(c, true); }))).then(function () {
-      var ids = pts.map(snap); if (ids.some(function (x) { return x < 0; })) return { code: 'NoSegment', message: 'Not in CurveScout\'s road network yet' };
-      for (var q = 1; q < ids.length; q++) if (ids[q] === ids[q - 1] && hav(pts[q - 1], pts[q]) > 20) return { code: 'NoRoute', message: 'Two stops fall on the same point of the network' };   /* audit r44: never an empty Ok route */
-      var legs = [], coords = [];
-      for (var i = 1; i < ids.length; i++) { var p = astar(ids[i - 1], ids[i], o); if (!p || (!p.length && hav(pts[i - 1], pts[i]) > 20)) return { code: 'NoRoute', message: 'No route in CurveScout\'s road network' }; if (!p.length) continue; var L = leg(p); coords = coords.length ? coords.concat(L.coords.slice(1)) : L.coords; delete L.coords; legs.push(L); }
-      var D = legs.reduce(function (a, l) { return a + l.distance; }, 0), T = legs.reduce(function (a, l) { return a + l.duration; }, 0);
-      /* audit R47-04: distinct stops never get an 'Ok' with an empty or one-point road (78 m case) */
-      if (coords.length < 2 && hav(pts[0], pts[pts.length - 1]) > 20) return { code: 'NoRoute', message: 'No usable road between these points in CurveScout\'s network' };
-      return { code: 'Ok', source: 'curvescout-phone', routes: [{ distance: D, duration: T, weight: T, weight_name: 'routability', legs: legs, geometry: { type: 'LineString', coordinates: coords.map(function (p) { return [p[1], p[0]]; }) } }],
-        waypoints: ids.map(function (n) { return { location: [G.lo[n] / 1e5, G.la[n] / 1e5], name: '' }; }) }; }); }
-  /* ---- the switch-over: every OSRM route request goes out as before; if OSRM blocks, refuses or is silent, the
-     phone answers instead (and stays in charge for 30 minutes before OSRM is tried again) ---- */
-  var orig = window.fetch.bind(window), fails = 0, KEY = 'csPhoneRouteUntil';
-  function phoneOnly() { try { return +sessionStorage.getItem(KEY) > Date.now(); } catch (e) { return fails >= 3; } }
-  function fail() { fails++; if (fails >= 3) try { sessionStorage.setItem(KEY, String(Date.now() + 1800000)); } catch (e) {} }
-  function parse(url) { var m = /\/route\/v1\/[a-z]+\/([^?]+)(\?(.*))?$/.exec(url); if (!m) return null; var pts = decodeURIComponent(m[1]).split(';').map(function (s) { var a = s.split(','); return [+a[1], +a[0]]; });
-    if (pts.length < 2 || pts.some(function (p) { return !isFinite(p[0]) || !isFinite(p[1]); })) return null; var q = m[3] || '', ex = (/exclude=([^&]*)/.exec(q) || [])[1] || '';
-    return { pts: pts, o: { motorway: /motorway/.test(ex), toll: /toll/.test(ex), curvy: /[?&]cs_curvy=1/.test('?' + q) } }; }
-  function answer(p) { return route(p.pts, p.o).then(function (j) { window.CS_PHONE_ROUTE.last = j.code; return new Response(JSON.stringify(j), { status: j.code === 'Ok' ? 200 : 400, headers: { 'content-type': 'application/json' } }); }); }
-  window.fetch = function (input, init) { var url = typeof input === 'string' ? input : (input && input.url) || '';
-    var p = /\/route\/v1\//.test(url) && /^https?:\/\/(router\.project-osrm\.org|routing\.openstreetmap\.de)\//.test(url) ? parse(url) : null; if (!p || window.CS_PHONE_ROUTE.off) return orig(input, init);
-    if (window.CS_PHONE_ROUTE.force) return answer(p);
-    if (phoneOnly()) return answer(p).then(function (mine) { if (mine.status === 200) return mine; try { sessionStorage.removeItem(KEY); } catch (e) {} fails = 0; return orig(input, init); });   /* audit r44: no local network here -> the online router is asked again, no 30-minute trap */
-    var timer, timeout = new Promise(function (res) { timer = setTimeout(function () { res('timeout'); }, 7000); });
-    return Promise.race([orig(input, init).then(function (r) { return r; }, function () { return 'error'; }), timeout]).then(function (r) { clearTimeout(timer);
-      if (r && r !== 'timeout' && r !== 'error' && r.status !== 429 && r.status !== 403 && r.status < 500) { fails = 0; return r; }
-      return answer(p).then(function (mine) { if (mine.status === 200) { fail(); return mine; } return r === 'timeout' || r === 'error' ? mine : r; }); }); };   /* only a local success counts towards staying on the phone */
-  window.CS_PHONE_ROUTE = { route: route, graph: G, force: false, off: false, last: null };
+  const RAD = Math.PI / 180, R = 6371008.8;
+  const SPEED = [110,60,90,50,75,45,65,40,55,35,45,30,10];
+  const rawFetch = window.fetch.bind(window);
+  const G = {key:new Map(),la:[],lo:[],adj:[],E:[],loaded:{},byCell:{},edgeCells:new Map(),edgeKeys:new Set(),legacyTiles:0};
+  const pending = new Map();
+  const wrap = x => ((x + 180) % 360 + 360) % 360 - 180;
+  const finite = x => typeof x === 'number' && Number.isFinite(x);
+  const valid = p => Array.isArray(p) && p.length === 2 && finite(p[0]) && finite(p[1]) && Math.abs(p[0])<=90 && Math.abs(p[1])<=180;
+  function abortError() {return new DOMException('Routing cancelled','AbortError');}
+  function check(signal) {if(signal && signal.aborted) throw abortError();}
+  function hav(a,b) {const x=(b[0]-a[0])*RAD,y=wrap(b[1]-a[1])*RAD;const s=Math.sin(x/2)**2+Math.cos(a[0]*RAD)*Math.cos(b[0]*RAD)*Math.sin(y/2)**2;return 2*R*Math.asin(Math.sqrt(Math.min(1,Math.max(0,s))));}
+  function bearing(a,b) {const dl=wrap(b[1]-a[1])*RAD;return (Math.atan2(Math.sin(dl)*Math.cos(b[0]*RAD),Math.cos(a[0]*RAD)*Math.sin(b[0]*RAD)-Math.sin(a[0]*RAD)*Math.cos(b[0]*RAD)*Math.cos(dl))/RAD+360)%360;}
+  function dec(s) {const out=[];let i=0,la=0,lo=0;while(i<s.length){for(let k=0;k<2;k++){let r=0,shift=0,b;do{if(i>=s.length||shift>30)throw Error('Malformed graph polyline');b=s.charCodeAt(i++)-63;if(b<0||b>63)throw Error('Malformed graph polyline');r|=(b&31)<<shift;shift+=5;}while(b>=32);const d=(r&1)?~(r>>1):r>>1;if(k===0)la+=d;else lo+=d;}if(!valid([la/1e5,lo/1e5]))throw Error('Invalid graph coordinate');out.push([la/1e5,lo/1e5]);}return out;}
+  const cell = p => Math.floor(p[0])+'_'+Math.floor(wrap(p[1]));
+  function node(la,lo,stable) {const k=stable===undefined?'xy:'+la+','+lo:'id:'+String(stable);let i=G.key.get(k);if(i===undefined){i=G.la.length;G.key.set(k,i);G.la.push(la);G.lo.push(lo);G.adj.push([]);const c=cell([la/1e5,lo/1e5]);(G.byCell[c]||(G.byCell[c]=[])).push(i);}else if(G.la[i]!==la||G.lo[i]!==lo)throw Error('Inconsistent graph node identity');return i;}
+  function indexEdge(e,id) {const keys=new Set();for(let i=1;i<e.pts.length;i++){const a=e.pts[i-1],b=e.pts[i];const n=Math.max(1,Math.ceil(Math.max(Math.abs(b[0]-a[0]),Math.abs(wrap(b[1]-a[1])))*4));for(let j=0;j<=n;j++)keys.add(cell([a[0]+(b[0]-a[0])*j/n,wrap(a[1]+wrap(b[1]-a[1])*j/n)]));}for(const k of keys){if(!G.edgeCells.has(k))G.edgeCells.set(k,new Set());G.edgeCells.get(k).add(id);}}
+  function addCell(j) {
+    if(!j||!Array.isArray(j.e)||j.e.length%10||!Array.isArray(j.names)||j.e.length>10000000)throw Error('Malformed network tile');
+    const stable=Array.isArray(j.node_ids)&&j.node_ids.length===j.e.length/5;
+    if(j.node_ids&&!stable)throw Error('Invalid node identity table');
+    const staged=[],identities=new Map();
+    for(let i=0;i<j.e.length;i+=10){const a=j.e.slice(i,i+10),pa=[a[0]/1e5,a[1]/1e5],pb=[a[2]/1e5,a[3]/1e5];
+      if(!a.slice(0,4).every(Number.isInteger)||!valid(pa)||!valid(pb)||!finite(a[4])||a[4]<=0||!Number.isInteger(a[5])||a[5]<0||a[5]>=SPEED.length||!Number.isInteger(a[6])||a[6]<0||a[6]>255||!finite(a[7])||a[7]<0||a[7]>255||!Number.isInteger(a[8])||a[8]<0||a[8]>=j.names.length||typeof j.names[a[8]]!=='string'||typeof a[9]!=='string')throw Error('Invalid network edge');
+      const sa=stable?j.node_ids[i/5]:undefined,sb=stable?j.node_ids[i/5+1]:undefined;
+      for(const [key,p] of [[sa,pa],[sb,pb]])if(key!==undefined){if(!['string','number'].includes(typeof key)||String(key)==='')throw Error('Invalid node identity');const k='id:'+key,old=G.key.get(k),prev=identities.get(k);if((old!==undefined&&(G.la[old]!==Math.round(p[0]*1e5)||G.lo[old]!==Math.round(p[1]*1e5)))||(prev&&(prev[0]!==p[0]||prev[1]!==p[1])))throw Error('Inconsistent graph identity');identities.set(k,p);}
+      const pts=[pa,...dec(a[9]),pb].filter((p,k,ps)=>k===0||hav(p,ps[k-1])>0.01);if(pts.length<2)throw Error('Empty network edge');
+      const cum=[0];for(let k=1;k<pts.length;k++)cum.push(cum[k-1]+hav(pts[k-1],pts[k]));
+      staged.push({a,sa,sb,pts,cum,total:cum.at(-1),name:j.names[a[8]]});
+    }
+    for(const x of staged){const a=x.a,key=JSON.stringify([x.sa,x.sb,...a.slice(0,8),x.name,a[9]]);if(G.edgeKeys.has(key))continue;const id=G.E.length,na=node(a[0],a[1],x.sa),nb=node(a[2],a[3],x.sb);const e={a:na,b:nb,len:a[4],cls:a[5],fl:a[6],cv:a[7],name:x.name,g:a[9],pts:x.pts,cum:x.cum,total:x.total};G.E.push(e);G.edgeKeys.add(key);G.adj[na].push(id);if(!(e.fl&1))G.adj[nb].push(-id-1);indexEdge(e,id);}
+    if(!stable)G.legacyTiles++;
+  }
+  async function decodeResponse(r) {const b=await r.arrayBuffer();if(b.byteLength>25000000)throw Error('Network tile exceeds byte limit');if(typeof window.csGunzipJson==='function')return window.csGunzipJson(b);const u=new Uint8Array(b);if(u[0]!==31||u[1]!==139)return JSON.parse(new TextDecoder().decode(u));if(typeof window.DecompressionStream==='function')return new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).json();if(window.pako&&typeof window.pako.ungzip==='function')return JSON.parse(window.pako.ungzip(u,{to:'string'}));throw Error('Gzip decoder unavailable');}
+  function waitFor(p,signal) {check(signal);if(!signal)return p;return new Promise((resolve,reject)=>{const onAbort=()=>{signal.removeEventListener('abort',onAbort);reject(abortError());};signal.addEventListener('abort',onAbort,{once:true});p.then(v=>{signal.removeEventListener('abort',onAbort);if(signal.aborted)reject(abortError());else resolve(v);},e=>{signal.removeEventListener('abort',onAbort);reject(e);});});}
+  async function load(c,major,signal) {
+    check(signal);const k=(major?'m':'f')+c;if(G.loaded['f'+c]||G.loaded[k])return true;
+    let task=pending.get(k);
+    if(!task){const ctl=new AbortController();task={ctl,users:0,done:false};pending.set(k,task);
+      task.promise=(async()=>{let timer;try{const body=(async()=>{const r=await rawFetch('/data/net/net'+(major?'m':'')+'-'+c+'.json.gz',{signal:ctl.signal});if(!r.ok)return null;return decodeResponse(r);})();const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>{ctl.abort();reject(Error('Network tile timed out'));},10000);});const j=await Promise.race([body,timeout]);check(ctl.signal);if(!j)return false;addCell(j);G.loaded[k]=1;return true;}catch(e){return false;}finally{clearTimeout(timer);task.done=true;if(pending.get(k)===task)pending.delete(k);}})();
+    }
+    task.users++;try{return await waitFor(task.promise,signal);}finally{task.users--;if(!task.users&&!task.done){task.ctl.abort();if(pending.get(k)===task)pending.delete(k);}}
+  }
+  function cellsFor(pts) {const full=new Set(),major=new Set();function around(p,set){for(let dl=-1;dl<=1;dl++)for(let dn=-1;dn<=1;dn++){const lat=Math.floor(p[0])+dl;if(lat< -90||lat>=90)continue;set.add(lat+'_'+Math.floor(wrap(Math.floor(p[1])+dn)));}}
+    pts.forEach(p=>around(p,full));for(let i=1;i<pts.length;i++){const a=pts[i-1],b=pts[i],n=Math.max(1,Math.ceil(hav(a,b)/40000));if(n>300)throw Error('Route exceeds local coverage budget');for(let s=0;s<=n;s++)around([a[0]+(b[0]-a[0])*s/n,wrap(a[1]+wrap(b[1]-a[1])*s/n)],major);}for(const c of full)major.delete(c);if(full.size+major.size>400)throw Error('Route exceeds local coverage budget');return [...full].map(c=>[c,false]).concat([...major].map(c=>[c,true]));}
+  async function loadAll(tasks,signal) {let cursor=0,found=0;await Promise.all(Array.from({length:Math.min(4,tasks.length)},async()=>{while(cursor<tasks.length){check(signal);const item=tasks[cursor++];if(await load(item[0],item[1],signal))found++;}}));return found;}
+  function allowed(e,o){return !(o.motorway&&(e.fl&4))&&!(o.toll&&(e.fl&2))&&!(o.ferry&&(e.fl&8));}
+  function snap(p,o) {const ids=new Set();for(let dl=-1;dl<=1;dl++)for(let dn=-1;dn<=1;dn++){const es=G.edgeCells.get((Math.floor(p[0])+dl)+'_'+Math.floor(wrap(Math.floor(p[1])+dn)));if(es)for(const id of es)ids.add(id);}let best=null;const scaleX=R*RAD*Math.max(0.000001,Math.cos(p[0]*RAD)),scaleY=R*RAD,limit=finite(o.maxSnapMeters)?Math.min(800,Math.max(0,o.maxSnapMeters)):800;
+    for(const id of ids){const e=G.E[id];if(!allowed(e,o))continue;for(let k=1;k<e.pts.length;k++){const a=e.pts[k-1],b=e.pts[k],ax=wrap(a[1]-p[1])*scaleX,ay=(a[0]-p[0])*scaleY,dx=wrap(b[1]-a[1])*scaleX,dy=(b[0]-a[0])*scaleY,l2=dx*dx+dy*dy,t=l2?Math.max(0,Math.min(1,-(ax*dx+ay*dy)/l2)):0;const q=[a[0]+(b[0]-a[0])*t,wrap(a[1]+wrap(b[1]-a[1])*t)],d=hav(p,q);if(d<=limit+0.000001&&(!best||d<best.distance-0.01)){best={edge:id,segment:k,t,point:q,distance:d,along:e.cum[k-1]+(e.cum[k]-e.cum[k-1])*t};}}}return best;}
+  function queryGraph(snaps) {const baseN=G.la.length,baseE=G.E.length,points=[],edges=[],adj=new Map(),cut=new Set(),groups=new Map(),ids=[];
+    const point=n=>n<baseN?[G.la[n]/1e5,G.lo[n]/1e5]:points[n-baseN];const edge=id=>id<baseE?G.E[id]:edges[id-baseE];
+    function adjacency(n){if(!adj.has(n))adj.set(n,n<baseN?G.adj[n].filter(x=>!cut.has(x<0?-x-1:x)):[]);return adj.get(n);}
+    snaps.forEach((s,i)=>{if(!groups.has(s.edge))groups.set(s.edge,[]);groups.get(s.edge).push({...s,index:i});});
+    for(const [eid,ss] of groups){const e=G.E[eid];cut.add(eid);const marks=[{at:0,node:e.a,point:e.pts[0]},{at:e.total,node:e.b,point:e.pts.at(-1)}];
+      for(const s of ss.sort((a,b)=>a.along-b.along)){let mark=marks.find(m=>Math.abs(m.at-s.along)<0.05);if(!mark){mark={at:s.along,node:baseN+points.length,point:s.point};points.push(s.point);marks.push(mark);}ids[s.index]=mark.node;}
+      marks.sort((a,b)=>a.at-b.at);for(let i=1;i<marks.length;i++){const a=marks[i-1],b=marks[i];if(b.at-a.at<0.01)continue;const pts=[a.point];for(let k=1;k<e.pts.length-1;k++)if(e.cum[k]>a.at+0.01&&e.cum[k]<b.at-0.01)pts.push(e.pts[k]);pts.push(b.point);const ne={...e,a:a.node,b:b.node,len:e.len*(b.at-a.at)/e.total,pts},id=baseE+edges.length;edges.push(ne);adjacency(a.node).push(id);if(!(e.fl&1))adjacency(b.node).push(-id-1);}
+    }
+    // A later cut may affect an adjacency already instantiated for a shared node.
+    for(const [n,list] of adj)adj.set(n,list.filter(id=>!cut.has(id<0?-id-1:id)));
+    return {ids,point,edge,adj:n=>adj.get(n)||(n<baseN?G.adj[n].filter(id=>(id<0?-id-1:id)<baseE&&!cut.has(id<0?-id-1:id)):[])};
+  }
+  async function astar(s,t,o,Q,signal) {const g=new Map([[s,0]]),prev=new Map(),done=new Set(),heap=[];const heuristic=n=>hav(Q.point(n),Q.point(t))/(110/3.6)*(o.curvy?0.6:1);
+    function push(x){heap.push(x);let i=heap.length-1;while(i){const p=(i-1)>>1;if(heap[p][0]<=heap[i][0])break;[heap[i],heap[p]]=[heap[p],heap[i]];i=p;}}
+    function pop(){const top=heap[0],last=heap.pop();if(heap.length){heap[0]=last;let i=0;for(;;){const l=i*2+1,r=l+1;let m=i;if(l<heap.length&&heap[l][0]<heap[m][0])m=l;if(r<heap.length&&heap[r][0]<heap[m][0])m=r;if(m===i)break;[heap[i],heap[m]]=[heap[m],heap[i]];i=m;}}return top;}
+    push([heuristic(s),s]);let n=0;while(heap.length){check(signal);const u=pop()[1];if(done.has(u))continue;done.add(u);if(u===t)break;if(++n>3000000)return null;if(n%4096===0)await new Promise(resolve=>setTimeout(resolve,0));for(const id of Q.adj(u)){const rev=id<0,e=Q.edge(rev?-id-1:id),v=rev?e.a:e.b;if(!allowed(e,o))continue;let cost=e.len/(SPEED[e.cls]/3.6);if(o.curvy)cost*=(e.fl&4)?1.8:(e.cls>=4&&e.cls<=10?1.15-e.cv/255*0.55:1.05);const score=g.get(u)+cost;if(score<(g.get(v)??Infinity)){g.set(v,score);prev.set(v,id);push([score+heuristic(v),v]);}}}
+    if(s!==t&&!prev.has(t))return null;const path=[];let at=t;while(at!==s){const id=prev.get(at);if(id===undefined||path.length>G.E.length+snapsBudget)return null;path.push(id);const e=Q.edge(id<0?-id-1:id);at=id<0?e.b:e.a;}return path.reverse();
+  }
+  const snapsBudget=400;
+  function modifier(d){d=wrap(d);const a=Math.abs(d);return a<20?'straight':a<45?(d>0?'slight right':'slight left'):a<135?(d>0?'right':'left'):(d>0?'sharp right':'sharp left');}
+  function leg(path,Q){const steps=[];let current=null,coords=[],distance=0,duration=0;for(const id of path){const e=Q.edge(id<0?-id-1:id),pts=id<0?e.pts.slice().reverse():e.pts.slice(),seconds=e.len/(SPEED[e.cls]/3.6);coords=coords.length?coords.concat(pts.slice(1)):pts;distance+=e.len;duration+=seconds;const before=current?bearing(current.pts.at(-2),current.pts.at(-1)):0,after=bearing(pts[0],pts[1]),m=modifier(after-before),fresh=!current||e.name!==current.name||Math.abs(wrap(after-before))>60;if(fresh){if(current)steps.push(current.step);let type=!current?'depart':e.name===current.name?'continue':m==='straight'?'new name':'turn';if(current&&(e.fl&4)&&!(current.fl&4))type='on ramp';else if(current&&!(e.fl&4)&&(current.fl&4))type='off ramp';current={name:e.name,fl:e.fl,pts,step:{distance:e.len,duration:seconds,name:e.name,mode:'driving',geometry:{type:'LineString',coordinates:pts.map(p=>[p[1],p[0]])},maneuver:{type,modifier:steps.length?m:undefined,location:[pts[0][1],pts[0][0]],bearing_before:Math.round(before),bearing_after:Math.round(after)}}};}else{current.step.distance+=e.len;current.step.duration+=seconds;current.pts=current.pts.concat(pts.slice(1));current.step.geometry.coordinates=current.step.geometry.coordinates.concat(pts.slice(1).map(p=>[p[1],p[0]]));current.fl=e.fl;}}
+    if(current)steps.push(current.step);if(coords.length<2)return null;const end=coords.at(-1);steps.push({distance:0,duration:0,name:'',mode:'driving',geometry:{type:'LineString',coordinates:[[end[1],end[0]],[end[1],end[0]]]},maneuver:{type:'arrive',location:[end[1],end[0]],bearing_before:0,bearing_after:0}});return{distance,duration,weight:duration,steps,summary:'',coords};}
+  async function route(pts,o){o={...(o||{})};const signal=o.signal;check(signal);if(!Array.isArray(pts)||pts.length<2||pts.length>100||!pts.every(valid))return{code:'InvalidQuery',message:'Every required stop needs valid coordinates'};
+    const visits=pts.map(p=>p.slice());let tasks;try{tasks=cellsFor(visits);}catch(e){return{code:'NoRoute',message:e.message};}const loaded=await loadAll(tasks,signal);check(signal);const snaps=visits.map((p,i)=>snap(p,{...o,maxSnapMeters:o.radiuses&&Number.isFinite(o.radiuses[i])?Math.min(o.maxSnapMeters??800,o.radiuses[i]):o.maxSnapMeters}));if(snaps.some(x=>!x))return{code:'NoSegment',message:'A required stop is outside the downloaded road network'};const Q=queryGraph(snaps),legs=[];let coords=[];
+    for(let i=1;i<Q.ids.length;i++){check(signal);if(Q.ids[i]===Q.ids[i-1])return{code:'NoRoute',message:'Consecutive stops do not define a usable road segment'};const p=await astar(Q.ids[i-1],Q.ids[i],o,Q,signal);if(!p||!p.length)return{code:'NoRoute',message:'No permitted road connects the required stops'};const l=leg(p,Q);if(!l)return{code:'NoRoute',message:'No usable route geometry'};coords=coords.length?coords.concat(l.coords.slice(1)):l.coords;delete l.coords;legs.push(l);}check(signal);
+    const distance=legs.reduce((n,l)=>n+l.distance,0),duration=legs.reduce((n,l)=>n+l.duration,0);if(coords.length<2||!finite(distance)||distance<=0||legs.length!==visits.length-1)return{code:'NoRoute',message:'Incomplete route'};
+    return{code:'Ok',source:'curvescout-phone',routes:[{distance,duration,weight:duration,weight_name:'routability',legs,geometry:{type:'LineString',coordinates:coords.map(p=>[p[1],p[0]])}}],waypoints:snaps.map(s=>({location:[s.point[1],s.point[0]],distance:s.distance,name:G.E[s.edge].name})),cs_provenance:{engine:'r50-repair-20261111',loaded_tiles:loaded,requested_tiles:tasks.length,legacy_topology:G.legacyTiles>0,graph_access_and_restrictions_verified:false}};
+  }
+  function encode(coords,precision){let la=0,lo=0,out='';const factor=10**precision,part=n=>{let v=n<0?~(n<<1):n<<1,r='';while(v>=32){r+=String.fromCharCode((32|(v&31))+63);v>>>=5;}return r+String.fromCharCode(v+63);};for(const p of coords){const a=Math.round(p[1]*factor),b=Math.round(p[0]*factor);out+=part(a-la)+part(b-lo);la=a;lo=b;}return out;}
+  function parse(url){let u;try{u=new URL(url,location.href);}catch(e){return null;}if(!['router.project-osrm.org','routing.openstreetmap.de'].includes(u.hostname))return null;const m=/\/route\/v1\/(driving|car|motorcycle)\/([^?]+)$/.exec(u.pathname);if(!m)return null;let pts;try{pts=decodeURIComponent(m[2]).split(';').map(s=>{const p=s.split(',');return p.length===2&&p.every(x=>x.trim()!==''&&Number.isFinite(Number(x)))?[Number(p[1]),Number(p[0])]:[];});}catch(e){return null;}if(pts.length<2||!pts.every(valid))return null;const ex=(u.searchParams.get('exclude')||'').split(',').filter(Boolean);if(ex.some(x=>!['motorway','toll','ferry'].includes(x)))return null;const radiusText=u.searchParams.get('radiuses'),radiuses=radiusText?radiusText.split(';').map(x=>x==='unlimited'?Infinity:x.trim()!==''?Number(x):NaN):null;const geometry=u.searchParams.get('geometries')||'polyline',unsupported=['bearings','approaches','waypoints'].filter(k=>u.searchParams.get(k));if(radiuses&&(radiuses.length!==pts.length||radiuses.some(r=>!(r>=0))))unsupported.push('radiuses');return{pts,geometry,steps:u.searchParams.get('steps')==='true',overview:u.searchParams.get('overview')!=='false',unsupported,o:{radiuses,motorway:ex.includes('motorway'),toll:ex.includes('toll'),ferry:ex.includes('ferry'),curvy:u.searchParams.get('cs_curvy')==='1'}};}
+  async function answer(p,signal){let j;if(p.unsupported.length||!['geojson','polyline','polyline6'].includes(p.geometry))j={code:'InvalidOptions',message:'The local network cannot preserve these routing options: '+p.unsupported.join(',')};else j=await route(p.pts,{...p.o,signal});check(signal);if(j.code==='Ok'){for(const r of j.routes){if(p.geometry!=='geojson'){r.geometry=encode(r.geometry.coordinates,p.geometry==='polyline6'?6:5);for(const l of r.legs)for(const s of l.steps)s.geometry=encode(s.geometry.coordinates,p.geometry==='polyline6'?6:5);}if(!p.overview)delete r.geometry;if(!p.steps)for(const l of r.legs)delete l.steps;}}API.last=j.code;return new Response(JSON.stringify(j),{status:j.code==='Ok'?200:400,headers:{'content-type':'application/json'}});}
+  const API={route,graph:G,force:false,off:false,last:null,version:'r50-repair-20261111',reset:()=>{try{sessionStorage.removeItem('cs-phone-until');}catch(e){}}};
+  window.CS_PHONE_ROUTE=API;
+  window.fetch=async function(input,init){const url=typeof input==='string'?input:input&&input.url||'',p=parse(url);if(!p||API.off)return rawFetch(input,init);const signal=init&&init.signal||input&&input.signal;check(signal);if(API.force)return answer(p,signal);
+    const ctl=new AbortController(),onAbort=()=>ctl.abort();if(signal)signal.addEventListener('abort',onAbort,{once:true});let timer,response,error;try{const online=rawFetch(input,{...init,signal:ctl.signal});const timeout=new Promise((_,reject)=>{timer=setTimeout(()=>{ctl.abort();reject(Error('Online routing timed out'));},7000);});response=await Promise.race([online,timeout]);}catch(e){error=e;}finally{clearTimeout(timer);if(signal)signal.removeEventListener('abort',onAbort);}check(signal);
+    if(response&&response.status!==429&&response.status!==403&&response.status<500)return response;
+    const mine=await answer(p,signal);check(signal);if(mine.ok)return mine;if(response)return response;if(error&&error.name==='AbortError'&&signal&&signal.aborted)throw abortError();return mine;
+  };
 })();
