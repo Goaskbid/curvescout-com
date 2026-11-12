@@ -1,0 +1,40 @@
+# CurveScout road job on GitHub's own machines (no Codespace). Start: publish a release with tag "roads-..." and the road-job zip attached.
+# Each run works up to 5.5 h, saves at most every 30 min, stops before the site passes 930 MB, then starts the next run by itself until all rides are done.
+name: CurveScout road job
+on:
+  release: { types: [published] }
+  workflow_dispatch: {}
+permissions: { contents: write, actions: write }
+concurrency: { group: cs-roads, cancel-in-progress: false }
+jobs:
+  roads:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.release.tag_name, 'roads-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env: { GH_TOKEN: "${{ github.token }}" }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: Get the road-job zip from the newest roads- release
+        run: |
+          TAG=$(gh release list -L 20 --json tagName -q '.[].tagName' | grep '^roads-' | head -1); echo "TAG=$TAG" >> $GITHUB_ENV
+          [ -n "$TAG" ] || { echo "No roads- release: nothing to do"; exit 0; }
+          mkdir -p /tmp/job && gh release download "$TAG" -D /tmp/job -p '*.zip' && cd /tmp/job && unzip -oq *.zip
+      - name: Size guard (site under 930 MB)
+        run: |
+          S=$(du -sm --apparent-size --exclude=.git . | cut -f1); echo "site $S MB"; [ "$S" -lt 930 ] || { echo "STOP: site $S MB"; exit 1; }
+      - name: Run the road job (5.5 h)
+        if: env.TAG != ''
+        run: |
+          sudo apt-get -qq update && sudo apt-get -qq install -y osmium-tool >/dev/null
+          git config user.name "curvescout-roads"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cd /tmp/job && set +e; timeout 330m node route-catalogue.mjs --out "$GITHUB_WORKSPACE/data/roads" --input route-catalogue-input.json.gz --no-net --max-pbf 500 2>&1 | tail -400 > /tmp/roads.log; echo "exit $?"; tail -5 /tmp/roads.log
+          grep -q "finished\." /tmp/roads.log && echo "DONE=1" >> $GITHUB_ENV || echo "DONE=0" >> $GITHUB_ENV
+      - name: Save what is left, then continue or finish
+        if: always() && env.TAG != ''
+        run: |
+          cd "$GITHUB_WORKSPACE"; git add -A data/roads; git commit -qm "Roads: run saved" && { git pull -q --rebase; git push -q; } || true
+          S=$(du -sm --apparent-size --exclude=.git . | cut -f1)
+          if [ "$DONE" = "1" ]; then gh release delete "$TAG" --yes --cleanup-tag; echo "All rides done."
+          elif [ "$S" -lt 930 ]; then gh workflow run cs-roads.yml; echo "Next run started."
+          else echo "STOP: site $S MB - not continuing"; fi
