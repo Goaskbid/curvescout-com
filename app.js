@@ -3401,7 +3401,7 @@ function csRideFast(id) { try {
   id = String(id || ''); if (!id || /[#:]/.test(id) || window.__CS_NO_FAST || (window.CURVESCOUT_INLINE && window.CURVESCOUT_INLINE.summary) || location.protocol === 'file:') return Promise.resolve(null);
   const b = csRideBucket(id); let pr = CS_FAST.get(b);
   if (!pr) { const early = window.CS_EARLY && window.CS_EARLY.rideB === b ? window.CS_EARLY.ride : null;
-    pr = (early || Promise.reject()).catch(() => null).then(j => j || csJgetZ('data/ride/' + b + '.json', 8000)).catch(() => null); CS_FAST.set(b, pr); }
+    pr = (early || Promise.reject()).catch(() => null).then(j => j || csJgetZ('data/ride/' + b + '.json', 8000)).catch(() => null); CS_FAST.set(b, pr); pr.then(value => { if (!value && CS_FAST.get(b) === pr) CS_FAST.delete(b); }); }
   return pr.then(j => (j && j.rides && j.rides[id]) || null).catch(() => null);
 } catch (e) { return Promise.resolve(null); } }
 async function loadFull(id) { const r = await loadFullShared(id); try { return r ? structuredClone(r) : r; } catch (e) { return r; } }
@@ -5287,7 +5287,7 @@ function renderAtlas() {
           pickLine(rec);
         });
       } catch (e) { /* a ride that will not load is simply not drawn */ }
-      if (S.atlas.map !== map) return;             // he left the atlas mid-draw
+      if (!S.atlas || S.atlas.map !== map) return;             // he left the atlas mid-draw
     }
     /* ---- NAME THE BEST FIVE ON THE MAP ITSELF ----
        A rider scanning the atlas sees colour and shape and has to hover every line to learn
@@ -9468,7 +9468,7 @@ function csCpRide(r) {
   let line = null; try { let g = S.geomCache && S.geomCache.get(geomKey(r));
     /* r36: the road the ride page is showing for this very ride (the road files, or a router) counts too */
     if (!(Array.isArray(g) && g.length > 1 && !g.approximate) && S._lastRide && S._lastRide.id === r.id && Array.isArray(S.routeLine) && S.routeLine.length > 1 && !S.routeLine.approximate) g = S.routeLine;
-    if (Array.isArray(g) && g.length > 1 && !g.approximate) line = g.map(p => Array.isArray(p) ? [+p[0], +p[1]] : [+p.lat, +p.lon]); } catch (e) {}
+    if (Array.isArray(g) && g.length > 1 && !g.approximate) { const candidate = g.map(p => Array.isArray(p) ? [p[0], p[1]] : [p.lat, p.lon]); if (csOrderedRoadCheck(candidate, wps).ok) line = candidate; } } catch (e) {}
   return { id: r.id, title: String(r.title || r.t || r.id), km: +r.km || 0, line, unplaced,
     waypoints: wps.map((w, i) => ({ name: (typeof csName === 'function' ? (csName(w).place || w.name) : w.name) || ('Waypoint ' + (i + 1)), rawName: w.name, lat: +w.lat, lon: +w.lon, kind: w.kind || '' })) };
 }
@@ -9524,12 +9524,13 @@ async function csNavOpen(mode, r) {
   let M; try { M = await csCpLoad(); } catch (e) { CS_CP.opening = false; try { flash('CurveScout Ride could not load. Check the connection and try again.'); } catch (e2) {} return; } finally { CS_CP.opening = false; }
 
   const ride = mode === 'route' ? csCpRide(r) : null;
+  if (ride && ride.unplaced && ride.unplaced.length) { flash('A required stop has no valid position. Edit the ride before starting navigation.'); return; }
   /* r36+: the ride's own turns from the road files - turn-by-turn without any router */
-  if (ride && ride.line && typeof csStoredSteps === 'function') { try { const wp0 = ride.waypoints[0]; ride.steps = await csStoredSteps(r.id, wp0); } catch (e) {} }
+  if (ride && ride.line && typeof csStoredSteps === 'function') { try { const wp0 = ride.waypoints[0]; ride.steps = await csStoredSteps(r.id, wp0, ride.line, ride.waypoints); } catch (e) {} }
   if (mode === 'route' && (!ride || ride.waypoints.length < 2)) { try { flash('This ride has no waypoints to guide you through yet.'); } catch (e) {} return; }
   /* the ride's start for the first map view; the map follows you as soon as your position arrives */
   const start = ride && ride.waypoints[0] ? [ride.waypoints[0].lat, ride.waypoints[0].lon] : null;
-  CS_CP.nav = M.openNav({ mode, ride, start, host: csCpHost(), returnFocus: document.activeElement, onClose: () => { CS_CP.nav = null; } });
+  CS_CP.nav = M.openNav({ mode, ride, start, host: csCpHost(), returnFocus: document.activeElement, onClose: () => { CS_CP.nav = null; if (window.__csReloadAfterRide) { window.__csReloadAfterRide = false; window.__csReloadOnNav = true; flash('Update available. Your next navigation opens the new version.'); } } });
 }
 window.csNavOpen = csNavOpen;
 /* called by renderRide: one button where the ride map is */
@@ -20224,44 +20225,158 @@ function csAvoidUi(r) { try {
    stored road is used only when it still fits the ride: both ends within 8 km of the ride's ends and a sane length. */
 const CS_ROADS = { idx: undefined, cells: new Map() };
 function csPolyDecode(s) { const out = []; let i = 0, la = 0, lo = 0; s = String(s || ''); while (i < s.length) { for (let k = 0; k < 2; k++) { let r = 0, sh = 0, b; do { b = s.charCodeAt(i++) - 63; r |= (b & 0x1f) << sh; sh += 5; } while (b >= 0x20 && i < s.length + 1); const d = r & 1 ? ~(r >> 1) : r >> 1; if (k) lo += d; else la += d; } out.push([la / 1e5, lo / 1e5]); } return out; }
+/* Geometric admission is necessary, not proof of legal access or turn restrictions.
+   Uses every selected visit in order; never binds a road by route ID alone. */
+function csOrderedRoadCheck(line, stops, maxMetres = 150) {
+  const point = p => Array.isArray(p) ? p : p && [p.lat, p.lon];
+  const valid = p => Array.isArray(p) && p.length >= 2 && p.slice(0, 2).every(x => typeof x === 'number' && Number.isFinite(x)) && Math.abs(p[0]) <= 90 && Math.abs(p[1]) <= 180;
+  const P = Array.isArray(stops) ? stops.map(point) : [];
+  if (!Array.isArray(line) || line.length < 2 || P.length < 2 || !line.every(valid) || !P.every(valid)) return { ok: false, reason: 'invalid_coordinates' };
+  const rad = Math.PI / 180, wrap = x => ((x + 180) % 360 + 360) % 360 - 180;
+  const metres = (a, b) => { const x = (b[0] - a[0]) * rad, y = wrap(b[1] - a[1]) * rad;
+    const v = Math.sin(x / 2) ** 2 + Math.cos(a[0] * rad) * Math.cos(b[0] * rad) * Math.sin(y / 2) ** 2;
+    return 12742017.6 * Math.asin(Math.sqrt(Math.min(1, v))); };
+  if (metres(line[0], P[0]) > maxMetres || metres(line[line.length - 1], P[P.length - 1]) > maxMetres) return { ok: false, reason: 'endpoint_displacement' };
+  const cum = [0]; for (let i = 1; i < line.length; i++) cum.push(cum[i - 1] + metres(line[i - 1], line[i]));
+  if (cum[cum.length - 1] < 0.1) return { ok: false, reason: 'empty_geometry' };
+  let previous = 0; const visits = [{ along: 0, distance: metres(line[0], P[0]) }];
+  for (let k = 1; k < P.length - 1; k++) {
+    const p = P[k], sx = 111195.08023 * Math.max(0.000001, Math.cos(p[0] * rad)); let best = null;
+    for (let i = 1; i < line.length; i++) {
+      if (cum[i] < previous - 0.01) continue;
+      const a = line[i - 1], b = line[i], ax = wrap(a[1] - p[1]) * sx, ay = (a[0] - p[0]) * 111195.08023;
+      const dx = wrap(b[1] - a[1]) * sx, dy = (b[0] - a[0]) * 111195.08023, l2 = dx * dx + dy * dy;
+      const lower = cum[i] > cum[i - 1] ? Math.max(0, (previous - cum[i - 1]) / (cum[i] - cum[i - 1])) : 0;
+      const t = Math.max(lower, Math.min(1, l2 ? -(ax * dx + ay * dy) / l2 : 0));
+      if (t > 1) continue;
+      const q = [a[0] + (b[0] - a[0]) * t, wrap(a[1] + wrap(b[1] - a[1]) * t)], distance = metres(q, p), along = cum[i - 1] + (cum[i] - cum[i - 1]) * t;
+      if (distance <= maxMetres && (!best || along < best.along)) best = { along, distance };
+    }
+    if (!best) return { ok: false, reason: 'missing_or_out_of_order_stop', stop: k };
+    previous = best.along; visits.push(best);
+  }
+  visits.push({ along: cum[cum.length - 1], distance: metres(line[line.length - 1], P[P.length - 1]) });
+  return { ok: true, length: cum[cum.length - 1], visits };
+}
+
 const csRoadCell = (la, lo) => (Math.floor(la / 3) + 30) + '-' + (Math.floor(lo / 3) + 60);
 /* r46 (GitHub 1 GB rule): road and turn files are stored gzip-compressed (*.json.gz, about a quarter of the size) and unpacked
    here; an uncompressed file is still read when no compressed one exists, so both kinds work during the switch-over */
 /* r48 (audit R47-17, GitHub Pages 1 GB): ride and region files are stored gzip-compressed (.json.gz). Pages may serve them
    raw (gzip magic bytes) or already decoded; both are read. Browsers without DecompressionStream (older iPhones) load a small
    MIT inflater (pako) once, so no browser loses ride data. */
+/* Bounded data decoding. Timeouts cover headers, body and decompression. */
 let CS_PAKO = null;
-function csPako() { if (window.pako && window.pako.ungzip) return Promise.resolve(window.pako); if (!CS_PAKO) CS_PAKO = new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = 'assets/vendor/pako-inflate.min.js'; sc.onload = () => window.pako ? ok(window.pako) : no(new Error('pako')); sc.onerror = () => { CS_PAKO = null; no(new Error('pako')); }; document.head.appendChild(sc); }); return CS_PAKO; }
-async function csGunzipJson(buf) { const u = new Uint8Array(buf); if (!(u[0] === 0x1f && u[1] === 0x8b)) return JSON.parse(new TextDecoder().decode(u));
-  if (window.DecompressionStream) return await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).json();
-  const pk = await csPako(); return JSON.parse(pk.ungzip(u, { to: 'string' })); }
-async function csJgetZ(path, ms) {
-  try { const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms || 12000); const r = await fetch(path + '.gz', { signal: ctl.signal }); clearTimeout(t);
-    if (r.ok) return await csGunzipJson(await r.arrayBuffer()); } catch (e) {}
-  return jget(path, ms); }
-try { window.csJgetZ = csJgetZ; } catch (e) {}
-async function csJgetGz(path, ms) {
-  /* both kinds are read and merged: the road job may add new rides to an uncompressed file after a square was compressed */
-  const gz = (async () => { try { const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), ms || 12000);
-      const r = await fetch(path + '.gz', { signal: ctl.signal }); clearTimeout(t); return r.ok ? await csGunzipJson(await r.arrayBuffer()) : null; } catch (e) { return null; } })();
-  const plain = jget(path, ms).catch(() => null);
-  const [a, b] = await Promise.all([gz, plain]); if (!a) { if (b) return b; throw new Error('no file'); } if (!b) return a;
-  const out = Object.assign({}, a); for (const k of Object.keys(b)) out[k] = (b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k] && typeof a[k] === 'object') ? Object.assign({}, a[k], b[k]) : b[k]; return out; }
-try { window.csJgetGz = csJgetGz; } catch (e) {}
+function csPako() {
+  if (window.pako && typeof window.pako.ungzip === 'function') return Promise.resolve(window.pako);
+  if (!CS_PAKO) {
+    const pending = new Promise((resolve, reject) => {
+      const sc = document.createElement('script'); let finished = false;
+      const finish = (error) => { if (finished) return; finished = true; clearTimeout(timer); sc.onload = sc.onerror = null;
+        if (error) { sc.remove(); reject(error); } else resolve(window.pako); };
+      const timer = setTimeout(() => finish(new Error('Local gzip decoder timed out')), 10000);
+      sc.src = 'assets/vendor/pako-inflate.min.js';
+      sc.onload = () => finish(window.pako && typeof window.pako.ungzip === 'function' ? null : new Error('Invalid local gzip decoder'));
+      sc.onerror = () => finish(new Error('Local gzip decoder unavailable'));
+      document.head.appendChild(sc);
+    });
+    CS_PAKO = pending;
+    pending.catch(() => { if (CS_PAKO === pending) CS_PAKO = null; });
+  }
+  return CS_PAKO;
+}
+async function csGunzipJson(buf) {
+  const u = new Uint8Array(buf);
+  if (u.length > 50000000) throw new Error('Data file exceeds transfer limit');
+  if (!(u[0] === 31 && u[1] === 139)) return JSON.parse(new TextDecoder().decode(u));
+  if (typeof window.DecompressionStream === 'function') {
+    const text = await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+    if (text.length > 150000000) throw new Error('Decoded file exceeds size limit');
+    return JSON.parse(text);
+  }
+  const pk = await csPako();
+  const text = pk.ungzip(u, { to: 'string' });
+  if (text.length > 150000000) throw new Error('Decoded file exceeds size limit');
+  return JSON.parse(text);
+}
+async function csAssetJson(path, ms, signal) {
+  if (signal && signal.aborted) throw new DOMException('Request cancelled', 'AbortError');
+  const ctl = new AbortController(); let timer, onAbort;
+  const deadline = new Promise((_, reject) => {
+    timer = setTimeout(() => { ctl.abort(); reject(new Error('Data request timed out')); }, Math.max(1, ms || 12000));
+    onAbort = () => { ctl.abort(); reject(new DOMException('Request cancelled', 'AbortError')); };
+    if (signal) signal.addEventListener('abort', onAbort, { once: true });
+  });
+  try {
+    return await Promise.race([deadline, (async () => {
+      const response = await fetch(path, { signal: ctl.signal });
+      if (!response.ok) throw new Error('Data response ' + response.status);
+      const value = await csGunzipJson(await response.arrayBuffer());
+      if (signal && signal.aborted) throw new DOMException('Request cancelled', 'AbortError');
+      return value;
+    })()]);
+  } finally { clearTimeout(timer); if (signal) signal.removeEventListener('abort', onAbort); }
+}
+async function csJgetZ(path, ms, signal) {
+  const budget = Math.max(1, ms || 12000), deadline = Date.now() + budget;
+  try { return await csAssetJson(path + '.gz', Math.max(1, Math.min(5000, budget * 0.6)), signal); }
+  catch (error) { if (signal && signal.aborted) throw new DOMException('Request cancelled', 'AbortError'); }
+  const remaining = deadline - Date.now();
+  if (remaining <= 0) throw new Error('Data request timed out');
+  return csAssetJson(path, remaining, signal);
+}
+async function csJgetGz(path, ms, signal) {
+  const get = url => csAssetJson(url, ms || 12000, signal).catch(error => {
+    if (signal && signal.aborted) throw new DOMException('Request cancelled', 'AbortError');
+    return null;
+  });
+  const [a, b] = await Promise.all([get(path + '.gz'), get(path)]);
+  if (!a) { if (b) return b; throw new Error('No valid data file'); }
+  if (!b) return a;
+  const out = Object.assign(Object.create(null), a);
+  for (const k of Object.keys(b)) out[k] = b[k] && typeof b[k] === 'object' && !Array.isArray(b[k]) && a[k] && typeof a[k] === 'object' && !Array.isArray(a[k])
+    ? Object.assign(Object.create(null), a[k], b[k]) : b[k];
+  return out;
+}
+try { window.csGunzipJson = csGunzipJson; window.csJgetZ = csJgetZ; window.csJgetGz = csJgetGz; } catch (e) {}
+
 async function csRoadsIndex() {
-  if (CS_ROADS.idx === undefined) CS_ROADS.idx = (async () => { try { if (location.protocol === 'file:') return null; return await csJgetGz('data/roads/roads-index.json', 8000);  /* r49: the index may be stored compressed (live since r47) */ } catch (e) { return null; } })();
+  if (CS_ROADS.idx === undefined) { const task = (async () => { try { if (location.protocol === 'file:') return null; return await csJgetGz('data/roads/roads-index.json', 8000); } catch (e) { return null; } })(); CS_ROADS.idx = task; task.then(value => { if (!value && CS_ROADS.idx === task) CS_ROADS.idx = undefined; }); }
   return CS_ROADS.idx;
 }
 /* r36+: the turns of a ride's stored road (steps-<cell>.json, written by the same Codespace road job): [metres along,
    type, modifier, road, exit] - the navigator guides turn by turn on the ride with no router at all */
 const CS_STEPS = new Map();
-async function csStoredSteps(id, p0) { try { id = String(id || '').split('#')[0]; if (!id || !p0) return null; const idx = await csRoadsIndex(); if (!idx || !idx.cells) return null;
-  const c = csRoadCell(+p0.lat, +p0.lon); if (!idx.cells[c]) return null;
-  if (!CS_STEPS.has(c)) CS_STEPS.set(c, csJgetGz('data/roads/steps-' + c + '.json', 12000).catch(() => null));
-  const j = await CS_STEPS.get(c); const v = j && j.steps && j.steps[id]; return Array.isArray(v) && v.length ? v : null; } catch (e) { return null; } }
+async function csStoredIdentity(line, stops) {
+  const check = csOrderedRoadCheck(line, stops);
+  if (!check.ok || !window.crypto || !window.crypto.subtle) return null;
+  const normalise = ps => ps.map(p => { const q = Array.isArray(p) ? p : [p.lat, p.lon]; return q.slice(0, 2).map(x => Math.round(x * 1e5) / 1e5); });
+  const hash = async value => Array.from(new Uint8Array(await window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(value))))).map(x => x.toString(16).padStart(2, '0')).join('');
+  return { geometry_sha256: await hash(normalise(line)), ordered_stops_sha256: await hash(normalise(stops)), metres: check.length };
+}
+async function csStoredSteps(id, p0, line, stops) {
+  try {
+    id = String(id || '').split('#')[0];
+    if (!id || !p0 || !Array.isArray(line) || !Array.isArray(stops)) return null;
+    const identity = await csStoredIdentity(line, stops); if (!identity) return null;
+    const idx = await csRoadsIndex(); if (!idx || !idx.cells) return null;
+    const c = csRoadCell(p0.lat, p0.lon); if (!idx.cells[c]) return null;
+    if (!CS_STEPS.has(c)) { const task = csJgetGz('data/roads/steps-' + c + '.json', 12000).catch(() => null);
+      CS_STEPS.set(c, task); task.then(value => { if (!value && CS_STEPS.get(c) === task) CS_STEPS.delete(c); }); }
+    const j = await CS_STEPS.get(c), v = j && j.steps && j.steps[id], proof = j && j.identities && j.identities[id];
+    // A route ID alone never proves which geometry an instruction array belongs to.
+    if (!Array.isArray(v) || !v.length || v.length > 50000 || !proof || proof.route_id !== id || typeof proof.graph_version !== 'string' || !proof.graph_version || proof.geometry_sha256 !== identity.geometry_sha256 || proof.ordered_stops_sha256 !== identity.ordered_stops_sha256) return null;
+    let last = -1;
+    for (const step of v) { if (!Array.isArray(step) || typeof step[0] !== 'number' || !Number.isFinite(step[0]) || step[0] < last || step[0] < 0 || step[0] > identity.metres + 50 || typeof step[1] !== 'string' || !step[1]) return null; last = step[0]; }
+    if (v[v.length - 1][1] !== 'arrive') return null;
+    return v;
+  } catch (e) { return null; }
+}
+
 async function csStoredRoad(id, pts, km) {
   id = String(id || '').split('#')[0]; if (!id || !pts || pts.length < 2) return null;
-  const P = pts.map(p => Array.isArray(p) ? { lat: +p[0], lon: +p[1] } : { lat: +p.lat, lon: +p.lon });
+  const P = pts.map(p => Array.isArray(p) ? { lat: p[0], lon: p[1] } : { lat: p && p.lat, lon: p && p.lon });
+  if (!P.every(p => typeof p.lat === 'number' && typeof p.lon === 'number' && Number.isFinite(p.lat) && Number.isFinite(p.lon) && Math.abs(p.lat) <= 90 && Math.abs(p.lon) <= 180)) return null;
   const idx = await csRoadsIndex(); if (!idx || !idx.cells) return null;
   const a = P[0], z = P[P.length - 1];
   const tries = [...new Set([[0, 0], [0.01, 0.01], [-0.01, -0.01], [0.01, -0.01], [-0.01, 0.01]].map(([d, e]) => csRoadCell(a.lat + d, a.lon + e)))].filter(c => idx.cells[c]);
@@ -20270,7 +20385,9 @@ async function csStoredRoad(id, pts, km) {
     const j = await CS_ROADS.cells.get(c); const v = j && j.roads && j.roads[id]; if (!v) continue;
     const line = csPolyDecode(v[0]); if (line.length < 2) return null;
     const okEnds = hav({ lat: line[0][0], lon: line[0][1] }, a) < 8 && hav({ lat: line[line.length - 1][0], lon: line[line.length - 1][1] }, z) < 8;
-    if (!okEnds || (km && +v[1] && (+v[1] < km * 0.5 || +v[1] > km * 2.4))) return null;
+    const ordered = csOrderedRoadCheck(line, P);
+    if (!okEnds || !ordered.ok || (km && +v[1] && (+v[1] < km * 0.5 || +v[1] > km * 2.4))) return null;
+    line.visitCheck = ordered;
     line.km = +v[1] || 0; line.min = +v[2] || 0; line.stored = true; return line;
   }
   return null;
@@ -20319,7 +20436,7 @@ async function osrmGeometry(r) {
     const flagged = nl.approximate === true || (nl.meta && nl.meta.approximate === true) ||
       (r && r.navAudit && r.navAudit.passed === false);
     /* with an avoid switch on, the stored line (which may use motorways or tolls) is not reused */
-    if (okEnds && longEnough && qualifies && !flagged && !csAvoidList().length) return nl;
+    if (okEnds && longEnough && qualifies && !flagged && !csAvoidList().length && csOrderedRoadCheck(nl, r.waypoints || []).ok) return nl;
     if (okEnds && longEnough && !qualifies)
       try { console.warn('stored line not reused: it does not pass route qualification'); } catch (e) {}
     if (okEnds && !longEnough) {
@@ -31525,6 +31642,8 @@ function initOffline() {
        tapped), otherwise on the rider's next tap, so a half-typed search or trip is never thrown away */
     if (d.type === 'cs-release') {
       try { ev.source && ev.source.postMessage({ type: 'cs-ack' }); } catch (e) {}
+      const riding = (typeof CS_CP !== 'undefined' && CS_CP.nav) || (window.CS_NAV && window.CS_NAV.st && window.CS_NAV.st.alive);
+      if (riding) { window.__csReloadAfterRide = true; return; }
       if (performance.now() < 15000) { location.reload(); return; }
       window.__csReloadOnNav = true; flash('CurveScout was updated - the new version opens with your next tap.');
     }

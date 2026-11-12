@@ -1,6 +1,6 @@
 {
- "build_id": "2026.46-r50",
- "build_date": "2026-11-10T09:33:09.276Z",
+ "build_id": "2026.46-r51",
+ "build_date": "2026-11-12T03:03:07.861Z",
  "release_profile": "local-seo-candidate-not-qualified",
  "permitted_network_hosts": [
   "same-origin",
@@ -73,8 +73,8 @@
   },
   {
    "path": "app.js",
-   "bytes": 2512133,
-   "sha256": "fa40224ec2ae7662ab18f9eacd83d725a2f17a04937a588b4bc6a939e0d44474"
+   "bytes": 2519605,
+   "sha256": "0446dbb6bbd0ac427665b6b48a1909ae898ad8600a72a0982e70eca88226a9d8"
   },
   {
    "path": "archive.js",
@@ -233,8 +233,8 @@
   },
   {
    "path": "assets/phone-route.js",
-   "bytes": 14303,
-   "sha256": "4c67ed808eec9651343af8c7e9bf0a15d8b8193c3b91b2117df765f6d3c9b654"
+   "bytes": 19730,
+   "sha256": "ed80805b3b7542db488561ec0d45a1403614f537900c9d6a4886a9f38dc667a0"
   },
   {
    "path": "assets/scouts/elise/elise_approve.webp",
@@ -59104,7 +59104,7 @@
   {
    "path": "config.js",
    "bytes": 161764,
-   "sha256": "8916a4857b74480447c61558783568bf9433d0e1f42f6afe662bd11fae8517b7"
+   "sha256": "025e28870613e150009b45e68680b370157f9bae2f8e364e97237bbde7e3c342"
   },
   {
    "path": "data/cities.txt",
@@ -251283,8 +251283,8 @@
   },
   {
    "path": "sw.js",
-   "bytes": 10757,
-   "sha256": "c56c9f5a701b25d1500c03329aad02a7e409fe0e8237da160b36f4cb7cca622e"
+   "bytes": 11309,
+   "sha256": "e5b0d7e5d228031d120e59101b81d85735585d772edeaf389c392e127d79868e"
   },
   {
    "path": "thursday.html",
@@ -251939,10 +251939,10 @@
  ],
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
  "file_count": 50381,
- "total_bytes": 921898982,
- "release_date": "2026-11-10",
- "sw_cache": "curvescout-app-r50-20261110",
- "source_parent_commit": "bbcd91f",
+ "total_bytes": 921912433,
+ "release_date": "2026-11-12",
+ "sw_cache": "curvescout-app-r51-20261112",
+ "source_parent_commit": "c1a864e",
  "base_runtime_build_id": "2026.45-r47",
  "release_status": "HOLD",
  "seo_audit_date": "2026-11-10",

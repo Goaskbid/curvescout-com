@@ -5,7 +5,7 @@
 /* r34 audit CS-R34-008: every release cache is named curvescout-app-<build>, and cleanup recognises exactly that family
    (plus the two older namings) - a later release can never leave this one behind, and code is only ever read from the
    current release's own cache (no global caches.match that could hand out an old app.js). */
-const V = 'curvescout-app-r50-20261110';
+const V = 'curvescout-app-r51-20261112';
 const OWN_RELEASE = k => /^curvescout-app-[\w.-]+$/.test(k) || /^curvescout-[0-9a-f]{6,}$/.test(k) || /^curvescout-r\d+-\d{8}$/.test(k);
 const fromV = (req) => caches.open(V).then(c => c.match(req));
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
@@ -24,7 +24,8 @@ const ROUTES = 'curvescout-routes';
    cache when the page's own copy arrives - see the message handler below - so offline still
    works and nobody pays for it twice. */
 const SHELL = [
-  './', './index.html', './styles.css', './app.js', './manifest.webmanifest',
+  './', './index.html', './styles.css', './app.js', './config.js', './manifest.webmanifest',
+  './assets/phone-route.js', './assets/copilot/copilot-runtime.js',
   './data/places.json',
   './assets/curvescout-mark-transparent.png', './assets/cerebral-local.svg',
 ];
@@ -49,7 +50,12 @@ self.addEventListener('message', e => {
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(V)
-      .then(c => Promise.allSettled(SHELL.map(u => c.add(u)))) // one 404 must not fail the install
+      .then(async c => {
+        await Promise.allSettled(SHELL.map(u => c.add(u)));
+        const required = ['./index.html', './styles.css', './app.js', './config.js', './assets/phone-route.js', './assets/copilot/copilot-runtime.js'];
+        const present = await Promise.all(required.map(u => c.match(u)));
+        if (present.some(r => !r || !r.ok)) throw new Error('Incomplete application shell; update not activated');
+      })
       .then(() => self.skipWaiting())
   );
 });
@@ -92,7 +98,8 @@ self.addEventListener('activate', e => {
 function handOver() {
   self.clients.matchAll({ type: 'window' }).then(cs => {
     cs.forEach(c => { try { c.postMessage({ type: 'cs-release', v: V }); } catch (err) {} });
-    setTimeout(() => cs.filter(c => !ACKS.has(c.id)).forEach(c => { try { c.navigate && c.navigate(c.url).catch(() => {}); } catch (err) {} }), 1500);
+    /* Never force-reload an unresponsive page: it may be navigating or hold unsaved edits.
+       Current clients acknowledge and defer their own update while riding. */
   });
 }
 
@@ -110,7 +117,7 @@ self.addEventListener('fetch', e => {
      On a hit, serve the cache and refresh behind it. On a miss, fetch once and keep it. */
   /* the folder-free site names data files data__… (audit 2026-10-11: route data landed in the per-release cache) */
   /* the GitHub build stores every file without folders, so ride data is any .json at the top level (not the manifest) */
-  if (url.pathname.includes('/data/') || /\/data__/.test(url.pathname) || /\.json(\.gz)?$/.test(url.pathname)) {
+  if (url.pathname.includes('/data/') || /\/data__/.test(url.pathname) || (/\.json(\.gz)?$/.test(url.pathname) && !/\/(release-manifest|manifest)\.json$/.test(url.pathname))) {
     e.respondWith(
       caches.match(req).then(hit => {
         if (hit) {
@@ -132,7 +139,7 @@ self.addEventListener('fetch', e => {
      Cache-first kept a phone on the old app after every release, until a second reload. The page and the files that
      make the app (index, app.js, styles, config, the mapper) are now asked from the network first, with the cached copy
      as the offline fallback and after 4 s of no answer. Pictures and the map library stay cache-first. */
-  const shellFile = req.mode === 'navigate' || /\/(index\.html|app\.js|styles\.css|config\.js|sw\.js)?$/.test(url.pathname);
+  const shellFile = req.mode === 'navigate' || /\/release-manifest\.json$/.test(url.pathname) || /\/(index\.html|app\.js|styles\.css|config\.js|sw\.js)?$/.test(url.pathname);
   if (shellFile) {
     e.respondWith(new Promise(resolve => {
       let done = false;
