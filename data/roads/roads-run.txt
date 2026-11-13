@@ -1,300 +1,300 @@
-05:26:03 osrm-partition
-05:26:21 osrm-customize
-05:26:29 hessen+unterfranken done: 65 roads, 0 refused · catalogue now 22914 roads
-05:26:29 commit/push failed - the files are written; push again later with: git push
-05:26:31 commit/push failed - the files are written; push again later with: git push
-05:26:31 == 93/487 centro+sud 64 rides
-05:26:33 centro+sud together are too large for this machine - left to the live router
-05:26:37 commit/push failed - the files are written; push again later with: git push
-05:26:37 == 94/487 asturias+cantabria 55 rides
-05:26:39 downloading asturias 35 MB
-05:26:43 downloading cantabria 34 MB
-05:26:48 merging asturias+cantabria
-05:26:50 osrm-extract
-05:27:04 osrm-partition
-05:27:07 osrm-customize
-05:27:12 asturias+cantabria done: 55 roads, 0 refused · catalogue now 22969 roads
-05:27:13 commit/push failed - the files are written; push again later with: git push
-05:27:15 commit/push failed - the files are written; push again later with: git push
-05:27:15 == 95/487 jiangsu+zhejiang 53 rides
-05:27:17 downloading jiangsu 77 MB
-05:27:27 downloading zhejiang 87 MB
-05:27:38 merging jiangsu+zhejiang
-05:27:44 osrm-extract
-05:28:45 osrm-partition
-05:29:23 osrm-customize
-05:29:45 jiangsu+zhejiang done: 53 roads, 0 refused · catalogue now 23022 roads
-05:29:46 commit/push failed - the files are written; push again later with: git push
-05:29:48 commit/push failed - the files are written; push again later with: git push
-05:29:48 == 96/487 us/new-jersey+us/new-york 51 rides
-05:29:50 downloading us/new-jersey 157 MB
-05:30:08 downloading us/new-york 476 MB
-05:30:43 merging us/new-jersey+us/new-york
-05:31:10 osrm-extract
-05:33:49 osrm-partition
-05:35:43 osrm-customize
-05:36:15 us/new-jersey+us/new-york done: 51 roads, 0 refused · catalogue now 23073 roads
-05:36:15 commit/push failed - the files are written; push again later with: git push
-05:36:17 commit/push failed - the files are written; push again later with: git push
-05:36:17 == 97/487 sachsen-anhalt+thueringen 51 rides
-05:36:19 downloading sachsen-anhalt 169 MB
-05:36:34 downloading thueringen 153 MB
-05:36:47 merging sachsen-anhalt+thueringen
-05:36:59 osrm-extract
-05:37:45 osrm-partition
-05:37:55 osrm-customize
-05:38:02 sachsen-anhalt+thueringen done: 51 roads, 0 refused · catalogue now 23124 roads
-05:38:03 commit/push failed - the files are written; push again later with: git push
-05:38:05 commit/push failed - the files are written; push again later with: git push
-05:38:05 == 98/487 cantabria+pais-vasco 50 rides
-05:38:07 downloading cantabria 34 MB
-05:38:13 downloading pais-vasco 66 MB
-05:38:19 merging cantabria+pais-vasco
-05:38:23 osrm-extract
-05:38:41 osrm-partition
-05:38:43 osrm-customize
-05:38:49 cantabria+pais-vasco done: 50 roads, 0 refused · catalogue now 23174 roads
-05:38:49 commit/push failed - the files are written; push again later with: git push
-05:38:51 commit/push failed - the files are written; push again later with: git push
-05:38:51 == 99/487 bosnia-herzegovina+croatia 49 rides
-05:38:53 downloading bosnia-herzegovina 155 MB
-05:39:06 downloading croatia 192 MB
-05:39:26 merging bosnia-herzegovina+croatia
-05:39:39 osrm-extract
-05:40:42 osrm-partition
-05:40:55 osrm-customize
-05:41:03 bosnia-herzegovina+croatia done: 49 roads, 0 refused · catalogue now 23223 roads
-05:41:04 commit/push failed - the files are written; push again later with: git push
-05:41:06 commit/push failed - the files are written; push again later with: git push
-05:41:06 == 100/487 podkarpackie+slovakia 48 rides
-05:41:08 downloading podkarpackie 148 MB
-05:41:22 downloading slovakia 332 MB
-05:41:47 merging podkarpackie+slovakia
-05:42:06 osrm-extract
-05:43:09 osrm-partition
-05:43:22 osrm-customize
-05:43:30 podkarpackie+slovakia done: 27 roads, 21 refused · catalogue now 23250 roads
-05:43:30 commit/push failed - the files are written; push again later with: git push
-05:43:32 commit/push failed - the files are written; push again later with: git push
-05:43:32 == 101/487 noord-holland+utrecht 47 rides
-05:43:34 downloading noord-holland 182 MB
-05:43:49 downloading utrecht 95 MB
-05:43:58 merging noord-holland+utrecht
-05:44:09 osrm-extract
-05:44:39 osrm-partition
-05:44:44 osrm-customize
-05:44:50 noord-holland+utrecht done: 47 roads, 0 refused · catalogue now 23297 roads
-05:44:50 commit/push failed - the files are written; push again later with: git push
-05:44:52 commit/push failed - the files are written; push again later with: git push
-05:44:52 == 102/487 colombia+ecuador 44 rides
-05:44:54 downloading colombia 319 MB
-05:45:18 downloading ecuador 120 MB
-05:45:31 merging colombia+ecuador
-05:45:48 osrm-extract
-05:47:49 osrm-partition
-05:48:34 osrm-customize
-05:49:01 colombia+ecuador done: 44 roads, 0 refused · catalogue now 23341 roads
-05:49:01 commit/push failed - the files are written; push again later with: git push
-05:49:03 commit/push failed - the files are written; push again later with: git push
-05:49:03 == 103/487 italy+slovenia 44 rides
-05:49:04 italy is 2148 MB - its rides go to its sub-regions
-05:49:08 commit/push failed - the files are written; push again later with: git push
-05:49:08 == 104/487 extremadura+portugal 42 rides
-05:49:10 downloading extremadura 38 MB
-05:49:17 downloading portugal 408 MB
-05:50:01 merging extremadura+portugal
-05:50:18 osrm-extract
-05:51:52 osrm-partition
-05:52:22 osrm-customize
-05:52:35 extremadura+portugal done: 42 roads, 0 refused · catalogue now 23383 roads
-05:52:35 commit/push failed - the files are written; push again later with: git push
-05:52:37 commit/push failed - the files are written; push again later with: git push
-05:52:37 == 105/487 lebanon+syria 39 rides
-05:52:40 downloading lebanon 50 MB
-05:52:49 downloading syria 79 MB
-05:52:57 merging lebanon+syria
-05:53:02 osrm-extract
-05:53:38 osrm-partition
-05:53:51 osrm-customize
-05:54:02 lebanon+syria done: 39 roads, 0 refused · catalogue now 23422 roads
-05:54:03 commit/push failed - the files are written; push again later with: git push
-05:54:05 commit/push failed - the files are written; push again later with: git push
-05:54:05 == 106/487 bolivia+peru 38 rides
-05:54:07 downloading bolivia 167 MB
-05:54:23 downloading peru 246 MB
-05:54:42 merging bolivia+peru
-05:54:58 osrm-extract
-05:57:01 osrm-partition
-05:57:41 osrm-customize
-05:58:07 bolivia+peru done: 38 roads, 0 refused · catalogue now 23460 roads
-05:58:08 commit/push failed - the files are written; push again later with: git push
-05:58:10 commit/push failed - the files are written; push again later with: git push
-05:58:10 == 107/487 israel-and-palestine+jordan 38 rides
-05:58:12 downloading israel-and-palestine 116 MB
-05:58:22 downloading jordan 30 MB
-05:58:26 merging israel-and-palestine+jordan
-05:58:31 osrm-extract
-05:59:10 osrm-partition
-05:59:23 osrm-customize
-05:59:33 israel-and-palestine+jordan done: 30 roads, 8 refused · catalogue now 23490 roads
-05:59:33 commit/push failed - the files are written; push again later with: git push
-05:59:35 commit/push failed - the files are written; push again later with: git push
-05:59:35 == 108/487 utrecht+zuid-holland 38 rides
-05:59:37 downloading utrecht 95 MB
-05:59:46 downloading zuid-holland 203 MB
-06:00:06 merging utrecht+zuid-holland
-06:00:18 osrm-extract
-06:00:52 osrm-partition
-06:00:57 osrm-customize
-06:01:03 utrecht+zuid-holland done: 38 roads, 0 refused · catalogue now 23528 roads
-06:01:04 commit/push failed - the files are written; push again later with: git push
-06:01:06 commit/push failed - the files are written; push again later with: git push
-06:01:06 == 109/487 cataluna+valencia 37 rides
-06:01:08 downloading cataluna 261 MB
-06:01:29 downloading valencia 135 MB
-06:01:55 merging cataluna+valencia
-06:02:10 osrm-extract
-06:03:19 osrm-partition
-06:03:33 osrm-customize
-06:03:42 cataluna+valencia done: 37 roads, 0 refused · catalogue now 23565 roads
-06:03:43 commit/push failed - the files are written; push again later with: git push
-06:03:45 commit/push failed - the files are written; push again later with: git push
-06:03:45 == 110/487 detmold-regbez+niedersachsen 34 rides
-06:03:47 downloading detmold-regbez 131 MB
-06:03:58 downloading niedersachsen 487 MB
-06:04:39 merging detmold-regbez+niedersachsen
-06:05:02 osrm-extract
-06:06:36 osrm-partition
-06:07:13 osrm-customize
-06:07:27 detmold-regbez+niedersachsen done: 34 roads, 0 refused · catalogue now 23599 roads
-06:07:28 commit/push failed - the files are written; push again later with: git push
-06:07:30 commit/push failed - the files are written; push again later with: git push
-06:07:30 == 111/487 aragon+navarra 33 rides
-06:07:32 downloading aragon 91 MB
-06:07:40 downloading navarra 36 MB
-06:07:45 merging aragon+navarra
-06:07:49 osrm-extract
-06:08:09 osrm-partition
-06:08:11 osrm-customize
-06:08:16 aragon+navarra done: 33 roads, 0 refused · catalogue now 23632 roads
-06:08:17 commit/push failed - the files are written; push again later with: git push
-06:08:19 commit/push failed - the files are written; push again later with: git push
-06:08:19 == 112/487 languedoc-roussillon+provence-alpes-cote-d-azur 32 rides
-06:08:21 downloading languedoc-roussillon 258 MB
-06:08:42 downloading provence-alpes-cote-d-azur 374 MB
-06:09:12 merging languedoc-roussillon+provence-alpes-cote-d-azur
-06:09:35 osrm-extract
-06:11:10 osrm-partition
-06:11:35 osrm-customize
-06:11:45 languedoc-roussillon+provence-alpes-cote-d-azur done: 32 roads, 0 refused · catalogue now 23664 roads
-06:11:45 commit/push failed - the files are written; push again later with: git push
-06:11:47 commit/push failed - the files are written; push again later with: git push
-06:11:47 == 113/487 albania+greece 31 rides
-06:11:50 downloading albania 52 MB
-06:11:55 downloading greece 327 MB
-06:12:20 merging albania+greece
-06:12:34 osrm-extract
-06:14:23 osrm-partition
-06:14:56 osrm-customize
-06:15:12 albania+greece done: 31 roads, 0 refused · catalogue now 23695 roads
-06:15:12 commit/push failed - the files are written; push again later with: git push
-06:15:15 commit/push failed - the files are written; push again later with: git push
-06:15:15 == 114/487 sachsen+ustecky 31 rides
-06:15:17 downloading sachsen 257 MB
-06:15:38 downloading ustecky 107 MB
-06:15:47 merging sachsen+ustecky
-06:16:01 osrm-extract
-06:16:51 osrm-partition
-06:17:05 osrm-customize
-06:17:13 sachsen+ustecky done: 31 roads, 0 refused · catalogue now 23726 roads
-06:17:14 commit/push failed - the files are written; push again later with: git push
-06:17:16 commit/push failed - the files are written; push again later with: git push
-06:17:16 == 115/487 castilla-y-leon+portugal 30 rides
-06:17:18 downloading castilla-y-leon 171 MB
-06:17:44 downloading portugal 408 MB
-06:18:52 merging castilla-y-leon+portugal
-06:19:14 osrm-extract
-06:21:16 osrm-partition
-06:21:58 osrm-customize
-06:22:12 castilla-y-leon+portugal done: 30 roads, 0 refused · catalogue now 23756 roads
-06:22:12 commit/push failed - the files are written; push again later with: git push
-06:22:15 commit/push failed - the files are written; push again later with: git push
-06:22:15 == 116/487 ile-de-france+picardie 29 rides
-06:22:17 downloading ile-de-france 325 MB
-06:23:10 downloading picardie 127 MB
-06:23:23 merging ile-de-france+picardie
-06:23:40 osrm-extract
-06:24:44 osrm-partition
-06:25:03 osrm-customize
-06:25:13 ile-de-france+picardie done: 29 roads, 0 refused · catalogue now 23785 roads
-06:25:13 commit/push failed - the files are written; push again later with: git push
-06:25:15 commit/push failed - the files are written; push again later with: git push
-06:25:15 == 117/487 bosnia-herzegovina+montenegro 29 rides
-06:25:17 downloading bosnia-herzegovina 155 MB
-06:25:30 downloading montenegro 33 MB
-06:25:36 merging bosnia-herzegovina+montenegro
-06:25:43 osrm-extract
-06:26:18 osrm-partition
-06:26:24 osrm-customize
-06:26:31 bosnia-herzegovina+montenegro done: 29 roads, 0 refused · catalogue now 23814 roads
-06:26:31 commit/push failed - the files are written; push again later with: git push
-06:26:33 commit/push failed - the files are written; push again later with: git push
-06:26:33 == 118/487 centro+nord-ovest 29 rides
-06:26:35 nord-ovest is 568 MB - its rides go to its sub-regions
-06:26:40 commit/push failed - the files are written; push again later with: git push
-06:26:40 == 119/487 kyrgyzstan+uzbekistan 29 rides
-06:26:42 downloading kyrgyzstan 74 MB
-06:26:51 downloading uzbekistan 120 MB
-06:27:03 merging kyrgyzstan+uzbekistan
-06:27:11 osrm-extract
-06:28:00 osrm-partition
-06:28:19 osrm-customize
-06:28:33 kyrgyzstan+uzbekistan done: 0 roads, 29 refused · catalogue now 23814 roads
-06:28:33 commit/push failed - the files are written; push again later with: git push
-06:28:35 commit/push failed - the files are written; push again later with: git push
-06:28:35 == 120/487 devon+dorset 27 rides
-06:28:37 downloading devon 56 MB
-06:28:43 downloading dorset 29 MB
-06:28:51 merging devon+dorset
-06:28:54 osrm-extract
-06:29:10 osrm-partition
-06:29:14 osrm-customize
-06:29:19 devon+dorset done: 27 roads, 0 refused · catalogue now 23841 roads
-06:29:20 commit/push failed - the files are written; push again later with: git push
-06:29:22 commit/push failed - the files are written; push again later with: git push
-06:29:22 == 121/487 bourgogne+rhone-alpes 26 rides
-06:29:24 rhone-alpes is 508 MB - its rides go to its sub-regions
-06:29:28 commit/push failed - the files are written; push again later with: git push
-06:29:28 == 122/488 karlovarsky+sachsen 26 rides
-06:29:30 downloading karlovarsky 29 MB
-06:29:38 downloading sachsen 257 MB
-06:29:58 merging karlovarsky+sachsen
-06:30:09 osrm-extract
-06:30:50 osrm-partition
-06:31:00 osrm-customize
-06:31:08 karlovarsky+sachsen done: 26 roads, 0 refused · catalogue now 23867 roads
-06:31:09 commit/push failed - the files are written; push again later with: git push
-06:31:11 commit/push failed - the files are written; push again later with: git push
-06:31:11 == 123/488 karlsruhe-regbez+rheinland-pfalz 26 rides
-06:31:13 downloading karlsruhe-regbez 148 MB
-06:31:28 downloading rheinland-pfalz 263 MB
-06:32:15 merging karlsruhe-regbez+rheinland-pfalz
-06:32:30 osrm-extract
-06:33:31 osrm-partition
-06:33:45 osrm-customize
-06:33:53 karlsruhe-regbez+rheinland-pfalz done: 26 roads, 0 refused · catalogue now 23893 roads
-06:33:54 commit/push failed - the files are written; push again later with: git push
-06:33:56 commit/push failed - the files are written; push again later with: git push
-06:33:56 == 124/488 provence-alpes-cote-d-azur+rhone-alpes 25 rides
-06:33:58 rhone-alpes is 508 MB - its rides go to its sub-regions
-06:34:02 commit/push failed - the files are written; push again later with: git push
-06:34:02 == 125/488 la-rioja+pais-vasco 25 rides
-06:34:04 downloading la-rioja 14 MB
-06:34:07 downloading pais-vasco 66 MB
-06:34:13 merging la-rioja+pais-vasco
-06:34:17 osrm-extract
-06:34:30 osrm-partition
-06:34:32 osrm-customize
-06:34:37 la-rioja+pais-vasco done: 25 roads, 0 refused · catalogue now 23918 roads
-06:34:38 commit/push failed - the files are written; push again later with: git push
-06:34:38 time limit near - the next run carries on with niedersachsen+schleswig-holstein
+09:01:29 commit/push failed - the files are written; push again later with: git push
+09:01:31 commit/push failed - the files are written; push again later with: git push
+09:01:31 == 72/348 us/montana+us/wyoming 6 rides
+09:01:33 downloading us/montana 97 MB
+09:01:39 downloading us/wyoming 91 MB
+09:01:46 merging us/montana+us/wyoming
+09:01:55 osrm-extract
+09:02:42 osrm-partition
+09:02:52 osrm-customize
+09:03:02 us/montana+us/wyoming done: 6 roads, 0 refused · catalogue now 24525 roads
+09:03:02 commit/push failed - the files are written; push again later with: git push
+09:03:04 commit/push failed - the files are written; push again later with: git push
+09:03:04 == 73/348 alberta+kootenay-admreg 6 rides
+09:03:06 downloading alberta 336 MB
+09:03:29 downloading kootenay-admreg 61 MB
+09:03:38 merging alberta+kootenay-admreg
+09:03:54 osrm-extract
+09:05:00 osrm-partition
+09:05:15 osrm-customize
+09:05:27 alberta+kootenay-admreg done: 6 roads, 0 refused · catalogue now 24531 roads
+09:05:28 commit/push failed - the files are written; push again later with: git push
+09:05:30 commit/push failed - the files are written; push again later with: git push
+09:05:30 == 74/348 alberta+us/montana 6 rides
+09:05:32 downloading alberta 336 MB
+09:06:29 downloading us/montana 97 MB
+09:06:47 merging alberta+us/montana
+09:07:06 osrm-extract
+09:08:30 osrm-partition
+09:08:51 osrm-customize
+09:09:07 alberta+us/montana done: 6 roads, 0 refused · catalogue now 24537 roads
+09:09:08 commit/push failed - the files are written; push again later with: git push
+09:09:10 commit/push failed - the files are written; push again later with: git push
+09:09:10 == 75/348 castilla-y-leon+la-rioja 6 rides
+09:09:12 downloading castilla-y-leon 171 MB
+09:09:33 downloading la-rioja 14 MB
+09:09:36 merging castilla-y-leon+la-rioja
+09:09:45 osrm-extract
+09:10:27 osrm-partition
+09:10:34 osrm-customize
+09:10:40 castilla-y-leon+la-rioja done: 6 roads, 0 refused · catalogue now 24543 roads
+09:10:40 commit/push failed - the files are written; push again later with: git push
+09:10:42 commit/push failed - the files are written; push again later with: git push
+09:10:42 == 76/348 anhui+henan 6 rides
+09:10:44 downloading anhui 42 MB
+09:10:49 downloading henan 49 MB
+09:11:06 merging anhui+henan
+09:11:10 osrm-extract
+09:11:51 osrm-partition
+09:12:13 osrm-customize
+09:12:32 anhui+henan done: 6 roads, 0 refused · catalogue now 24549 roads
+09:12:32 commit/push failed - the files are written; push again later with: git push
+09:12:34 commit/push failed - the files are written; push again later with: git push
+09:12:34 == 77/348 albania+kosovo 6 rides
+09:12:36 downloading albania 52 MB
+09:12:40 downloading kosovo 29 MB
+09:12:45 merging albania+kosovo
+09:12:49 osrm-extract
+09:13:12 osrm-partition
+09:13:17 osrm-customize
+09:13:22 albania+kosovo done: 1 roads, 5 refused · catalogue now 24550 roads
+09:13:22 commit/push failed - the files are written; push again later with: git push
+09:13:25 commit/push failed - the files are written; push again later with: git push
+09:13:25 == 78/348 kosovo+macedonia 6 rides
+09:13:27 downloading kosovo 29 MB
+09:13:36 downloading macedonia 29 MB
+09:13:42 merging kosovo+macedonia
+09:13:44 osrm-extract
+09:14:00 osrm-partition
+09:14:03 osrm-customize
+09:14:09 kosovo+macedonia done: 6 roads, 0 refused · catalogue now 24556 roads
+09:14:09 commit/push failed - the files are written; push again later with: git push
+09:14:11 commit/push failed - the files are written; push again later with: git push
+09:14:11 == 79/348 austria+slovenia 6 rides
+09:14:12 austria is 778 MB - its rides go to its sub-regions
+09:14:17 commit/push failed - the files are written; push again later with: git push
+09:14:17 == 80/348 france+franche-comte 5 rides
+09:14:17 france is 4877 MB - its rides go to its sub-regions
+09:14:22 commit/push failed - the files are written; push again later with: git push
+09:14:22 == 81/348 us/north-carolina+us/tennessee 5 rides
+09:14:24 downloading us/north-carolina 411 MB
+09:14:47 downloading us/tennessee 183 MB
+09:15:19 merging us/north-carolina+us/tennessee
+09:15:47 osrm-extract
+09:19:36 osrm-partition
+09:22:04 osrm-customize
+09:22:41 us/north-carolina+us/tennessee done: 5 roads, 0 refused · catalogue now 24561 roads
+09:22:41 commit/push failed - the files are written; push again later with: git push
+09:22:44 commit/push failed - the files are written; push again later with: git push
+09:22:44 == 82/348 sorlandet+vestlandet 5 rides
+09:22:45 downloading sorlandet 74 MB
+09:22:53 downloading vestlandet 246 MB
+09:23:16 merging sorlandet+vestlandet
+09:23:31 osrm-extract
+09:24:28 osrm-partition
+09:24:34 osrm-customize
+09:24:40 sorlandet+vestlandet done: 5 roads, 0 refused · catalogue now 24566 roads
+09:24:40 commit/push failed - the files are written; push again later with: git push
+09:24:43 commit/push failed - the files are written; push again later with: git push
+09:24:43 == 83/348 us/north-carolina+us/virginia 5 rides
+09:24:44 us/north-carolina+us/virginia together are too large for this machine - left to the live router
+09:24:49 commit/push failed - the files are written; push again later with: git push
+09:24:49 == 84/348 argentina+chile 5 rides
+09:24:50 argentina+chile together are too large for this machine - left to the live router
+09:24:55 commit/push failed - the files are written; push again later with: git push
+09:24:55 == 85/348 niedersachsen+thueringen 5 rides
+09:24:57 downloading niedersachsen 487 MB
+09:25:38 downloading thueringen 153 MB
+09:25:53 merging niedersachsen+thueringen
+09:26:23 osrm-extract
+09:28:20 osrm-partition
+09:28:56 osrm-customize
+09:29:10 niedersachsen+thueringen done: 5 roads, 0 refused · catalogue now 24571 roads
+09:29:10 commit/push failed - the files are written; push again later with: git push
+09:29:13 commit/push failed - the files are written; push again later with: git push
+09:29:13 == 86/348 flevoland+friesland 5 rides
+09:29:14 downloading flevoland 34 MB
+09:29:18 downloading friesland 85 MB
+09:29:32 merging flevoland+friesland
+09:29:38 osrm-extract
+09:29:54 osrm-partition
+09:29:56 osrm-customize
+09:30:01 flevoland+friesland done: 5 roads, 0 refused · catalogue now 24576 roads
+09:30:01 commit/push failed - the files are written; push again later with: git push
+09:30:03 commit/push failed - the files are written; push again later with: git push
+09:30:03 == 87/348 gelderland+utrecht 5 rides
+09:30:05 downloading gelderland 187 MB
+09:30:19 downloading utrecht 95 MB
+09:30:26 merging gelderland+utrecht
+09:30:40 osrm-extract
+09:31:16 osrm-partition
+09:31:21 osrm-customize
+09:31:27 gelderland+utrecht done: 5 roads, 0 refused · catalogue now 24581 roads
+09:31:27 commit/push failed - the files are written; push again later with: git push
+09:31:30 commit/push failed - the files are written; push again later with: git push
+09:31:30 == 88/348 drenthe+friesland 5 rides
+09:31:31 downloading drenthe 61 MB
+09:31:39 downloading friesland 85 MB
+09:31:47 merging drenthe+friesland
+09:31:54 osrm-extract
+09:32:13 osrm-partition
+09:32:15 osrm-customize
+09:32:20 drenthe+friesland done: 5 roads, 0 refused · catalogue now 24586 roads
+09:32:20 commit/push failed - the files are written; push again later with: git push
+09:32:22 commit/push failed - the files are written; push again later with: git push
+09:32:22 == 89/348 merseyside+wales 5 rides
+09:32:24 downloading merseyside 24 MB
+09:32:27 downloading wales 144 MB
+09:32:54 merging merseyside+wales
+09:33:02 osrm-extract
+09:33:38 osrm-partition
+09:33:45 osrm-customize
+09:33:52 merseyside+wales done: 0 roads, 5 refused · catalogue now 24586 roads
+09:33:52 commit/push failed - the files are written; push again later with: git push
+09:33:55 commit/push failed - the files are written; push again later with: git push
+09:33:55 == 90/348 albania+macedonia 5 rides
+09:33:56 downloading albania 52 MB
+09:34:02 downloading macedonia 29 MB
+09:34:06 merging albania+macedonia
+09:34:09 osrm-extract
+09:34:31 osrm-partition
+09:34:35 osrm-customize
+09:34:41 albania+macedonia done: 5 roads, 0 refused · catalogue now 24591 roads
+09:34:41 commit/push failed - the files are written; push again later with: git push
+09:34:43 commit/push failed - the files are written; push again later with: git push
+09:34:43 == 91/348 malopolskie+podkarpackie 5 rides
+09:34:45 downloading malopolskie 194 MB
+09:34:57 downloading podkarpackie 148 MB
+09:35:34 merging malopolskie+podkarpackie
+09:35:51 osrm-extract
+09:36:55 osrm-partition
+09:37:12 osrm-customize
+09:37:20 malopolskie+podkarpackie done: 5 roads, 0 refused · catalogue now 24596 roads
+09:37:21 commit/push failed - the files are written; push again later with: git push
+09:37:23 commit/push failed - the files are written; push again later with: git push
+09:37:23 == 92/348 us/tennessee+us/virginia 4 rides
+09:37:25 downloading us/tennessee 183 MB
+09:38:15 downloading us/virginia 410 MB
+09:40:14 merging us/tennessee+us/virginia
+09:40:43 osrm-extract
+09:44:14 osrm-partition
+09:46:09 osrm-customize
+09:46:39 us/tennessee+us/virginia done: 1 roads, 3 refused · catalogue now 24597 roads
+09:46:40 commit/push failed - the files are written; push again later with: git push
+09:46:42 commit/push failed - the files are written; push again later with: git push
+09:46:42 == 93/348 southcoast-admreg+us/washington 4 rides
+09:46:44 downloading southcoast-admreg 112 MB
+09:46:58 downloading us/washington 349 MB
+09:47:35 merging southcoast-admreg+us/washington
+09:47:57 osrm-extract
+09:49:59 osrm-partition
+09:50:42 osrm-customize
+09:51:02 southcoast-admreg+us/washington done: 4 roads, 0 refused · catalogue now 24601 roads
+09:51:02 commit/push failed - the files are written; push again later with: git push
+09:51:04 commit/push failed - the files are written; push again later with: git push
+09:51:04 == 94/348 us-west+us/nevada 4 rides
+09:51:05 us-west is 3275 MB - its rides go to its sub-regions
+09:51:10 commit/push failed - the files are written; push again later with: git push
+09:51:10 == 95/348 kyrgyzstan+tajikistan 4 rides
+09:51:12 downloading kyrgyzstan 74 MB
+09:51:31 downloading tajikistan 46 MB
+09:51:35 merging kyrgyzstan+tajikistan
+09:51:40 osrm-extract
+09:52:08 osrm-partition
+09:52:12 osrm-customize
+09:52:19 kyrgyzstan+tajikistan done: 4 roads, 0 refused · catalogue now 24605 roads
+09:52:19 commit/push failed - the files are written; push again later with: git push
+09:52:21 commit/push failed - the files are written; push again later with: git push
+09:52:21 == 96/348 pakistan+xinjiang 4 rides
+09:52:23 downloading pakistan 151 MB
+09:52:32 downloading xinjiang 47 MB
+09:52:36 merging pakistan+xinjiang
+09:52:45 osrm-extract
+09:54:29 osrm-partition
+09:55:22 osrm-customize
+09:55:55 pakistan+xinjiang done: 4 roads, 0 refused · catalogue now 24609 roads
+09:55:56 commit/push failed - the files are written; push again later with: git push
+09:55:58 commit/push failed - the files are written; push again later with: git push
+09:55:58 == 97/348 socal+us/arizona 4 rides
+09:55:59 socal is 642 MB - its rides go to its sub-regions
+09:56:04 commit/push failed - the files are written; push again later with: git push
+09:56:04 == 98/348 us/arkansas+us/oklahoma 4 rides
+09:56:05 downloading us/arkansas 96 MB
+09:56:12 downloading us/oklahoma 163 MB
+09:56:22 merging us/arkansas+us/oklahoma
+09:56:35 osrm-extract
+09:58:17 osrm-partition
+09:59:15 osrm-customize
+09:59:43 us/arkansas+us/oklahoma done: 4 roads, 0 refused · catalogue now 24613 roads
+09:59:43 commit/push failed - the files are written; push again later with: git push
+09:59:45 commit/push failed - the files are written; push again later with: git push
+09:59:45 == 99/348 us/alaska+yukon 4 rides
+09:59:47 downloading us/alaska 138 MB
+09:59:56 downloading yukon 68 MB
+10:00:04 merging us/alaska+yukon
+10:00:13 osrm-extract
+10:00:41 osrm-partition
+10:00:43 osrm-customize
+10:00:47 us/alaska+yukon done: 4 roads, 0 refused · catalogue now 24617 roads
+10:00:48 commit/push failed - the files are written; push again later with: git push
+10:00:50 commit/push failed - the files are written; push again later with: git push
+10:00:50 == 100/348 lesotho+south-africa 4 rides
+10:00:52 downloading lesotho 122 MB
+10:01:13 downloading south-africa 405 MB
+10:02:44 merging lesotho+south-africa
+10:03:10 osrm-extract
+10:06:17 osrm-partition
+10:07:31 osrm-customize
+10:08:03 lesotho+south-africa done: 1 roads, 3 refused · catalogue now 24618 roads
+10:08:03 commit/push failed - the files are written; push again later with: git push
+10:08:06 commit/push failed - the files are written; push again later with: git push
+10:08:06 == 101/348 benin+burkina-faso 4 rides
+10:08:08 downloading benin 46 MB
+10:08:13 downloading burkina-faso 81 MB
+10:08:20 merging benin+burkina-faso
+10:08:27 osrm-extract
+10:09:03 osrm-partition
+10:09:11 osrm-customize
+10:09:24 benin+burkina-faso done: 0 roads, 4 refused · catalogue now 24618 roads
+10:09:24 commit/push failed - the files are written; push again later with: git push
+10:09:27 commit/push failed - the files are written; push again later with: git push
+10:09:27 == 102/348 kazakhstan+uzbekistan 4 rides
+10:09:28 downloading kazakhstan 216 MB
+10:09:49 downloading uzbekistan 120 MB
+10:10:15 merging kazakhstan+uzbekistan
+10:10:32 osrm-extract
+10:12:09 osrm-partition
+10:12:41 osrm-customize
+10:13:01 kazakhstan+uzbekistan done: 1 roads, 3 refused · catalogue now 24619 roads
+10:13:01 commit/push failed - the files are written; push again later with: git push
+10:13:04 commit/push failed - the files are written; push again later with: git push
+10:13:04 == 103/348 cumbria+scotland 4 rides
+10:13:05 downloading cumbria 44 MB
+10:13:15 downloading scotland 315 MB
+10:14:14 merging cumbria+scotland
+10:14:31 osrm-extract
+10:15:37 osrm-partition
+10:15:52 osrm-customize
+10:16:01 cumbria+scotland done: 4 roads, 0 refused · catalogue now 24623 roads
+10:16:01 commit/push failed - the files are written; push again later with: git push
+10:16:03 commit/push failed - the files are written; push again later with: git push
+10:16:03 == 104/348 thueringen+unterfranken 4 rides
+10:16:05 downloading thueringen 153 MB
+10:16:39 downloading unterfranken 100 MB
+10:17:01 merging thueringen+unterfranken
+10:17:13 osrm-extract
+10:17:56 osrm-partition
+10:18:03 osrm-customize
+10:18:10 thueringen+unterfranken done: 4 roads, 0 refused · catalogue now 24627 roads
+10:18:10 commit/push failed - the files are written; push again later with: git push
+10:18:12 commit/push failed - the files are written; push again later with: git push
+10:18:12 == 105/348 oberbayern+tuebingen-regbez 4 rides
+10:18:14 downloading oberbayern 248 MB
+10:18:30 downloading tuebingen-regbez 123 MB
+10:19:06 merging oberbayern+tuebingen-regbez
+10:19:23 osrm-extract
+10:20:34 osrm-partition
+10:20:51 osrm-customize
+10:21:01 oberbayern+tuebingen-regbez done: 0 roads, 4 refused · catalogue now 24627 roads
+10:21:02 commit/push failed - the files are written; push again later with: git push
+10:21:02 time limit near - the next run carries on with asturias+galicia
