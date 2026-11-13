@@ -1,300 +1,300 @@
-12:47:48 merging castilla-y-leon+extremadura
-12:47:58 osrm-extract
-12:48:49 osrm-partition
-12:48:57 osrm-customize
-12:49:03 castilla-y-leon+extremadura done: 1 roads, 0 refused · catalogue now 24722 roads
-12:49:04 commit/push failed - the files are written; push again later with: git push
-12:49:05 commit/push failed - the files are written; push again later with: git push
-12:49:05 == 62/233 us/minnesota+us/wisconsin 1 rides
-12:49:07 downloading us/minnesota 277 MB
-12:50:01 downloading us/wisconsin 282 MB
-12:50:24 merging us/minnesota+us/wisconsin
-12:50:50 osrm-extract
-12:53:35 osrm-partition
-12:55:13 osrm-customize
-12:55:55 us/minnesota+us/wisconsin done: 1 roads, 0 refused · catalogue now 24723 roads
-12:55:55 commit/push failed - the files are written; push again later with: git push
-12:55:57 commit/push failed - the files are written; push again later with: git push
-12:55:57 == 63/233 qinghai+tibet 1 rides
-12:55:59 downloading qinghai 32 MB
-12:56:03 downloading tibet 48 MB
-12:56:10 merging qinghai+tibet
-12:56:14 osrm-extract
-12:56:32 osrm-partition
-12:56:34 osrm-customize
-12:56:38 qinghai+tibet done: 1 roads, 0 refused · catalogue now 24724 roads
-12:56:38 commit/push failed - the files are written; push again later with: git push
-12:56:40 commit/push failed - the files are written; push again later with: git push
-12:56:40 == 64/233 us-northeast+us/new-jersey 1 rides
-12:56:41 us-northeast is 1727 MB - its rides go to its sub-regions
-12:56:44 commit/push failed - the files are written; push again later with: git push
-12:56:44 == 65/233 brandenburg+zachodniopomorskie 1 rides
-12:56:46 downloading brandenburg 283 MB
-12:57:15 downloading zachodniopomorskie 93 MB
-12:57:45 merging brandenburg+zachodniopomorskie
-12:58:02 osrm-extract
-12:59:07 osrm-partition
-12:59:22 osrm-customize
-12:59:29 brandenburg+zachodniopomorskie done: 1 roads, 0 refused · catalogue now 24725 roads
-12:59:30 commit/push failed - the files are written; push again later with: git push
-12:59:31 commit/push failed - the files are written; push again later with: git push
-12:59:31 == 66/233 essex+kent 1 rides
-12:59:33 downloading essex 48 MB
-12:59:50 downloading kent 52 MB
-13:00:09 merging essex+kent
-13:00:14 osrm-extract
-13:00:36 osrm-partition
-13:00:41 osrm-customize
-13:00:46 essex+kent done: 1 roads, 0 refused · catalogue now 24726 roads
-13:00:46 commit/push failed - the files are written; push again later with: git push
-13:00:47 commit/push failed - the files are written; push again later with: git push
-13:00:47 == 67/233 estonia+latvia 1 rides
-13:00:50 downloading estonia 119 MB
-13:01:01 downloading latvia 135 MB
-13:01:49 merging estonia+latvia
-13:02:01 osrm-extract
-13:02:49 osrm-partition
-13:03:00 osrm-customize
-13:03:07 estonia+latvia done: 0 roads, 1 refused · catalogue now 24726 roads
-13:03:07 commit/push failed - the files are written; push again later with: git push
-13:03:09 commit/push failed - the files are written; push again later with: git push
-13:03:09 == 68/233 basse-normandie+bretagne 1 rides
-13:03:11 downloading basse-normandie 138 MB
-13:04:01 downloading bretagne 315 MB
-13:04:25 merging basse-normandie+bretagne
-13:04:47 osrm-extract
-13:06:12 osrm-partition
-13:06:37 osrm-customize
-13:06:49 basse-normandie+bretagne done: 1 roads, 0 refused · catalogue now 24727 roads
-13:06:50 commit/push failed - the files are written; push again later with: git push
-13:06:51 commit/push failed - the files are written; push again later with: git push
-13:06:51 == 69/233 aquitaine+pais-vasco 1 rides
-13:06:53 downloading aquitaine 283 MB
-13:07:15 downloading pais-vasco 66 MB
-13:07:22 merging aquitaine+pais-vasco
-13:07:39 osrm-extract
-13:08:47 osrm-partition
-13:09:03 osrm-customize
-13:09:12 aquitaine+pais-vasco done: 1 roads, 0 refused · catalogue now 24728 roads
-13:09:12 commit/push failed - the files are written; push again later with: git push
-13:09:13 commit/push failed - the files are written; push again later with: git push
-13:09:13 == 70/233 luxembourg+rheinland-pfalz 1 rides
-13:09:16 downloading luxembourg 46 MB
-13:09:21 downloading rheinland-pfalz 263 MB
-13:10:34 merging luxembourg+rheinland-pfalz
-13:10:47 osrm-extract
-13:11:39 osrm-partition
-13:11:48 osrm-customize
-13:11:54 luxembourg+rheinland-pfalz done: 1 roads, 0 refused · catalogue now 24729 roads
-13:11:55 commit/push failed - the files are written; push again later with: git push
-13:11:56 commit/push failed - the files are written; push again later with: git push
-13:11:56 == 71/233 albania+montenegro 1 rides
-13:11:58 downloading albania 52 MB
-13:12:04 downloading montenegro 33 MB
-13:12:15 merging albania+montenegro
-13:12:19 osrm-extract
-13:12:40 osrm-partition
-13:12:44 osrm-customize
-13:12:48 albania+montenegro done: 1 roads, 0 refused · catalogue now 24730 roads
-13:12:48 commit/push failed - the files are written; push again later with: git push
-13:12:50 commit/push failed - the files are written; push again later with: git push
-13:12:50 == 72/233 friesland+groningen 1 rides
-13:12:52 downloading friesland 85 MB
-13:13:19 downloading groningen 54 MB
-13:13:25 merging friesland+groningen
-13:13:31 osrm-extract
-13:13:50 osrm-partition
-13:13:52 osrm-customize
-13:13:56 friesland+groningen done: 1 roads, 0 refused · catalogue now 24731 roads
-13:13:56 commit/push failed - the files are written; push again later with: git push
-13:13:57 commit/push failed - the files are written; push again later with: git push
-13:13:57 == 73/233 ostlandet+trondelag 1 rides
-13:13:59 downloading ostlandet 435 MB
-13:14:34 downloading trondelag 175 MB
-13:14:48 merging ostlandet+trondelag
-13:15:16 osrm-extract
-13:17:06 osrm-partition
-13:17:23 osrm-customize
-13:17:30 ostlandet+trondelag done: 1 roads, 0 refused · catalogue now 24732 roads
-13:17:30 commit/push failed - the files are written; push again later with: git push
-13:17:31 commit/push failed - the files are written; push again later with: git push
-13:17:31 == 74/233 mazowieckie+swietokrzyskie 1 rides
-13:17:34 downloading mazowieckie 288 MB
-13:18:12 downloading swietokrzyskie 85 MB
-13:18:23 merging mazowieckie+swietokrzyskie
-13:18:41 osrm-extract
-13:19:44 osrm-partition
-13:19:57 osrm-customize
-13:20:05 mazowieckie+swietokrzyskie done: 1 roads, 0 refused · catalogue now 24733 roads
-13:20:06 commit/push failed - the files are written; push again later with: git push
-13:20:07 commit/push failed - the files are written; push again later with: git push
-13:20:07 == 75/233 kujawsko-pomorskie+pomorskie 1 rides
-13:20:09 downloading kujawsko-pomorskie 101 MB
-13:20:18 downloading pomorskie 113 MB
-13:20:39 merging kujawsko-pomorskie+pomorskie
-13:20:49 osrm-extract
-13:21:27 osrm-partition
-13:21:35 osrm-customize
-13:21:41 kujawsko-pomorskie+pomorskie done: 1 roads, 0 refused · catalogue now 24734 roads
-13:21:41 commit/push failed - the files are written; push again later with: git push
-13:21:42 commit/push failed - the files are written; push again later with: git push
-13:21:42 == 76/233 belarus+podlaskie 1 rides
-13:21:44 downloading belarus 336 MB
-13:22:13 downloading podlaskie 74 MB
-13:22:25 merging belarus+podlaskie
-13:22:44 osrm-extract
-13:24:00 osrm-partition
-13:24:16 osrm-customize
-13:24:25 belarus+podlaskie done: 0 roads, 1 refused · catalogue now 24734 roads
-13:24:25 commit/push failed - the files are written; push again later with: git push
-13:24:27 commit/push failed - the files are written; push again later with: git push
-13:24:27 == 77/233 andalucia+portugal 1 rides
-13:24:29 downloading andalucia 188 MB
-13:24:57 downloading portugal 408 MB
-13:25:31 merging andalucia+portugal
-13:25:58 osrm-extract
-13:28:30 osrm-partition
-13:29:11 osrm-customize
-13:29:26 andalucia+portugal done: 1 roads, 0 refused · catalogue now 24735 roads
-13:29:27 commit/push failed - the files are written; push again later with: git push
-13:29:28 commit/push failed - the files are written; push again later with: git push
-13:29:28 == 78/233 shropshire+west-midlands 1 rides
-13:29:30 downloading shropshire 24 MB
-13:29:34 downloading west-midlands 57 MB
-13:29:40 merging shropshire+west-midlands
-13:29:44 osrm-extract
-13:30:01 osrm-partition
-13:30:04 osrm-customize
-13:30:08 shropshire+west-midlands done: 0 roads, 1 refused · catalogue now 24735 roads
-13:30:09 commit/push failed - the files are written; push again later with: git push
-13:30:10 commit/push failed - the files are written; push again later with: git push
-13:30:10 == 79/233 vietnam+yunnan 1 rides
-13:30:12 downloading vietnam 317 MB
-13:30:38 downloading yunnan 90 MB
-13:30:46 merging vietnam+yunnan
-13:31:05 osrm-extract
-13:35:02 osrm-partition
-13:37:10 osrm-customize
-13:37:53 vietnam+yunnan done: 1 roads, 0 refused · catalogue now 24736 roads
-13:37:54 commit/push failed - the files are written; push again later with: git push
-13:37:55 commit/push failed - the files are written; push again later with: git push
-13:37:55 == 80/233 jilin+liaoning 1 rides
-13:37:57 downloading jilin 27 MB
-13:38:01 downloading liaoning 27 MB
-13:38:05 merging jilin+liaoning
-13:38:07 osrm-extract
-13:38:29 osrm-partition
-13:38:37 osrm-customize
-13:38:45 jilin+liaoning done: 1 roads, 0 refused · catalogue now 24737 roads
-13:38:45 commit/push failed - the files are written; push again later with: git push
-13:38:46 commit/push failed - the files are written; push again later with: git push
-13:38:46 == 81/233 dorset+somerset 1 rides
-13:38:48 downloading dorset 29 MB
-13:38:53 downloading somerset 48 MB
-13:38:59 merging dorset+somerset
-13:39:03 osrm-extract
-13:39:18 osrm-partition
-13:39:22 osrm-customize
-13:39:26 dorset+somerset done: 1 roads, 0 refused · catalogue now 24738 roads
-13:39:26 commit/push failed - the files are written; push again later with: git push
-13:39:27 commit/push failed - the files are written; push again later with: git push
-13:39:27 == 82/233 friesland+noord-holland 1 rides
-13:39:30 downloading friesland 85 MB
-13:39:37 downloading noord-holland 182 MB
-13:39:54 merging friesland+noord-holland
-13:40:07 osrm-extract
-13:40:42 osrm-partition
-13:40:46 osrm-customize
-13:40:50 friesland+noord-holland done: 1 roads, 0 refused · catalogue now 24739 roads
-13:40:51 commit/push failed - the files are written; push again later with: git push
-13:40:52 commit/push failed - the files are written; push again later with: git push
-13:40:52 == 83/233 turkmenistan+uzbekistan 1 rides
-13:40:54 downloading turkmenistan 24 MB
-13:40:58 downloading uzbekistan 120 MB
-13:41:09 merging turkmenistan+uzbekistan
-13:41:16 osrm-extract
-13:42:04 osrm-partition
-13:42:22 osrm-customize
-13:42:34 turkmenistan+uzbekistan done: 1 roads, 0 refused · catalogue now 24740 roads
-13:42:34 commit/push failed - the files are written; push again later with: git push
-13:42:36 commit/push failed - the files are written; push again later with: git push
-13:42:36 == 84/233 navarra+pais-vasco 1 rides
-13:42:38 downloading navarra 36 MB
-13:42:44 downloading pais-vasco 66 MB
-13:42:54 merging navarra+pais-vasco
-13:42:58 osrm-extract
-13:43:19 osrm-partition
-13:43:22 osrm-customize
-13:43:26 navarra+pais-vasco done: 1 roads, 0 refused · catalogue now 24741 roads
-13:43:26 commit/push failed - the files are written; push again later with: git push
-13:43:27 commit/push failed - the files are written; push again later with: git push
-13:43:27 == 85/233 duesseldorf-regbez+rheinland-pfalz 1 rides
-13:43:29 downloading duesseldorf-regbez 207 MB
-13:43:54 downloading rheinland-pfalz 263 MB
-13:44:17 merging duesseldorf-regbez+rheinland-pfalz
-13:44:39 osrm-extract
-13:45:58 osrm-partition
-13:46:14 osrm-customize
-13:46:23 duesseldorf-regbez+rheinland-pfalz done: 0 roads, 1 refused · catalogue now 24741 roads
-13:46:23 commit/push failed - the files are written; push again later with: git push
-13:46:24 commit/push failed - the files are written; push again later with: git push
-13:46:24 == 86/233 stuttgart-regbez+unterfranken 1 rides
-13:46:27 downloading stuttgart-regbez 203 MB
-13:46:43 downloading unterfranken 100 MB
-13:47:06 merging stuttgart-regbez+unterfranken
-13:47:20 osrm-extract
-13:48:13 osrm-partition
-13:48:24 osrm-customize
-13:48:30 stuttgart-regbez+unterfranken done: 1 roads, 0 refused · catalogue now 24742 roads
-13:48:30 commit/push failed - the files are written; push again later with: git push
-13:48:32 commit/push failed - the files are written; push again later with: git push
-13:48:32 == 87/233 bulgaria+romania 1 rides
-13:48:34 downloading bulgaria 169 MB
-13:48:48 downloading romania 318 MB
-13:49:24 merging bulgaria+romania
-13:49:46 osrm-extract
-13:51:45 osrm-partition
-13:52:16 osrm-customize
-13:52:28 bulgaria+romania done: 1 roads, 0 refused · catalogue now 24743 roads
-13:52:29 commit/push failed - the files are written; push again later with: git push
-13:52:30 commit/push failed - the files are written; push again later with: git push
-13:52:30 == 88/233 hokkaido+tohoku 1 rides
-13:52:32 downloading hokkaido 181 MB
-13:52:50 downloading tohoku 298 MB
-13:53:16 merging hokkaido+tohoku
-13:53:38 osrm-extract
-13:55:26 osrm-partition
-13:55:58 osrm-customize
-13:56:26 hokkaido+tohoku done: 1 roads, 0 refused · catalogue now 24744 roads
-13:56:26 commit/push failed - the files are written; push again later with: git push
-13:56:28 commit/push failed - the files are written; push again later with: git push
-13:56:28 == 89/233 us/virginia+us/west-virginia 1 rides
-13:56:30 downloading us/virginia 410 MB
-13:57:34 downloading us/west-virginia 95 MB
-13:57:44 merging us/virginia+us/west-virginia
-13:58:08 osrm-extract
-14:00:42 osrm-partition
-14:01:49 osrm-customize
-14:02:08 us/virginia+us/west-virginia done: 1 roads, 0 refused · catalogue now 24745 roads
-14:02:08 commit/push failed - the files are written; push again later with: git push
-14:02:09 commit/push failed - the files are written; push again later with: git push
-14:02:09 == 90/233 us/louisiana+us/mississippi 1 rides
-14:02:12 downloading us/louisiana 141 MB
-14:02:45 downloading us/mississippi 91 MB
-14:03:05 merging us/louisiana+us/mississippi
-14:03:16 osrm-extract
-14:04:32 osrm-partition
-14:05:08 osrm-customize
-14:05:24 us/louisiana+us/mississippi done: 1 roads, 0 refused · catalogue now 24746 roads
-14:05:25 commit/push failed - the files are written; push again later with: git push
-14:05:26 commit/push failed - the files are written; push again later with: git push
-14:05:26 == 91/233 us/indiana+us/kentucky 1 rides
-14:05:28 downloading us/indiana 193 MB
-14:05:56 downloading us/kentucky 148 MB
-14:06:21 merging us/indiana+us/kentucky
-14:06:38 osrm-extract
-14:08:58 osrm-partition
-14:10:43 osrm-customize
-14:11:20 us/indiana+us/kentucky done: 1 roads, 0 refused · catalogue now 24747 roads
-14:11:20 commit/push failed - the files are written; push again later with: git push
-14:11:20 time limit near - the next run carries on with us/utah+us/wyoming
+17:03:55 downloading sachsen 257 MB
+17:04:10 downloading ustecky 107 MB
+17:04:39 merging praha+sachsen+ustecky
+17:04:58 osrm-extract
+17:06:03 osrm-partition
+17:06:18 osrm-customize
+17:06:27 praha+sachsen+ustecky done: 0 roads, 6 refused · catalogue now 25911 roads
+17:06:27 commit/push failed - the files are written; push again later with: git push
+17:06:30 commit/push failed - the files are written; push again later with: git push
+17:06:30 == 75/150 hessen+stuttgart-regbez+unterfranken 6 rides
+17:06:32 downloading hessen 332 MB
+17:07:16 downloading stuttgart-regbez 203 MB
+17:07:45 downloading unterfranken 100 MB
+17:08:17 merging hessen+stuttgart-regbez+unterfranken
+17:08:46 osrm-extract
+17:10:38 osrm-partition
+17:11:07 osrm-customize
+17:11:18 hessen+stuttgart-regbez+unterfranken done: 6 roads, 0 refused · catalogue now 25917 roads
+17:11:18 commit/push failed - the files are written; push again later with: git push
+17:11:21 commit/push failed - the files are written; push again later with: git push
+17:11:21 == 76/150 dorset+somerset+wiltshire 6 rides
+17:11:23 downloading dorset 29 MB
+17:11:30 downloading somerset 48 MB
+17:11:34 downloading wiltshire 33 MB
+17:11:37 merging dorset+somerset+wiltshire
+17:11:42 osrm-extract
+17:12:06 osrm-partition
+17:12:12 osrm-customize
+17:12:18 dorset+somerset+wiltshire done: 6 roads, 0 refused · catalogue now 25923 roads
+17:12:18 commit/push failed - the files are written; push again later with: git push
+17:12:20 commit/push failed - the files are written; push again later with: git push
+17:12:20 == 77/150 gelderland+noord-holland+zuid-holland 6 rides
+17:12:23 downloading gelderland 187 MB
+17:12:55 downloading noord-holland 182 MB
+17:13:18 downloading zuid-holland 203 MB
+17:13:38 merging gelderland+noord-holland+zuid-holland
+17:14:07 osrm-extract
+17:15:25 osrm-partition
+17:15:38 osrm-customize
+17:15:46 gelderland+noord-holland+zuid-holland done: 6 roads, 0 refused · catalogue now 25929 roads
+17:15:47 commit/push failed - the files are written; push again later with: git push
+17:15:49 commit/push failed - the files are written; push again later with: git push
+17:15:49 == 78/150 hamburg+niedersachsen+schleswig-holstein 5 rides
+17:15:52 hamburg+niedersachsen+schleswig-holstein together are too large for this machine - left to the live router
+17:15:57 commit/push failed - the files are written; push again later with: git push
+17:15:57 == 79/150 berlin+niedersachsen+sachsen-anhalt 5 rides
+17:15:59 berlin+niedersachsen+sachsen-anhalt together are too large for this machine - left to the live router
+17:16:04 commit/push failed - the files are written; push again later with: git push
+17:16:04 == 80/150 gloucestershire+greater-london+wales 5 rides
+17:16:06 downloading gloucestershire 40 MB
+17:16:10 downloading greater-london 124 MB
+17:16:39 downloading wales 144 MB
+17:16:53 merging gloucestershire+greater-london+wales
+17:17:08 osrm-extract
+17:18:14 osrm-partition
+17:18:29 osrm-customize
+17:18:38 gloucestershire+greater-london+wales done: 0 roads, 5 refused · catalogue now 25929 roads
+17:18:38 commit/push failed - the files are written; push again later with: git push
+17:18:41 commit/push failed - the files are written; push again later with: git push
+17:18:41 == 81/150 andorra+languedoc-roussillon+midi-pyrenees 5 rides
+17:18:44 downloading andorra 3 MB
+17:18:45 downloading languedoc-roussillon 258 MB
+17:19:04 downloading midi-pyrenees 347 MB
+17:19:38 merging andorra+languedoc-roussillon+midi-pyrenees
+17:20:07 osrm-extract
+17:22:03 osrm-partition
+17:22:33 osrm-customize
+17:22:47 andorra+languedoc-roussillon+midi-pyrenees done: 5 roads, 0 refused · catalogue now 25934 roads
+17:22:47 commit/push failed - the files are written; push again later with: git push
+17:22:50 commit/push failed - the files are written; push again later with: git push
+17:22:50 == 82/150 gelderland+utrecht+zuid-holland 5 rides
+17:22:52 downloading gelderland 187 MB
+17:23:04 downloading utrecht 95 MB
+17:23:11 downloading zuid-holland 203 MB
+17:23:24 merging gelderland+utrecht+zuid-holland
+17:23:48 osrm-extract
+17:24:54 osrm-partition
+17:25:06 osrm-customize
+17:25:13 gelderland+utrecht+zuid-holland done: 5 roads, 0 refused · catalogue now 25939 roads
+17:25:14 commit/push failed - the files are written; push again later with: git push
+17:25:16 commit/push failed - the files are written; push again later with: git push
+17:25:16 == 83/150 mittelfranken+stuttgart-regbez+tuebingen-regbez 5 rides
+17:25:18 downloading mittelfranken 92 MB
+17:25:32 downloading stuttgart-regbez 203 MB
+17:25:53 downloading tuebingen-regbez 123 MB
+17:26:16 merging mittelfranken+stuttgart-regbez+tuebingen-regbez
+17:26:35 osrm-extract
+17:27:52 osrm-partition
+17:28:13 osrm-customize
+17:28:23 mittelfranken+stuttgart-regbez+tuebingen-regbez done: 5 roads, 0 refused · catalogue now 25944 roads
+17:28:23 commit/push failed - the files are written; push again later with: git push
+17:28:26 commit/push failed - the files are written; push again later with: git push
+17:28:26 == 84/150 hungary+malopolskie+slovakia 5 rides
+17:28:28 hungary+malopolskie+slovakia together are too large for this machine - left to the live router
+17:28:33 commit/push failed - the files are written; push again later with: git push
+17:28:33 == 85/150 haute-normandie+ile-de-france+picardie 4 rides
+17:28:36 downloading haute-normandie 103 MB
+17:28:47 downloading ile-de-france 325 MB
+17:29:27 downloading picardie 127 MB
+17:29:36 merging haute-normandie+ile-de-france+picardie
+17:30:02 osrm-extract
+17:31:40 osrm-partition
+17:32:10 osrm-customize
+17:32:24 haute-normandie+ile-de-france+picardie done: 4 roads, 0 refused · catalogue now 25948 roads
+17:32:24 commit/push failed - the files are written; push again later with: git push
+17:32:27 commit/push failed - the files are written; push again later with: git push
+17:32:27 == 86/150 berlin+brandenburg+zachodniopomorskie 4 rides
+17:32:29 downloading berlin 95 MB
+17:32:43 downloading brandenburg 283 MB
+17:32:59 downloading zachodniopomorskie 93 MB
+17:33:11 merging berlin+brandenburg+zachodniopomorskie
+17:33:30 osrm-extract
+17:34:36 osrm-partition
+17:34:53 osrm-customize
+17:35:02 berlin+brandenburg+zachodniopomorskie done: 4 roads, 0 refused · catalogue now 25952 roads
+17:35:02 commit/push failed - the files are written; push again later with: git push
+17:35:05 commit/push failed - the files are written; push again later with: git push
+17:35:05 == 87/150 interior-admreg+okanagan-admreg+southcoast-admreg 4 rides
+17:35:07 downloading interior-admreg 155 MB
+17:35:18 downloading okanagan-admreg 43 MB
+17:35:25 downloading southcoast-admreg 112 MB
+17:35:33 merging interior-admreg+okanagan-admreg+southcoast-admreg
+17:35:45 osrm-extract
+17:36:28 osrm-partition
+17:36:33 osrm-customize
+17:36:41 interior-admreg+okanagan-admreg+southcoast-admreg done: 4 roads, 0 refused · catalogue now 25956 roads
+17:36:41 commit/push failed - the files are written; push again later with: git push
+17:36:44 commit/push failed - the files are written; push again later with: git push
+17:36:44 == 88/150 karlsruhe-regbez+rheinland-pfalz+unterfranken 4 rides
+17:36:46 downloading karlsruhe-regbez 148 MB
+17:37:00 downloading rheinland-pfalz 263 MB
+17:37:15 downloading unterfranken 100 MB
+17:37:22 merging karlsruhe-regbez+rheinland-pfalz+unterfranken
+17:37:46 osrm-extract
+17:39:14 osrm-partition
+17:39:32 osrm-customize
+17:39:41 karlsruhe-regbez+rheinland-pfalz+unterfranken done: 4 roads, 0 refused · catalogue now 25960 roads
+17:39:42 commit/push failed - the files are written; push again later with: git push
+17:39:44 commit/push failed - the files are written; push again later with: git push
+17:39:44 == 89/150 cheshire+derbyshire+merseyside 4 rides
+17:39:47 downloading cheshire 37 MB
+17:39:50 downloading derbyshire 42 MB
+17:39:54 downloading merseyside 24 MB
+17:39:57 merging cheshire+derbyshire+merseyside
+17:40:02 osrm-extract
+17:40:24 osrm-partition
+17:40:29 osrm-customize
+17:40:35 cheshire+derbyshire+merseyside done: 4 roads, 0 refused · catalogue now 25964 roads
+17:40:35 commit/push failed - the files are written; push again later with: git push
+17:40:38 commit/push failed - the files are written; push again later with: git push
+17:40:38 == 90/150 cheshire+merseyside+west-yorkshire 4 rides
+17:40:40 downloading cheshire 37 MB
+17:40:44 downloading merseyside 24 MB
+17:40:48 downloading west-yorkshire 52 MB
+17:40:52 merging cheshire+merseyside+west-yorkshire
+17:40:58 osrm-extract
+17:41:24 osrm-partition
+17:41:29 osrm-customize
+17:41:36 cheshire+merseyside+west-yorkshire done: 0 roads, 4 refused · catalogue now 25964 roads
+17:41:36 commit/push failed - the files are written; push again later with: git push
+17:41:39 commit/push failed - the files are written; push again later with: git push
+17:41:39 == 91/150 duesseldorf-regbez+gelderland+noord-holland 4 rides
+17:41:41 downloading duesseldorf-regbez 207 MB
+17:41:57 downloading gelderland 187 MB
+17:42:12 downloading noord-holland 182 MB
+17:42:23 merging duesseldorf-regbez+gelderland+noord-holland
+17:42:51 osrm-extract
+17:44:15 osrm-partition
+17:44:29 osrm-customize
+17:44:39 duesseldorf-regbez+gelderland+noord-holland done: 0 roads, 4 refused · catalogue now 25964 roads
+17:44:39 commit/push failed - the files are written; push again later with: git push
+17:44:42 commit/push failed - the files are written; push again later with: git push
+17:44:42 == 92/150 devon+dorset+somerset 4 rides
+17:44:44 downloading devon 56 MB
+17:44:49 downloading dorset 29 MB
+17:44:53 downloading somerset 48 MB
+17:45:01 merging devon+dorset+somerset
+17:45:07 osrm-extract
+17:45:35 osrm-partition
+17:45:42 osrm-customize
+17:45:48 devon+dorset+somerset done: 4 roads, 0 refused · catalogue now 25968 roads
+17:45:48 commit/push failed - the files are written; push again later with: git push
+17:45:51 commit/push failed - the files are written; push again later with: git push
+17:45:51 == 93/150 cheshire+north-yorkshire+west-yorkshire 4 rides
+17:45:54 downloading cheshire 37 MB
+17:45:57 downloading north-yorkshire 59 MB
+17:46:01 downloading west-yorkshire 52 MB
+17:46:06 merging cheshire+north-yorkshire+west-yorkshire
+17:46:13 osrm-extract
+17:46:44 osrm-partition
+17:46:51 osrm-customize
+17:46:58 cheshire+north-yorkshire+west-yorkshire done: 0 roads, 4 refused · catalogue now 25968 roads
+17:46:58 commit/push failed - the files are written; push again later with: git push
+17:47:01 commit/push failed - the files are written; push again later with: git push
+17:47:01 == 94/150 hessen+karlsruhe-regbez+rheinland-pfalz 4 rides
+17:47:03 hessen+karlsruhe-regbez+rheinland-pfalz together are too large for this machine - left to the live router
+17:47:08 commit/push failed - the files are written; push again later with: git push
+17:47:08 == 95/150 dorset+oxfordshire+wiltshire 4 rides
+17:47:11 downloading dorset 29 MB
+17:47:15 downloading oxfordshire 27 MB
+17:47:20 downloading wiltshire 33 MB
+17:47:26 merging dorset+oxfordshire+wiltshire
+17:47:30 osrm-extract
+17:47:49 osrm-partition
+17:47:53 osrm-customize
+17:47:59 dorset+oxfordshire+wiltshire done: 4 roads, 0 refused · catalogue now 25972 roads
+17:47:59 commit/push failed - the files are written; push again later with: git push
+17:48:02 commit/push failed - the files are written; push again later with: git push
+17:48:02 == 96/150 devon+dorset+wiltshire 4 rides
+17:48:04 downloading devon 56 MB
+17:48:14 downloading dorset 29 MB
+17:48:17 downloading wiltshire 33 MB
+17:48:20 merging devon+dorset+wiltshire
+17:48:25 osrm-extract
+17:48:51 osrm-partition
+17:48:56 osrm-customize
+17:49:02 devon+dorset+wiltshire done: 4 roads, 0 refused · catalogue now 25976 roads
+17:49:03 commit/push failed - the files are written; push again later with: git push
+17:49:05 commit/push failed - the files are written; push again later with: git push
+17:49:05 == 97/150 hamburg+niedersachsen+sachsen-anhalt 3 rides
+17:49:08 hamburg+niedersachsen+sachsen-anhalt together are too large for this machine - left to the live router
+17:49:13 commit/push failed - the files are written; push again later with: git push
+17:49:13 == 98/150 us/new-jersey+us/new-york+us/pennsylvania 3 rides
+17:49:16 us/new-jersey+us/new-york+us/pennsylvania together are too large for this machine - left to the live router
+17:49:21 commit/push failed - the files are written; push again later with: git push
+17:49:21 == 99/150 greater-london+northamptonshire+south-yorkshire 3 rides
+17:49:23 downloading greater-london 124 MB
+17:49:31 downloading northamptonshire 22 MB
+17:49:34 downloading south-yorkshire 30 MB
+17:49:39 merging greater-london+northamptonshire+south-yorkshire
+17:49:48 osrm-extract
+17:50:25 osrm-partition
+17:50:32 osrm-customize
+17:50:40 greater-london+northamptonshire+south-yorkshire done: 0 roads, 3 refused · catalogue now 25976 roads
+17:50:40 commit/push failed - the files are written; push again later with: git push
+17:50:43 commit/push failed - the files are written; push again later with: git push
+17:50:43 == 100/150 bremen+hessen+niedersachsen 3 rides
+17:50:45 bremen+hessen+niedersachsen together are too large for this machine - left to the live router
+17:50:50 commit/push failed - the files are written; push again later with: git push
+17:50:50 == 101/150 centre+haute-normandie+ile-de-france 3 rides
+17:50:53 centre+haute-normandie+ile-de-france together are too large for this machine - left to the live router
+17:50:58 commit/push failed - the files are written; push again later with: git push
+17:50:58 == 102/150 north-yorkshire+northumberland+tyne-and-wear 3 rides
+17:51:01 downloading north-yorkshire 59 MB
+17:51:05 downloading northumberland 25 MB
+17:51:08 downloading tyne-and-wear 19 MB
+17:51:11 merging north-yorkshire+northumberland+tyne-and-wear
+17:51:15 osrm-extract
+17:51:36 osrm-partition
+17:51:39 osrm-customize
+17:51:45 north-yorkshire+northumberland+tyne-and-wear done: 0 roads, 3 refused · catalogue now 25976 roads
+17:51:45 commit/push failed - the files are written; push again later with: git push
+17:51:48 commit/push failed - the files are written; push again later with: git push
+17:51:48 == 103/150 hamburg+mecklenburg-vorpommern+schleswig-holstein 3 rides
+17:51:50 downloading hamburg 52 MB
+17:51:54 downloading mecklenburg-vorpommern 123 MB
+17:52:02 downloading schleswig-holstein 152 MB
+17:52:11 merging hamburg+mecklenburg-vorpommern+schleswig-holstein
+17:52:27 osrm-extract
+17:53:23 osrm-partition
+17:53:37 osrm-customize
+17:53:45 hamburg+mecklenburg-vorpommern+schleswig-holstein done: 3 roads, 0 refused · catalogue now 25979 roads
+17:53:45 commit/push failed - the files are written; push again later with: git push
+17:53:48 commit/push failed - the files are written; push again later with: git push
+17:53:48 == 104/150 cameroon+central-african-republic+congo-brazzaville 3 rides
+17:53:51 downloading cameroon 213 MB
+17:54:04 downloading central-african-republic 95 MB
+17:54:16 downloading congo-brazzaville 31 MB
+17:54:19 merging cameroon+central-african-republic+congo-brazzaville
+17:54:36 osrm-extract
+17:55:42 osrm-partition
+17:55:49 osrm-customize
+17:55:59 cameroon+central-african-republic+congo-brazzaville done: 0 roads, 3 refused · catalogue now 25979 roads
+17:56:00 commit/push failed - the files are written; push again later with: git push
+17:56:02 commit/push failed - the files are written; push again later with: git push
+17:56:02 == 105/150 brandenburg+sachsen+sachsen-anhalt 2 rides
+17:56:05 brandenburg+sachsen+sachsen-anhalt together are too large for this machine - left to the live router
+17:56:10 commit/push failed - the files are written; push again later with: git push
+17:56:10 == 106/150 east-sussex+essex+west-sussex 2 rides
+17:56:12 downloading east-sussex 21 MB
+17:56:15 downloading essex 48 MB
+17:56:20 downloading west-sussex 48 MB
+17:56:24 merging east-sussex+essex+west-sussex
+17:56:30 osrm-extract
+17:56:53 osrm-partition
+17:56:57 osrm-customize
+17:57:03 east-sussex+essex+west-sussex done: 0 roads, 2 refused · catalogue now 25979 roads
+17:57:03 commit/push failed - the files are written; push again later with: git push
+17:57:06 commit/push failed - the files are written; push again later with: git push
+17:57:06 == 107/150 oxfordshire+somerset+wiltshire 2 rides
+17:57:08 downloading oxfordshire 27 MB
+17:57:14 downloading somerset 48 MB
+17:57:25 downloading wiltshire 33 MB
+17:57:28 merging oxfordshire+somerset+wiltshire
+17:57:33 osrm-extract
+17:57:57 osrm-partition
+17:58:03 osrm-customize
+17:58:09 oxfordshire+somerset+wiltshire done: 2 roads, 0 refused · catalogue now 25981 roads
+17:58:09 commit/push failed - the files are written; push again later with: git push
+17:58:09 time limit near - the next run carries on with karlsruhe-regbez+rheinland-pfalz+stuttgart-regbez
