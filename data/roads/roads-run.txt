@@ -204,3 +204,5 @@
 09:03:41 saved on disk - committed and pushed with the next 2-hourly push
 09:03:43 downloading us/california 1274 MB
 09:04:50 == us/california: 18 rides in 15 boxes
+09:59:36 us/california second pass: 13 new roads, 5 refused · catalogue now 28613 roads
+09:59:39 time limit near - the next run carries on with thailand
