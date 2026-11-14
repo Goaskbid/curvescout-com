@@ -26,3 +26,26 @@
 00:55:48 second pass: 5591 rides without a stored road - routed in small boxes cut from their region
 00:58:35 downloading mexico 619 MB
 00:59:05 == mexico: 879 rides in 22 boxes
+01:13:13 mexico second pass: 834 new roads, 45 refused · catalogue now 26845 roads
+01:13:16 downloading belgium 666 MB
+01:14:03 downloading nord-pas-de-calais 230 MB
+01:15:51 == belgium+nord-pas-de-calais: 406 rides in 3 boxes
+01:16:22 box failed 1.2633,49.8244,4.0974,51.56 Command failed: docker run --rm -v /tmp/cs-roads:/data iboates/osmium:1.16.0 extract -b 1.2633,49.8244,4.0974,51.56 -s s
+01:16:40 box failed 1.9572,49.8244,4.7941,51.4039 Command failed: docker run --rm -v /tmp/cs-roads:/data iboates/osmium:1.16.0 extract -b 1.9572,49.8244,4.7941,51.4039 -s
+01:16:58 box failed 2.78,49.9898,5.2879,51.1579 Command failed: docker run --rm -v /tmp/cs-roads:/data iboates/osmium:1.16.0 extract -b 2.78,49.9898,5.2879,51.1579 -s s
+01:16:59 belgium+nord-pas-de-calais second pass: 0 new roads, 0 refused · catalogue now 26845 roads
+01:16:59 saved on disk - committed and pushed with the next 2-hourly push
+01:17:00 downloading italy 2148 MB
+01:30:00 == italy: 295 rides in 13 boxes
+02:02:15 italy second pass: 295 new roads, 0 refused · catalogue now 27140 roads
+02:02:15 saved on disk - committed and pushed with the next 2-hourly push
+02:02:16 downloading alps 2229 MB
+02:11:59 == alps: 276 rides in 21 boxes
+02:48:58 alps second pass: 263 new roads, 13 refused · catalogue now 27403 roads
+02:48:58 saved on disk - committed and pushed with the next 2-hourly push
+02:49:00 downloading sudeste 824 MB
+02:50:24 == sudeste: 158 rides in 15 boxes
+03:05:38 sudeste second pass: 121 new roads, 37 refused · catalogue now 27524 roads
+03:05:38 saved on disk - committed and pushed with the next 2-hourly push
+03:05:39 downloading england 1634 MB
+03:07:27 == england: 129 rides in 18 boxes
