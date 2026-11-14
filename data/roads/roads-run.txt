@@ -49,3 +49,61 @@
 03:05:38 saved on disk - committed and pushed with the next 2-hourly push
 03:05:39 downloading england 1634 MB
 03:07:27 == england: 129 rides in 18 boxes
+04:22:52 england second pass: 129 new roads, 0 refused · catalogue now 27653 roads
+04:23:00 downloading peru 246 MB
+04:23:14 == peru: 118 rides in 3 boxes
+04:23:58 peru second pass: 0 new roads, 118 refused · catalogue now 27653 roads
+04:23:58 saved on disk - committed and pushed with the next 2-hourly push
+04:24:00 downloading spain 1431 MB
+04:25:37 == spain: 102 rides in 5 boxes
+04:29:39 spain second pass: 1 new roads, 101 refused · catalogue now 27654 roads
+04:29:39 saved on disk - committed and pushed with the next 2-hourly push
+04:29:41 downloading valencia 135 MB
+04:30:34 == valencia: 99 rides in 1 boxes
+04:31:04 valencia second pass: 0 new roads, 99 refused · catalogue now 27654 roads
+04:31:05 saved on disk - committed and pushed with the next 2-hourly push
+04:31:06 downloading gcc-states 246 MB
+04:31:41 == gcc-states: 98 rides in 3 boxes
+04:32:28 gcc-states second pass: 11 new roads, 87 refused · catalogue now 27665 roads
+04:32:28 saved on disk - committed and pushed with the next 2-hourly push
+04:32:29 downloading romania 318 MB
+04:32:54 downloading ukraine 843 MB
+04:34:17 == romania+ukraine: 95 rides in 2 boxes
+04:35:38 romania+ukraine second pass: 95 new roads, 0 refused · catalogue now 27760 roads
+04:35:39 saved on disk - committed and pushed with the next 2-hourly push
+04:35:40 downloading north-korea 89 MB
+04:35:48 downloading south-korea 278 MB
+04:36:14 == north-korea+south-korea: 85 rides in 1 boxes
+04:37:21 north-korea+south-korea second pass: 0 new roads, 85 refused · catalogue now 27760 roads
+04:37:21 saved on disk - committed and pushed with the next 2-hourly push
+04:37:23 downloading turkmenistan 24 MB
+04:37:25 == turkmenistan: 85 rides in 1 boxes
+04:37:32 turkmenistan second pass: 0 new roads, 85 refused · catalogue now 27760 roads
+04:37:32 saved on disk - committed and pushed with the next 2-hourly push
+04:37:34 downloading israel-and-palestine 115 MB
+04:37:43 downloading lebanon 50 MB
+04:37:52 == israel-and-palestine+lebanon: 83 rides in 1 boxes
+04:38:35 israel-and-palestine+lebanon second pass: 0 new roads, 83 refused · catalogue now 27760 roads
+04:38:35 saved on disk - committed and pushed with the next 2-hourly push
+04:38:37 downloading japan 2455 MB
+04:41:45 == japan: 80 rides in 6 boxes
+05:15:09 japan second pass: 80 new roads, 0 refused · catalogue now 27840 roads
+05:15:09 saved on disk - committed and pushed with the next 2-hourly push
+05:15:11 downloading freiburg-regbez 153 MB
+05:15:27 downloading switzerland 525 MB
+05:17:33 == freiburg-regbez+switzerland: 76 rides in 1 boxes
+05:19:21 freiburg-regbez+switzerland second pass: 76 new roads, 0 refused · catalogue now 27916 roads
+05:19:21 saved on disk - committed and pushed with the next 2-hourly push
+05:19:23 downloading kanto 500 MB
+05:20:27 == kanto: 66 rides in 2 boxes
+05:21:19 kanto second pass: 0 new roads, 66 refused · catalogue now 27916 roads
+05:21:19 saved on disk - committed and pushed with the next 2-hourly push
+05:21:21 downloading romania 318 MB
+05:21:53 == romania: 66 rides in 2 boxes
+05:22:24 romania second pass: 0 new roads, 66 refused · catalogue now 27916 roads
+05:22:24 saved on disk - committed and pushed with the next 2-hourly push
+05:22:26 downloading java 858 MB
+05:23:31 == java: 63 rides in 3 boxes
+05:26:00 java second pass: 41 new roads, 22 refused · catalogue now 27957 roads
+05:26:01 saved on disk - committed and pushed with the next 2-hourly push
+05:26:01 time limit near - the next run carries on with australia
