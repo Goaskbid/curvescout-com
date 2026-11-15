@@ -1,0 +1,17 @@
+How cs-studio-worker.js is built
+
+Since 2026-11-02 the studio voice contains no GPL code: English pronunciation is CurveScout's own (g2p-en.mjs with the
+CMU Pronouncing Dictionary), replacing eSpeak NG. Its sources are published here anyway, so anyone can rebuild it:
+  cs-studio-worker.src.mjs  = src/copilot-live/studio-worker.mjs
+  cs-g2p-en.src.mjs         = src/copilot-live/g2p-en.mjs
+  cs-g2p-local.src.mjs      = src/copilot-live/g2p-local.mjs
+  cs-phon.src.mjs           = src/copilot-live/phon.mjs
+  cs-build-copilot.src.mjs  = tools/build-copilot.mjs (this build script)
+  the dictionary: src/copilot-live/data/cmudict.txt, from the npm package cmu-pronouncing-dictionary@3.0.0 (licence: cs-cmudict-LICENSE.txt)
+
+Dependencies (npm, exact versions): onnxruntime-web@1.22.0, kokoro-js@1.2.1 (voice tables only); bundler esbuild@0.24.0.
+
+Rebuild:
+  1. put the .src.mjs files back at the paths above, and the dictionary at src/copilot-live/data/cmudict.txt
+  2. npm install onnxruntime-web@1.22.0 kokoro-js@1.2.1 esbuild@0.24.0
+  3. esbuild src/copilot-live/studio-worker.mjs --bundle --format=esm --platform=browser --target=es2020 --minify --legal-comments=inline --loader:.txt=text --outfile=cs-studio-worker.js

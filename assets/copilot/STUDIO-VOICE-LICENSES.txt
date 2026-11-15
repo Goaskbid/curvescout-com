@@ -1,0 +1,14 @@
+CurveScout Ride - studio voice components and their licences
+
+cs-studio-worker.js is a separate program that runs in its own worker. It bundles:
+  - ONNX Runtime Web 1.22.0 (Microsoft) - MIT licence - https://github.com/microsoft/onnxruntime
+  - CurveScout's own worker code: text clean-up adapted from kokoro-js 1.2.1 (Apache-2.0, Joshua Lochner),
+    English pronunciation (g2p-en) and place-name pronunciation rules written for CurveScout
+  - the CMU Pronouncing Dictionary (Carnegie Mellon University, BSD-style licence), packaged as
+    cmu-pronouncing-dictionary 3.0.0 (ISC) - see cs-cmudict-LICENSE.txt
+It contains no GPL code: eSpeak NG (GPL-3.0, formerly included through the phonemizer package) was removed on
+2 November 2026. The worker's sources and build steps are published next to it anyway (STUDIO-VOICE-BUILD.txt).
+cs-ort-1.bin + cs-ort-2.bin: ONNX Runtime Web 1.22.0 WebAssembly, MIT. cs-ort-glue.js: ONNX Runtime Web, MIT.
+cs-voice-bella.bin, cs-voice-heart.bin: Kokoro-82M v1.0 voice tables (hexgrad), Apache-2.0, via kokoro-js 1.2.1.
+The model (Kokoro-82M v1.0, 8-bit ONNX by onnx-community, Apache-2.0) is downloaded by the browser from
+cdn.jsdelivr.net/npm/kokoro-q8-shards@1.0.0 or huggingface.co and checked against its SHA-256; it is not stored here.
