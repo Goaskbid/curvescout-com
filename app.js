@@ -11294,7 +11294,7 @@ function csBasemap(map, kind, attach = true) {
          OSM France standby for both kinds; the relief comes only from our own Terrain Tiles layer */
       const url = 'https://tile-a.openstreetmap.fr/hot/{z}/{x}/{y}.png';
       const credit = '\u00a9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> ' +
-          'contributors \u00b7 tiles by <a href="https://www.openstreetmap.fr/" target="_blank" rel="noopener">OpenStreetMap France</a>';
+          'contributors \u00b7 tiles style by <a href="https://www.hotosm.org/" target="_blank" rel="noopener">Humanitarian OpenStreetMap Team</a>, hosted by <a href="https://www.openstreetmap.fr/" target="_blank" rel="noopener">OpenStreetMap France</a>';
       const raster = L.tileLayer(url, {
         maxZoom: 18, crossOrigin: true, subdomains: 'a',
         attribution: credit, csKind: kind });
@@ -23956,41 +23956,28 @@ function drawMap(r) {
             (fixed ? ' · ' + fixed + ' fixed' : '') + (avg ? ' · ' + avg + ' average-speed' : '')
           : (restricted ? 'Positions not shown in this country'
                         : 'None recorded for this road')) + '</span></div>' +
-        '<p class="camFine">' + (restricted
-          ? '<b>CurveScout does not show camera positions in this country.</b> Switzerland, ' +
-            'Germany, France, Austria and Italy prohibit devices and services whose purpose ' +
-            'is warning about speed controls, and in Switzerland merely possessing one is an ' +
-            'offence. A list of coordinates along the road you are about to ride is that ' +
-            'thing, so it is not shown here and no camera is drawn on the map. The posted ' +
-            'limit applies to every metre of it either way, which is the only fact you need.'
-          : shown.length
-          ? 'Positions come from OpenStreetMap and are marked on the map and in the roadbook. ' +
-            'Average-speed sections measure your time between two points, so slowing only at the ' +
-            'camera does nothing.'
-          : '<b>That does not mean there are none.</b> Coverage varies a great deal by country and ' +
-            'mobile units are never mapped at all.') +
-        ' The limit applies either way.</p>' +
-        /* what the law actually allows, since he asked about warnings */
-        '<p class="camFine camLaw"><b>Warnings and the law.</b> A device or app whose purpose ' +
-        'is to warn of fixed cameras is <b>illegal in Switzerland, Germany, France, Austria ' +
-        'and Italy</b> - in Switzerland even possessing one is an offence, and in France ' +
-        'apps may show risk <i>zones</i> but not camera positions. Showing where cameras are ' +
-        'mapped, as this page does, is not the same thing as warning you at the wheel, and ' +
-        'CurveScout does not do the second. Check the rules of the country you are riding ' +
-        'in before you rely on anything.</p>' +
-        /* FRANCE IS STRICTER THAN THE REST AND DESERVES ITS OWN LINE.
-           Since the Loi d'orientation des mobilités (2019) and the decree of 2021, French
-           authorities can require navigation services to SUPPRESS the display of enforcement
-           locations in a defined area during certain police operations. That obligation is
-           aimed at services giving live guidance, not at a page showing what OpenStreetMap
-           records - but the distinction is one a rider should know exists rather than one
-           this page should quietly assume in its own favour. */
-        '<p class="camFine"><b>France in particular.</b> French law lets the authorities ' +
-        'require navigation services to stop showing enforcement locations in an area during ' +
-        'certain operations. That duty is written for services giving live guidance at the ' +
-        'wheel. This page is a map of what OpenStreetMap records, consulted before you ride, ' +
-        'which is a different thing - but if you are riding in France, know the rule ' +
-        'exists and do not treat any map as permission.</p>';
+        /* r58.1 (owner, on a Thai ride: "france? thailand?"): say only what is true for THIS ride's countries.
+           Banned countries are named only when the ride is in them; a country whose rules we have not checked
+           is named as such; the law and France paragraphs appear only where they apply. */
+        (() => {
+          let ccs = []; try { ccs = (getOrderedRouteCountries(r) || []).map(c => String(c && c.cc || c).toLowerCase()).filter(Boolean); } catch (e) {}
+          ccs = [...new Set(ccs)];
+          const nm = cc => { try { return new Intl.DisplayNames(['en'], { type: 'region' }).of(cc.toUpperCase()) || cc.toUpperCase(); } catch (e) { return cc.toUpperCase(); } };
+          const list = a => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+          const banned = ccs.filter(cc => JURISDICTION_POLICY[cc] && JURISDICTION_POLICY[cc].cameraDataMode === 'prohibited');
+          const unchecked = ccs.filter(cc => !banned.includes(cc) && !CAMERA_ALLOWED.includes(cc));
+          let first;
+          if (!restricted) first = shown.length
+            ? 'Positions come from OpenStreetMap and are marked on the map and in the roadbook. Average-speed sections measure your time between two points, so slowing only at the camera does nothing.'
+            : '<b>That does not mean there are none.</b> Coverage varies a great deal by country and mobile units are never mapped at all.';
+          else if (banned.length) first = '<b>Not shown here.</b> ' + list(banned.map(nm)) + (banned.length > 1 ? ' prohibit' : ' prohibits') +
+            ' devices and services that warn of speed controls' + (banned.includes('ch') ? ', and in Switzerland even carrying one is an offence' : '') + ', so CurveScout draws no camera there.';
+          else first = '<b>Not shown here.</b> We have not yet checked the rules on camera warnings in ' + (unchecked.length ? list(unchecked.map(nm)) : 'this country') +
+            ', so we leave positions out rather than guess.';
+          return '<p class="camFine">' + first + ' The posted limit applies either way.</p>' +
+            (banned.length ? '<p class="camFine camLaw"><b>Warnings and the law.</b> Showing where cameras are mapped is not the same as warning you at the wheel, and CurveScout does not do the second. Check the rules before you rely on any app.</p>' : '') +
+            (banned.includes('fr') ? '<p class="camFine"><b>France in particular.</b> The authorities can require navigation services to stop showing enforcement locations in an area during certain operations - do not treat any map as permission.</p>' : '');
+        })();
       /* AND NOW THE NUMBERS, AFTER the innerHTML that used to erase them. Police, the
          national motoring club that sends the recovery truck, and the emergency line -
          appended once the box has its content, never before. */
@@ -24348,10 +24335,12 @@ function countryCards(sequence, subtitle) {
          then, one line down, "Outside the EU customs union." Same fact, two sentences,
          stacked. The note already covers the customs position wherever it exists, so the
          standing line is only added when nothing has said it yet. */
+      /* r58.1: EU and Schengen lines only mean something in and around Europe - not on a ride in Thailand */
+      const europe = rule.eu || rule.schengen || /schengen|\bEU\b|green card/i.test(rule.note || '');
       const saidEU = bits.some(t => /\bEU\b|customs/i.test(t));
-      if (!saidEU) bits.push(rule.eu === false ? 'Outside the EU customs union.' : 'Inside the EU.');
+      if (europe && !saidEU) bits.push(rule.eu === false ? 'Outside the EU customs union.' : 'Inside the EU.');
       const saidBorder = bits.some(t => /schengen|border/i.test(t));
-      if (!saidBorder) bits.push(rule.schengen ? 'Schengen, so usually no stopped check at the line.'
+      if (europe && !saidBorder) bits.push(rule.schengen ? 'Schengen, so usually no stopped check at the line.'
                                                : 'Outside Schengen - expect a staffed border.');
     } else {
       bits.push('No country rules recorded for this one yet - check the vignette and toll ' +
