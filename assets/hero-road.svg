@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" preserveAspectRatio="xMidYMid slice">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#0a1428"/><stop offset=".18" stop-color="#2b3062"/>
+<stop offset=".33" stop-color="#7a4a72"/><stop offset=".45" stop-color="#d07a5c"/>
+<stop offset=".55" stop-color="#f6b06a"/><stop offset=".62" stop-color="#ffd8a2"/>
+<stop offset=".75" stop-color="#4a4a72"/><stop offset="1" stop-color="#10131c"/></linearGradient>
+<radialGradient id="sun" cx=".5" cy=".55" r=".38">
+<stop offset="0" stop-color="#fff6e2" stop-opacity=".95"/><stop offset="1" stop-color="#ffcf94" stop-opacity="0"/></radialGradient>
+<linearGradient id="r1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#969cc6"/><stop offset="1" stop-color="#666ca0"/></linearGradient>
+<linearGradient id="r2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#636a99"/><stop offset="1" stop-color="#40466c"/></linearGradient>
+<linearGradient id="r3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4064"/><stop offset="1" stop-color="#252a44"/></linearGradient>
+<linearGradient id="r4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2338"/><stop offset="1" stop-color="#0b0e15"/></linearGradient>
+</defs>
+<rect width="1600" height="1100" fill="url(#sky)"/>
+<circle cx="800" cy="600" r="104" fill="#fff8ea"/>
+<rect width="1600" height="1100" fill="url(#sun)"/>
+<!-- ridges sit through the middle band, so any crop keeps mountains behind the type -->
+<path d="M-40 560 L150 452 L268 512 L392 392 L520 504 L648 412 L764 508 L900 440 L1030 526 L1160 454 L1290 530 L1420 470 L1640 556 L1640 1140 L-40 1140 Z" fill="url(#r1)" opacity=".5"/>
+<path d="M-40 648 L172 534 L318 612 L470 516 L620 616 L780 546 L940 632 L1096 558 L1250 642 L1420 572 L1640 660 L1640 1140 L-40 1140 Z" fill="url(#r2)" opacity=".8"/>
+<path d="M-40 748 L210 646 L400 722 L600 652 L820 736 L1030 672 L1240 748 L1440 686 L1640 748 L1640 1140 L-40 1140 Z" fill="url(#r3)"/>
+<path d="M-40 862 L240 786 L470 854 L700 790 L940 862 L1180 800 L1420 866 L1640 832 L1640 1140 L-40 1140 Z" fill="url(#r4)"/>
+<g opacity=".92">
+<path d="M-60 960 C220 930 320 884 560 892 C800 900 900 858 1140 854 C1360 850 1480 816 1680 806"
+ fill="none" stroke="#0a0d13" stroke-width="30" stroke-linecap="round"/>
+<path d="M-60 960 C220 930 320 884 560 892 C800 900 900 858 1140 854 C1360 850 1480 816 1680 806"
+ fill="none" stroke="#b3bacf" stroke-width="20" stroke-linecap="round"/>
+<path d="M-60 960 C220 930 320 884 560 892 C800 900 900 858 1140 854 C1360 850 1480 816 1680 806"
+ fill="none" stroke="#fffdf7" stroke-width="2.4" stroke-dasharray="18 28" opacity=".82"/>
+</g>
+</svg>

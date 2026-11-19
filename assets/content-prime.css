@@ -1,0 +1,20 @@
+/* Shared with existing CurveScout typography and colours. */
+.cs-prime-actions,.cs-prime-toc{display:flex;flex-wrap:wrap;gap:.55rem;margin:1rem 0}
+.cs-prime-actions a,.cs-prime-toc a{display:inline-flex;align-items:center;min-height:44px;padding:.6rem .85rem;border:1px solid currentColor;border-radius:.5rem;text-decoration:none;line-height:1.25}
+.cs-prime-panel{margin:1.4rem 0;padding:1.1rem;border:1px solid #52606d;border-radius:.7rem;max-width:100%;overflow-wrap:anywhere}
+.cs-prime-panel h2{margin-top:0}.cs-prime-panel a{text-decoration:underline;text-underline-offset:.15em}
+.cs-prime-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin:0}
+.cs-prime-facts dt{font-size:.85rem;opacity:.8}.cs-prime-facts dd{margin:.25rem 0 .5rem;font-weight:650}
+.cs-prime-caption{font-size:.9rem;line-height:1.5}.cs-prime-table-wrap{overflow:auto;max-width:100%;overscroll-behavior:contain}
+.cs-prime-table{border-collapse:collapse;min-width:400px;width:100%;text-align:left}.cs-prime-table th,.cs-prime-table td{padding:.65rem .4rem;border-bottom:1px solid #64748b;vertical-align:top}.cs-prime-table th:last-child,.cs-prime-table td:last-child{text-align:right;white-space:nowrap}
+.cs-prime-filter{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1rem 0}.cs-prime-filter label{flex-basis:100%;font-weight:650}.cs-prime-filter input{min-height:44px;flex:1;min-width:140px;padding:.6rem;border:1px solid #64748b;border-radius:.35rem;font:inherit}.cs-prime-filter button,[data-cs-recent] button{min-height:44px;padding:.5rem .8rem;font:inherit}
+[data-cs-recent] ul{padding-left:1.2rem}[data-cs-recent] li{margin:.6rem 0}.cs-prime-panel :focus-visible,.cs-prime-actions :focus-visible,.cs-prime-toc :focus-visible{outline:3px solid #db6c1d;outline-offset:3px}
+.cs-prime-panel :target,[id^="cs-prime-"]{scroll-margin-top:90px}.cs-prime-access{border-left:5px solid #b45309}
+.cs-prime-related{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}.cs-prime-related a{display:block;padding:.9rem;border:1px solid #64748b;border-radius:.5rem;text-decoration:none}.cs-prime-related small{display:block;margin-top:.4rem}
+@media(max-width:600px){.cs-prime-facts{grid-template-columns:1fr 1fr}.cs-prime-related{grid-template-columns:1fr}.cs-prime-panel{padding:.9rem}.cs-prime-actions a{flex:1 1 130px}.cs-prime-toc a{font-size:.9rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+.csGuideDisclosure{font-size:.75rem;line-height:1.3;font-style:normal;opacity:.85;white-space:normal}
+
+.cs-prime-record-scores{margin:1rem 0}.cs-prime-record-scores summary{cursor:pointer;padding:.5rem 0}.cs-prime-actions a:first-child{background:#ff2442;border-color:#ff2442;color:#fff;text-decoration:none;font-weight:650}
+@media(max-width:600px){.topIn{flex-wrap:wrap;gap:.5rem}.topIn .cta{max-width:100%;white-space:normal}}

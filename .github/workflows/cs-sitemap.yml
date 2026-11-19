@@ -1,0 +1,28 @@
+# CurveScout sitemap: rebuilt and validated after every change to the published pages (every deployment).
+# Lists every canonical, indexable page; new pages appear, deleted or redirected ones disappear; lastmod moves only
+# when a page's content or structure changes. Search engines find it through robots.txt - nothing to submit by hand.
+name: CurveScout sitemap
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['sitemap*.xml', 'sitemap-state.json.gz', 'robots.txt', 'data/**', '.github/workflows/**']
+  workflow_dispatch: {}
+permissions: { contents: write }
+concurrency: { group: cs-sitemap, cancel-in-progress: false }
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - name: Build and validate the sitemap
+        run: node .github/scripts/build-sitemap.mjs . && node .github/scripts/build-sitemap.mjs . --check-only
+      - name: Publish it if it changed
+        run: |
+          git config user.name "curvescout-sitemap"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A sitemap*.xml sitemap-state.json.gz robots.txt
+          git diff --cached --quiet && { echo "Sitemap unchanged"; exit 0; }
+          git commit -qm "Sitemap: rebuilt after deployment" && git pull -q --rebase origin main && git push -q origin HEAD:main

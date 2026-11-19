@@ -1,0 +1,30 @@
+name: CurveScout weekly release
+# Every Monday: offers the next held-back rides to search engines (at most 10% more), rebuilds the sitemap, tells
+# IndexNow. The script is .github/scripts/weekly-release.mjs; it does nothing when no batch is due.
+on:
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch: {}
+permissions: { contents: write }
+concurrency: { group: cs-deploy, cancel-in-progress: false }
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1, ref: main }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Release this week's rides and rebuild the sitemap
+        run: |
+          [ -f .github/scripts/weekly-release.mjs ] || { echo "release script not deployed yet"; exit 0; }
+          node .github/scripts/weekly-release.mjs .
+          node .github/scripts/build-sitemap.mjs . && node .github/scripts/build-sitemap.mjs . --check-only
+      - name: Commit and push (tries again if the site changed meanwhile)
+        run: |
+          git config user.name "curvescout-weekly"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A rides changelog.html data/index/release-log.json sitemap*.xml sitemap-state.json.gz robots.txt
+          git diff --cached --quiet && { echo "nothing released this week"; exit 0; }
+          git commit -qm "Weekly release: more rides offered to search engines"
+          for k in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep 30; done; exit 1

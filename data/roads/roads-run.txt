@@ -1,0 +1,59 @@
+12:23:52 rides in the catalogue: 1774
+12:23:52 reading the Geofabrik region index
+12:23:58 0 router builds planned (0 single regions, 0 border crossings), 0 rides not yet done, 0 rides fit no region
+12:23:58 second pass: 7 rides without a stored road - routed in small boxes cut from their region
+12:25:26 downloading us/florida 630 MB
+12:36:16 == us/florida: 1 rides in 1 boxes
+12:36:46 us/florida second pass: 1 new roads, 0 refused · catalogue now 29869 roads
+12:36:50 downloading hamburg 52 MB
+12:37:31 downloading mecklenburg-vorpommern 123 MB
+12:39:34 == hamburg+mecklenburg-vorpommern: 1 rides in 1 boxes
+12:40:04 hamburg+mecklenburg-vorpommern second pass: 0 new roads, 1 refused · catalogue now 29869 roads
+12:40:04 saved on disk - committed and pushed with the next 2-hourly push
+12:40:05 downloading nord-norge 388 MB
+12:44:50 == nord-norge: 1 rides in 1 boxes
+12:45:10 nord-norge second pass: 1 new roads, 0 refused · catalogue now 29870 roads
+12:45:10 saved on disk - committed and pushed with the next 2-hourly push
+12:45:11 downloading bosnia-herzegovina 155 MB
+12:47:07 downloading serbia 231 MB
+12:52:22 == bosnia-herzegovina+serbia: 1 rides in 1 boxes
+12:52:49 bosnia-herzegovina+serbia second pass: 1 new roads, 0 refused · catalogue now 29871 roads
+12:52:49 saved on disk - committed and pushed with the next 2-hourly push
+12:52:50 downloading lubelskie 133 MB
+12:55:24 == lubelskie: 1 rides in 1 boxes
+12:55:41 lubelskie second pass: 1 new roads, 0 refused · catalogue now 29872 roads
+12:55:41 saved on disk - committed and pushed with the next 2-hourly push
+12:55:42 downloading us/kansas 112 MB
+12:57:43 downloading us/missouri 191 MB
+13:04:15 downloading us/oklahoma 162 MB
+13:06:19 == us/kansas+us/missouri+us/oklahoma: 1 rides in 1 boxes
+13:07:35 us/kansas+us/missouri+us/oklahoma second pass: 1 new roads, 0 refused · catalogue now 29873 roads
+13:07:35 saved on disk - committed and pushed with the next 2-hourly push
+13:07:36 downloading south-australia 65 MB
+13:08:16 == south-australia: 1 rides in 1 boxes
+13:08:22 south-australia second pass: 1 new roads, 0 refused · catalogue now 29874 roads
+13:08:22 saved on disk - committed and pushed with the next 2-hourly push
+13:08:34 heights: 25 cells, 338 new profiles
+13:08:47 heights: 50 cells, 655 new profiles
+13:08:57 heights: 75 cells, 1162 new profiles
+13:09:07 heights: 100 cells, 1503 new profiles
+13:09:13 heights: 125 cells, 2064 new profiles
+13:09:18 heights: 150 cells, 2417 new profiles
+13:09:23 heights: 175 cells, 2737 new profiles
+13:09:30 heights: 200 cells, 3437 new profiles
+13:09:37 heights: 225 cells, 4241 new profiles
+13:09:43 heights: 250 cells, 4468 new profiles
+13:09:52 heights: 275 cells, 5087 new profiles
+13:10:03 heights: 300 cells, 6581 new profiles
+13:10:09 heights: 325 cells, 7588 new profiles
+13:10:17 heights: 350 cells, 10084 new profiles
+13:10:29 heights: 375 cells, 10622 new profiles
+13:10:39 heights: 400 cells, 14169 new profiles
+13:10:49 heights: 425 cells, 14733 new profiles
+13:10:59 heights: 450 cells, 17102 new profiles
+13:11:11 heights: 475 cells, 21189 new profiles
+13:11:24 heights: 500 cells, 25948 new profiles
+13:11:39 heights: 525 cells, 28793 new profiles
+13:11:53 heights: 550 cells, 29512 new profiles
+13:12:30 heights: 575 cells, 29801 new profiles
+13:12:42 heights: 29874 new profiles, every stored road has one

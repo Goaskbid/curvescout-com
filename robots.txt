@@ -1,0 +1,63 @@
+# CurveScout - https://curvescout.com/legal.html#use
+# Search engines and AI answer services may read, show, summarise and link to our pages.
+# Training AI models on our content, building datasets from it and bulk copying are not allowed
+# (text and data mining reserved, Art. 4(3) EU Directive 2019/790; see /.well-known/tdmrep.json).
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: cohere-training-data-crawler
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
+
+User-agent: img2dataset
+Disallow: /
+
+User-agent: Timpibot
+Disallow: /
+
+User-agent: AI2Bot
+Disallow: /
+
+User-agent: PanguBot
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://curvescout.com/sitemap.xml

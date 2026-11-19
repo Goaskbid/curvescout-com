@@ -1,0 +1,42 @@
+# CurveScout deploy without Codespaces: publish a GitHub Release with tag "deploy-..." and the release zip attached.
+# This job unpacks it into the site, checks GitHub Pages limits, pushes once, asks Pages to rebuild, then deletes the release.
+name: CurveScout deploy from release
+on:
+  release:
+    types: [published]
+permissions:
+  contents: write
+  pages: write
+concurrency: { group: cs-deploy, cancel-in-progress: false }
+jobs:
+  deploy:
+    if: startsWith(github.event.release.tag_name, 'deploy-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ github.event.release.tag_name }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: Download the release zip
+        run: |
+          mkdir -p /tmp/rel && gh release download "$TAG" -D /tmp/rel -p '*.zip'
+          ls -la /tmp/rel && for z in /tmp/rel/*.zip; do unzip -tq "$z"; done
+      - name: Unpack into the site
+        run: for z in /tmp/rel/*.zip; do unzip -oq "$z" -d .; done
+      - name: Check GitHub limits (site under 950 MB, no file over 10 MB)
+        run: |
+          S=$(du -sm --apparent-size --exclude=.git . | cut -f1); echo "site size: $S MB"
+          [ "$S" -lt 950 ] || { echo "STOP: site would be $S MB"; exit 1; }
+          BIG=$(find . -path ./.git -prune -o -type f -size +10M -print | head -1); [ -z "$BIG" ] || { echo "STOP: $BIG is over 10 MB"; exit 1; }
+          test -s index.html && test -s app.js && test -s sw.js
+      - name: Commit and push once
+        run: |
+          git config user.name "curvescout-deploy"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -qm "CurveScout ${TAG#deploy-} (from release)" && git push -q origin HEAD:${{ github.event.repository.default_branch }}
+      - name: Ask GitHub Pages to rebuild
+        run: gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages builds on push anyway"
+      - name: Remove the release (keeps the repository small)
+        if: success()
+        run: gh release delete "$TAG" --yes --cleanup-tag

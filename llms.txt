@@ -1,0 +1,51 @@
+# CurveScout
+
+> Free motorcycle route planner and ride library. Rides are measured on stored roads built from OpenStreetMap data, with stops, height profiles, riding time and plain notes on the roads. No account needed.
+
+Facts about the site: made in Meilen, Switzerland; free to use; 1,172 rides rated best in 93 countries (see the open table below); every ride page states where each number comes from (measured, recorded or estimated).
+
+## Start here
+- [Best motorcycle rides](https://curvescout.com/rides.html): featured rides by country
+- [Ride library by country](https://curvescout.com/read/index.html): all ride records
+- [Riding calendar](https://curvescout.com/calendar/): seasons, pass openings and access rules
+- [Guides](https://curvescout.com/guides/): planning a motorcycle trip
+- [How the evidence works](https://curvescout.com/how-curvescout-works.html)
+- [Sources and coverage](https://curvescout.com/sources-and-coverage.html)
+- [Press, citation and reuse](https://curvescout.com/press.html)
+
+## Best roads by country
+- [🇷 Motorcycle routes in Argentina](https://curvescout.com/rides/motorcycle-roads-argentina.html)
+- [🇺 Motorcycle routes in Australia](https://curvescout.com/rides/motorcycle-roads-australia.html)
+- [🇹 Motorcycle routes in Austria](https://curvescout.com/rides/motorcycle-roads-austria.html)
+- [🇧🇷 Motorcycle routes in Brazil](https://curvescout.com/rides/motorcycle-roads-brazil.html)
+- [🇨🇦 Motorcycle routes in Canada](https://curvescout.com/rides/motorcycle-roads-canada.html)
+- [🇨🇱 Motorcycle routes in Chile](https://curvescout.com/rides/motorcycle-roads-chile.html)
+- [🇫🇷 Motorcycle routes in France](https://curvescout.com/rides/motorcycle-roads-france.html)
+- [🇩🇪 Motorcycle routes in Germany](https://curvescout.com/rides/motorcycle-roads-germany.html)
+- [🇬🇷 Motorcycle routes in Greece](https://curvescout.com/rides/motorcycle-roads-greece.html)
+- [🇮🇳 Motorcycle routes in India](https://curvescout.com/rides/motorcycle-roads-india.html)
+- [🇮🇹 Motorcycle routes in Italy](https://curvescout.com/rides/motorcycle-roads-italy.html)
+- [🇯🇵 Motorcycle routes in Japan](https://curvescout.com/rides/motorcycle-roads-japan.html)
+- [🇲🇽 Motorcycle routes in Mexico](https://curvescout.com/rides/motorcycle-roads-mexico.html)
+- [🇲🇦 Motorcycle routes in Morocco](https://curvescout.com/rides/motorcycle-roads-morocco.html)
+- [🇳🇿 Motorcycle routes in New Zealand](https://curvescout.com/rides/motorcycle-roads-new-zealand.html)
+- [🇳🇴 Motorcycle routes in Norway](https://curvescout.com/rides/motorcycle-roads-norway.html)
+- [🇵🇱 Motorcycle routes in Poland](https://curvescout.com/rides/motorcycle-roads-poland.html)
+- [🇵🇹 Motorcycle routes in Portugal](https://curvescout.com/rides/motorcycle-roads-portugal.html)
+- [🇷🇺 Motorcycle routes in Russia](https://curvescout.com/rides/motorcycle-roads-russia.html)
+- [Motorcycle routes in South Africa](https://curvescout.com/rides/motorcycle-roads-south-africa.html)
+- [🇰🇷 Motorcycle routes in South Korea](https://curvescout.com/rides/motorcycle-roads-south-korea.html)
+- [🇪🇸 Motorcycle routes in Spain](https://curvescout.com/rides/motorcycle-roads-spain.html)
+- [🇨🇭 Motorcycle routes in Switzerland](https://curvescout.com/rides/motorcycle-roads-switzerland.html)
+- [🇹🇼 Motorcycle routes in Taiwan](https://curvescout.com/rides/motorcycle-roads-taiwan.html)
+- [🇹🇭 Motorcycle routes in Thailand](https://curvescout.com/rides/motorcycle-roads-thailand.html)
+- [🇹🇷 Motorcycle routes in Türkiye](https://curvescout.com/rides/motorcycle-roads-turkiye.html)
+- [🇬🇧 Motorcycle routes in United Kingdom](https://curvescout.com/rides/motorcycle-roads-united-kingdom.html)
+- [🇺🇸 Motorcycle routes in United States](https://curvescout.com/rides/motorcycle-roads-united-states.html)
+- [🇻🇳 Motorcycle routes in Vietnam](https://curvescout.com/rides/motorcycle-roads-vietnam.html)
+
+## Open data
+- [Best rides as a table (read and cite; no bulk reuse)](https://curvescout.com/downloads/curvescout-best-rides.csv)
+
+## Terms of use
+You may read, summarise and cite CurveScout pages with a link. Training AI models on CurveScout content or copying the ride collection needs written permission: https://curvescout.com/legal.html#use

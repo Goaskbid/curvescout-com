@@ -1,0 +1,59 @@
+# CurveScout autopilot - the owner only uploads a zip; this file does the rest.
+#  1. Every 15 minutes (and right after this file is added): a release left as a DRAFT with tag deploy-... or roads-...
+#     is published and its job is started (deploy now / road job). Uploading a zip is enough - no "Publish" click needed.
+#  2. Every 3 hours: live pass status from the open Open Data Hub feed (South Tyrol) -> data/live/passes.json,
+#     committed only when a status changed (no change = no commit, no Pages rebuild).
+# Light on GitHub: each check is a few seconds; nothing is committed unless something changed.
+name: CurveScout autopilot
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+    - cron: '23 */3 * * *'
+  push:
+    paths: [ '.github/workflows/cs-autopilot.yml' ]
+  workflow_dispatch: {}
+permissions: { contents: write, actions: write }
+concurrency: { group: cs-autopilot, cancel-in-progress: false }
+jobs:
+  drafts:
+    if: github.event_name != 'schedule' || github.event.schedule == '*/15 * * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env: { GH_TOKEN: "${{ github.token }}" }
+    steps:
+      - name: Publish draft deploy-/roads- releases and start their jobs
+        run: |
+          R="${{ github.repository }}"
+          gh api "repos/$R/releases?per_page=30" --jq '.[] | select(.draft) | [.id, .tag_name, (.name // ""), (.assets | length)] | @tsv' > drafts.tsv || true
+          cat drafts.tsv || true
+          DEP=0; ROADS=0
+          while IFS=$'\t' read -r ID TAG NAME N; do
+            [ -n "$ID" ] || continue
+            T="$TAG"; [ -n "$T" ] || T="$NAME"
+            case "$T" in deploy-*|roads-*) ;; *) echo "skip draft $T"; continue ;; esac
+            [ "${N:-0}" -gt 0 ] || { echo "draft $T has no zip yet"; continue; }
+            gh api -X PATCH "repos/$R/releases/$ID" -f tag_name="$T" -f target_commitish=main -F draft=false >/dev/null && echo "published $T"
+            case "$T" in deploy-*) DEP=1 ;; roads-*) ROADS=1 ;; esac
+          done < drafts.tsv
+          [ "$DEP" = 1 ] && gh workflow run cs-deploy-now.yml --ref main && echo "deploy started"
+          [ "$ROADS" = 1 ] && gh workflow run cs-roads.yml --ref main && echo "road job started"
+          true
+  passes:
+    if: github.event_name != 'schedule' || github.event.schedule == '23 */3 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Read the open pass feed
+        run: |
+          [ -f .github/scripts/pass-status.mjs ] || { echo "pass script not deployed yet"; exit 0; }
+          node .github/scripts/pass-status.mjs
+      - name: Commit when a status changed
+        run: |
+          git config user.name "curvescout-passes"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -f data/live/passes.json ] || exit 0
+          git add data/live/passes.json; git diff --cached --quiet && { echo "no change"; exit 0; }
+          git commit -qm "Pass status update" && git pull -q --rebase && git push -q

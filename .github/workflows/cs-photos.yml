@@ -1,0 +1,63 @@
+# CurveScout: the four owner-approved Commons photographs for the founder interview.
+# Fetches exactly those four files (by name, through the Commons API), checks each against its recorded SHA-256
+# (original file or the 1600 px rendition), resizes them and commits them to assets/about/. Runs once when this
+# file is committed; can be run again from Actions. Never searches, never picks another picture.
+name: CurveScout interview photos
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/cs-photos.yml']
+  workflow_dispatch: {}
+permissions: { contents: write, pages: write }
+concurrency: { group: cs-photos, cancel-in-progress: false }
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Fetch, check and resize the four approved photographs
+        run: |
+          pip install -q pillow==10.4.0
+          cat > /tmp/photos.py <<'PY'
+          import json, hashlib, io, sys, time, urllib.request, urllib.parse
+          from PIL import Image
+          UA = {'User-Agent': 'CurveScout/1.0 (https://curvescout.com)'}
+          cfg = json.load(open('data/media/approved-media.json'))
+          names = {'z-rcher-oberland-t-sstal-hulftegg': 'interview-hulftegg', 'lukmanier-oberalp-vorderrhein-high-roads': 'interview-lukmanier',
+                   'furka-grimsel-susten-big-three-dawn': 'interview-furka', 'city-zurich-afternoon': 'interview-pfaeffikersee'}
+          def get(u):
+              for i in range(4):
+                  try: return urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=60).read()
+                  except Exception as e: err = e; time.sleep(3 * (i + 1))
+              raise err
+          ok = 0
+          for rid, m in cfg['approved'].items():
+              title = urllib.parse.unquote(m['source_page'].split('/wiki/')[1])
+              api = 'https://commons.wikimedia.org/w/api.php?action=query&format=json&prop=imageinfo&iiprop=url&iiurlwidth=1600&titles=' + urllib.parse.quote(title)
+              ii = list(json.loads(get(api))['query']['pages'].values())[0]['imageinfo'][0]
+              data, match = None, None
+              for u in [ii.get('thumburl'), ii.get('url')]:
+                  if not u: continue
+                  b = get(u)
+                  if hashlib.sha256(b).hexdigest() == m['sha256']: data, match = b, u; break
+                  if data is None: data = b
+              if not match: print('REFUSED', rid, 'hash differs from the approved file'); continue
+              im = Image.open(io.BytesIO(data)).convert('RGB'); im.thumbnail((1400, 1400))
+              im.save('assets/about/' + names[rid] + '.jpg', 'JPEG', quality=82, optimize=True, progressive=True)
+              print('ok', rid, im.size); ok += 1
+          print(ok, 'of 4 photographs ready')
+          sys.exit(0 if ok else 1)
+          PY
+          mkdir -p assets/about && python /tmp/photos.py
+      - name: Publish them
+        run: |
+          git config user.name "curvescout-photos"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/about/interview-*.jpg
+          git diff --cached --quiet && { echo "No change"; exit 0; }
+          git commit -qm "Interview: the four approved photographs" && git pull -q --rebase origin main && git push -q origin HEAD:main
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || echo "Pages builds on push anyway"
+        env: { GH_TOKEN: '${{ github.token }}' }

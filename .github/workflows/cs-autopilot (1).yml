@@ -1,0 +1,114 @@
+# CurveScout autopilot v2 - the owner only uploads a zip; this file does the rest and reports what it did.
+#
+# Two ways to deliver a zip (either is enough):
+#   A. Upload page: drag the zip into https://github.com/Goaskbid/curvescout-com/upload/main/inbox  -> Commit changes
+#   B. Release page: a release with tag deploy-... or roads-... with the zip attached (draft or published)
+# What happens:
+#   - a site zip (name contains "deploy", also "file (1).zip"-style renames) is checked and unpacked into the site:
+#     site under 950 MB, no file over 10 MB, index.html/app.js/sw.js present - then ONE commit, Pages rebuilds.
+#     The inbox zip and the used release are removed afterwards (repository stays small).
+#   - a road-job zip (name contains "roads") becomes the newest roads- release and the road job is started.
+#   - every run that finds something writes ops/autopilot-status.json (what it found, what it did, any error), so the
+#     result can be read without opening the Actions page.
+#   - every 3 hours: live pass status (Open Data Hub, South Tyrol) -> data/live/passes.json, only when it changed.
+name: CurveScout autopilot
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+    - cron: '23 */3 * * *'
+  push:
+    paths: [ 'inbox/**', '.github/workflows/cs-autopilot.yml' ]
+  workflow_dispatch: {}
+permissions: { contents: write, actions: write }
+concurrency: { group: cs-deploy, cancel-in-progress: false }
+jobs:
+  deliver:
+    if: github.event_name != 'schedule' || github.event.schedule == '*/15 * * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env: { GH_TOKEN: "${{ github.token }}", R: "${{ github.repository }}" }
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+      - name: Find zips (inbox and releases)
+        run: |
+          mkdir -p /tmp/in /tmp/st; : > /tmp/st/log
+          note() { echo "$*" | tee -a /tmp/st/log; }
+          # A. inbox
+          for z in inbox/*.zip inbox/*.ZIP; do [ -f "$z" ] || continue; cp "$z" /tmp/in/; note "inbox: $(basename "$z") $(stat -c%s "$z") bytes"; done
+          # B. releases (drafts included), newest first; only finished uploads
+          gh api "repos/$R/releases?per_page=30" > /tmp/st/rel.json || echo '[]' > /tmp/st/rel.json
+          jq -r '.[] | select((.tag_name // .name // "") | test("^deploy-")) | [(.id|tostring), (.tag_name // .name), (.draft|tostring), ([.assets[] | select(.state=="uploaded" and (.name|test("\\.zip$";"i"))) | .id|tostring] | join(",")), ([.assets[] | .name + ":" + .state] | join(" ")), .created_at] | join("|")' /tmp/st/rel.json > /tmp/st/rel.tsv || true
+          while IFS='|' read -r ID TAG DRAFT AIDS ALL CREATED; do
+            [ -n "$ID" ] || continue
+            if [ -z "$AIDS" ]; then
+              AGE=$(( $(date +%s) - $(date -d "$CREATED" +%s 2>/dev/null || date +%s) ))
+              if [ "$AGE" -gt 3600 ]; then gh api -X DELETE "repos/$R/releases/$ID" >/dev/null 2>&1; git push -q origin ":refs/tags/$TAG" 2>/dev/null || true; note "release $TAG removed: no finished zip after 1 hour [$ALL] - upload the zip again"; fi
+              continue; fi
+            for A in ${AIDS//,/ }; do
+              NAME=$(jq -r --arg a "$A" '.[] | .assets[] | select((.id|tostring)==$a) | .name' /tmp/st/rel.json | head -1)
+              gh api -H 'Accept: application/octet-stream' "repos/$R/releases/assets/$A" > "/tmp/in/$TAG--$NAME" && note "release $TAG: $NAME downloaded"
+            done
+            echo "$ID $TAG" >> /tmp/st/used-releases
+          done < /tmp/st/rel.tsv
+          # road-job drafts: publish them and start the road job once
+          jq -r '.[] | select(.draft and ((.tag_name // .name // "") | test("^roads-"))) | [(.id|tostring), (.tag_name // .name)] | join("|")' /tmp/st/rel.json | while IFS='|' read -r ID TAG; do
+            gh api -X PATCH "repos/$R/releases/$ID" -f tag_name="$TAG" -f target_commitish=main -F draft=false >/dev/null && note "road release $TAG published" && gh workflow run cs-roads.yml --ref main && note "road job started"; done
+          ls -la /tmp/in
+      - name: Deploy a site zip
+        run: |
+          note() { echo "$*" | tee -a /tmp/st/log; }
+          # inbox zips first (all of them, in name order: a big release may come as part-1, part-2 ...), else the newest release zip
+          INB=$(ls /tmp/in/*.zip 2>/dev/null | grep -v -- '--' | grep -iv roads | sort || true)
+          if [ -n "$INB" ]; then SITES="$INB"; else SITES=$(ls -t /tmp/in/*--*.zip 2>/dev/null | grep -iv roads | head -1 || true); fi
+          [ -n "$SITES" ] || { note "no site zip"; exit 0; }
+          while IFS= read -r Z; do unzip -tq "$Z" || { note "STOP: $(basename "$Z") is damaged (upload not finished?) - upload it again"; echo bad > /tmp/st/failed; exit 0; }; done <<< "$SITES"
+          while IFS= read -r Z; do unzip -oq "$Z" -d .; done <<< "$SITES"
+          SITE=$(echo "$SITES" | xargs -d '\n' -n1 basename | paste -sd+ -)
+          S=$(du -sm --apparent-size --exclude=.git --exclude=inbox . | cut -f1)
+          BIG=$(find . -path ./.git -prune -o -path ./inbox -prune -o -type f -size +10M -print | head -1)
+          if [ "$S" -ge 950 ] || [ -n "$BIG" ] || ! { test -s index.html && test -s app.js && test -s sw.js; }; then
+            note "STOP: limits (site $S MB, big file: ${BIG:-none}) - nothing deployed"; git checkout -- . ; git clean -fdq -e inbox; echo bad > /tmp/st/failed; exit 0; fi
+          REL=$(grep -m1 "^const V" sw.js | grep -o "curvescout-app-[a-z0-9.-]*" || echo "new version")
+          note "deployed $SITE -> $REL, site $S MB"; echo "$REL" > /tmp/st/deployed
+      - name: Road-job zip -> newest roads- release, start the road job
+        run: |
+          note() { echo "$*" | tee -a /tmp/st/log; }
+          RZ=$(ls /tmp/in/*.zip 2>/dev/null | grep -v -- '--' | grep -i roads | head -1 || true)
+          [ -n "$RZ" ] || exit 0
+          unzip -tq "$RZ" || { note "STOP: road zip $(basename "$RZ") is damaged - upload it again"; exit 0; }
+          T="roads-$(date -u +%Y%m%d%H%M)"; cp "$RZ" /tmp/st/road.zip
+          gh release create "$T" /tmp/st/road.zip --title "$T" --notes "road job (autopilot)" --target main && note "road zip -> release $T" && gh workflow run cs-roads.yml --ref main && note "road job started"
+      - name: Commit once (site, inbox clean-up, status) and tidy releases
+        run: |
+          git config user.name "curvescout-autopilot"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -s /tmp/st/log ] || exit 0
+          grep -qv '^no site zip$' /tmp/st/log || { echo "nothing found"; exit 0; }
+          git rm -rq --cached inbox 2>/dev/null || true; rm -rf inbox
+          OLD=$(jq -c .log ops/autopilot-status.json 2>/dev/null || echo null); NEW=$(jq -Rnc '[inputs]' < /tmp/st/log)
+          if [ "$OLD" != "$NEW" ] || [ -f /tmp/st/deployed ]; then mkdir -p ops; jq -Rn --arg at "$(date -u +%FT%TZ)" --arg run "${{ github.run_id }}" '{at:$at, run:$run, log:[inputs]}' < /tmp/st/log > ops/autopilot-status.json; fi
+          git add -A
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          MSG="Autopilot: $(cat /tmp/st/deployed 2>/dev/null || echo status)"
+          git commit -qm "$MSG" && git push -q origin HEAD:main || { git pull -q --rebase && git push -q origin HEAD:main; }
+          gh api -X POST "repos/$R/pages/builds" >/dev/null 2>&1 || true
+          if [ -f /tmp/st/deployed ] && [ -f /tmp/st/used-releases ]; then while read -r ID TAG; do case "$TAG" in deploy-*) gh release delete "$TAG" --yes --cleanup-tag || gh api -X DELETE "repos/$R/releases/$ID" || true;; esac; done < /tmp/st/used-releases; fi
+  passes:
+    if: github.event_name != 'schedule' || github.event.schedule == '23 */3 * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1, ref: main }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - name: Read the open pass feed
+        run: |
+          [ -f .github/scripts/pass-status.mjs ] || { echo "pass script not deployed yet"; exit 0; }
+          node .github/scripts/pass-status.mjs
+      - name: Commit when a status changed
+        run: |
+          git config user.name "curvescout-passes"; git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          [ -f data/live/passes.json ] || exit 0
+          git add data/live/passes.json; git diff --cached --quiet && { echo "no change"; exit 0; }
+          git commit -qm "Pass status update" && git pull -q --rebase && git push -q

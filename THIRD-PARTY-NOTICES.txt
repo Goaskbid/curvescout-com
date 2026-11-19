@@ -1,0 +1,45 @@
+CurveScout - third-party notices
+================================
+Updated 7 November 2026 (r34). This file lists the third-party software, fonts, images and data that ship with
+curvescout.com or that the site displays, with their licences. CurveScout's own code, texts and route write-ups are
+(c) CurveScout / Torsten Sauter, all rights reserved, except where stated below.
+
+SOFTWARE SHIPPED WITH THE SITE
+- Leaflet 1.9.4 - BSD-2-Clause - (c) 2010-2023 Volodymyr Agafonkin, (c) 2010-2011 CloudMade. https://github.com/Leaflet/Leaflet/blob/main/LICENSE
+- MapLibre GL JS 4.7.1 - BSD-3-Clause - (c) MapLibre contributors, (c) Mapbox. https://github.com/maplibre/maplibre-gl-js/blob/v4.7.1/LICENSE.txt
+- maplibre-gl-leaflet (leaflet-maplibre-gl.js; version not stated in the file) - ISC - (c) the maplibre-gl-leaflet contributors. https://github.com/maplibre/maplibre-gl-leaflet
+- flag-icons 7.5.0 - MIT - (c) 2013 Panayiotis Lipiridis. https://github.com/lipis/flag-icons (assets/vendor/flags/COPYING)
+- Region shapes - see assets/vendor/regions/COPYING and SOURCES.
+- Studio voice (loaded only when a rider switches it on): ONNX Runtime Web 1.22.0 - MIT (Microsoft); Kokoro-82M model -
+  Apache-2.0 (hexgrad), loaded from jsDelivr / Hugging Face; kokoro-js 1.2.1 - Apache-2.0; CMU Pronouncing Dictionary -
+  BSD-style (Carnegie Mellon University), packaged as cmu-pronouncing-dictionary 3.0.0 - ISC. Full texts:
+  assets/copilot/STUDIO-VOICE-LICENSES.txt and assets/copilot/cs-cmudict-LICENSE.txt. No GPL code is shipped.
+
+FONTS
+- Barlow Condensed - SIL Open Font License 1.1 - (c) 2017 The Barlow Project Authors. https://github.com/jpt/barlow
+
+DATA AND CONTENT SHOWN ON THE SITE
+- Map data: (c) OpenStreetMap contributors, Open Database License (ODbL) 1.0. https://www.openstreetmap.org/copyright
+  The ride lines and the road database derived from OpenStreetMap contain information from OpenStreetMap, made
+  available under the ODbL.
+- Map tiles: OpenFreeMap (https://openfreemap.org), built on OpenStreetMap data; OpenMapTiles schema (c) MapTiler / OpenMapTiles, BSD-3-Clause and CC BY 4.0.
+- Terrain: Terrain Tiles on AWS (Mapzen / Tilezen). 3DEP, GMTED2010 and SRTM courtesy of the U.S. Geological Survey;
+  ArcticDEM (DigitalGlobe imagery, NSF awards 1043681, 1559691, 1542736); (c) Commonwealth of Australia (Geoscience
+  Australia) 2017; (c) offene Daten Oesterreichs - Digitales Gelaendemodell (DGM) Oesterreich; contains information
+  licensed under the Open Government Licence - Canada; EU-DEM produced using Copernicus data and information funded by
+  the European Union; ETOPO1 (Amante and Eakins, NOAA NGDC, 2009); INEGI, Continental relief, 2016; LINZ, CC BY 4.0;
+  Kartverket, CC BY 4.0; contains OS data (c) Crown copyright and database right, Environment Agency copyright and/or
+  database right 2015.
+- Weather: MET Norway (Norwegian Meteorological Institute), CC BY 4.0. https://api.met.no/doc/License
+- Place names: GeoNames, CC BY 4.0. https://www.geonames.org/
+- Text extracts: Wikipedia, CC BY-SA 4.0, each with a link to its article. Facts from Wikidata, CC0.
+- Photographs: Wikimedia Commons, each under its own licence, credited beside the picture.
+- Country and Swiss/French/Dutch/Norwegian official services where used (swisstopo, BAN, PDOK, Kartverket): under
+  their open-data terms, credited in "Who your browser talks to" on the Terms page.
+
+TRADEMARKS
+Names of roads, events, products and services are used only to identify them; trademarks belong to their owners.
+CurveScout is not affiliated with any of them.
+
+RIGHTS NOTICES
+Write to the operator address in the imprint (Terms page). Items are taken down while a notice is checked.

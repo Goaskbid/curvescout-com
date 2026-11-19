@@ -1,0 +1,9 @@
+{
+ "ridesInPlanner": 22781,
+ "countries": 134,
+ "bestRides": 1172,
+ "placeWriteups": 11599,
+ "definition": "A ride record is one planned ride with its stops and its road measured on OpenStreetMap data. Several records can share roads, so this is not a count of unique roads.",
+ "generated": "2026-11-18",
+ "release": "r63"
+}
