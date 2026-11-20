@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-19T20:44:47.410Z",
+ "updated": "2026-11-20T02:23:46.461Z",
  "feed": "ok",
  "providers": 1,
  "providersFailed": 0,
- "records": 154,
- "checked": "2026-11-19T20:00Z",
+ "records": 129,
+ "checked": "2026-11-20T02:00Z",
  "validFor": "6h",
  "sources": [
   {
