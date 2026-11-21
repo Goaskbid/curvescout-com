@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-21T09:29:57.009Z",
+ "updated": "2026-11-21T19:45:14.624Z",
  "feed": "ok",
  "providers": 1,
  "providersFailed": 0,
  "records": 132,
- "checked": "2026-11-21T09:29Z",
+ "checked": "2026-11-21T19:45Z",
  "validFor": "6h",
  "sources": [
   {
@@ -36,7 +36,7 @@
   },
   "fluela pass": {
    "status": "restricted",
-   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Schneebedeckt: Ofenpass, Forcola di Livibno, Flüelapass und Bernina. &#xA;Wintersperre: Umbrailpass.&#xA;Forcola-di-Livigno-Strasse: Wintersperre zwischen La Motta und dem Pass ab Freitag, ",
+   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Schneebedeckt: Flüelapass. Frei befahrbar: Ofenpass, Forcola di Livigno und Bernina. Wintersperre: Umbrailpass.&#xA;Forcola-di-Livigno-Strasse: Wintersperre zwischen La Motta und dem Pass a",
    "since": "2025-03-11T23:00:00.000Z",
    "until": "",
    "id": "85916b99-fccc-5513-b212-00b78c04473c",
