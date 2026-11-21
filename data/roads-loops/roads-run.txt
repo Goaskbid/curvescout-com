@@ -1,5 +1,3 @@
-14:36:22 == basse-normandie+bretagne: 1 rides in 1 boxes
-14:36:52 basse-normandie+bretagne second pass: 1 new roads, 0 refused · catalogue now 421 roads
 14:36:52 saved on disk - committed and pushed with the next 2-hourly push
 14:36:52 downloading bourgogne 192 MB
 14:37:05 == bourgogne: 1 rides in 1 boxes
@@ -298,3 +296,5 @@
 15:57:01 downloading kazakhstan 216 MB
 15:57:19 downloading uzbekistan 120 MB
 15:57:38 == kazakhstan+uzbekistan: 1 rides in 1 boxes
+15:57:59 kazakhstan+uzbekistan second pass: 1 new roads, 0 refused · catalogue now 486 roads
+15:57:59 saved on disk - committed and pushed with the next 2-hourly push
