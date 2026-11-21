@@ -1,0 +1,16 @@
+# CurveScout static response headers on Cloudflare (ignored by GitHub Pages). r70.
+# Default for every file: revalidate on each visit (ETag), so visitors always get the latest release.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Strict-Transport-Security: max-age=31536000
+  Permissions-Policy: camera=(), microphone=(), payment=(), usb=()
+/sw.js
+  Cache-Control: no-cache
+/*.html
+  Cache-Control: no-cache
+/assets/vendor/*
+  Cache-Control: public, max-age=604800
+/assets/og/*
+  Cache-Control: public, max-age=604800

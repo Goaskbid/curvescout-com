@@ -1,0 +1,35 @@
+// CurveScout on Cloudflare Workers (account plan: Workers Paid, decided 21 Nov 2026).
+// Every page, picture and data file is a static asset: served free and unmetered, no script runs for it.
+// Production has no workers.dev address; it gets the custom domain at the switch (owner approval).
+// The script runs for ONE path only: /data/live/passes.json (the pass status the scheduled job keeps fresh).
+// URLs stay exactly as on GitHub Pages: html_handling "none" (no .html stripping) + the folder rules that
+// .github/scripts/cf-public.mjs writes into _redirects. The deploy job fills in the KV id and the asset folder.
+{
+  "name": "curvescout",
+  "main": "passes-cron.mjs",
+  "compatibility_date": "2026-10-15",
+  "workers_dev": false,
+  "preview_urls": false,
+  "assets": {
+    "directory": "../_public",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "none",
+    "run_worker_first": ["/data/live/passes.json"]
+  },
+  "kv_namespaces": [{ "binding": "LIVE", "id": "__KV_ID__" }],
+  "triggers": { "crons": ["23 */3 * * *"] },
+  "limits": { "cpu_ms": 30000 },
+  "observability": { "enabled": false },
+  // Preview: a separate Worker (curvescout-preview.<account>.workers.dev) for the tests before any domain switch.
+  // Its public folder is built with --preview: every page says noindex, so search engines never list the copy.
+  // No schedule there, so the pass job never runs twice.
+  "env": {
+    "preview": {
+      "name": "curvescout-preview",
+      "workers_dev": true,
+      "kv_namespaces": [{ "binding": "LIVE", "id": "__KV_ID__" }],
+      "triggers": { "crons": [] }
+    }
+  }
+}
