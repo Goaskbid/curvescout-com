@@ -32,8 +32,26 @@ try {
   /* 3. sitemap parts nobody lists */
   const listed = new Set(); for (const f of ['sitemap.xml', 'robots.txt']) { try { for (const m of fs.readFileSync(f, 'utf8').matchAll(/https?:\/\/[^\s<"]+\/(sitemap[^\s<"/]*\.xml)/g)) listed.add(m[1]); } catch (e) {} }
   if (listed.size) for (const f of tracked) if (/^sitemap-[^/]+\.xml$/.test(f) && !listed.has(f)) { rm.add(f); out.sitemaps.push(f); }
+  /* a browser that renames an upload ("cs-upload (1).yml") leaves two upload workflows side by side: the one running this
+     clean-up is the new one, every other cs-upload*.yml copy is switched off (switching off needs no workflow-file write) */
+  const me = ((process.env.GITHUB_WORKFLOW_REF || '').match(/\.github\/workflows\/([^@]+)@/) || [])[1];
+  out.uploadCopiesOff = [];
+  if (me && process.env.GH_TOKEN && process.env.GITHUB_REPOSITORY && !DRY) for (const f of tracked) { const m = f.match(/^\.github\/workflows\/(cs-upload[^/]*\.ya?ml)$/); if (!m || m[1] === me) continue;
+    try { const api = 'repos/' + process.env.GITHUB_REPOSITORY + '/actions/workflows/' + encodeURIComponent(m[1]);
+      const state = execFileSync('gh', ['api', api, '--jq', '.state'], { encoding: 'utf8' }).trim();
+      if (state === 'active') { execFileSync('gh', ['api', '-X', 'PUT', api + '/disable']); out.uploadCopiesOff.push(m[1]); } } catch (e) { console.log('could not switch off ' + m[1] + ' (next run tries again)'); } }
+  if (out.uploadCopiesOff.length) console.log('switched off the older upload workflow copies: ' + out.uploadCopiesOff.join(', ') + ' (this one runs: ' + me + ')');
+  /* a newer road job supersedes an older one: the older road release is removed, and a road-job run that started before
+     the newest road release was published is stopped, so the new job does not wait hours behind an outdated one */
+  if (process.env.GH_TOKEN && process.env.GITHUB_REPOSITORY && !DRY) { const R_ = process.env.GITHUB_REPOSITORY;
+    try { const rel = JSON.parse(execFileSync('gh', ['api', 'repos/' + R_ + '/releases?per_page=30'], { encoding: 'utf8' })).filter(x => /^roads-/.test(x.tag_name || '') && !x.draft).sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
+      if (rel.length) { const newest = rel[0];
+        for (const old of rel.slice(1)) { try { execFileSync('gh', ['release', 'delete', old.tag_name, '--yes', '--cleanup-tag', '-R', R_]); console.log('superseded road release removed: ' + old.tag_name); } catch (e) {} }
+        const runs = JSON.parse(execFileSync('gh', ['api', 'repos/' + R_ + '/actions/workflows/cs-roads.yml/runs?status=in_progress&per_page=10'], { encoding: 'utf8' })).workflow_runs || [];
+        let stopped = 0; for (const run of runs) if (String(run.created_at) < String(newest.created_at)) { try { execFileSync('gh', ['api', '-X', 'POST', 'repos/' + R_ + '/actions/runs/' + run.id + '/cancel']); stopped++; console.log('older road-job run stopped: ' + run.id + ' (the newest road job ' + newest.tag_name + ' takes over)'); } catch (e) {} }
+        if (stopped) { try { execFileSync('gh', ['workflow', 'run', 'cs-roads.yml', '--ref', 'main', '-R', R_]); console.log('road job started for ' + newest.tag_name); } catch (e) {} } } } catch (e) { console.log('road job check skipped: ' + String(e && e.message || e).slice(0, 120)); } }
   /* reported only: old workflow copies (GitHub's token cannot remove workflow files) */
-  out.workflowsDisabled = tracked.filter(f => /^\.github\/workflows\/cs-autopilot.*\.yml$/.test(f));
+  out.workflowsDisabled = tracked.filter(f => /^\.github\/workflows\/cs-autopilot.*\.yml$/.test(f) || (/^\.github\/workflows\/cs-upload[^/]*\.ya?ml$/.test(f) && me && !f.endsWith('/' + me)));
   if (rm.size && !DRY) { const list = [...rm]; for (let i = 0; i < list.length; i += 500) git('rm', '-q', '--cached', '--', ...list.slice(i, i + 500)); for (const f of list) { try { fs.rmSync(f, { force: true }); } catch (e) {} } }
   console.log((DRY ? 'would remove ' : 'removed ') + rm.size + ' file(s): ' + out.manifest.length + ' listed by a release, ' + out.junk.length + ' leftovers, ' + out.sitemaps.length + ' unlisted sitemap parts' + (out.refused.length ? '; refused (protected or not a plain path): ' + out.refused.join(', ') : ''));
   for (const f of [...rm].slice(0, 60)) console.log('  - ' + f);
