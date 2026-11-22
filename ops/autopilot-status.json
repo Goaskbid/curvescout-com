@@ -1,6 +1,6 @@
 {
-  "at": "2026-11-22T14:19:51Z",
-  "run": "45032178355",
+  "at": "2026-11-22T14:21:05Z",
+  "run": "45032282923",
   "log": [
     "upload: CurveScout-r80-part-1.zip 139142 bytes",
     "deployed CurveScout-r80-part-1.zip -> curvescout-app-r80-20261122, site 809 MB"
