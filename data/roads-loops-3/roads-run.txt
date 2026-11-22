@@ -1,3 +1,172 @@
 20:27:14 rides in the catalogue: 20398
 20:27:14 reading the Geofabrik region index
 20:27:19 239 router builds planned (2 single regions, 237 border crossings), 4457 rides not yet done, 2556 rides fit no region
+20:27:22 == 1/239 north-america 3 rides
+20:27:23 north-america is 18657 MB - its rides go to its sub-regions
+20:27:25 saved on disk - committed and pushed with the next 2-hourly push
+20:27:25 == 2/239 us 3 rides
+20:27:25 us is 11713 MB - its rides go to its sub-regions
+20:27:25 centro+sud left to the second pass (too large together)
+20:27:26 saved on disk - committed and pushed with the next 2-hourly push
+20:27:26 == 4/239 azerbaijan+iran 17 rides
+20:27:28 downloading azerbaijan 45 MB
+20:27:37 downloading iran 219 MB
+20:28:15 merging azerbaijan+iran
+20:28:28 osrm-extract
+20:31:03 osrm-partition
+20:32:21 osrm-customize
+20:32:50 azerbaijan+iran done: 17 roads, 0 refused · catalogue now 11032 roads
+20:32:50 saved on disk - committed and pushed with the next 2-hourly push
+20:32:51 saved on disk - committed and pushed with the next 2-hourly push
+20:32:51 == 5/239 lebanon+syria 15 rides
+20:32:53 downloading lebanon 50 MB
+20:33:01 downloading syria 80 MB
+20:33:16 merging lebanon+syria
+20:33:23 osrm-extract
+20:34:05 osrm-partition
+20:34:18 osrm-customize
+20:34:27 lebanon+syria done: 15 roads, 0 refused · catalogue now 11047 roads
+20:34:28 saved on disk - committed and pushed with the next 2-hourly push
+20:34:28 saved on disk - committed and pushed with the next 2-hourly push
+20:34:28 == 6/239 detmold-regbez+niedersachsen 15 rides
+20:34:30 downloading detmold-regbez 131 MB
+20:34:48 downloading niedersachsen 487 MB
+20:35:54 merging detmold-regbez+niedersachsen
+20:36:23 osrm-extract
+20:38:15 osrm-partition
+20:38:49 osrm-customize
+20:39:01 detmold-regbez+niedersachsen done: 15 roads, 0 refused · catalogue now 11062 roads
+20:39:02 saved on disk - committed and pushed with the next 2-hourly push
+20:39:02 saved on disk - committed and pushed with the next 2-hourly push
+20:39:02 == 7/239 centro+nord-ovest 15 rides
+20:39:04 nord-ovest is 568 MB - its rides go to its sub-regions
+20:39:05 saved on disk - committed and pushed with the next 2-hourly push
+20:39:05 == 8/239 freiburg-regbez+tuebingen-regbez 14 rides
+20:39:07 downloading freiburg-regbez 153 MB
+20:39:24 downloading tuebingen-regbez 123 MB
+20:39:35 merging freiburg-regbez+tuebingen-regbez
+20:39:48 osrm-extract
+20:40:37 osrm-partition
+20:40:47 osrm-customize
+20:40:53 freiburg-regbez+tuebingen-regbez done: 14 roads, 0 refused · catalogue now 11076 roads
+20:40:53 saved on disk - committed and pushed with the next 2-hourly push
+20:40:53 saved on disk - committed and pushed with the next 2-hourly push
+20:40:53 == 9/239 asturias+castilla-y-leon 14 rides
+20:40:56 downloading asturias 35 MB
+20:41:00 downloading castilla-y-leon 171 MB
+20:41:14 merging asturias+castilla-y-leon
+20:41:24 osrm-extract
+20:42:12 osrm-partition
+20:42:19 osrm-customize
+20:42:23 asturias+castilla-y-leon done: 13 roads, 1 refused · catalogue now 11089 roads
+20:42:24 saved on disk - committed and pushed with the next 2-hourly push
+20:42:24 saved on disk - committed and pushed with the next 2-hourly push
+20:42:24 == 10/239 albania+greece 13 rides
+20:42:26 downloading albania 52 MB
+20:42:32 downloading greece 328 MB
+20:42:57 merging albania+greece
+20:43:15 osrm-extract
+20:45:13 osrm-partition
+20:45:41 osrm-customize
+20:45:57 albania+greece done: 13 roads, 0 refused · catalogue now 11102 roads
+20:45:57 saved on disk - committed and pushed with the next 2-hourly push
+20:45:58 saved on disk - committed and pushed with the next 2-hourly push
+20:45:58 == 11/239 noord-holland+zuid-holland 13 rides
+20:46:00 downloading noord-holland 182 MB
+20:46:50 downloading zuid-holland 203 MB
+20:52:39 merging noord-holland+zuid-holland
+20:53:00 osrm-extract
+20:53:52 osrm-partition
+20:53:59 osrm-customize
+20:54:03 noord-holland+zuid-holland done: 13 roads, 0 refused · catalogue now 11115 roads
+20:54:04 saved on disk - committed and pushed with the next 2-hourly push
+20:54:04 saved on disk - committed and pushed with the next 2-hourly push
+20:54:04 == 12/239 bangladesh+eastern-zone 13 rides
+20:54:06 downloading bangladesh 340 MB
+20:54:33 downloading eastern-zone 236 MB
+20:55:02 merging bangladesh+eastern-zone
+20:55:33 osrm-extract
+20:58:55 osrm-partition
+21:00:11 osrm-customize
+21:00:45 bangladesh+eastern-zone done: 2 roads, 11 refused · catalogue now 11117 roads
+21:00:46 saved on disk - committed and pushed with the next 2-hourly push
+21:00:46 saved on disk - committed and pushed with the next 2-hourly push
+21:00:46 == 13/239 belize+guatemala 13 rides
+21:00:49 downloading belize 17 MB
+21:00:52 downloading guatemala 125 MB
+21:01:03 merging belize+guatemala
+21:01:11 osrm-extract
+21:01:46 osrm-partition
+21:01:54 osrm-customize
+21:01:59 belize+guatemala done: 0 roads, 13 refused · catalogue now 11117 roads
+21:01:59 saved on disk - committed and pushed with the next 2-hourly push
+21:02:00 saved on disk - committed and pushed with the next 2-hourly push
+21:02:00 == 14/239 murcia+valencia 13 rides
+21:02:02 downloading murcia 34 MB
+21:02:06 downloading valencia 135 MB
+21:02:20 merging murcia+valencia
+21:02:29 osrm-extract
+21:03:09 osrm-partition
+21:03:16 osrm-customize
+21:03:22 murcia+valencia done: 13 roads, 0 refused · catalogue now 11130 roads
+21:03:22 saved on disk - committed and pushed with the next 2-hourly push
+21:03:23 saved on disk - committed and pushed with the next 2-hourly push
+21:03:23 == 15/239 stuttgart-regbez+tuebingen-regbez 12 rides
+21:03:25 downloading stuttgart-regbez 203 MB
+21:03:51 downloading tuebingen-regbez 123 MB
+21:04:13 merging stuttgart-regbez+tuebingen-regbez
+21:04:29 osrm-extract
+21:05:27 osrm-partition
+21:05:40 osrm-customize
+21:05:47 stuttgart-regbez+tuebingen-regbez done: 12 roads, 0 refused · catalogue now 11142 roads
+21:05:47 saved on disk - committed and pushed with the next 2-hourly push
+21:05:48 saved on disk - committed and pushed with the next 2-hourly push
+21:05:48 == 16/239 basse-normandie+haute-normandie 12 rides
+21:05:50 downloading basse-normandie 138 MB
+21:06:11 downloading haute-normandie 103 MB
+21:06:24 merging basse-normandie+haute-normandie
+21:06:36 osrm-extract
+21:07:23 osrm-partition
+21:07:35 osrm-customize
+21:07:42 basse-normandie+haute-normandie done: 12 roads, 0 refused · catalogue now 11154 roads
+21:07:43 saved on disk - committed and pushed with the next 2-hourly push
+21:07:43 saved on disk - committed and pushed with the next 2-hourly push
+21:07:43 == 17/239 niederbayern+oberbayern 12 rides
+21:07:46 downloading niederbayern 91 MB
+21:08:06 downloading oberbayern 249 MB
+21:08:48 merging niederbayern+oberbayern
+21:09:04 osrm-extract
+21:10:08 osrm-partition
+21:10:24 osrm-customize
+21:10:31 niederbayern+oberbayern done: 12 roads, 0 refused · catalogue now 11166 roads
+21:10:32 saved on disk - committed and pushed with the next 2-hourly push
+21:10:33 saved on disk - committed and pushed with the next 2-hourly push
+21:10:33 == 18/239 pardubicky+vysocina 11 rides
+21:10:35 downloading pardubicky 53 MB
+21:10:41 downloading vysocina 70 MB
+21:10:48 merging pardubicky+vysocina
+21:10:54 osrm-extract
+21:11:10 osrm-partition
+21:11:11 osrm-customize
+21:11:14 pardubicky+vysocina done: 11 roads, 0 refused · catalogue now 11177 roads
+21:11:15 saved on disk - committed and pushed with the next 2-hourly push
+21:11:16 saved on disk - committed and pushed with the next 2-hourly push
+21:11:16 == 19/239 kazakhstan+kyrgyzstan 11 rides
+21:11:18 downloading kazakhstan 216 MB
+21:11:49 downloading kyrgyzstan 74 MB
+21:12:08 merging kazakhstan+kyrgyzstan
+21:12:23 osrm-extract
+21:13:34 osrm-partition
+21:13:49 osrm-customize
+21:14:01 kazakhstan+kyrgyzstan done: 0 roads, 11 refused · catalogue now 11177 roads
+21:14:01 saved on disk - committed and pushed with the next 2-hourly push
+21:14:02 saved on disk - committed and pushed with the next 2-hourly push
+21:14:02 == 20/239 karlsruhe-regbez+unterfranken 11 rides
+21:14:04 downloading karlsruhe-regbez 148 MB
+21:14:43 downloading unterfranken 100 MB
+21:15:10 merging karlsruhe-regbez+unterfranken
+21:15:22 osrm-extract
+21:16:02 osrm-partition
+21:16:08 osrm-customize
+21:16:13 karlsruhe-regbez+unterfranken done: 11 roads, 0 refused · catalogue now 11188 roads
+21:16:13 saved on disk - committed and pushed with the next 2-hourly push
