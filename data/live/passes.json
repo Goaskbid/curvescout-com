@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-22T05:06:40.467Z",
+ "updated": "2026-11-22T07:26:18.963Z",
  "feed": "ok",
  "providers": 1,
  "providersFailed": 0,
- "records": 131,
- "checked": "2026-11-22T05:06Z",
+ "records": 132,
+ "checked": "2026-11-22T07:26Z",
  "validFor": "6h",
  "sources": [
   {
@@ -72,7 +72,7 @@
   },
   "stelvio pass": {
    "status": "closed",
-   "text": "Berg und Passstraße Sperre und Schließung Ab Kreuzung Drei Brunnen (km 124,300 – km 137,500) WINTERSPERRE. &#xA;",
+   "text": "Berg und Passstraße Sperre und Schließung Ab Kreuzung Drei Brunnen (km 124,300 - km 137,500) WINTERSPERRE. &#xA;",
    "since": "2024-11-17T23:00:00.000Z",
    "until": "",
    "id": "ee8de6df-8383-5a34-aea3-e9a6e22c3d6a",
