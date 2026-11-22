@@ -4,3 +4,6 @@
 05:07:25 second pass: 500 rides without a stored road - routed in small boxes cut from their region
 06:29:10 downloading australia-oceania 1512 MB
 06:38:02 == australia-oceania: 6 rides in 5 boxes
+06:43:52 australia-oceania second pass: 6 new roads, 0 refused · catalogue now 6 roads
+06:43:55 downloading central-america 758 MB
+06:44:54 == central-america: 4 rides in 4 boxes
