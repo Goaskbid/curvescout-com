@@ -5495,3 +5495,13 @@ body:has(#mModes:not([hidden])) #viewModes{display:none!important}
 /* r62: distance and riding time on the first screen, above the launch row and the map */
 #rideDetail > .statRow,#rideDetail[data-ptabs] > .statRow{order:1!important}
 #rideDetail[data-ptabs] > .csPtabs{order:0}
+/* r77: the ride's little map on a card (tap a card, or its Map button) - the swipe card's map, full width under the picture */
+.exMapRow{height:clamp(170px,30vh,240px);margin:10px 12px 0;border-radius:14px;overflow:hidden;animation:exMapIn .22s ease-out}
+.exMapRow[hidden]{display:none}
+.exMapRow .exMini{flex:none;width:100%;height:100%;border-width:1px;border-color:rgba(255,255,255,.22)}
+.exCard{cursor:pointer}
+.exCard.exMapOpen{border-color:var(--edge2)}
+.exActs .exMapBtn[aria-expanded="true"]{border-color:var(--red);color:#fff}
+@keyframes exMapIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.exMapRow{animation:none}}
+.exGrid .exCard .exActs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
