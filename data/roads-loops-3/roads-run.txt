@@ -7,3 +7,5 @@
 06:43:52 australia-oceania second pass: 6 new roads, 0 refused · catalogue now 6 roads
 06:43:55 downloading central-america 758 MB
 06:44:54 == central-america: 4 rides in 4 boxes
+06:47:29 central-america second pass: 4 new roads, 0 refused · catalogue now 10 roads
+06:47:29 saved on disk - committed and pushed with the next 2-hourly push
