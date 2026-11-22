@@ -1,101 +1,300 @@
-23:02:43 rides in the catalogue: 500
-23:02:43 reading the Geofabrik region index
-23:02:45 0 router builds planned (0 single regions, 0 border crossings), 0 rides not yet done, 0 rides fit no region
-23:02:45 second pass: 500 rides without a stored road - routed in small boxes cut from their region
-23:06:12 downloading switzerland 526 MB
-23:11:48 == switzerland: 18 rides in 5 boxes
-23:19:13 switzerland second pass: 15 new roads, 3 refused · catalogue now 15 roads
-23:19:15 downloading alps 2232 MB
-23:21:23 == alps: 17 rides in 7 boxes
-23:33:35 alps second pass: 17 new roads, 0 refused · catalogue now 32 roads
-23:33:35 saved on disk - committed and pushed with the next 2-hourly push
-23:33:35 downloading england 1637 MB
-23:35:00 == england: 15 rides in 9 boxes
-23:55:17 england second pass: 15 new roads, 0 refused · catalogue now 47 roads
-23:55:17 saved on disk - committed and pushed with the next 2-hourly push
-23:55:17 downloading belgium 667 MB
-23:55:51 == belgium: 11 rides in 4 boxes
-00:03:32 belgium second pass: 11 new roads, 0 refused · catalogue now 58 roads
-00:03:32 saved on disk - committed and pushed with the next 2-hourly push
-00:03:32 downloading south-korea 279 MB
-00:04:38 == south-korea: 8 rides in 3 boxes
-00:06:52 south-korea second pass: 8 new roads, 0 refused · catalogue now 66 roads
-00:06:52 saved on disk - committed and pushed with the next 2-hourly push
-00:06:52 downloading netherlands 1347 MB
-00:12:30 == netherlands: 8 rides in 2 boxes
-00:17:17 netherlands second pass: 8 new roads, 0 refused · catalogue now 74 roads
-00:17:17 saved on disk - committed and pushed with the next 2-hourly push
-00:17:17 downloading portugal 409 MB
-00:19:11 == portugal: 8 rides in 5 boxes
-00:23:24 portugal second pass: 8 new roads, 0 refused · catalogue now 82 roads
-00:23:24 saved on disk - committed and pushed with the next 2-hourly push
-00:23:24 downloading centro 370 MB
-00:23:49 == centro: 7 rides in 3 boxes
-00:26:17 centro second pass: 7 new roads, 0 refused · catalogue now 89 roads
-00:26:17 saved on disk - committed and pushed with the next 2-hourly push
-00:26:17 downloading nord-ovest 568 MB
-00:27:26 == nord-ovest: 7 rides in 2 boxes
-00:30:43 nord-ovest second pass: 7 new roads, 0 refused · catalogue now 96 roads
-00:30:43 saved on disk - committed and pushed with the next 2-hourly push
-00:30:43 downloading nord-est 598 MB
-00:31:50 == nord-est: 7 rides in 4 boxes
-00:37:10 nord-est second pass: 7 new roads, 0 refused · catalogue now 103 roads
-00:37:10 saved on disk - committed and pushed with the next 2-hourly push
-00:37:10 downloading mexico 619 MB
-00:37:12 download failed for mexico Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/mexico/mexico-latest.osm.pbf
-00:37:12 downloading romania 318 MB
-00:37:29 == romania: 7 rides in 3 boxes
-00:38:43 romania second pass: 7 new roads, 0 refused · catalogue now 110 roads
-00:38:43 saved on disk - committed and pushed with the next 2-hourly push
-00:38:44 downloading great-britain 2103 MB
-00:40:44 == great-britain: 7 rides in 4 boxes
-00:49:43 great-britain second pass: 7 new roads, 0 refused · catalogue now 117 roads
-00:49:43 saved on disk - committed and pushed with the next 2-hourly push
-00:49:43 downloading greece 327 MB
-00:50:19 == greece: 6 rides in 4 boxes
-00:52:23 greece second pass: 6 new roads, 0 refused · catalogue now 123 roads
-00:52:23 saved on disk - committed and pushed with the next 2-hourly push
-00:52:23 downloading isole 206 MB
-00:52:34 == isole: 6 rides in 3 boxes
-00:54:12 isole second pass: 6 new roads, 0 refused · catalogue now 129 roads
-00:54:12 saved on disk - committed and pushed with the next 2-hourly push
-00:54:12 downloading south-africa 405 MB
-00:54:13 download failed for south-africa Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/south-africa/south-africa-latest.osm.pbf
-00:54:13 downloading austria 778 MB
-00:54:54 == austria: 5 rides in 3 boxes
-00:58:11 austria second pass: 5 new roads, 0 refused · catalogue now 134 roads
-00:58:11 saved on disk - committed and pushed with the next 2-hourly push
-00:58:11 downloading denmark 475 MB
-00:58:35 == denmark: 5 rides in 3 boxes
-01:01:11 denmark second pass: 5 new roads, 0 refused · catalogue now 139 roads
-01:01:11 saved on disk - committed and pushed with the next 2-hourly push
-01:01:11 downloading rhone-alpes 509 MB
-01:02:25 == rhone-alpes: 5 rides in 2 boxes
-01:05:08 rhone-alpes second pass: 5 new roads, 0 refused · catalogue now 144 roads
-01:05:09 saved on disk - committed and pushed with the next 2-hourly push
-01:05:09 downloading bayern 819 MB
-01:08:41 == bayern: 5 rides in 1 boxes
-01:10:35 bayern second pass: 5 new roads, 0 refused · catalogue now 149 roads
-01:10:36 saved on disk - committed and pushed with the next 2-hourly push
-01:10:36 downloading lithuania 214 MB
-01:11:33 download failed for lithuania Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/lithuania/lithuania-latest.osm.pbf
-01:11:33 downloading morocco 233 MB
-01:12:23 download failed for morocco Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/morocco/morocco-latest.osm.pbf
-01:12:23 downloading vestlandet 246 MB
-01:12:38 == vestlandet: 5 rides in 4 boxes
-01:14:38 vestlandet second pass: 4 new roads, 1 refused · catalogue now 153 roads
-01:14:38 saved on disk - committed and pushed with the next 2-hourly push
-01:14:38 downloading turkey 624 MB
-01:16:46 download failed for turkey Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/turkey/turkey-latest.osm.pbf
-01:16:46 downloading wales 144 MB
-01:16:49 download failed for wales Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/wales/wales-latest.osm.pbf
-01:16:50 downloading vietnam 318 MB
-01:16:50 download failed for vietnam Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/vietnam/vietnam-latest.osm.pbf
-01:16:50 downloading argentina 416 MB
-01:22:09 download failed for argentina Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/argentina/argentina-latest.osm.pbf
-01:22:09 downloading bosnia-herzegovina 155 MB
-01:25:31 download failed for bosnia-herzegovina Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/bosnia-herzegovina/bosnia-herzegovina-latest.osm.pbf
-01:25:31 downloading bulgaria 170 MB
-01:29:23 download failed for bulgaria Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/bulgaria/bulgaria-latest.osm.pbf
-01:29:23 downloading nordrhein-westfalen 876 MB
-01:30:09 == nordrhein-westfalen: 4 rides in 1 boxes
+01:35:12 downloading schleswig-holstein 152 MB
+01:35:15 download failed for schleswig-holstein Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/schleswig-holstein/schleswig-holstein-latest.osm.p
+01:35:15 downloading chubu 497 MB
+01:35:16 download failed for chubu Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/chubu/chubu-latest.osm.pbf
+01:35:16 downloading bosnia-herzegovina 155 MB
+01:35:18 download failed for bosnia-herzegovina+croatia+montenegro Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/bosnia-herzegovina/bosnia-herzegovina-latest.osm.pbf
+01:35:18 downloading malopolskie 194 MB
+01:35:40 download failed for malopolskie+slovakia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/malopolskie/malopolskie-latest.osm.pbf
+01:35:40 downloading volga-fed-district 743 MB
+01:35:53 download failed for volga-fed-district Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/russia/volga-fed-district/volga-fed-district-latest.osm.pbf
+01:35:53 downloading slovenia 300 MB
+01:35:53 download failed for slovenia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/slovenia/slovenia-latest.osm.pbf
+01:35:53 downloading cataluna 261 MB
+01:35:59 download failed for cataluna Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/cataluna/cataluna-latest.osm.pbf
+01:35:59 downloading andalucia 189 MB
+01:36:12 download failed for andalucia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/andalucia/andalucia-latest.osm.pbf
+01:36:12 downloading spain 1435 MB
+01:36:14 download failed for spain Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/spain-latest.osm.pbf
+01:36:14 downloading galicia 107 MB
+01:36:17 download failed for galicia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/galicia/galicia-latest.osm.pbf
+01:36:17 downloading sweden 955 MB
+01:36:17 download failed for sweden Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/sweden/sweden-latest.osm.pbf
+01:36:17 downloading scotland 315 MB
+01:36:18 download failed for scotland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/scotland/scotland-latest.osm.pbf
+01:36:18 downloading cornwall 33 MB
+01:36:19 download failed for cornwall Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/cornwall/cornwall-latest.osm.pbf
+01:36:19 downloading new-south-wales 259 MB
+01:36:20 download failed for new-south-wales Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/australia-oceania/australia/new-south-wales/new-south-wales-lates
+01:36:20 downloading queensland 191 MB
+01:36:20 download failed for queensland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/australia-oceania/australia/queensland/queensland-latest.osm.pbf
+01:36:20 downloading austria 778 MB
+01:36:21 download failed for austria+freiburg-regbez+tuebingen-regbez Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/austria/austria-latest.osm.pbf
+01:36:21 downloading azerbaijan 45 MB
+01:36:23 download failed for azerbaijan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/azerbaijan/azerbaijan-latest.osm.pbf
+01:36:23 downloading belarus 336 MB
+01:36:24 download failed for belarus Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/belarus/belarus-latest.osm.pbf
+01:36:24 downloading belgium 667 MB
+01:36:24 download failed for belgium+nord-pas-de-calais Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/belgium/belgium-latest.osm.pbf
+01:36:24 downloading chile 336 MB
+01:36:25 download failed for chile Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/chile/chile-latest.osm.pbf
+01:36:25 downloading yunnan 90 MB
+01:36:25 download failed for yunnan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/yunnan/yunnan-latest.osm.pbf
+01:36:25 downloading bosnia-herzegovina 155 MB
+01:36:26 download failed for bosnia-herzegovina+croatia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/bosnia-herzegovina/bosnia-herzegovina-latest.osm.pbf
+01:36:26 downloading cyprus 36 MB
+01:36:27 download failed for cyprus Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/cyprus/cyprus-latest.osm.pbf
+01:36:27 downloading czech-republic 910 MB
+01:36:27 download failed for czech-republic Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/czech-republic/czech-republic-latest.osm.pbf
+01:36:27 downloading estonia 119 MB
+01:36:28 download failed for estonia+finland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/estonia/estonia-latest.osm.pbf
+01:36:28 downloading ile-de-france 325 MB
+01:36:28 download failed for ile-de-france Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/ile-de-france/ile-de-france-latest.osm.pbf
+01:36:28 downloading languedoc-roussillon 259 MB
+01:36:29 download failed for languedoc-roussillon+provence-alpes-cote-d-azur Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/languedoc-roussillon/languedoc-roussillon-latest.os
+01:36:29 downloading nord-pas-de-calais 231 MB
+01:36:29 download failed for nord-pas-de-calais Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/nord-pas-de-calais/nord-pas-de-calais-latest.osm.pb
+01:36:29 downloading hessen 332 MB
+01:36:30 download failed for hessen Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/hessen/hessen-latest.osm.pbf
+01:36:30 downloading sachsen 258 MB
+01:36:30 download failed for sachsen+sachsen-anhalt Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/sachsen/sachsen-latest.osm.pbf
+01:36:31 downloading detmold-regbez 131 MB
+01:36:32 download failed for detmold-regbez+niedersachsen Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/nordrhein-westfalen/detmold-regbez/detmold-regbez-
+01:36:32 downloading karlsruhe-regbez 148 MB
+01:36:34 download failed for karlsruhe-regbez+rheinland-pfalz Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/karlsruhe-regbez/karlsruhe-regb
+01:36:34 downloading greece 327 MB
+01:36:35 download failed for greece+turkey Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/greece/greece-latest.osm.pbf
+01:36:35 downloading guangdong 168 MB
+01:36:35 download failed for guangdong Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/guangdong/guangdong-latest.osm.pbf
+01:36:35 downloading hungary 315 MB
+01:36:36 download failed for hungary Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/hungary/hungary-latest.osm.pbf
+01:36:36 downloading western-zone 212 MB
+01:36:37 download failed for western-zone Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/india/western-zone/western-zone-latest.osm.pbf
+01:36:37 downloading southern-zone 534 MB
+01:36:37 download failed for southern-zone Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/india/southern-zone/southern-zone-latest.osm.pbf
+01:36:37 downloading bangladesh 340 MB
+01:36:38 download failed for bangladesh+eastern-zone Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/bangladesh/bangladesh-latest.osm.pbf
+01:36:38 downloading israel-and-palestine 116 MB
+01:36:38 download failed for israel-and-palestine+jordan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/israel-and-palestine/israel-and-palestine-latest.osm.pbf
+01:36:38 downloading hokkaido 181 MB
+01:36:40 download failed for hokkaido Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/hokkaido/hokkaido-latest.osm.pbf
+01:36:40 downloading kyushu 303 MB
+01:36:41 download failed for kyushu Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/kyushu/kyushu-latest.osm.pbf
+01:36:41 downloading jordan 30 MB
+01:36:41 download failed for jordan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/jordan/jordan-latest.osm.pbf
+01:36:41 downloading laos 52 MB
+01:36:42 download failed for laos+thailand Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/laos/laos-latest.osm.pbf
+01:36:42 downloading latvia 135 MB
+01:36:42 download failed for latvia+lithuania Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/latvia/latvia-latest.osm.pbf
+01:36:43 downloading latvia 135 MB
+01:36:43 download failed for latvia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/latvia/latvia-latest.osm.pbf
+01:36:43 downloading isole 206 MB
+01:36:44 download failed for isole+malta Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/isole/isole-latest.osm.pbf
+01:36:44 downloading croatia 193 MB
+01:36:44 download failed for croatia+montenegro Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/croatia/croatia-latest.osm.pbf
+01:36:44 downloading andalucia 189 MB
+01:36:45 download failed for andalucia+morocco Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/andalucia/andalucia-latest.osm.pbf
+01:36:45 downloading zuid-holland 203 MB
+01:36:45 download failed for zuid-holland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/netherlands/zuid-holland/zuid-holland-latest.osm.pbf
+01:36:45 downloading malopolskie 194 MB
+01:36:46 download failed for malopolskie Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/malopolskie/malopolskie-latest.osm.pbf
+01:36:46 downloading northwestern-fed-district 628 MB
+01:36:46 download failed for northwestern-fed-district Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/russia/northwestern-fed-district/northwestern-fed-district-latest
+01:36:46 downloading austria 778 MB
+01:36:47 download failed for austria+slovakia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/austria/austria-latest.osm.pbf
+01:36:47 downloading madrid 82 MB
+01:36:48 download failed for madrid Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/madrid/madrid-latest.osm.pbf
+01:36:48 downloading pais-vasco 66 MB
+01:36:48 download failed for pais-vasco Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/pais-vasco/pais-vasco-latest.osm.pbf
+01:36:48 downloading denmark 475 MB
+01:36:49 download failed for denmark+sweden Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/denmark/denmark-latest.osm.pbf
+01:36:49 downloading cumbria 44 MB
+01:36:51 download failed for cumbria Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/cumbria/cumbria-latest.osm.pbf
+01:36:51 downloading tajikistan 46 MB
+01:36:51 download failed for tajikistan+uzbekistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/tajikistan/tajikistan-latest.osm.pbf
+01:36:51 downloading afghanistan 107 MB
+01:36:52 download failed for afghanistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/afghanistan/afghanistan-latest.osm.pbf
+01:36:52 downloading argentina 416 MB
+01:36:52 download failed for argentina+uruguay Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/argentina/argentina-latest.osm.pbf
+01:36:52 downloading armenia 51 MB
+01:36:53 download failed for armenia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/armenia/armenia-latest.osm.pbf
+01:36:53 downloading tasmania 52 MB
+01:36:55 download failed for tasmania Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/australia-oceania/australia/tasmania/tasmania-latest.osm.pbf
+01:36:55 downloading austria 778 MB
+01:36:55 download failed for austria+hungary+slovakia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/austria/austria-latest.osm.pbf
+01:36:55 downloading austria 778 MB
+01:36:56 download failed for austria+slovenia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/austria/austria-latest.osm.pbf
+01:36:56 downloading austria 778 MB
+01:36:56 download failed for austria+switzerland+tuebingen-regbez Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/austria/austria-latest.osm.pbf
+01:36:56 downloading belgium 667 MB
+01:36:57 download failed for belgium+koeln-regbez Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/belgium/belgium-latest.osm.pbf
+01:36:57 downloading sudeste 824 MB
+01:36:57 download failed for sudeste Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/brazil/sudeste/sudeste-latest.osm.pbf
+01:36:57 downloading sul 411 MB
+01:36:59 download failed for sul Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/brazil/sul/sul-latest.osm.pbf
+01:36:59 downloading ontario 971 MB
+01:36:59 download failed for ontario Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/canada/ontario/ontario-latest.osm.pbf
+01:36:59 downloading nova-scotia 95 MB
+01:37:01 download failed for nova-scotia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/canada/nova-scotia/nova-scotia-latest.osm.pbf
+01:37:01 downloading beijing 35 MB
+01:37:02 download failed for beijing Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/beijing/beijing-latest.osm.pbf
+01:37:02 downloading sichuan 104 MB
+01:37:02 download failed for sichuan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/sichuan/sichuan-latest.osm.pbf
+01:37:03 downloading guangxi 54 MB
+01:37:03 download failed for guangxi Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/guangxi/guangxi-latest.osm.pbf
+01:37:03 downloading shaanxi 101 MB
+01:37:04 download failed for shaanxi Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/shaanxi/shaanxi-latest.osm.pbf
+01:37:04 downloading colombia 319 MB
+01:37:04 download failed for colombia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/colombia/colombia-latest.osm.pbf
+01:37:04 downloading costa-rica 37 MB
+01:37:05 download failed for costa-rica Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/central-america/costa-rica/costa-rica-latest.osm.pbf
+01:37:05 downloading malopolskie 194 MB
+01:37:05 download failed for malopolskie+moravskoslezky+slaskie Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/malopolskie/malopolskie-latest.osm.pbf
+01:37:05 downloading estonia 119 MB
+01:37:06 download failed for estonia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/estonia/estonia-latest.osm.pbf
+01:37:06 downloading ethiopia 134 MB
+01:37:07 download failed for ethiopia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/ethiopia/ethiopia-latest.osm.pbf
+01:37:07 downloading finland 742 MB
+01:37:07 download failed for finland+sweden Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/finland/finland-latest.osm.pbf
+01:37:07 downloading provence-alpes-cote-d-azur 374 MB
+01:37:08 download failed for provence-alpes-cote-d-azur Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/provence-alpes-cote-d-azur/provence-alpes-cote-d-az
+01:37:08 downloading aquitaine 283 MB
+01:37:08 download failed for aquitaine Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/aquitaine/aquitaine-latest.osm.pbf
+01:37:08 downloading languedoc-roussillon 259 MB
+01:37:09 download failed for languedoc-roussillon+midi-pyrenees Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/languedoc-roussillon/languedoc-roussillon-latest.os
+01:37:09 downloading basse-normandie 138 MB
+01:37:09 download failed for basse-normandie+bretagne Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/basse-normandie/basse-normandie-latest.osm.pbf
+01:37:09 downloading bourgogne 192 MB
+01:37:10 download failed for bourgogne Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/bourgogne/bourgogne-latest.osm.pbf
+01:37:10 downloading auvergne 150 MB
+01:37:11 download failed for auvergne+rhone-alpes Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/auvergne/auvergne-latest.osm.pbf
+01:37:11 downloading aquitaine 283 MB
+01:37:11 download failed for aquitaine+pais-vasco Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/aquitaine/aquitaine-latest.osm.pbf
+01:37:11 downloading armenia 51 MB
+01:37:12 download failed for armenia+georgia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/armenia/armenia-latest.osm.pbf
+01:37:12 downloading brandenburg 284 MB
+01:37:12 download failed for brandenburg Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/brandenburg/brandenburg-latest.osm.pbf
+01:37:12 downloading hamburg 52 MB
+01:37:13 download failed for hamburg+schleswig-holstein Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/hamburg/hamburg-latest.osm.pbf
+01:37:13 downloading baden-wuerttemberg 624 MB
+01:37:13 download failed for baden-wuerttemberg Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/baden-wuerttemberg-latest.osm.p
+01:37:13 downloading sachsen 258 MB
+01:37:14 download failed for sachsen Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/sachsen/sachsen-latest.osm.pbf
+01:37:14 downloading sachsen 258 MB
+01:37:15 download failed for sachsen+ustecky Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/sachsen/sachsen-latest.osm.pbf
+01:37:15 downloading mittelfranken 92 MB
+01:37:17 download failed for mittelfranken Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/bayern/mittelfranken/mittelfranken-latest.osm.pbf
+01:37:18 downloading niedersachsen 487 MB
+01:37:18 download failed for niedersachsen Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/niedersachsen/niedersachsen-latest.osm.pbf
+01:37:18 downloading karlsruhe-regbez 148 MB
+01:37:19 download failed for karlsruhe-regbez+unterfranken Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/karlsruhe-regbez/karlsruhe-regb
+01:37:19 downloading luxembourg 46 MB
+01:37:19 download failed for luxembourg+rheinland-pfalz+saarland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/luxembourg/luxembourg-latest.osm.pbf
+01:37:19 downloading guatemala 125 MB
+01:37:20 download failed for guatemala Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/central-america/guatemala/guatemala-latest.osm.pbf
+01:37:20 downloading hungary 315 MB
+01:37:20 download failed for hungary+slovakia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/hungary/hungary-latest.osm.pbf
+01:37:20 downloading northern-zone 215 MB
+01:37:21 download failed for northern-zone Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/india/northern-zone/northern-zone-latest.osm.pbf
+01:37:21 downloading nusa-tenggara 169 MB
+01:37:22 download failed for nusa-tenggara Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/indonesia/nusa-tenggara/nusa-tenggara-latest.osm.pbf
+01:37:22 downloading java 858 MB
+01:37:22 download failed for java Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/indonesia/java/java-latest.osm.pbf
+01:37:22 downloading britain-and-ireland 2523 MB
+01:37:23 download failed for britain-and-ireland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/britain-and-ireland/britain-and-ireland-latest.osm.pbf
+01:37:23 downloading italy 2150 MB
+01:37:23 download failed for italy Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/italy-latest.osm.pbf
+01:37:23 downloading chugoku 228 MB
+01:37:24 download failed for chugoku Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/chugoku/chugoku-latest.osm.pbf
+01:37:24 downloading tohoku 298 MB
+01:37:25 download failed for tohoku Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/tohoku/tohoku-latest.osm.pbf
+01:37:25 downloading kanto 501 MB
+01:37:26 download failed for kanto Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/kanto/kanto-latest.osm.pbf
+01:37:26 downloading kenya 336 MB
+01:37:27 download failed for kenya Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/kenya/kenya-latest.osm.pbf
+01:37:27 downloading north-korea 89 MB
+01:37:27 download failed for north-korea+south-korea Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/north-korea/north-korea-latest.osm.pbf
+01:37:27 downloading kyrgyzstan 74 MB
+01:37:28 download failed for kyrgyzstan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/kyrgyzstan/kyrgyzstan-latest.osm.pbf
+01:37:28 downloading lebanon 50 MB
+01:37:28 download failed for lebanon Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/lebanon/lebanon-latest.osm.pbf
+01:37:28 downloading lorraine 164 MB
+01:37:29 download failed for lorraine+luxembourg+rheinland-pfalz Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/lorraine/lorraine-latest.osm.pbf
+01:37:29 downloading luxembourg 46 MB
+01:37:29 download failed for luxembourg+rheinland-pfalz Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/luxembourg/luxembourg-latest.osm.pbf
+01:37:29 downloading albania 52 MB
+01:37:30 download failed for albania+macedonia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/albania/albania-latest.osm.pbf
+01:37:30 downloading malaysia-singapore-brunei 242 MB
+01:37:31 download failed for malaysia-singapore-brunei Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/malaysia-singapore-brunei/malaysia-singapore-brunei-latest.o
+01:37:31 downloading malta 9 MB
+01:37:31 download failed for malta Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/malta/malta-latest.osm.pbf
+01:37:31 downloading mongolia 60 MB
+01:37:32 download failed for mongolia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/mongolia/mongolia-latest.osm.pbf
+01:37:32 downloading montenegro 33 MB
+01:37:32 download failed for montenegro Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/montenegro/montenegro-latest.osm.pbf
+01:37:32 downloading albania 52 MB
+01:37:33 download failed for albania+montenegro Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/albania/albania-latest.osm.pbf
+01:37:33 downloading noord-holland 182 MB
+01:37:33 download failed for noord-holland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/netherlands/noord-holland/noord-holland-latest.osm.pbf
+01:37:33 downloading belgium 667 MB
+01:37:34 download failed for belgium+koeln-regbez+limburg Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/belgium/belgium-latest.osm.pbf
+01:37:34 downloading belgium 667 MB
+01:37:34 download failed for belgium+limburg Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/belgium/belgium-latest.osm.pbf
+01:37:35 downloading new-zealand 388 MB
+01:37:35 download failed for new-zealand Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/australia-oceania/new-zealand/new-zealand-latest.osm.pbf
+01:37:35 downloading nicaragua 59 MB
+01:37:36 download failed for nicaragua Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/central-america/nicaragua/nicaragua-latest.osm.pbf
+01:37:36 downloading norway 1315 MB
+01:37:36 download failed for norway Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/norway/norway-latest.osm.pbf
+01:37:36 downloading nord-norge 389 MB
+01:37:37 download failed for nord-norge Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/norway/nord-norge/nord-norge-latest.osm.pbf
+01:37:37 downloading pakistan 151 MB
+01:37:37 download failed for pakistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/pakistan/pakistan-latest.osm.pbf
+01:37:37 downloading panama 35 MB
+01:37:38 download failed for panama Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/central-america/panama/panama-latest.osm.pbf
+01:37:38 downloading pomorskie 113 MB
+01:37:38 download failed for pomorskie Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/pomorskie/pomorskie-latest.osm.pbf
+01:37:39 downloading dolnoslaskie 174 MB
+01:37:39 download failed for dolnoslaskie Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/dolnoslaskie/dolnoslaskie-latest.osm.pbf
+01:37:39 downloading belarus 336 MB
+01:37:40 download failed for belarus+podlaskie Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/belarus/belarus-latest.osm.pbf
+01:37:40 downloading podkarpackie 148 MB
+01:37:42 download failed for podkarpackie Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/podkarpackie/podkarpackie-latest.osm.pbf
+01:37:42 downloading romania 318 MB
+01:37:42 download failed for romania+serbia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/romania/romania-latest.osm.pbf
+01:37:42 downloading bosnia-herzegovina 155 MB
+01:37:43 download failed for bosnia-herzegovina+serbia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/bosnia-herzegovina/bosnia-herzegovina-latest.osm.pbf
+01:37:43 downloading croatia 193 MB
+01:37:43 download failed for croatia+nord-est+slovenia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/croatia/croatia-latest.osm.pbf
+01:37:43 downloading aragon 91 MB
+01:37:44 download failed for aragon Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/aragon/aragon-latest.osm.pbf
+01:37:44 downloading cantabria 34 MB
+01:37:45 download failed for cantabria Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/cantabria/cantabria-latest.osm.pbf
+01:37:45 downloading asturias 35 MB
+01:37:45 download failed for asturias Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/asturias/asturias-latest.osm.pbf
+01:37:45 downloading islas-baleares 45 MB
+01:37:46 download failed for islas-baleares Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/islas-baleares/islas-baleares-latest.osm.pbf
+01:37:46 downloading canary-islands 58 MB
+01:37:46 download failed for canary-islands Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/canary-islands/canary-islands-latest.osm.pbf
+01:37:46 downloading castilla-y-leon 171 MB
+01:37:47 download failed for castilla-y-leon Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/castilla-y-leon/castilla-y-leon-latest.osm.pbf
+01:37:47 downloading rhone-alpes 509 MB
+01:37:47 download failed for rhone-alpes+switzerland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/rhone-alpes/rhone-alpes-latest.osm.pbf
+01:37:47 downloading nord-ovest 568 MB
+01:37:48 download failed for nord-ovest+switzerland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/nord-ovest/nord-ovest-latest.osm.pbf
+01:37:48 downloading tajikistan 46 MB
+01:37:49 download failed for tajikistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/tajikistan/tajikistan-latest.osm.pbf
+01:37:49 downloading tunisia 81 MB
+01:37:49 download failed for tunisia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/tunisia/tunisia-latest.osm.pbf
+01:37:49 downloading podkarpackie 148 MB
+01:37:50 download failed for podkarpackie+ukraine Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/podkarpackie/podkarpackie-latest.osm.pbf
+01:37:50 downloading devon 56 MB
+01:37:50 download failed for devon Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/devon/devon-latest.osm.pbf
+01:37:50 downloading us/washington 349 MB
+01:37:51 download failed for us/washington Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/us/washington/washington-latest.osm.pbf
+01:37:51 downloading us/texas 695 MB
+01:37:51 download failed for us/texas Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/us/texas/texas-latest.osm.pbf
+01:37:52 downloading us/pennsylvania 335 MB
+01:37:52 download failed for us/pennsylvania Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/us/pennsylvania/pennsylvania-latest.osm.pbf
+01:37:52 downloading uzbekistan 120 MB
+01:37:53 download failed for uzbekistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/uzbekistan/uzbekistan-latest.osm.pbf
