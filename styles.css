@@ -5505,3 +5505,14 @@ body:has(#mModes:not([hidden])) #viewModes{display:none!important}
 @keyframes exMapIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.exMapRow{animation:none}}
 .exGrid .exCard .exActs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* r78 polish (owner 2026-11-22: "beautiful UI and easy to use layout, reduce complexity, keep the info") - phone ride page */
+@media(max-width:600px){
+  html body .mapBox>#mapNote.lgdBox{flex:1 1 100%!important;width:100%!important;max-width:none!important}
+  html body #rideDetail .mapBox:not(.expanded)>#mapBar #csAvoid{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;width:100%!important}
+  html body #rideDetail .mapBox:not(.expanded)>#mapBar #csAvoid button{min-height:48px!important;padding:6px 4px!important;font-size:12px!important;line-height:1.2!important;white-space:normal!important;text-align:center!important;justify-content:center!important;width:100%!important}
+  html body #rideDetail .mapBox:not(.expanded)>#mapBar #csAvoid .csAvoidNote{grid-column:1/-1}
+  html body #rideDetail .mapBox:not(.expanded)>#mapBar .mapBarRight{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;width:100%!important}
+  html body #rideDetail .mapBox:not(.expanded)>#mapBar .mapBarRight>*{width:100%!important;margin:0!important;font-size:12px!important;padding:6px 4px!important;min-height:48px!important;white-space:normal!important;justify-content:center!important;text-align:center!important}
+  html body #rideDetail .mapBox:not(.expanded)>#mapBar .mapBarRight #rideClock{grid-column:1/-1}
+}
