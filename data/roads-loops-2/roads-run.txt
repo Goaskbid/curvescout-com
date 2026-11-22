@@ -1,5 +1,3 @@
-01:35:12 downloading schleswig-holstein 152 MB
-01:35:15 download failed for schleswig-holstein Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/schleswig-holstein/schleswig-holstein-latest.osm.p
 01:35:15 downloading chubu 497 MB
 01:35:16 download failed for chubu Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/chubu/chubu-latest.osm.pbf
 01:35:16 downloading bosnia-herzegovina 155 MB
@@ -298,3 +296,5 @@
 01:37:52 download failed for us/pennsylvania Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/us/pennsylvania/pennsylvania-latest.osm.pbf
 01:37:52 downloading uzbekistan 120 MB
 01:37:53 download failed for uzbekistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/uzbekistan/uzbekistan-latest.osm.pbf
+01:37:53 downloading kazakhstan 216 MB
+01:37:53 download failed for kazakhstan+uzbekistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/kazakhstan/kazakhstan-latest.osm.pbf
