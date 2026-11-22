@@ -11,3 +11,6 @@
 
 /* r69: copyright notice under every page footer */
 footer::after{content:"\00A9  2026 CurveScout \2013  Torsten Sauter, Meilen, Switzerland. All rights reserved. Terms of use: curvescout.com/legal.html#use";display:block;margin:14px auto 0;padding:0 16px;max-width:1100px;font-size:12px;line-height:1.5;opacity:.72}
+
+/* r81 audit: thumb-sized map zoom buttons on touch screens */
+@media (pointer:coarse){html body .maplibregl-ctrl-group button{width:40px;height:40px}}

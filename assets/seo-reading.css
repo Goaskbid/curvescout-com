@@ -3,3 +3,6 @@
 
 /* CS_R47_SEO_AUDIT */
 .cs-page-jumps{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:1.5rem 0}.cs-page-jumps span{flex-basis:100%}.cs-page-jumps a{display:inline-flex;min-width:44px;min-height:44px;align-items:center;justify-content:center;padding:.25rem;border:1px solid currentColor;border-radius:.25rem}.cs-page-jumps [aria-current="page"]{font-weight:800;text-decoration:underline}.cs-identity-review{border-left:3px solid currentColor;padding-left:1rem}
+
+/* r81 audit: thumb-sized header links on touch screens */
+@media (pointer:coarse){header nav a{display:inline-flex;align-items:center;min-height:44px}}

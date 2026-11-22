@@ -5519,3 +5519,9 @@ body:has(#mModes:not([hidden])) #viewModes{display:none!important}
 
 /* r79: the swipe card leaves room for its title above the buttons on phones */
 @media(max-width:600px){html body #view-swipe .swCard.top .swMedia{height:160px!important}}
+
+/* r81 audit: "Scout my rides" no longer covers step 1 on phones - it sticks once a start point is set */
+#searchCard:has(#startIn:placeholder-shown) #goBtn.goBtn{position:relative;bottom:auto}
+
+/* r81 audit: trip numbers - the marker box does not catch the finger, the number does */
+.leaflet-tripPins-pane .leaflet-marker-icon{pointer-events:none!important}.leaflet-tripPins-pane .tripPin{pointer-events:auto}
