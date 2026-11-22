@@ -1,11 +1,8 @@
 {
-  "at": "2026-11-22T09:25:45Z",
-  "run": "45007443329",
+  "at": "2026-11-22T10:18:34Z",
+  "run": "45011756547",
   "log": [
-    "upload: CurveScout-r78-part-1.zip 241192 bytes",
-    "upload: CurveScout-roads-r78-all-loops.zip 608003 bytes",
-    "deployed CurveScout-r78-part-1.zip -> curvescout-app-r78-20261122, site 799 MB",
-    "road zip -> release roads-202611220925",
-    "road job started"
+    "upload: CurveScout-r79-part-1.zip 699468 bytes",
+    "deployed CurveScout-r79-part-1.zip -> curvescout-app-r79-20261122, site 799 MB"
   ]
 }

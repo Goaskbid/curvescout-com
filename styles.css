@@ -5516,3 +5516,6 @@ body:has(#mModes:not([hidden])) #viewModes{display:none!important}
   html body #rideDetail .mapBox:not(.expanded)>#mapBar .mapBarRight>*{width:100%!important;margin:0!important;font-size:12px!important;padding:6px 4px!important;min-height:48px!important;white-space:normal!important;justify-content:center!important;text-align:center!important}
   html body #rideDetail .mapBox:not(.expanded)>#mapBar .mapBarRight #rideClock{grid-column:1/-1}
 }
+
+/* r79: the swipe card leaves room for its title above the buttons on phones */
+@media(max-width:600px){html body #view-swipe .swCard.top .swMedia{height:160px!important}}
