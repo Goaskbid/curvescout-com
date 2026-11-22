@@ -1,3 +1,300 @@
-16:41:04 rides in the catalogue: 20398
-16:41:04 reading the Geofabrik region index
-16:41:20 339 router builds planned (56 single regions, 283 border crossings), 5952 rides not yet done, 2017 rides fit no region
+17:25:13 yunnan done: 2 roads, 0 refused · catalogue now 9778 roads
+17:25:13 saved on disk - committed and pushed with the next 2-hourly push
+17:25:14 saved on disk - committed and pushed with the next 2-hourly push
+17:25:14 == 25/340 croatia 2 rides
+17:25:14 downloading croatia 193 MB
+17:26:20 osrm-extract
+17:26:57 osrm-partition
+17:27:03 osrm-customize
+17:27:07 croatia done: 2 roads, 0 refused · catalogue now 9780 roads
+17:27:07 saved on disk - committed and pushed with the next 2-hourly push
+17:27:08 saved on disk - committed and pushed with the next 2-hourly push
+17:27:08 == 26/340 cuba 2 rides
+17:27:08 downloading cuba 60 MB
+17:27:44 osrm-extract
+17:28:01 osrm-partition
+17:28:05 osrm-customize
+17:28:10 cuba done: 2 roads, 0 refused · catalogue now 9782 roads
+17:28:10 saved on disk - committed and pushed with the next 2-hourly push
+17:28:10 saved on disk - committed and pushed with the next 2-hourly push
+17:28:10 == 27/340 egypt 2 rides
+17:28:11 downloading egypt 171 MB
+17:28:21 osrm-extract
+17:30:22 osrm-partition
+17:31:27 osrm-customize
+17:32:02 egypt done: 2 roads, 0 refused · catalogue now 9784 roads
+17:32:03 saved on disk - committed and pushed with the next 2-hourly push
+17:32:03 saved on disk - committed and pushed with the next 2-hourly push
+17:32:03 == 28/340 estonia 2 rides
+17:32:04 downloading estonia 119 MB
+17:32:36 osrm-extract
+17:32:57 osrm-partition
+17:33:01 osrm-customize
+17:33:04 estonia done: 2 roads, 0 refused · catalogue now 9786 roads
+17:33:04 saved on disk - committed and pushed with the next 2-hourly push
+17:33:05 saved on disk - committed and pushed with the next 2-hourly push
+17:33:05 == 29/340 ethiopia 2 rides
+17:33:06 downloading ethiopia 134 MB
+17:33:13 osrm-extract
+17:33:56 osrm-partition
+17:34:06 osrm-customize
+17:34:16 ethiopia done: 2 roads, 0 refused · catalogue now 9788 roads
+17:34:16 saved on disk - committed and pushed with the next 2-hourly push
+17:34:16 saved on disk - committed and pushed with the next 2-hourly push
+17:34:16 == 30/340 languedoc-roussillon 2 rides
+17:34:17 downloading languedoc-roussillon 259 MB
+17:34:31 osrm-extract
+17:35:18 osrm-partition
+17:35:25 osrm-customize
+17:35:30 languedoc-roussillon done: 2 roads, 0 refused · catalogue now 9790 roads
+17:35:30 saved on disk - committed and pushed with the next 2-hourly push
+17:35:30 saved on disk - committed and pushed with the next 2-hourly push
+17:35:30 == 31/340 bourgogne 2 rides
+17:35:31 downloading bourgogne 192 MB
+17:36:28 osrm-extract
+17:37:00 osrm-partition
+17:37:05 osrm-customize
+17:37:09 bourgogne done: 2 roads, 0 refused · catalogue now 9792 roads
+17:37:10 saved on disk - committed and pushed with the next 2-hourly push
+17:37:10 saved on disk - committed and pushed with the next 2-hourly push
+17:37:10 == 32/340 ghana 2 rides
+17:37:11 downloading ghana 112 MB
+17:37:42 osrm-extract
+17:38:14 osrm-partition
+17:38:23 osrm-customize
+17:38:31 ghana done: 2 roads, 0 refused · catalogue now 9794 roads
+17:38:31 saved on disk - committed and pushed with the next 2-hourly push
+17:38:32 saved on disk - committed and pushed with the next 2-hourly push
+17:38:32 == 33/340 greece 2 rides
+17:38:32 downloading greece 328 MB
+17:40:26 osrm-extract
+17:42:10 osrm-partition
+17:42:35 osrm-customize
+17:42:49 greece done: 2 roads, 0 refused · catalogue now 9796 roads
+17:42:49 saved on disk - committed and pushed with the next 2-hourly push
+17:42:50 saved on disk - committed and pushed with the next 2-hourly push
+17:42:50 == 34/340 hungary 2 rides
+17:42:50 downloading hungary 315 MB
+17:43:15 osrm-extract
+17:44:14 osrm-partition
+17:44:24 osrm-customize
+17:44:30 hungary done: 2 roads, 0 refused · catalogue now 9798 roads
+17:44:31 saved on disk - committed and pushed with the next 2-hourly push
+17:44:31 saved on disk - committed and pushed with the next 2-hourly push
+17:44:31 == 35/340 western-zone 2 rides
+17:44:32 downloading western-zone 212 MB
+17:45:01 osrm-extract
+17:46:49 osrm-partition
+17:47:57 osrm-customize
+17:48:26 western-zone done: 2 roads, 0 refused · catalogue now 9800 roads
+17:48:27 saved on disk - committed and pushed with the next 2-hourly push
+17:48:27 saved on disk - committed and pushed with the next 2-hourly push
+17:48:27 == 36/340 ireland-and-northern-ireland 2 rides
+17:48:28 downloading ireland-and-northern-ireland 399 MB
+17:49:24 osrm-extract
+17:51:06 osrm-partition
+17:51:47 osrm-customize
+17:52:00 ireland-and-northern-ireland done: 2 roads, 0 refused · catalogue now 9802 roads
+17:52:00 saved on disk - committed and pushed with the next 2-hourly push
+17:52:01 saved on disk - committed and pushed with the next 2-hourly push
+17:52:01 == 37/340 jamaica 2 rides
+17:52:01 downloading jamaica 37 MB
+17:52:06 osrm-extract
+17:52:14 osrm-partition
+17:52:15 osrm-customize
+17:52:18 jamaica done: 2 roads, 0 refused · catalogue now 9804 roads
+17:52:18 saved on disk - committed and pushed with the next 2-hourly push
+17:52:18 saved on disk - committed and pushed with the next 2-hourly push
+17:52:18 == 38/340 kenya 2 rides
+17:52:19 downloading kenya 336 MB
+17:53:58 osrm-extract
+17:55:20 osrm-partition
+17:55:36 osrm-customize
+17:55:47 kenya done: 2 roads, 0 refused · catalogue now 9806 roads
+17:55:48 saved on disk - committed and pushed with the next 2-hourly push
+17:55:48 mexico left to the second pass (Command failed: curl -fL --retry 3 -o /t)
+17:55:48 saved on disk - committed and pushed with the next 2-hourly push
+17:55:48 == 40/340 nepal 2 rides
+17:55:49 downloading nepal 396 MB
+17:56:40 osrm-extract
+17:57:52 osrm-partition
+17:57:57 osrm-customize
+17:58:03 nepal done: 2 roads, 0 refused · catalogue now 9808 roads
+17:58:03 saved on disk - committed and pushed with the next 2-hourly push
+17:58:03 saved on disk - committed and pushed with the next 2-hourly push
+17:58:03 == 41/340 nicaragua 2 rides
+17:58:04 downloading nicaragua 59 MB
+17:58:25 osrm-extract
+17:58:38 osrm-partition
+17:58:39 osrm-customize
+17:58:43 nicaragua done: 2 roads, 0 refused · catalogue now 9810 roads
+17:58:43 saved on disk - committed and pushed with the next 2-hourly push
+17:58:43 saved on disk - committed and pushed with the next 2-hourly push
+17:58:43 == 42/340 trondelag 2 rides
+17:58:44 downloading trondelag 175 MB
+17:59:41 osrm-extract
+18:00:07 osrm-partition
+18:00:09 osrm-customize
+18:00:11 trondelag done: 2 roads, 0 refused · catalogue now 9812 roads
+18:00:12 saved on disk - committed and pushed with the next 2-hourly push
+18:00:12 saved on disk - committed and pushed with the next 2-hourly push
+18:00:12 == 43/340 vestlandet 2 rides
+18:00:13 downloading vestlandet 246 MB
+18:01:32 osrm-extract
+18:02:18 osrm-partition
+18:02:23 osrm-customize
+18:02:26 vestlandet done: 1 roads, 1 refused · catalogue now 9813 roads
+18:02:27 saved on disk - committed and pushed with the next 2-hourly push
+18:02:27 saved on disk - committed and pushed with the next 2-hourly push
+18:02:27 == 44/340 pakistan 2 rides
+18:02:28 downloading pakistan 151 MB
+18:03:37 osrm-extract
+18:05:07 osrm-partition
+18:05:54 osrm-customize
+18:06:22 pakistan done: 2 roads, 0 refused · catalogue now 9815 roads
+18:06:23 saved on disk - committed and pushed with the next 2-hourly push
+18:06:23 saved on disk - committed and pushed with the next 2-hourly push
+18:06:23 == 45/340 pomorskie 2 rides
+18:06:24 downloading pomorskie 113 MB
+18:06:51 osrm-extract
+18:07:11 osrm-partition
+18:07:14 osrm-customize
+18:07:17 pomorskie done: 2 roads, 0 refused · catalogue now 9817 roads
+18:07:18 saved on disk - committed and pushed with the next 2-hourly push
+18:07:18 saved on disk - committed and pushed with the next 2-hourly push
+18:07:18 == 46/340 andalucia 2 rides
+18:07:19 downloading andalucia 189 MB
+18:08:26 osrm-extract
+18:09:13 osrm-partition
+18:09:21 osrm-customize
+18:09:26 andalucia done: 2 roads, 0 refused · catalogue now 9819 roads
+18:09:27 saved on disk - committed and pushed with the next 2-hourly push
+18:09:27 saved on disk - committed and pushed with the next 2-hourly push
+18:09:27 == 47/340 islas-baleares 2 rides
+18:09:28 downloading islas-baleares 45 MB
+18:09:47 osrm-extract
+18:09:55 osrm-partition
+18:09:57 osrm-customize
+18:09:59 islas-baleares done: 2 roads, 0 refused · catalogue now 9821 roads
+18:10:00 saved on disk - committed and pushed with the next 2-hourly push
+18:10:00 saved on disk - committed and pushed with the next 2-hourly push
+18:10:00 == 48/340 scotland 2 rides
+18:10:01 downloading scotland 315 MB
+18:12:32 osrm-extract
+18:13:32 osrm-partition
+18:13:45 osrm-customize
+18:13:50 scotland done: 2 roads, 0 refused · catalogue now 9823 roads
+18:13:51 saved on disk - committed and pushed with the next 2-hourly push
+18:13:51 saved on disk - committed and pushed with the next 2-hourly push
+18:13:51 == 49/340 us/florida 2 rides
+18:13:52 us/florida is 631 MB - its rides go to its sub-regions
+18:13:53 saved on disk - committed and pushed with the next 2-hourly push
+18:13:53 == 50/340 us/new-mexico 2 rides
+18:13:54 downloading us/new-mexico 131 MB
+18:14:31 osrm-extract
+18:15:13 osrm-partition
+18:15:24 osrm-customize
+18:15:33 us/new-mexico done: 2 roads, 0 refused · catalogue now 9825 roads
+18:15:33 saved on disk - committed and pushed with the next 2-hourly push
+18:15:34 saved on disk - committed and pushed with the next 2-hourly push
+18:15:34 == 51/340 us/arizona 2 rides
+18:15:34 downloading us/arizona 292 MB
+18:16:07 osrm-extract
+18:17:33 osrm-partition
+18:18:02 osrm-customize
+18:18:15 us/arizona done: 2 roads, 0 refused · catalogue now 9827 roads
+18:18:15 saved on disk - committed and pushed with the next 2-hourly push
+18:18:16 saved on disk - committed and pushed with the next 2-hourly push
+18:18:16 == 52/340 uruguay 2 rides
+18:18:17 downloading uruguay 54 MB
+18:18:31 osrm-extract
+18:18:42 osrm-partition
+18:18:45 osrm-customize
+18:18:49 uruguay done: 2 roads, 0 refused · catalogue now 9829 roads
+18:18:49 saved on disk - committed and pushed with the next 2-hourly push
+18:18:50 saved on disk - committed and pushed with the next 2-hourly push
+18:18:50 == 53/340 us-south 3 rides
+18:18:51 us-south is 3975 MB - its rides go to its sub-regions
+18:18:52 saved on disk - committed and pushed with the next 2-hourly push
+18:18:52 == 54/341 us/north-carolina 1 rides
+18:18:53 downloading us/north-carolina 411 MB
+18:19:17 osrm-extract
+18:21:46 osrm-partition
+18:23:05 osrm-customize
+18:23:26 us/north-carolina done: 1 roads, 0 refused · catalogue now 9830 roads
+18:23:27 saved on disk - committed and pushed with the next 2-hourly push
+18:23:28 saved on disk - committed and pushed with the next 2-hourly push
+18:23:28 == 55/341 us/wyoming 1 rides
+18:23:28 downloading us/wyoming 92 MB
+18:23:55 osrm-extract
+18:24:15 osrm-partition
+18:24:19 osrm-customize
+18:24:23 us/wyoming done: 1 roads, 0 refused · catalogue now 9831 roads
+18:24:23 saved on disk - committed and pushed with the next 2-hourly push
+18:24:24 saved on disk - committed and pushed with the next 2-hourly push
+18:24:24 == 56/341 italy 1 rides
+18:24:24 italy is 2150 MB - its rides go to its sub-regions
+18:24:25 saved on disk - committed and pushed with the next 2-hourly push
+18:24:25 == 57/341 italy+nord-ovest 102 rides
+18:24:26 italy is 2150 MB - its rides go to its sub-regions
+18:24:27 saved on disk - committed and pushed with the next 2-hourly push
+18:24:27 == 58/341 centro+italy 89 rides
+18:24:29 italy is 2150 MB - its rides go to its sub-regions
+18:24:30 saved on disk - committed and pushed with the next 2-hourly push
+18:24:30 == 59/341 nord-pas-de-calais+picardie 70 rides
+18:24:31 downloading nord-pas-de-calais 231 MB
+18:25:26 downloading picardie 127 MB
+18:25:58 merging nord-pas-de-calais+picardie
+18:26:16 osrm-extract
+18:27:20 osrm-partition
+18:27:34 osrm-customize
+18:27:41 nord-pas-de-calais+picardie done: 70 roads, 0 refused · catalogue now 9901 roads
+18:27:42 saved on disk - committed and pushed with the next 2-hourly push
+18:27:42 saved on disk - committed and pushed with the next 2-hourly push
+18:27:42 == 60/341 north-korea+south-korea 65 rides
+18:27:44 downloading north-korea 89 MB
+18:28:08 downloading south-korea 279 MB
+18:29:34 merging north-korea+south-korea
+18:29:52 osrm-extract
+18:32:01 osrm-partition
+18:32:52 osrm-customize
+18:33:15 north-korea+south-korea done: 0 roads, 65 refused · catalogue now 9901 roads
+18:33:15 saved on disk - committed and pushed with the next 2-hourly push
+18:33:16 saved on disk - committed and pushed with the next 2-hourly push
+18:33:16 == 61/341 aragon+castilla-la-mancha 64 rides
+18:33:18 downloading aragon 91 MB
+18:33:43 downloading castilla-la-mancha 103 MB
+18:34:05 merging aragon+castilla-la-mancha
+18:34:14 osrm-extract
+18:34:55 osrm-partition
+18:35:00 osrm-customize
+18:35:05 aragon+castilla-la-mancha done: 64 roads, 0 refused · catalogue now 9965 roads
+18:35:05 saved on disk - committed and pushed with the next 2-hourly push
+18:35:06 saved on disk - committed and pushed with the next 2-hourly push
+18:35:06 == 62/341 duesseldorf-regbez+koeln-regbez 64 rides
+18:35:08 downloading duesseldorf-regbez 207 MB
+18:35:25 downloading koeln-regbez 215 MB
+18:35:43 merging duesseldorf-regbez+koeln-regbez
+18:36:04 osrm-extract
+18:37:14 osrm-partition
+18:37:30 osrm-customize
+18:37:38 duesseldorf-regbez+koeln-regbez done: 64 roads, 0 refused · catalogue now 10029 roads
+18:37:38 saved on disk - committed and pushed with the next 2-hourly push
+18:37:39 saved on disk - committed and pushed with the next 2-hourly push
+18:37:39 == 63/341 israel-and-palestine+lebanon 60 rides
+18:37:40 downloading israel-and-palestine 116 MB
+18:38:25 downloading lebanon 50 MB
+18:38:29 merging israel-and-palestine+lebanon
+18:38:37 osrm-extract
+18:39:25 osrm-partition
+18:39:35 osrm-customize
+18:39:42 israel-and-palestine+lebanon done: 0 roads, 60 refused · catalogue now 10029 roads
+18:39:42 saved on disk - committed and pushed with the next 2-hourly push
+18:39:43 saved on disk - committed and pushed with the next 2-hourly push
+18:39:43 == 64/341 malopolskie+slovakia 57 rides
+18:39:44 downloading malopolskie 195 MB
+18:39:57 downloading slovakia 333 MB
+18:40:15 merging malopolskie+slovakia
+18:40:42 osrm-extract
+18:42:11 osrm-partition
+18:42:29 osrm-customize
