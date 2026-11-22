@@ -4,3 +4,98 @@
 23:02:45 second pass: 500 rides without a stored road - routed in small boxes cut from their region
 23:06:12 downloading switzerland 526 MB
 23:11:48 == switzerland: 18 rides in 5 boxes
+23:19:13 switzerland second pass: 15 new roads, 3 refused · catalogue now 15 roads
+23:19:15 downloading alps 2232 MB
+23:21:23 == alps: 17 rides in 7 boxes
+23:33:35 alps second pass: 17 new roads, 0 refused · catalogue now 32 roads
+23:33:35 saved on disk - committed and pushed with the next 2-hourly push
+23:33:35 downloading england 1637 MB
+23:35:00 == england: 15 rides in 9 boxes
+23:55:17 england second pass: 15 new roads, 0 refused · catalogue now 47 roads
+23:55:17 saved on disk - committed and pushed with the next 2-hourly push
+23:55:17 downloading belgium 667 MB
+23:55:51 == belgium: 11 rides in 4 boxes
+00:03:32 belgium second pass: 11 new roads, 0 refused · catalogue now 58 roads
+00:03:32 saved on disk - committed and pushed with the next 2-hourly push
+00:03:32 downloading south-korea 279 MB
+00:04:38 == south-korea: 8 rides in 3 boxes
+00:06:52 south-korea second pass: 8 new roads, 0 refused · catalogue now 66 roads
+00:06:52 saved on disk - committed and pushed with the next 2-hourly push
+00:06:52 downloading netherlands 1347 MB
+00:12:30 == netherlands: 8 rides in 2 boxes
+00:17:17 netherlands second pass: 8 new roads, 0 refused · catalogue now 74 roads
+00:17:17 saved on disk - committed and pushed with the next 2-hourly push
+00:17:17 downloading portugal 409 MB
+00:19:11 == portugal: 8 rides in 5 boxes
+00:23:24 portugal second pass: 8 new roads, 0 refused · catalogue now 82 roads
+00:23:24 saved on disk - committed and pushed with the next 2-hourly push
+00:23:24 downloading centro 370 MB
+00:23:49 == centro: 7 rides in 3 boxes
+00:26:17 centro second pass: 7 new roads, 0 refused · catalogue now 89 roads
+00:26:17 saved on disk - committed and pushed with the next 2-hourly push
+00:26:17 downloading nord-ovest 568 MB
+00:27:26 == nord-ovest: 7 rides in 2 boxes
+00:30:43 nord-ovest second pass: 7 new roads, 0 refused · catalogue now 96 roads
+00:30:43 saved on disk - committed and pushed with the next 2-hourly push
+00:30:43 downloading nord-est 598 MB
+00:31:50 == nord-est: 7 rides in 4 boxes
+00:37:10 nord-est second pass: 7 new roads, 0 refused · catalogue now 103 roads
+00:37:10 saved on disk - committed and pushed with the next 2-hourly push
+00:37:10 downloading mexico 619 MB
+00:37:12 download failed for mexico Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/mexico/mexico-latest.osm.pbf
+00:37:12 downloading romania 318 MB
+00:37:29 == romania: 7 rides in 3 boxes
+00:38:43 romania second pass: 7 new roads, 0 refused · catalogue now 110 roads
+00:38:43 saved on disk - committed and pushed with the next 2-hourly push
+00:38:44 downloading great-britain 2103 MB
+00:40:44 == great-britain: 7 rides in 4 boxes
+00:49:43 great-britain second pass: 7 new roads, 0 refused · catalogue now 117 roads
+00:49:43 saved on disk - committed and pushed with the next 2-hourly push
+00:49:43 downloading greece 327 MB
+00:50:19 == greece: 6 rides in 4 boxes
+00:52:23 greece second pass: 6 new roads, 0 refused · catalogue now 123 roads
+00:52:23 saved on disk - committed and pushed with the next 2-hourly push
+00:52:23 downloading isole 206 MB
+00:52:34 == isole: 6 rides in 3 boxes
+00:54:12 isole second pass: 6 new roads, 0 refused · catalogue now 129 roads
+00:54:12 saved on disk - committed and pushed with the next 2-hourly push
+00:54:12 downloading south-africa 405 MB
+00:54:13 download failed for south-africa Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/south-africa/south-africa-latest.osm.pbf
+00:54:13 downloading austria 778 MB
+00:54:54 == austria: 5 rides in 3 boxes
+00:58:11 austria second pass: 5 new roads, 0 refused · catalogue now 134 roads
+00:58:11 saved on disk - committed and pushed with the next 2-hourly push
+00:58:11 downloading denmark 475 MB
+00:58:35 == denmark: 5 rides in 3 boxes
+01:01:11 denmark second pass: 5 new roads, 0 refused · catalogue now 139 roads
+01:01:11 saved on disk - committed and pushed with the next 2-hourly push
+01:01:11 downloading rhone-alpes 509 MB
+01:02:25 == rhone-alpes: 5 rides in 2 boxes
+01:05:08 rhone-alpes second pass: 5 new roads, 0 refused · catalogue now 144 roads
+01:05:09 saved on disk - committed and pushed with the next 2-hourly push
+01:05:09 downloading bayern 819 MB
+01:08:41 == bayern: 5 rides in 1 boxes
+01:10:35 bayern second pass: 5 new roads, 0 refused · catalogue now 149 roads
+01:10:36 saved on disk - committed and pushed with the next 2-hourly push
+01:10:36 downloading lithuania 214 MB
+01:11:33 download failed for lithuania Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/lithuania/lithuania-latest.osm.pbf
+01:11:33 downloading morocco 233 MB
+01:12:23 download failed for morocco Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/morocco/morocco-latest.osm.pbf
+01:12:23 downloading vestlandet 246 MB
+01:12:38 == vestlandet: 5 rides in 4 boxes
+01:14:38 vestlandet second pass: 4 new roads, 1 refused · catalogue now 153 roads
+01:14:38 saved on disk - committed and pushed with the next 2-hourly push
+01:14:38 downloading turkey 624 MB
+01:16:46 download failed for turkey Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/turkey/turkey-latest.osm.pbf
+01:16:46 downloading wales 144 MB
+01:16:49 download failed for wales Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/wales/wales-latest.osm.pbf
+01:16:50 downloading vietnam 318 MB
+01:16:50 download failed for vietnam Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/vietnam/vietnam-latest.osm.pbf
+01:16:50 downloading argentina 416 MB
+01:22:09 download failed for argentina Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/argentina/argentina-latest.osm.pbf
+01:22:09 downloading bosnia-herzegovina 155 MB
+01:25:31 download failed for bosnia-herzegovina Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/bosnia-herzegovina/bosnia-herzegovina-latest.osm.pbf
+01:25:31 downloading bulgaria 170 MB
+01:29:23 download failed for bulgaria Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/bulgaria/bulgaria-latest.osm.pbf
+01:29:23 downloading nordrhein-westfalen 876 MB
+01:30:09 == nordrhein-westfalen: 4 rides in 1 boxes
