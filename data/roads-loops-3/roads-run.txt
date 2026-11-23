@@ -1,3 +1,300 @@
-01:08:38 rides in the catalogue: 20398
-01:08:38 reading the Geofabrik region index
-01:08:42 146 router builds planned (0 single regions, 146 border crossings), 3881 rides not yet done, 2580 rides fit no region
+01:33:31 router failed for hessen+karlsruhe-regbez+rheinland-pfalz Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/hessen/hessen-latest.osm.pbf
+01:33:32 saved on disk - committed and pushed with the next 2-hourly push
+01:33:32 == 110/146 niedersachsen+sachsen-anhalt+thueringen 3 rides
+01:33:35 downloading niedersachsen 
+01:33:36 router failed for niedersachsen+sachsen-anhalt+thueringen Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/niedersachsen/niedersachsen-latest.osm.pbf
+01:33:36 saved on disk - committed and pushed with the next 2-hourly push
+01:33:36 == 111/146 north-yorkshire+northumberland+tyne-and-wear 3 rides
+01:33:39 downloading north-yorkshire 
+01:33:40 router failed for north-yorkshire+northumberland+tyne-and-wear Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/north-yorkshire/north-yorkshire-latest.osm.pbf
+01:33:41 saved on disk - committed and pushed with the next 2-hourly push
+01:33:41 == 112/146 pardubicky+stredocesky+vysocina 3 rides
+01:33:44 downloading pardubicky 
+01:33:45 router failed for pardubicky+stredocesky+vysocina Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/czech-republic/pardubicky/pardubicky-latest.osm.pbf
+01:33:45 saved on disk - committed and pushed with the next 2-hourly push
+01:33:45 == 113/146 anhui+jiangsu+shandong 2 rides
+01:35:05 downloading anhui 
+01:35:06 router failed for anhui+jiangsu+shandong Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/anhui/anhui-latest.osm.pbf
+01:35:07 saved on disk - committed and pushed with the next 2-hourly push
+01:35:07 == 114/146 karlsruhe-regbez+rheinland-pfalz+unterfranken 2 rides
+01:35:10 downloading karlsruhe-regbez 
+01:35:44 router failed for karlsruhe-regbez+rheinland-pfalz+unterfranken Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/karlsruhe-regbez/karlsruhe-regbez-latest.osm.pbf
+01:35:44 saved on disk - committed and pushed with the next 2-hourly push
+01:35:44 == 115/146 praha+sachsen+ustecky 2 rides
+01:36:20 downloading praha 
+01:36:25 router failed for praha+sachsen+ustecky Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/czech-republic/praha/praha-latest.osm.pbf
+01:36:25 saved on disk - committed and pushed with the next 2-hourly push
+01:36:25 == 116/146 shropshire+staffordshire+west-midlands 2 rides
+01:36:44 downloading shropshire 
+01:37:01 router failed for shropshire+staffordshire+west-midlands Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/shropshire/shropshire-latest.osm.pbf
+01:37:02 saved on disk - committed and pushed with the next 2-hourly push
+01:37:02 == 117/146 dorset+oxfordshire+wiltshire 2 rides
+01:37:08 downloading dorset 
+01:37:09 router failed for dorset+oxfordshire+wiltshire Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/dorset/dorset-latest.osm.pbf
+01:37:10 saved on disk - committed and pushed with the next 2-hourly push
+01:37:10 == 118/146 devon+dorset+wiltshire 2 rides
+01:38:12 downloading devon 
+01:38:13 router failed for devon+dorset+wiltshire Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/devon/devon-latest.osm.pbf
+01:38:14 saved on disk - committed and pushed with the next 2-hourly push
+01:38:14 == 119/146 karlovarsky+oberfranken+sachsen 2 rides
+01:38:21 downloading karlovarsky 
+01:38:21 router failed for karlovarsky+oberfranken+sachsen Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/czech-republic/karlovarsky/karlovarsky-latest.osm.pbf
+01:38:22 saved on disk - committed and pushed with the next 2-hourly push
+01:38:22 == 120/146 hamburg+mecklenburg-vorpommern+schleswig-holstein 2 rides
+01:38:26 downloading hamburg 
+01:38:27 router failed for hamburg+mecklenburg-vorpommern+schleswig-holstein Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/hamburg/hamburg-latest.osm.pbf
+01:38:27 saved on disk - committed and pushed with the next 2-hourly push
+01:38:27 == 121/146 cameroon+central-african-republic+congo-brazzaville 2 rides
+01:38:31 downloading cameroon 
+01:38:32 router failed for cameroon+central-african-republic+congo-brazzaville Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/cameroon/cameroon-latest.osm.pbf
+01:38:33 saved on disk - committed and pushed with the next 2-hourly push
+01:38:33 == 122/146 karlsruhe-regbez+mittelfranken+stuttgart-regbez 2 rides
+01:38:36 downloading karlsruhe-regbez 
+01:38:37 router failed for karlsruhe-regbez+mittelfranken+stuttgart-regbez Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/karlsruhe-regbez/karlsruhe-regbez-latest.osm.pbf
+01:38:38 saved on disk - committed and pushed with the next 2-hourly push
+01:38:38 == 123/146 jilin+liaoning+north-korea 1 rides
+01:38:41 downloading jilin 
+01:38:42 router failed for jilin+liaoning+north-korea Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/jilin/jilin-latest.osm.pbf
+01:38:42 saved on disk - committed and pushed with the next 2-hourly push
+01:38:42 == 124/146 oxfordshire+somerset+wiltshire 1 rides
+01:38:45 downloading oxfordshire 
+01:38:46 router failed for oxfordshire+somerset+wiltshire Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/oxfordshire/oxfordshire-latest.osm.pbf
+01:38:47 saved on disk - committed and pushed with the next 2-hourly push
+01:38:47 == 125/146 karlsruhe-regbez+rheinland-pfalz+stuttgart-regbez 1 rides
+01:38:50 downloading karlsruhe-regbez 
+01:38:51 router failed for karlsruhe-regbez+rheinland-pfalz+stuttgart-regbez Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/karlsruhe-regbez/karlsruhe-regbez-latest.osm.pbf
+01:38:51 saved on disk - committed and pushed with the next 2-hourly push
+01:38:51 == 126/146 cheshire+derbyshire+merseyside 1 rides
+01:38:54 downloading cheshire 
+01:38:55 router failed for cheshire+derbyshire+merseyside Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/cheshire/cheshire-latest.osm.pbf
+01:38:56 saved on disk - committed and pushed with the next 2-hourly push
+01:38:56 == 127/146 cheshire+merseyside+west-yorkshire 1 rides
+01:38:59 downloading cheshire 
+01:39:00 router failed for cheshire+merseyside+west-yorkshire Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/cheshire/cheshire-latest.osm.pbf
+01:39:00 saved on disk - committed and pushed with the next 2-hourly push
+01:39:00 == 128/146 andorra+cataluna+midi-pyrenees 1 rides
+01:39:03 downloading andorra 
+01:39:04 router failed for andorra+cataluna+midi-pyrenees Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/andorra/andorra-latest.osm.pbf
+01:39:05 saved on disk - committed and pushed with the next 2-hourly push
+01:39:05 == 129/146 malopolskie+moravskoslezky+slaskie 1 rides
+01:39:12 downloading malopolskie 
+01:39:13 router failed for malopolskie+moravskoslezky+slaskie Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/malopolskie/malopolskie-latest.osm.pbf
+01:39:13 saved on disk - committed and pushed with the next 2-hourly push
+01:39:13 == 130/146 luxembourg+rheinland-pfalz+saarland 1 rides
+01:39:16 downloading luxembourg 
+01:39:17 router failed for luxembourg+rheinland-pfalz+saarland Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/luxembourg/luxembourg-latest.osm.pbf
+01:39:18 saved on disk - committed and pushed with the next 2-hourly push
+01:39:18 == 131/146 kujawsko-pomorskie+pomorskie+warminsko-mazurskie 1 rides
+01:39:21 downloading kujawsko-pomorskie 
+01:39:22 router failed for kujawsko-pomorskie+pomorskie+warminsko-mazurskie Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/kujawsko-pomorskie/kujawsko-pomorskie-latest.osm.pbf
+01:39:23 saved on disk - committed and pushed with the next 2-hourly push
+01:39:23 == 132/146 andalucia+portugal+spain 1 rides
+01:39:26 downloading andalucia 
+01:39:27 router failed for andalucia+portugal+spain Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/andalucia/andalucia-latest.osm.pbf
+01:39:27 saved on disk - committed and pushed with the next 2-hourly push
+01:39:27 == 133/146 cheshire+greater-manchester+west-yorkshire 1 rides
+01:39:30 downloading cheshire 
+01:39:32 router failed for cheshire+greater-manchester+west-yorkshire Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/cheshire/cheshire-latest.osm.pbf
+01:39:33 saved on disk - committed and pushed with the next 2-hourly push
+01:39:33 == 134/146 derbyshire+shropshire+west-midlands 1 rides
+01:39:36 downloading derbyshire 
+01:39:37 router failed for derbyshire+shropshire+west-midlands Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/derbyshire/derbyshire-latest.osm.pbf
+01:39:37 saved on disk - committed and pushed with the next 2-hourly push
+01:39:37 == 135/146 devon+somerset+wales 1 rides
+01:39:41 downloading devon 
+01:39:42 router failed for devon+somerset+wales Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/devon/devon-latest.osm.pbf
+01:39:42 saved on disk - committed and pushed with the next 2-hourly push
+01:39:42 == 136/146 bristol+somerset+wales 1 rides
+01:39:45 downloading bristol 
+01:39:46 router failed for bristol+somerset+wales Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/bristol/bristol-latest.osm.pbf
+01:39:47 saved on disk - committed and pushed with the next 2-hourly push
+01:39:47 == 137/146 cheshire+derbyshire+west-yorkshire 1 rides
+01:39:50 downloading cheshire 
+01:39:51 router failed for cheshire+derbyshire+west-yorkshire Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/cheshire/cheshire-latest.osm.pbf
+01:39:51 saved on disk - committed and pushed with the next 2-hourly push
+01:39:51 == 138/146 detmold-regbez+hessen+thueringen 1 rides
+01:39:54 downloading detmold-regbez 
+01:39:55 router failed for detmold-regbez+hessen+thueringen Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/nordrhein-westfalen/detmold-regbez/detmold-regbez-latest.osm.pbf
+01:39:56 saved on disk - committed and pushed with the next 2-hourly push
+01:39:56 == 139/146 hessen+niedersachsen+thueringen 1 rides
+01:39:59 downloading hessen 
+01:40:00 router failed for hessen+niedersachsen+thueringen Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/hessen/hessen-latest.osm.pbf
+01:40:00 saved on disk - committed and pushed with the next 2-hourly push
+01:40:00 == 140/146 dorset+somerset+wales 1 rides
+01:40:04 downloading dorset 
+01:40:04 router failed for dorset+somerset+wales Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/dorset/dorset-latest.osm.pbf
+01:40:05 saved on disk - committed and pushed with the next 2-hourly push
+01:40:05 == 141/146 lorraine+luxembourg+saarland 1 rides
+01:40:08 downloading lorraine 
+01:40:09 router failed for lorraine+luxembourg+saarland Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/lorraine/lorraine-latest.osm.pbf
+01:40:10 saved on disk - committed and pushed with the next 2-hourly push
+01:40:10 == 142/146 drenthe+flevoland+groningen 1 rides
+01:40:13 downloading drenthe 
+01:40:13 router failed for drenthe+flevoland+groningen Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/netherlands/drenthe/drenthe-latest.osm.pbf
+01:40:14 saved on disk - committed and pushed with the next 2-hourly push
+01:40:14 == 143/146 malopolskie+slaskie+slovakia 1 rides
+01:40:17 downloading malopolskie 
+01:40:18 router failed for malopolskie+slaskie+slovakia Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/malopolskie/malopolskie-latest.osm.pbf
+01:40:19 saved on disk - committed and pushed with the next 2-hourly push
+01:40:19 == 144/146 bremen+hamburg+niedersachsen 1 rides
+01:40:22 downloading bremen 
+01:40:22 router failed for bremen+hamburg+niedersachsen Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/bremen/bremen-latest.osm.pbf
+01:40:23 saved on disk - committed and pushed with the next 2-hourly push
+01:40:23 == 145/146 oberbayern+schwaben+tuebingen-regbez 1 rides
+01:40:26 downloading oberbayern 
+01:40:27 router failed for oberbayern+schwaben+tuebingen-regbez Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/bayern/oberbayern/oberbayern-latest.osm.pbf
+01:40:28 saved on disk - committed and pushed with the next 2-hourly push
+01:40:28 == 146/146 mittelfranken+oberbayern+oberpfalz 1 rides
+01:40:31 downloading mittelfranken 
+01:40:31 router failed for mittelfranken+oberbayern+oberpfalz Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/bayern/mittelfranken/mittelfranken-latest.osm.pbf
+01:40:32 second pass: 8714 rides without a stored road - routed in small boxes cut from their region
+03:54:30 downloading valencia 135 MB
+03:54:31 download failed for valencia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/valencia/valencia-latest.osm.pbf
+03:54:31 downloading mexico 619 MB
+03:54:32 download failed for mexico Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/mexico/mexico-latest.osm.pbf
+03:54:32 downloading northwestern-fed-district 628 MB
+03:54:33 download failed for northwestern-fed-district Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/russia/northwestern-fed-district/northwestern-fed-district-latest
+03:54:33 downloading nord-pas-de-calais 231 MB
+03:54:34 download failed for nord-pas-de-calais Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/nord-pas-de-calais/nord-pas-de-calais-latest.osm.pb
+03:54:34 downloading spain 1435 MB
+03:54:35 download failed for spain Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/spain-latest.osm.pbf
+03:54:35 downloading aragon 91 MB
+03:54:36 download failed for aragon Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/aragon/aragon-latest.osm.pbf
+03:54:36 downloading nord-est 599 MB
+03:54:37 download failed for nord-est Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/nord-est/nord-est-latest.osm.pbf
+03:54:37 downloading belgium 667 MB
+03:54:38 download failed for belgium+nord-pas-de-calais Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/belgium/belgium-latest.osm.pbf
+03:54:38 downloading switzerland 526 MB
+03:54:39 download failed for switzerland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/switzerland/switzerland-latest.osm.pbf
+03:54:39 downloading belgium 667 MB
+03:54:40 download failed for belgium Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/belgium/belgium-latest.osm.pbf
+03:54:40 downloading cataluna 262 MB
+03:54:41 download failed for cataluna Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/cataluna/cataluna-latest.osm.pbf
+03:54:41 downloading austria 778 MB
+03:54:42 download failed for austria Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/austria/austria-latest.osm.pbf
+03:54:42 downloading nord-ovest 568 MB
+03:54:43 download failed for nord-ovest Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/nord-ovest/nord-ovest-latest.osm.pbf
+03:54:43 downloading centro 370 MB
+03:54:44 download failed for centro Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/centro/centro-latest.osm.pbf
+03:54:44 downloading sud 404 MB
+03:54:45 download failed for sud Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/sud/sud-latest.osm.pbf
+03:54:45 downloading isole 207 MB
+03:54:46 download failed for isole Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/isole/isole-latest.osm.pbf
+03:54:46 downloading italy 2150 MB
+03:54:47 download failed for italy Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/italy-latest.osm.pbf
+03:54:47 downloading england 1638 MB
+03:54:48 download failed for england Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/united-kingdom/england/england-latest.osm.pbf
+03:54:48 downloading alps 2232 MB
+03:54:49 download failed for alps Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/alps/alps-latest.osm.pbf
+03:54:49 downloading hessen 332 MB
+03:54:50 download failed for hessen Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/hessen/hessen-latest.osm.pbf
+03:54:50 downloading bayern 819 MB
+03:54:51 download failed for bayern Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/bayern/bayern-latest.osm.pbf
+03:54:51 downloading rheinland-pfalz 264 MB
+03:54:52 download failed for rheinland-pfalz Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/rheinland-pfalz/rheinland-pfalz-latest.osm.pbf
+03:54:52 downloading netherlands 1347 MB
+03:54:53 download failed for netherlands Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/netherlands/netherlands-latest.osm.pbf
+03:54:53 downloading sudeste 824 MB
+03:54:54 download failed for sudeste Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/brazil/sudeste/sudeste-latest.osm.pbf
+03:54:54 downloading ukraine 844 MB
+03:54:54 download failed for ukraine Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/ukraine/ukraine-latest.osm.pbf
+03:54:55 downloading romania 318 MB
+03:54:55 download failed for romania+ukraine Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/romania/romania-latest.osm.pbf
+03:54:56 downloading north-korea 89 MB
+03:54:56 download failed for north-korea+south-korea Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/north-korea/north-korea-latest.osm.pbf
+03:54:57 downloading israel-and-palestine 116 MB
+03:54:57 download failed for israel-and-palestine+lebanon Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/israel-and-palestine/israel-and-palestine-latest.osm.pbf
+03:54:58 downloading peru 246 MB
+03:54:58 download failed for peru Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/peru/peru-latest.osm.pbf
+03:54:59 downloading tohoku 298 MB
+03:54:59 download failed for tohoku Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/tohoku/tohoku-latest.osm.pbf
+03:55:00 downloading freiburg-regbez 153 MB
+03:55:00 download failed for freiburg-regbez+switzerland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/freiburg-regbez/freiburg-regbez
+03:55:01 downloading czech-republic 910 MB
+03:55:01 download failed for czech-republic+karlovarsky+sachsen Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/czech-republic/czech-republic-latest.osm.pbf
+03:55:02 downloading kanto 501 MB
+03:55:02 download failed for kanto Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/kanto/kanto-latest.osm.pbf
+03:55:03 downloading nordrhein-westfalen 876 MB
+03:55:03 download failed for nordrhein-westfalen+rheinland-pfalz Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/nordrhein-westfalen/nordrhein-westfalen-latest.osm
+03:55:04 downloading baden-wuerttemberg 624 MB
+03:55:04 download failed for baden-wuerttemberg+stuttgart-regbez+unterfranken Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/baden-wuerttemberg-latest.osm.p
+03:55:04 downloading kyushu 304 MB
+03:55:05 download failed for kyushu Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/kyushu/kyushu-latest.osm.pbf
+03:55:05 downloading sweden 959 MB
+03:55:06 download failed for sweden Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/sweden/sweden-latest.osm.pbf
+03:55:06 downloading romania 318 MB
+03:55:07 download failed for romania Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/romania/romania-latest.osm.pbf
+03:55:07 downloading podkarpackie 148 MB
+03:55:08 download failed for podkarpackie+ukraine Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/podkarpackie/podkarpackie-latest.osm.pbf
+03:55:08 downloading turkmenistan 24 MB
+03:55:09 download failed for turkmenistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/turkmenistan/turkmenistan-latest.osm.pbf
+03:55:09 downloading java 858 MB
+03:55:10 download failed for java Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/indonesia/java/java-latest.osm.pbf
+03:55:10 downloading gcc-states 246 MB
+03:55:11 download failed for gcc-states Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/gcc-states/gcc-states-latest.osm.pbf
+03:55:11 downloading belize 17 MB
+03:55:12 download failed for belize Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/central-america/belize/belize-latest.osm.pbf
+03:55:12 downloading nord-est 599 MB
+03:55:13 download failed for nord-est+slovenia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/italy/nord-est/nord-est-latest.osm.pbf
+03:55:13 downloading kyrgyzstan 74 MB
+03:55:14 download failed for kyrgyzstan+uzbekistan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/kyrgyzstan/kyrgyzstan-latest.osm.pbf
+03:55:14 downloading finland 742 MB
+03:55:15 download failed for finland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/finland/finland-latest.osm.pbf
+03:55:15 downloading hessen 332 MB
+03:55:16 download failed for hessen+nordrhein-westfalen+rheinland-pfalz Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/hessen/hessen-latest.osm.pbf
+03:55:16 downloading freiburg-regbez 153 MB
+03:55:17 download failed for freiburg-regbez+switzerland+tuebingen-regbez Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/freiburg-regbez/freiburg-regbez
+03:55:17 downloading yemen 42 MB
+03:55:18 download failed for yemen Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/yemen/yemen-latest.osm.pbf
+03:55:18 downloading gelderland 187 MB
+03:55:19 download failed for gelderland+nordrhein-westfalen+utrecht Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/netherlands/gelderland/gelderland-latest.osm.pbf
+03:55:19 downloading queensland 191 MB
+03:55:20 download failed for queensland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/australia-oceania/australia/queensland/queensland-latest.osm.pbf
+03:55:20 downloading brazil 2010 MB
+03:55:21 download failed for brazil Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/south-america/brazil/brazil-latest.osm.pbf
+03:55:21 downloading podkarpackie 148 MB
+03:55:22 download failed for podkarpackie+slovakia+ukraine Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/podkarpackie/podkarpackie-latest.osm.pbf
+03:55:22 downloading alps 2232 MB
+03:55:23 download failed for alps+switzerland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/alps/alps-latest.osm.pbf
+03:55:23 downloading brandenburg 284 MB
+03:55:24 download failed for brandenburg+mecklenburg-vorpommern Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/brandenburg/brandenburg-latest.osm.pbf
+03:55:24 downloading australia 932 MB
+03:55:25 download failed for australia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/australia-oceania/australia/australia-latest.osm.pbf
+03:55:25 downloading mongolia 60 MB
+03:55:26 download failed for mongolia+siberian-fed-district Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/mongolia/mongolia-latest.osm.pbf
+03:55:26 downloading franche-comte 119 MB
+03:55:27 download failed for franche-comte+switzerland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/france/franche-comte/franche-comte-latest.osm.pbf
+03:55:27 downloading turkey 624 MB
+03:55:28 download failed for turkey Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/turkey/turkey-latest.osm.pbf
+03:55:28 downloading austria 778 MB
+03:55:29 download failed for austria+bayern Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/austria/austria-latest.osm.pbf
+03:55:29 downloading central-fed-district 846 MB
+03:55:30 download failed for central-fed-district Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/russia/central-fed-district/central-fed-district-latest.osm.pbf
+03:55:30 downloading baden-wuerttemberg 624 MB
+03:55:31 download failed for baden-wuerttemberg+hessen+unterfranken Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/baden-wuerttemberg-latest.osm.p
+03:55:31 downloading mongolia 60 MB
+03:55:32 download failed for mongolia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/mongolia/mongolia-latest.osm.pbf
+03:55:32 downloading philippines 586 MB
+03:55:33 download failed for philippines Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/philippines/philippines-latest.osm.pbf
+03:55:33 downloading baden-wuerttemberg 624 MB
+03:55:34 download failed for baden-wuerttemberg Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/baden-wuerttemberg-latest.osm.p
+03:55:34 downloading switzerland 526 MB
+03:55:35 download failed for switzerland+tuebingen-regbez Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/switzerland/switzerland-latest.osm.pbf
+03:55:35 downloading bayern 819 MB
+03:55:36 download failed for bayern+stuttgart-regbez Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/bayern/bayern-latest.osm.pbf
+03:55:36 downloading senegal-and-gambia 101 MB
+03:55:37 download failed for senegal-and-gambia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/senegal-and-gambia/senegal-and-gambia-latest.osm.pbf
+03:55:37 downloading iran 219 MB
+03:55:38 download failed for iran Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/iran/iran-latest.osm.pbf
+03:55:38 downloading alps 2232 MB
+03:55:39 download failed for alps+franche-comte+switzerland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/alps/alps-latest.osm.pbf
+03:55:39 downloading podkarpackie 148 MB
+03:55:40 download failed for podkarpackie+slovakia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/podkarpackie/podkarpackie-latest.osm.pbf
+03:55:40 downloading japan 2460 MB
+03:55:41 download failed for japan Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/japan-latest.osm.pbf
+03:55:41 downloading podkarpackie 148 MB
+03:55:42 download failed for podkarpackie+poland+slovakia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/poland/podkarpackie/podkarpackie-latest.osm.pbf
+03:55:42 downloading bosnia-herzegovina 155 MB
+03:55:43 download failed for bosnia-herzegovina+croatia+montenegro Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/bosnia-herzegovina/bosnia-herzegovina-latest.osm.pbf
+03:55:43 downloading central-america 758 MB
+03:56:39 == central-america: 13 rides in 1 boxes
