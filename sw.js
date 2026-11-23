@@ -5,7 +5,7 @@
 /* r34 audit CS-R34-008: every release cache is named curvescout-app-<build>, and cleanup recognises exactly that family
    (plus the two older namings) - a later release can never leave this one behind, and code is only ever read from the
    current release's own cache (no global caches.match that could hand out an old app.js). */
-const V = 'curvescout-app-r83-20261123';
+const V = 'curvescout-app-r84-20261123';
 const OWN_RELEASE = k => /^curvescout-app-[\w.-]+$/.test(k) || /^curvescout-[0-9a-f]{6,}$/.test(k) || /^curvescout-r\d+-\d{8}$/.test(k);
 const fromV = (req) => caches.open(V).then(c => c.match(req));
 /* ---- AN UPDATE MUST NOT TAKE A RIDER'S ROUTES ----
@@ -178,6 +178,7 @@ self.addEventListener('fetch', e => {
       /* cache: 'no-cache' asks the server whether the file changed - GitHub Pages lets browsers keep files 10 minutes,
          which paired a new page with the old app.js */
       fetch(req, { cache: 'no-cache' }).then(res => {
+        if (res && res.status >= 500) { fromCache().then(h => { if (!done) { done = true; clearTimeout(t); resolve(h || res); } }); return; }   /* r84: a passing server error never replaces the working app */
         if (res && res.ok && res.type === 'basic') { const copy = res.clone(); caches.open(V).then(c => c.put(req, copy)); }
         if (!done) { done = true; clearTimeout(t); resolve(res); }
       }).catch(() => fromCache().then(h => { if (!done) { done = true; clearTimeout(t); resolve(h || Response.error()); } }));
