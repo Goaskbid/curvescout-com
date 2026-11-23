@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-23T08:12:05.396Z",
+ "updated": "2026-11-23T18:37:07.036Z",
  "feed": "ok",
  "providers": 1,
  "providersFailed": 0,
- "records": 140,
- "checked": "2026-11-23T08:12Z",
+ "records": 144,
+ "checked": "2026-11-23T18:37Z",
  "validFor": "6h",
  "sources": [
   {
@@ -34,9 +34,18 @@
    "version": "1",
    "km": 16
   },
-  "fluela pass": {
+  "passo gardena": {
    "status": "restricted",
-   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Schneebedeckt: Ofenpass, Flüelapass, Forcola di Livigno und Bernina. Wintersperre: Umbrailpass.&#xA;Forcola-di-Livigno-Strasse: Wintersperre zwischen La Motta und dem Pass ab Freitag, 27.11",
+   "text": "Allgemeine Verkehrsbehinderung Baustelle Zwischen Waidbruck und Pontives (km 4,300 - km 4,600) Einbahnregelung von 08:00 bis 17:00 Uhr wegen Arbeiten.",
+   "since": "2026-11-22T23:00:00.000Z",
+   "until": "2026-11-27T00:00:00.000Z",
+   "id": "058d5c85-5ddc-5f38-9a8a-9962fd42a229",
+   "version": "1",
+   "km": 17.9
+  },
+  "fluela pass": {
+   "status": "closed",
+   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Schneebedeckt: Ofenpass,  Forcola di Livigno und Bernina. Wintersperre: Umbrailpass. GESPERRT: Flüelapass.&#xA;Forcola-di-Livigno-Strasse: Wintersperre zwischen La Motta und dem Pass ab Fre",
    "since": "2025-03-11T23:00:00.000Z",
    "until": "",
    "id": "85916b99-fccc-5513-b212-00b78c04473c",
