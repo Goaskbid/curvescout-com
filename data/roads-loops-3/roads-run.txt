@@ -1,300 +1,300 @@
-21:53:05 == 12/218 castilla-la-mancha+madrid 8 rides
-21:53:08 downloading castilla-la-mancha 103 MB
-21:53:17 downloading madrid 82 MB
-21:53:26 merging castilla-la-mancha+madrid
-21:53:35 osrm-extract
-21:54:19 osrm-partition
-21:54:26 osrm-customize
-21:54:30 castilla-la-mancha+madrid done: 8 roads, 0 refused · catalogue now 11295 roads
-21:54:31 saved on disk - committed and pushed with the next 2-hourly push
-21:54:31 saved on disk - committed and pushed with the next 2-hourly push
-21:54:31 == 13/218 croatia+montenegro 7 rides
-21:54:33 downloading croatia 193 MB
-21:54:50 downloading montenegro 33 MB
-21:54:55 merging croatia+montenegro
-21:55:05 osrm-extract
-21:55:52 osrm-partition
-21:56:00 osrm-customize
-21:56:05 croatia+montenegro done: 7 roads, 0 refused · catalogue now 11302 roads
-21:56:05 saved on disk - committed and pushed with the next 2-hourly push
-21:56:06 saved on disk - committed and pushed with the next 2-hourly push
-21:56:06 == 14/218 central-zone+northern-zone 7 rides
-21:56:08 downloading central-zone 336 MB
-21:56:35 downloading northern-zone 215 MB
-21:57:10 merging central-zone+northern-zone
-21:57:38 osrm-extract
-22:02:41 osrm-partition
-22:06:48 osrm-customize
-22:08:11 central-zone+northern-zone done: 7 roads, 0 refused · catalogue now 11309 roads
-22:08:12 saved on disk - committed and pushed with the next 2-hourly push
-22:08:13 saved on disk - committed and pushed with the next 2-hourly push
-22:08:13 == 15/218 us/colorado+us/new-mexico 7 rides
-22:08:15 downloading us/colorado 371 MB
-22:09:03 downloading us/new-mexico 131 MB
-22:09:18 merging us/colorado+us/new-mexico
-22:09:43 osrm-extract
-22:11:55 osrm-partition
-22:12:37 osrm-customize
-22:12:58 us/colorado+us/new-mexico done: 7 roads, 0 refused · catalogue now 11316 roads
-22:12:58 saved on disk - committed and pushed with the next 2-hourly push
-22:12:59 saved on disk - committed and pushed with the next 2-hourly push
-22:12:59 == 16/218 groningen+niedersachsen 7 rides
-22:13:01 downloading groningen 54 MB
-22:13:07 downloading niedersachsen 487 MB
-22:13:44 merging groningen+niedersachsen
-22:14:10 osrm-extract
-22:15:45 osrm-partition
-22:16:09 osrm-customize
-22:16:19 groningen+niedersachsen done: 5 roads, 2 refused · catalogue now 11321 roads
-22:16:20 saved on disk - committed and pushed with the next 2-hourly push
-22:16:20 saved on disk - committed and pushed with the next 2-hourly push
-22:16:20 == 17/218 alsace+lorraine 7 rides
-22:16:22 downloading alsace 126 MB
-22:16:34 downloading lorraine 164 MB
-22:16:48 merging alsace+lorraine
-22:17:02 osrm-extract
-22:17:49 osrm-partition
-22:17:57 osrm-customize
-22:18:02 alsace+lorraine done: 7 roads, 0 refused · catalogue now 11328 roads
-22:18:02 saved on disk - committed and pushed with the next 2-hourly push
-22:18:03 saved on disk - committed and pushed with the next 2-hourly push
-22:18:03 == 18/218 centre+ile-de-france 6 rides
-22:18:05 downloading centre 235 MB
-22:18:31 downloading ile-de-france 325 MB
-22:18:58 merging centre+ile-de-france
-22:19:25 osrm-extract
-22:20:59 osrm-partition
-22:21:23 osrm-customize
-22:21:33 centre+ile-de-france done: 6 roads, 0 refused · catalogue now 11334 roads
-22:21:33 saved on disk - committed and pushed with the next 2-hourly push
-22:21:34 saved on disk - committed and pushed with the next 2-hourly push
-22:21:34 == 19/218 latvia+lithuania 6 rides
-22:21:37 downloading latvia 135 MB
-22:21:56 downloading lithuania 214 MB
-22:22:34 merging latvia+lithuania
-22:22:51 osrm-extract
-22:23:57 osrm-partition
-22:24:12 osrm-customize
-22:24:20 latvia+lithuania done: 6 roads, 0 refused · catalogue now 11340 roads
-22:24:21 saved on disk - committed and pushed with the next 2-hourly push
-22:24:21 saved on disk - committed and pushed with the next 2-hourly push
-22:24:21 == 20/218 croatia+slovenia 6 rides
-22:24:23 downloading croatia 193 MB
-22:24:39 downloading slovenia 300 MB
-22:25:03 merging croatia+slovenia
-22:25:26 osrm-extract
-22:26:49 osrm-partition
-22:27:02 osrm-customize
-22:27:08 croatia+slovenia done: 6 roads, 0 refused · catalogue now 11346 roads
-22:27:09 saved on disk - committed and pushed with the next 2-hourly push
-22:27:09 saved on disk - committed and pushed with the next 2-hourly push
-22:27:09 == 21/218 brandenburg+sachsen-anhalt 6 rides
-22:27:11 downloading brandenburg 284 MB
-22:28:23 downloading sachsen-anhalt 169 MB
-22:29:04 merging brandenburg+sachsen-anhalt
-22:29:26 osrm-extract
-22:30:42 osrm-partition
-22:30:58 osrm-customize
-22:31:06 brandenburg+sachsen-anhalt done: 6 roads, 0 refused · catalogue now 11352 roads
-22:31:06 saved on disk - committed and pushed with the next 2-hourly push
-22:31:07 saved on disk - committed and pushed with the next 2-hourly push
-22:31:07 == 22/218 kent+nord-pas-de-calais 6 rides
-22:31:09 downloading kent 52 MB
-22:31:25 downloading nord-pas-de-calais 231 MB
-22:32:42 merging kent+nord-pas-de-calais
-22:32:56 osrm-extract
-22:33:47 osrm-partition
-22:33:57 osrm-customize
-22:34:03 kent+nord-pas-de-calais done: 6 roads, 0 refused · catalogue now 11358 roads
-22:34:04 saved on disk - committed and pushed with the next 2-hourly push
-22:34:04 saved on disk - committed and pushed with the next 2-hourly push
-22:34:04 == 23/218 argentina+uruguay 6 rides
-22:34:06 downloading argentina 416 MB
-22:35:42 downloading uruguay 54 MB
-22:35:56 merging argentina+uruguay
-22:36:19 osrm-extract
-22:38:49 osrm-partition
-22:39:55 osrm-customize
-22:40:49 argentina+uruguay done: 2 roads, 4 refused · catalogue now 11360 roads
-22:40:50 saved on disk - committed and pushed with the next 2-hourly push
-22:40:50 saved on disk - committed and pushed with the next 2-hourly push
-22:40:50 == 24/218 mittelfranken+niederbayern 6 rides
-22:40:53 downloading mittelfranken 92 MB
-22:41:01 downloading niederbayern 91 MB
-22:41:09 merging mittelfranken+niederbayern
-22:41:18 osrm-extract
-22:41:51 osrm-partition
-22:41:57 osrm-customize
-22:42:02 mittelfranken+niederbayern done: 0 roads, 6 refused · catalogue now 11360 roads
-22:42:02 saved on disk - committed and pushed with the next 2-hourly push
-22:42:03 saved on disk - committed and pushed with the next 2-hourly push
-22:42:03 == 25/218 kosovo+serbia 6 rides
-22:42:05 downloading kosovo 29 MB
-22:42:09 downloading serbia 231 MB
-22:42:28 merging kosovo+serbia
-22:42:41 osrm-extract
-22:43:42 osrm-partition
-22:43:54 osrm-customize
-22:44:00 kosovo+serbia done: 6 roads, 0 refused · catalogue now 11366 roads
-22:44:00 saved on disk - committed and pushed with the next 2-hourly push
-22:44:01 saved on disk - committed and pushed with the next 2-hourly push
-22:44:01 == 26/218 dorset+wiltshire 5 rides
-22:44:03 downloading dorset 29 MB
-22:44:09 downloading wiltshire 33 MB
-22:44:13 merging dorset+wiltshire
-22:44:17 osrm-extract
-22:44:31 osrm-partition
-22:44:34 osrm-customize
-22:44:37 dorset+wiltshire done: 5 roads, 0 refused · catalogue now 11371 roads
-22:44:37 saved on disk - committed and pushed with the next 2-hourly push
-22:44:38 saved on disk - committed and pushed with the next 2-hourly push
-22:44:38 == 27/218 somerset+wiltshire 5 rides
-22:44:40 downloading somerset 48 MB
-22:44:46 downloading wiltshire 33 MB
-22:44:52 merging somerset+wiltshire
-22:44:56 osrm-extract
-22:45:14 osrm-partition
-22:45:18 osrm-customize
-22:45:21 somerset+wiltshire done: 5 roads, 0 refused · catalogue now 11376 roads
-22:45:22 saved on disk - committed and pushed with the next 2-hourly push
-22:45:23 saved on disk - committed and pushed with the next 2-hourly push
-22:45:23 == 28/218 drenthe+friesland 5 rides
-22:45:25 downloading drenthe 61 MB
-22:45:33 downloading friesland 85 MB
-22:45:43 merging drenthe+friesland
-22:45:50 osrm-extract
-22:46:11 osrm-partition
-22:46:13 osrm-customize
-22:46:17 drenthe+friesland done: 5 roads, 0 refused · catalogue now 11381 roads
-22:46:17 saved on disk - committed and pushed with the next 2-hourly push
-22:46:18 saved on disk - committed and pushed with the next 2-hourly push
-22:46:18 == 29/218 albania+macedonia 5 rides
-22:46:20 downloading albania 52 MB
-22:46:26 downloading macedonia 29 MB
-22:46:30 merging albania+macedonia
-22:46:34 osrm-extract
-22:46:58 osrm-partition
-22:47:02 osrm-customize
-22:47:05 albania+macedonia done: 5 roads, 0 refused · catalogue now 11386 roads
-22:47:06 saved on disk - committed and pushed with the next 2-hourly push
-22:47:07 saved on disk - committed and pushed with the next 2-hourly push
-22:47:07 == 30/218 cumbria+scotland 5 rides
-22:47:09 downloading cumbria 44 MB
-22:47:19 downloading scotland 315 MB
-22:47:44 merging cumbria+scotland
-22:48:02 osrm-extract
-22:49:15 osrm-partition
-22:49:34 osrm-customize
-22:49:41 cumbria+scotland done: 5 roads, 0 refused · catalogue now 11391 roads
-22:49:41 saved on disk - committed and pushed with the next 2-hourly push
-22:49:42 saved on disk - committed and pushed with the next 2-hourly push
-22:49:42 == 31/218 alberta+us/montana 4 rides
-22:49:44 downloading alberta 336 MB
-22:50:11 downloading us/montana 97 MB
-22:50:20 merging alberta+us/montana
-22:50:40 osrm-extract
-22:52:10 osrm-partition
-22:52:35 osrm-customize
-22:52:50 alberta+us/montana done: 4 roads, 0 refused · catalogue now 11395 roads
-22:52:51 saved on disk - committed and pushed with the next 2-hourly push
-22:52:51 saved on disk - committed and pushed with the next 2-hourly push
-22:52:51 == 32/218 castilla-y-leon+la-rioja 4 rides
-22:52:54 downloading castilla-y-leon 171 MB
-22:53:45 downloading la-rioja 14 MB
-22:53:50 merging castilla-y-leon+la-rioja
-22:53:59 osrm-extract
-22:54:45 osrm-partition
-22:54:52 osrm-customize
-22:54:56 castilla-y-leon+la-rioja done: 4 roads, 0 refused · catalogue now 11399 roads
-22:54:57 saved on disk - committed and pushed with the next 2-hourly push
-22:54:58 saved on disk - committed and pushed with the next 2-hourly push
-22:54:58 == 33/218 gelderland+utrecht 4 rides
-22:55:00 downloading gelderland 187 MB
-22:55:20 downloading utrecht 95 MB
-22:55:29 merging gelderland+utrecht
-22:55:43 osrm-extract
-22:56:21 osrm-partition
-22:56:26 osrm-customize
-22:56:30 gelderland+utrecht done: 4 roads, 0 refused · catalogue now 11403 roads
-22:56:31 saved on disk - committed and pushed with the next 2-hourly push
-22:56:32 saved on disk - committed and pushed with the next 2-hourly push
-22:56:32 == 34/218 durham+tyne-and-wear 4 rides
-22:56:34 downloading durham 23 MB
-22:56:38 downloading tyne-and-wear 19 MB
-22:56:42 merging durham+tyne-and-wear
-22:56:44 osrm-extract
-22:56:56 osrm-partition
-22:56:59 osrm-customize
-22:57:03 durham+tyne-and-wear done: 4 roads, 0 refused · catalogue now 11407 roads
-22:57:03 saved on disk - committed and pushed with the next 2-hourly push
-22:57:04 saved on disk - committed and pushed with the next 2-hourly push
-22:57:04 == 35/218 denmark+mecklenburg-vorpommern 4 rides
-22:57:06 downloading denmark 475 MB
-22:57:43 downloading mecklenburg-vorpommern 123 MB
-22:57:54 merging denmark+mecklenburg-vorpommern
-22:58:24 osrm-extract
-23:00:34 osrm-partition
-23:01:20 osrm-customize
-23:01:33 denmark+mecklenburg-vorpommern done: 4 roads, 0 refused · catalogue now 11411 roads
-23:01:34 saved on disk - committed and pushed with the next 2-hourly push
-23:01:35 saved on disk - committed and pushed with the next 2-hourly push
-23:01:35 == 36/218 albania+kosovo 4 rides
-23:01:37 downloading albania 52 MB
-23:01:50 downloading kosovo 29 MB
-23:01:54 merging albania+kosovo
-23:01:58 osrm-extract
-23:02:24 osrm-partition
-23:02:30 osrm-customize
-23:02:34 albania+kosovo done: 0 roads, 4 refused · catalogue now 11411 roads
-23:02:35 saved on disk - committed and pushed with the next 2-hourly push
-23:02:36 saved on disk - committed and pushed with the next 2-hourly push
-23:02:36 == 37/218 merseyside+wales 4 rides
-23:02:38 downloading merseyside 24 MB
-23:02:43 downloading wales 145 MB
-23:02:55 merging merseyside+wales
-23:03:04 osrm-extract
-23:03:40 osrm-partition
-23:03:49 osrm-customize
-23:03:54 merseyside+wales done: 0 roads, 4 refused · catalogue now 11411 roads
-23:03:54 saved on disk - committed and pushed with the next 2-hourly push
-23:03:55 saved on disk - committed and pushed with the next 2-hourly push
-23:03:55 == 38/218 malopolskie+podkarpackie 4 rides
-23:03:57 downloading malopolskie 195 MB
-23:04:39 downloading podkarpackie 148 MB
-23:05:00 merging malopolskie+podkarpackie
-23:05:18 osrm-extract
-23:06:27 osrm-partition
-23:06:43 osrm-customize
-23:06:50 malopolskie+podkarpackie done: 4 roads, 0 refused · catalogue now 11415 roads
-23:06:50 saved on disk - committed and pushed with the next 2-hourly push
-23:06:52 saved on disk - committed and pushed with the next 2-hourly push
-23:06:52 == 39/218 oberbayern+tuebingen-regbez 4 rides
-23:06:54 downloading oberbayern 249 MB
-23:07:33 downloading tuebingen-regbez 123 MB
-23:08:03 merging oberbayern+tuebingen-regbez
-23:08:21 osrm-extract
-23:09:44 osrm-partition
-23:10:07 osrm-customize
-23:10:16 oberbayern+tuebingen-regbez done: 0 roads, 4 refused · catalogue now 11415 roads
-23:10:16 saved on disk - committed and pushed with the next 2-hourly push
-23:10:17 saved on disk - committed and pushed with the next 2-hourly push
-23:10:17 == 40/218 norcal+socal 3 rides
-23:10:18 norcal is 626 MB - its rides go to its sub-regions
-23:10:20 saved on disk - committed and pushed with the next 2-hourly push
-23:10:20 == 41/219 lesotho+south-africa 3 rides
-23:10:22 downloading lesotho 122 MB
-23:11:14 downloading south-africa 405 MB
-23:11:48 merging lesotho+south-africa
-23:12:17 osrm-extract
-23:15:41 osrm-partition
-23:17:15 osrm-customize
-23:17:45 lesotho+south-africa done: 0 roads, 3 refused · catalogue now 11415 roads
-23:17:46 saved on disk - committed and pushed with the next 2-hourly push
-23:17:47 saved on disk - committed and pushed with the next 2-hourly push
-23:17:47 == 42/219 bourgogne+franche-comte 3 rides
-23:17:49 downloading bourgogne 192 MB
-23:19:04 downloading franche-comte 119 MB
-23:19:46 merging bourgogne+franche-comte
-23:20:02 osrm-extract
-23:20:59 osrm-partition
-23:21:10 osrm-customize
+23:39:22 downloading niedersachsen 487 MB
+23:39:59 downloading thueringen 153 MB
+23:40:16 merging niedersachsen+thueringen
+23:40:47 osrm-extract
+23:42:46 osrm-partition
+23:43:24 osrm-customize
+23:43:36 niedersachsen+thueringen done: 3 roads, 0 refused · catalogue now 11443 roads
+23:43:36 saved on disk - committed and pushed with the next 2-hourly push
+23:43:37 saved on disk - committed and pushed with the next 2-hourly push
+23:43:37 == 52/219 thueringen+unterfranken 3 rides
+23:43:39 downloading thueringen 153 MB
+23:44:13 downloading unterfranken 100 MB
+23:44:31 merging thueringen+unterfranken
+23:44:43 osrm-extract
+23:45:27 osrm-partition
+23:45:34 osrm-customize
+23:45:39 thueringen+unterfranken done: 3 roads, 0 refused · catalogue now 11446 roads
+23:45:40 saved on disk - committed and pushed with the next 2-hourly push
+23:45:41 saved on disk - committed and pushed with the next 2-hourly push
+23:45:41 == 53/219 niedersachsen+sachsen-anhalt 3 rides
+23:45:43 niedersachsen+sachsen-anhalt together are too large for this machine - left to the live router
+23:45:45 saved on disk - committed and pushed with the next 2-hourly push
+23:45:45 == 54/219 iran+iraq 3 rides
+23:45:47 downloading iran 219 MB
+23:46:07 downloading iraq 88 MB
+23:46:19 merging iran+iraq
+23:46:34 osrm-extract
+23:49:33 osrm-partition
+23:51:40 osrm-customize
+23:52:17 iran+iraq done: 3 roads, 0 refused · catalogue now 11449 roads
+23:52:18 saved on disk - committed and pushed with the next 2-hourly push
+23:52:19 saved on disk - committed and pushed with the next 2-hourly push
+23:52:19 == 55/219 ostlandet+vestlandet 2 rides
+23:52:22 ostlandet+vestlandet together are too large for this machine - left to the live router
+23:52:24 saved on disk - committed and pushed with the next 2-hourly push
+23:52:24 == 56/219 flevoland+friesland 2 rides
+23:52:26 downloading flevoland 35 MB
+23:52:30 downloading friesland 85 MB
+23:52:40 merging flevoland+friesland
+23:52:46 osrm-extract
+23:53:02 osrm-partition
+23:53:04 osrm-customize
+23:53:07 flevoland+friesland done: 2 roads, 0 refused · catalogue now 11451 roads
+23:53:07 saved on disk - committed and pushed with the next 2-hourly push
+23:53:08 saved on disk - committed and pushed with the next 2-hourly push
+23:53:08 == 57/219 anhui+henan 2 rides
+00:03:08 downloading anhui 
+00:03:33 router failed for anhui+henan Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/anhui/anhui-latest.osm.pbf
+00:03:35 saved on disk - committed and pushed with the next 2-hourly push
+00:03:35 == 58/219 gelderland+noord-holland 2 rides
+00:03:37 downloading gelderland 187 MB
+00:04:52 downloading noord-holland 182 MB
+00:06:21 merging gelderland+noord-holland
+00:06:40 osrm-extract
+00:07:32 osrm-partition
+00:07:39 osrm-customize
+00:07:44 gelderland+noord-holland done: 0 roads, 2 refused · catalogue now 11451 roads
+00:07:45 saved on disk - committed and pushed with the next 2-hourly push
+00:07:46 saved on disk - committed and pushed with the next 2-hourly push
+00:07:46 == 59/219 drenthe+groningen 2 rides
+00:07:48 downloading drenthe 61 MB
+00:08:14 downloading groningen 54 MB
+00:08:34 merging drenthe+groningen
+00:08:40 osrm-extract
+00:08:56 osrm-partition
+00:08:58 osrm-customize
+00:09:01 drenthe+groningen done: 2 roads, 0 refused · catalogue now 11453 roads
+00:09:01 saved on disk - committed and pushed with the next 2-hourly push
+00:09:03 saved on disk - committed and pushed with the next 2-hourly push
+00:09:03 == 60/219 pardubicky+stredocesky 2 rides
+00:09:05 downloading pardubicky 53 MB
+00:09:28 downloading stredocesky 174 MB
+00:10:24 merging pardubicky+stredocesky
+00:10:36 osrm-extract
+00:11:12 osrm-partition
+00:11:19 osrm-customize
+00:11:23 pardubicky+stredocesky done: 2 roads, 0 refused · catalogue now 11455 roads
+00:11:24 saved on disk - committed and pushed with the next 2-hourly push
+00:11:25 saved on disk - committed and pushed with the next 2-hourly push
+00:11:25 == 61/219 alberta+kootenay-admreg 2 rides
+00:11:27 downloading alberta 336 MB
+00:13:38 downloading kootenay-admreg 61 MB
+00:14:06 merging alberta+kootenay-admreg
+00:14:23 osrm-extract
+00:15:34 osrm-partition
+00:15:51 osrm-customize
+00:16:02 alberta+kootenay-admreg done: 0 roads, 2 refused · catalogue now 11455 roads
+00:16:03 saved on disk - committed and pushed with the next 2-hourly push
+00:16:04 saved on disk - committed and pushed with the next 2-hourly push
+00:16:04 == 62/219 estonia+latvia 2 rides
+00:16:06 downloading estonia 119 MB
+00:16:34 downloading latvia 135 MB
+00:17:00 merging estonia+latvia
+00:17:13 osrm-extract
+00:18:07 osrm-partition
+00:18:20 osrm-customize
+00:18:27 estonia+latvia done: 0 roads, 2 refused · catalogue now 11455 roads
+00:18:28 saved on disk - committed and pushed with the next 2-hourly push
+00:18:29 saved on disk - committed and pushed with the next 2-hourly push
+00:18:29 == 63/219 hamburg+schleswig-holstein 2 rides
+00:18:31 downloading hamburg 52 MB
+00:18:58 downloading schleswig-holstein 152 MB
+00:19:26 merging hamburg+schleswig-holstein
+00:19:36 osrm-extract
+00:20:18 osrm-partition
+00:20:31 osrm-customize
+00:20:36 hamburg+schleswig-holstein done: 2 roads, 0 refused · catalogue now 11457 roads
+00:20:37 saved on disk - committed and pushed with the next 2-hourly push
+00:20:38 saved on disk - committed and pushed with the next 2-hourly push
+00:20:38 == 64/219 sachsen+sachsen-anhalt 2 rides
+00:20:40 downloading sachsen 258 MB
+00:21:34 downloading sachsen-anhalt 169 MB
+00:22:12 merging sachsen+sachsen-anhalt
+00:22:33 osrm-extract
+00:23:51 osrm-partition
+00:24:09 osrm-customize
+00:24:17 sachsen+sachsen-anhalt done: 2 roads, 0 refused · catalogue now 11459 roads
+00:24:17 saved on disk - committed and pushed with the next 2-hourly push
+00:24:18 saved on disk - committed and pushed with the next 2-hourly push
+00:24:18 == 65/219 laos+thailand 2 rides
+00:24:28 downloading laos 
+00:24:28 router failed for laos+thailand Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/laos/laos-latest.osm.pbf
+00:24:31 saved on disk - committed and pushed with the next 2-hourly push
+00:24:31 == 66/219 kaliningrad+lithuania 2 rides
+00:24:33 downloading kaliningrad 
+00:24:33 router failed for kaliningrad+lithuania Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/russia/kaliningrad/kaliningrad-latest.osm.pbf
+00:24:36 saved on disk - committed and pushed with the next 2-hourly push
+00:24:36 == 67/219 andalucia+morocco 2 rides
+00:24:38 downloading andalucia 189 MB
+00:25:05 downloading morocco 233 MB
+00:25:51 merging andalucia+morocco
+00:26:11 osrm-extract
+00:28:16 osrm-partition
+00:28:51 osrm-customize
+00:29:08 andalucia+morocco done: 2 roads, 0 refused · catalogue now 11461 roads
+00:29:09 saved on disk - committed and pushed with the next 2-hourly push
+00:29:10 saved on disk - committed and pushed with the next 2-hourly push
+00:29:10 == 68/219 north-yorkshire+west-yorkshire 2 rides
+00:29:12 downloading north-yorkshire 59 MB
+00:29:21 downloading west-yorkshire 52 MB
+00:29:30 merging north-yorkshire+west-yorkshire
+00:29:35 osrm-extract
+00:29:58 osrm-partition
+00:30:03 osrm-customize
+00:30:08 north-yorkshire+west-yorkshire done: 2 roads, 0 refused · catalogue now 11463 roads
+00:30:08 saved on disk - committed and pushed with the next 2-hourly push
+00:30:09 saved on disk - committed and pushed with the next 2-hourly push
+00:30:09 == 69/219 us/kentucky+us/tennessee 2 rides
+00:30:12 downloading us/kentucky 
+00:30:12 router failed for us/kentucky+us/tennessee Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/us/kentucky/kentucky-latest.osm.pbf
+00:30:14 saved on disk - committed and pushed with the next 2-hourly push
+00:30:14 == 70/219 us/montana+us/wyoming 2 rides
+00:30:17 downloading us/montana 
+00:30:17 router failed for us/montana+us/wyoming Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/us/montana/montana-latest.osm.pbf
+00:30:19 saved on disk - committed and pushed with the next 2-hourly push
+00:30:19 == 71/219 vietnam+yunnan 2 rides
+00:30:22 downloading vietnam 
+00:30:23 router failed for vietnam+yunnan Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/vietnam/vietnam-latest.osm.pbf
+00:30:25 saved on disk - committed and pushed with the next 2-hourly push
+00:30:25 == 72/219 cantabria+castilla-y-leon 2 rides
+00:30:27 downloading cantabria 34 MB
+00:30:38 downloading castilla-y-leon 171 MB
+00:31:05 merging cantabria+castilla-y-leon
+00:31:15 osrm-extract
+00:32:02 osrm-partition
+00:32:08 osrm-customize
+00:32:13 cantabria+castilla-y-leon done: 2 roads, 0 refused · catalogue now 11465 roads
+00:32:14 saved on disk - committed and pushed with the next 2-hourly push
+00:32:15 saved on disk - committed and pushed with the next 2-hourly push
+00:32:15 == 73/219 andorra+languedoc-roussillon 2 rides
+00:32:17 downloading andorra 3 MB
+00:32:19 downloading languedoc-roussillon 259 MB
+00:33:24 merging andorra+languedoc-roussillon
+00:33:37 osrm-extract
+00:34:24 osrm-partition
+00:34:31 osrm-customize
+00:34:36 andorra+languedoc-roussillon done: 2 roads, 0 refused · catalogue now 11467 roads
+00:34:37 saved on disk - committed and pushed with the next 2-hourly push
+00:34:38 saved on disk - committed and pushed with the next 2-hourly push
+00:34:38 == 74/219 mittelfranken+tuebingen-regbez 2 rides
+00:34:40 downloading mittelfranken 92 MB
+00:34:58 downloading tuebingen-regbez 123 MB
+00:35:22 merging mittelfranken+tuebingen-regbez
+00:35:32 osrm-extract
+00:36:11 osrm-partition
+00:36:17 osrm-customize
+00:36:23 mittelfranken+tuebingen-regbez done: 0 roads, 2 refused · catalogue now 11467 roads
+00:36:23 saved on disk - committed and pushed with the next 2-hourly push
+00:36:25 saved on disk - committed and pushed with the next 2-hourly push
+00:36:25 == 75/219 asturias+galicia 2 rides
+00:36:27 downloading asturias 35 MB
+00:36:33 downloading galicia 107 MB
+00:36:43 merging asturias+galicia
+00:36:50 osrm-extract
+00:37:26 osrm-partition
+00:37:35 osrm-customize
+00:37:41 asturias+galicia done: 2 roads, 0 refused · catalogue now 11469 roads
+00:37:41 saved on disk - committed and pushed with the next 2-hourly push
+00:37:42 saved on disk - committed and pushed with the next 2-hourly push
+00:37:42 == 76/219 mecklenburg-vorpommern+schleswig-holstein 2 rides
+00:37:45 downloading mecklenburg-vorpommern 123 MB
+00:37:57 downloading schleswig-holstein 152 MB
+00:38:12 merging mecklenburg-vorpommern+schleswig-holstein
+00:38:25 osrm-extract
+00:39:14 osrm-partition
+00:39:26 osrm-customize
+00:39:32 mecklenburg-vorpommern+schleswig-holstein done: 2 roads, 0 refused · catalogue now 11471 roads
+00:39:33 saved on disk - committed and pushed with the next 2-hourly push
+00:39:34 saved on disk - committed and pushed with the next 2-hourly push
+00:39:34 == 77/219 alsace+karlsruhe-regbez 2 rides
+00:39:36 downloading alsace 126 MB
+00:39:47 downloading karlsruhe-regbez 148 MB
+00:40:00 merging alsace+karlsruhe-regbez
+00:40:13 osrm-extract
+00:41:01 osrm-partition
+00:41:09 osrm-customize
+00:41:14 alsace+karlsruhe-regbez done: 2 roads, 0 refused · catalogue now 11473 roads
+00:41:15 saved on disk - committed and pushed with the next 2-hourly push
+00:41:16 saved on disk - committed and pushed with the next 2-hourly push
+00:41:16 == 78/219 bulgaria+romania 2 rides
+00:41:49 downloading bulgaria 170 MB
+00:42:03 downloading romania 
+00:42:25 router failed for bulgaria+romania Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p1.osm.pbf https://download.geofabrik.de/europe/romania/romania-latest.osm.pbf
+00:42:27 saved on disk - committed and pushed with the next 2-hourly push
+00:42:27 == 79/219 us/tennessee+us/virginia 1 rides
+00:43:12 downloading us/tennessee 
+00:43:16 router failed for us/tennessee+us/virginia Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/us/tennessee/tennessee-latest.osm.pbf
+00:43:18 saved on disk - committed and pushed with the next 2-hourly push
+00:43:18 == 80/219 northwest-territories+yukon 1 rides
+00:43:25 downloading northwest-territories 
+00:43:26 router failed for northwest-territories+yukon Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/north-america/canada/northwest-territories/northwest-territories-latest.osm.pbf
+00:43:28 saved on disk - committed and pushed with the next 2-hourly push
+00:43:28 == 81/219 kyrgyzstan+tajikistan 1 rides
+00:43:36 downloading kyrgyzstan 
+00:43:39 router failed for kyrgyzstan+tajikistan Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/kyrgyzstan/kyrgyzstan-latest.osm.pbf
+00:43:41 saved on disk - committed and pushed with the next 2-hourly push
+00:43:41 == 82/219 chugoku+kyushu 1 rides
+00:43:45 downloading chugoku 
+00:43:46 router failed for chugoku+kyushu Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/chugoku/chugoku-latest.osm.pbf
+00:43:48 saved on disk - committed and pushed with the next 2-hourly push
+00:43:48 == 83/219 jihomoravsky+olomoucky 1 rides
+00:43:51 downloading jihomoravsky 88 MB
+00:43:59 downloading olomoucky 56 MB
+00:44:05 merging jihomoravsky+olomoucky
+00:44:12 osrm-extract
+00:44:32 osrm-partition
+00:44:34 osrm-customize
+00:44:38 jihomoravsky+olomoucky done: 1 roads, 0 refused · catalogue now 11474 roads
+00:44:38 saved on disk - committed and pushed with the next 2-hourly push
+00:44:39 saved on disk - committed and pushed with the next 2-hourly push
+00:44:39 == 84/219 jiangxi+zhejiang 1 rides
+00:44:59 downloading jiangxi 
+00:45:04 router failed for jiangxi+zhejiang Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/jiangxi/jiangxi-latest.osm.pbf
+00:45:06 saved on disk - committed and pushed with the next 2-hourly push
+00:45:06 == 85/219 benin+burkina-faso 1 rides
+00:45:39 downloading benin 
+00:45:50 router failed for benin+burkina-faso Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/africa/benin/benin-latest.osm.pbf
+00:45:52 saved on disk - committed and pushed with the next 2-hourly push
+00:45:52 == 86/219 anhui+jiangsu 1 rides
+00:45:58 downloading anhui 
+00:45:59 router failed for anhui+jiangsu Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/china/anhui/anhui-latest.osm.pbf
+00:46:01 saved on disk - committed and pushed with the next 2-hourly push
+00:46:01 == 87/219 isole+sud 1 rides
+00:46:03 downloading isole 207 MB
+00:46:20 downloading sud 404 MB
+00:47:11 merging isole+sud
+00:47:42 osrm-extract
+00:50:27 osrm-partition
+00:51:16 osrm-customize
+00:51:34 isole+sud done: 1 roads, 0 refused · catalogue now 11475 roads
+00:51:35 saved on disk - committed and pushed with the next 2-hourly push
+00:51:36 saved on disk - committed and pushed with the next 2-hourly push
+00:51:36 == 88/219 basse-normandie+bretagne 1 rides
+00:51:38 downloading basse-normandie 138 MB
+00:51:49 downloading bretagne 316 MB
+00:52:15 merging basse-normandie+bretagne
+00:52:38 osrm-extract
+00:54:13 osrm-partition
+00:54:45 osrm-customize
+00:54:57 basse-normandie+bretagne done: 1 roads, 0 refused · catalogue now 11476 roads
+00:54:58 saved on disk - committed and pushed with the next 2-hourly push
+00:54:59 saved on disk - committed and pushed with the next 2-hourly push
+00:54:59 == 89/219 aquitaine+pais-vasco 1 rides
+00:55:01 downloading aquitaine 283 MB
+00:55:24 downloading pais-vasco 66 MB
+00:55:31 merging aquitaine+pais-vasco
+00:55:49 osrm-extract
+00:57:01 osrm-partition
+00:57:16 osrm-customize
+00:57:24 aquitaine+pais-vasco done: 1 roads, 0 refused · catalogue now 11477 roads
+00:57:25 saved on disk - committed and pushed with the next 2-hourly push
+00:57:26 saved on disk - committed and pushed with the next 2-hourly push
+00:57:26 == 90/219 armenia+georgia 1 rides
+00:57:58 downloading armenia 0 MB
+00:58:09 router failed for armenia+georgia Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/armenia/armenia-latest.osm.pbf
+00:58:12 saved on disk - committed and pushed with the next 2-hourly push
+00:58:12 == 91/219 ireland-and-northern-ireland+wales 1 rides
+01:03:14 downloading ireland-and-northern-ireland 
+01:07:38 router failed for ireland-and-northern-ireland+wales Command failed: curl -fL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/ireland-and-northern-ireland/ireland-and-northern-ireland-latest.osm.pbf
+01:07:39 time limit near - the next run carries on with chubu+kansai
