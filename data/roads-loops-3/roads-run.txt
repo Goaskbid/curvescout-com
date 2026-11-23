@@ -1,5 +1,3 @@
-03:55:00 download failed for freiburg-regbez+switzerland Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/freiburg-regbez/freiburg-regbez
-03:55:01 downloading czech-republic 910 MB
 03:55:01 download failed for czech-republic+karlovarsky+sachsen Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/czech-republic/czech-republic-latest.osm.pbf
 03:55:02 downloading kanto 501 MB
 03:55:02 download failed for kanto Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/asia/japan/kanto/kanto-latest.osm.pbf
@@ -298,3 +296,5 @@
 04:14:09 download failed for stuttgart-regbez+unterfranken Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/germany/baden-wuerttemberg/stuttgart-regbez/stuttgart-regb
 04:14:09 downloading austria 778 MB
 04:14:10 download failed for austria+nord-est+slovenia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/austria/austria-latest.osm.pbf
+04:14:10 downloading andalucia 189 MB
+04:14:11 download failed for andalucia Command failed: curl -fsSL --retry 3 -o /tmp/cs-roads/p0.osm.pbf https://download.geofabrik.de/europe/spain/andalucia/andalucia-latest.osm.pbf
