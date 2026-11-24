@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-24T11:06:37.755Z",
+ "updated": "2026-11-24T12:44:28.191Z",
  "feed": "ok",
  "providers": 1,
  "providersFailed": 0,
- "records": 144,
- "checked": "2026-11-24T11:06Z",
+ "records": 142,
+ "checked": "2026-11-24T12:44Z",
  "validFor": "6h",
  "sources": [
   {
@@ -27,7 +27,7 @@
  "passes": {
   "passo gardena": {
    "status": "restricted",
-   "text": "Allgemeine Verkehrsbehinderung Baustelle Zwischen Waidbruck und Pontives (km 4,300 - km 4,600) Einbahnregelung von 08:00 bis 17:00 Uhr wegen Arbeiten.",
+   "text": "Allgemeine Verkehrsbehinderung Baustelle Zwischen Waidbruck und Pontives (km 4,300 - km 4,600) Einbahnregelung wegen Arbeiten.",
    "since": "2026-11-22T23:00:00.000Z",
    "until": "2026-11-27T00:00:00.000Z",
    "id": "058d5c85-5ddc-5f38-9a8a-9962fd42a229",
