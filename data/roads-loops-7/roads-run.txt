@@ -1,4 +1,3 @@
-10:52:01 rides in the catalogue: 9145
-10:52:01 reading the Geofabrik region index
-10:52:05 338 router builds planned (54 single regions, 284 border crossings), 3713 rides not yet done, 0 rides fit no region
-10:52:05 sweden did not finish in two runs - left to the live router
+10:57:14 rides in the catalogue: 9145
+10:57:14 reading the Geofabrik region index
+10:57:29 337 router builds planned (53 single regions, 284 border crossings), 3674 rides not yet done, 0 rides fit no region
