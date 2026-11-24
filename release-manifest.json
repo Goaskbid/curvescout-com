@@ -1,20 +1,17 @@
 {
- "build_id": "r84",
- "build_date": "2026-11-23T06:33:52Z",
- "release_profile": "local-seo-candidate-not-qualified",
+ "build_id": "r86",
  "advertising": "Google AdSense (ca-pub-2870312071451207), loaded only after consent given in Google's certified consent message; no ride or location data is passed to it",
  "neutralised_host_references": 0,
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
- "file_count": 51511,
- "total_bytes": 837903550,
- "release_date": "2026-11-19",
- "sw_cache": "curvescout-app-r69-20261119",
- "source_parent_commit": "1744efc",
+ "file_count": 51951,
+ "total_bytes": 848650806,
  "base_runtime_build_id": "2026.45-r47",
- "release_status": "HOLD",
- "seo_audit_date": "2026-11-10",
  "seo_implementation": "r51-seo-1.0.0",
  "seo_package_sha256": "9179e3acbb03200c7d4e2fa86098c0e0d39f9caa85fa667a4948afdd91907940",
  "files_in": "release-manifest.json.gz",
- "note": "Full file list with hashes is in release-manifest.json.gz (kept under the 10 MB per-file rule)."
+ "note": "Full file list with hashes is in release-manifest.json.gz (kept under the 10 MB per-file rule); the two manifest files are not in the list.",
+ "release_date": "2026-11-23",
+ "sw_cache": "curvescout-app-r86-20261123",
+ "source_parent_commit": "3061a6019f",
+ "build_date": "2026-11-23T21:39:38.070Z"
 }
