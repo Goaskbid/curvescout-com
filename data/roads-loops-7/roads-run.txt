@@ -1,3 +1,4 @@
-08:56:05 rides in the catalogue: 9145
-08:56:05 reading the Geofabrik region index
-08:56:11 352 router builds planned (68 single regions, 284 border crossings), 5710 rides not yet done, 0 rides fit no region
+08:59:32 rides in the catalogue: 9145
+08:59:32 reading the Geofabrik region index
+08:59:37 352 router builds planned (68 single regions, 284 border crossings), 5710 rides not yet done, 0 rides fit no region
+08:59:37 cataluna did not finish in two runs - left to the live router
