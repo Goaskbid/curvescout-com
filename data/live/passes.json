@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-24T04:26:20.591Z",
+ "updated": "2026-11-24T08:11:56.404Z",
  "feed": "ok",
  "providers": 1,
  "providersFailed": 0,
  "records": 142,
- "checked": "2026-11-24T04:26Z",
+ "checked": "2026-11-24T08:11Z",
  "validFor": "6h",
  "sources": [
   {
@@ -25,15 +25,6 @@
   }
  ],
  "passes": {
-  "brenner pass": {
-   "status": "closed",
-   "text": "Allgemeine Verkehrsbehinderung Sperre und Schließung Die Radroute Nr. 1 Brenner - Salurn ist zwischen Stilfs und Pfulters (km 29,000 - km 32,000) aus Sicherheitsgründen GESPERRT.",
-   "since": "2026-10-11T22:00:00.000Z",
-   "until": "2026-12-18T00:00:00.000Z",
-   "id": "ec98f5e9-9f0e-54ce-bb1f-ac1750b01df4",
-   "version": "1",
-   "km": 16
-  },
   "passo gardena": {
    "status": "restricted",
    "text": "Allgemeine Verkehrsbehinderung Baustelle Zwischen Waidbruck und Pontives (km 4,300 - km 4,600) Einbahnregelung von 08:00 bis 17:00 Uhr wegen Arbeiten.",
@@ -45,12 +36,21 @@
   },
   "fluela pass": {
    "status": "closed",
-   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Schneebedeckt: Ofenpass, Forcola di Livigno und Bernina. Wintersperre: Umbrailpass. GESPERRT: Flüelapass.&#xA;Forcola-di-Livigno-Strasse: Wintersperre zwischen La Motta und dem Pass ab Frei",
+   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Frei befahrbar: Forcola di Livigno und Bernina. Schneebedeckt: Ofenpass. Wintersperre: Umbrailpass. GESPERRT: Flüelapass.&#xA;Forcola-di-Livigno-Strasse: Wintersperre zwischen La Motta und ",
    "since": "2025-03-11T23:00:00.000Z",
    "until": "",
    "id": "85916b99-fccc-5513-b212-00b78c04473c",
    "version": "1",
    "km": 22.2
+  },
+  "brenner pass": {
+   "status": "restricted",
+   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Auf Autobahnen und Schnellstraßen müssen bei Stau oder stockendem Verkehr alle Pkw, Motorräder, Lkw und Busse eine Rettungsgasse bilden.&#xA;Nähere Infos unter: http://www.rettungsgasse.com",
+   "since": "2011-11-17T23:00:00.000Z",
+   "until": "",
+   "id": "9f8a8241-7598-5fe0-8bfd-19b7594a23b2",
+   "version": "1",
+   "km": 0.3
   },
   "passo falzarego": {
    "status": "restricted",
