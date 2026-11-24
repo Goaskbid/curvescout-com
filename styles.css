@@ -5525,3 +5525,20 @@ body:has(#mModes:not([hidden])) #viewModes{display:none!important}
 
 /* r81 audit: trip numbers - the marker box does not catch the finger, the number does */
 .leaflet-tripPins-pane .leaflet-marker-icon{pointer-events:none!important}.leaflet-tripPins-pane .tripPin{pointer-events:auto}
+/* r87 ui (owner 2026-11-24: "why does anything here scroll horizontally"; "topo is not great on mobile") */
+#pfHost{overflow-x:visible!important}
+#pfHost svg,#pfHost .profSvg{min-width:0!important;width:100%!important;height:auto!important}
+.atlasLegend{flex-wrap:wrap!important;overflow:visible!important}
+.tripRibbon{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(84px,1fr))!important;gap:6px!important;overflow:visible!important}
+.tripRibbon .tripSeg{min-width:0!important;flex:none!important;width:auto!important}
+/* the height profile at phone width: drawn 1:1, so the type is set for that size */
+.profSvg.narrow .pfAnno{font-size:13px!important}
+.profSvg.narrow .pfAnno.big{font-size:15px!important}
+.profSvg.narrow .pfAnnoSub{font-size:10.5px!important}
+.profSvg.narrow .pfAx{font-size:11px!important}
+.profSvg.narrow .pfPoi{font-size:12px!important}
+/* the stops under the height profile on a phone: an even grid in ride order, nothing cut at the edges, nothing on top of another */
+@media (max-width:600px){
+  #climbStrip.climbStrip,.climbStrip{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(78px,1fr))!important;gap:10px 6px!important;height:auto!important;position:relative!important}
+  .climbStrip .csItem{position:static!important;left:auto!important;top:auto!important;margin:0!important;width:auto!important;min-width:0!important;transform:none!important}
+}

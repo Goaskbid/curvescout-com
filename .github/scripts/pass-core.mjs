@@ -30,6 +30,9 @@ export function match(recs, passes, now = Date.now()) {
     const st = r.start ? Date.parse(r.start) : NaN, en = r.end ? Date.parse(r.end) : NaN;
     if ((r.start && !Number.isFinite(st)) || (r.end && !Number.isFinite(en))) continue;
     if (Number.isFinite(en) && en < now) continue;
+    /* r87: a closure of a cycle route or footpath is not a closure of the pass road (Brenner showed "closed" because the
+       Brenner - Salurn cycle route was shut between Stilfs and Pfulters) */
+    if (/\b(rad(route|weg|wanderweg)|fahrradweg|radfahr\w*|pista ciclabile|ciclabile|ciclopedonale|cycle ?(route|path|way)|bike ?(route|path)|fu(ss|ß)weg|gehweg|wanderweg|sentiero|percorso pedonale|footpath)\b/i.test((r.all || '') + ' ' + (r.text || ''))) continue;
     const neg = NEG.test(r.all || '') || NEG.test(r.text || '');
     const mg = String(r.mgmt || '');
     const closed = /roadClosed|carriagewayClosures|closedPermanentlyForTheWinter/i.test(mg) || (!neg && /\b(gesperrt|chiuso|chiusa|closed)\b/i.test(r.all || ''));
