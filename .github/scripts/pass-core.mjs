@@ -24,6 +24,17 @@ export function records(xml) {   /* DATEX II v2 SituationRecords -> {id, version
    report that starts later is "planned", not closed. Unreadable validity times make no claim at all. */
 const NEG = /\b(not|no longer|nicht|nicht mehr|non|kein|keine)\s+(closed|gesperrt|chiuso|chiusa)\b|\b(reopened|re-opened|wieder (offen|ge(o|ö)ffnet|befahrbar)|riaperto|riaperta|open again)\b/i;
 const GENERIC = new Set(['pass', 'passo', 'joch', 'sattel', 'strasse', 'strada', 'road', 'mountain', 'example', 'route', 'valley', 'lake', 'col', 'colle', 'national', 'highway']);
+/* r88 facility (audit S2): split the report into sentences; keep only those that announce a closure or restriction; the
+   report is cycle/foot-only when each of them names a cycle route or footpath and none names the road or motor traffic */
+const CYC = /\b(rad(route|weg|wanderweg)\w*|fahrradweg\w*|radfahr\w*|pista ciclabile|ciclabile|ciclopedonale|cycle ?(route|path|way|lane)s?|bike ?(route|path|lane)s?|fu(ss|ß)weg\w*|gehweg\w*|wanderweg\w*|sentiero|percorso pedonale|footpaths?|pedestrians?|fu(ss|ß)gänger\w*)\b/i;
+const ROADW = /\b(stra(ss|ß)e\w*|road|strada|statale|SS ?\d+|SP ?\d+|[AB] ?\d+|kfz|fahrzeug\w*|vehicles?|motor\w*|traffic|verkehr|veicoli|autoveicoli|pkw|lkw|carriageway|fahrbahn)\b/i;
+const SHUT = /\b(gesperrt|sperre|geschlossen|closed?|closure|chius[oa]|vietat[oa]|restricted|einbahn\w*|ampel\w*|senso unico|alternat\w*)\b/i;
+function cycleOnly(r) {
+  const txt = (r.text || r.all || '').replace(/\s+/g, ' ');   /* the report's own words; road numbers from the record header are not a statement about what is closed */
+  const shut = txt.split(/(?<=[.!?;])\s+(?=[A-ZÄÖÜÀ-Ý])|\n+/).filter(x => SHUT.test(x));
+  if (!shut.length) return false;
+  return shut.every(x => CYC.test(x) && !ROADW.test(x.replace(CYC, ' ')));
+}
 export function match(recs, passes, now = Date.now()) {
   const res = {};
   for (const r of recs) {
@@ -32,7 +43,10 @@ export function match(recs, passes, now = Date.now()) {
     if (Number.isFinite(en) && en < now) continue;
     /* r87: a closure of a cycle route or footpath is not a closure of the pass road (Brenner showed "closed" because the
        Brenner - Salurn cycle route was shut between Stilfs and Pfulters) */
-    if (/\b(rad(route|weg|wanderweg)|fahrradweg|radfahr\w*|pista ciclabile|ciclabile|ciclopedonale|cycle ?(route|path|way)|bike ?(route|path)|fu(ss|ß)weg|gehweg|wanderweg|sentiero|percorso pedonale|footpath)\b/i.test((r.all || '') + ' ' + (r.text || ''))) continue;
+    if (cycleOnly(r)) continue;   /* r88 facility: only reports whose closure is about a cycle route or footpath */
+    /* r88: standing notices are not pass reports (the "emergency corridor" notice has run since 2011 with no end) */
+    if (/rettungsgasse|corridoio di emergenza|emergency corridor/i.test((r.all || '') + ' ' + (r.text || ''))) continue;
+    if (!r.end && Number.isFinite(st) && now - st > 365 * 86400e3) continue;
     const neg = NEG.test(r.all || '') || NEG.test(r.text || '');
     const mg = String(r.mgmt || '');
     const closed = /roadClosed|carriagewayClosures|closedPermanentlyForTheWinter/i.test(mg) || (!neg && /\b(gesperrt|chiuso|chiusa|closed)\b/i.test(r.all || ''));

@@ -7,6 +7,7 @@
  * usage: node .github/scripts/pass-status.mjs [--dry] */
 import fs from 'node:fs';
 import { collect, records, match } from './pass-core.mjs';
+import { renderAndStage } from './pass-page.mjs';   /* r88: the crawlable status page, staged with the feed */
 export { records, match };
 const OUT = 'data/live/passes.json', DRY = process.argv.includes('--dry');
 /* r61: when the feed cannot be read, say so in the file (no live claims, coverage empty) - only when that changes */
@@ -26,5 +27,6 @@ async function main() {
   if (waiting.length) { console.log('site upload waiting (' + waiting.join(', ') + '): pass status left unchanged this run'); return; }
   const passes = JSON.parse(fs.readFileSync('data/passes.json', 'utf8')).passes || [];
   writeState(await collect(passes));
+  if (!DRY) { try { console.log('status page', JSON.stringify(renderAndStage('.'))); } catch (e) { console.log('status page skipped:', String(e && e.message || e).slice(0, 160)); } }
 }
 if (import.meta.url === 'file://' + process.argv[1]) main();

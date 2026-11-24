@@ -5542,3 +5542,15 @@ body:has(#mModes:not([hidden])) #viewModes{display:none!important}
   #climbStrip.climbStrip,.climbStrip{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(78px,1fr))!important;gap:10px 6px!important;height:auto!important;position:relative!important}
   .climbStrip .csItem{position:static!important;left:auto!important;top:auto!important;margin:0!important;width:auto!important;min-width:0!important;transform:none!important}
 }
+/* r88 ui */
+/* r87: own map and forecast buttons instead of links to other sites */
+.csPtBtn{font:inherit;font-size:15px;color:var(--mut,#a9a69d);background:none;border:1px solid var(--edge,#2a2e35);border-radius:99px;padding:4px 11px;cursor:pointer;min-height:34px}
+.csPtBtn:hover{color:var(--ink,#fff);border-color:var(--edge2,#454b55)}
+.csPtWx{flex:0 0 100%;display:grid;gap:3px;margin:8px 0 2px;padding:10px 12px;border:1px solid var(--edge,#2a2e35);border-radius:10px;background:#14161a;font-size:15px;color:#d0d6dc}
+.csPtWx b{color:#fff}.csPtWx i{font-style:normal;font-size:13px;color:var(--dim,#8f8c84)}
+.blLinks .blOwn{text-transform:none!important;letter-spacing:0!important;color:#d0d6dc!important;font-size:15px!important;line-height:1.45}
+/* r88: credits in small print (owner: "credits get a smaller font size") */
+.srcRow,.srcRow a,.srcRow span,.srcRow b{font-size:10px!important;line-height:1.5!important}
+.srcRow span{margin-right:8px;color:var(--dim,#8f8c84)}
+.csMapCredit,.csMapCredit a,.maplibregl-ctrl-attrib,.maplibregl-ctrl-attrib a,.leaflet-control-attribution,.leaflet-control-attribution a{font-size:9px!important;line-height:1.3!important}
+.srcRow.csOwnStatus,.srcRow.csOwnStatus span{font-size:15px!important;line-height:1.5!important;color:#d0d6dc!important}
