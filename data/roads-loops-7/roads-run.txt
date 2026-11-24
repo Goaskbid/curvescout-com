@@ -1,3 +1,4 @@
-10:17:39 rides in the catalogue: 9145
-10:17:39 reading the Geofabrik region index
-10:17:48 342 router builds planned (58 single regions, 284 border crossings), 3922 rides not yet done, 0 rides fit no region
+10:22:51 rides in the catalogue: 9145
+10:22:51 reading the Geofabrik region index
+10:22:55 342 router builds planned (58 single regions, 284 border crossings), 3922 rides not yet done, 0 rides fit no region
+10:22:55 peru did not finish in two runs - left to the live router
