@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-24T10:25:24.287Z",
+ "updated": "2026-11-24T11:06:37.755Z",
  "feed": "ok",
  "providers": 1,
  "providersFailed": 0,
  "records": 144,
- "checked": "2026-11-24T10:25Z",
+ "checked": "2026-11-24T11:06Z",
  "validFor": "6h",
  "sources": [
   {
@@ -34,33 +34,6 @@
    "version": "1",
    "km": 17.9
   },
-  "fluela pass": {
-   "status": "closed",
-   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Frei befahrbar: Forcola di Livigno und Bernina. Schneebedeckt: Ofenpass. Wintersperre: Umbrailpass. GESPERRT: Flüelapass.&#xA;Forcola-di-Livigno-Strasse: Wintersperre zwischen La Motta und ",
-   "since": "2025-03-11T23:00:00.000Z",
-   "until": "",
-   "id": "85916b99-fccc-5513-b212-00b78c04473c",
-   "version": "1",
-   "km": 22.2
-  },
-  "brenner pass": {
-   "status": "restricted",
-   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Auf Autobahnen und Schnellstraßen müssen bei Stau oder stockendem Verkehr alle Pkw, Motorräder, Lkw und Busse eine Rettungsgasse bilden.&#xA;Nähere Infos unter: http://www.rettungsgasse.com",
-   "since": "2011-11-17T23:00:00.000Z",
-   "until": "",
-   "id": "9f8a8241-7598-5fe0-8bfd-19b7594a23b2",
-   "version": "1",
-   "km": 0.3
-  },
-  "passo falzarego": {
-   "status": "restricted",
-   "text": "Allgemeine Verkehrsbehinderung Vorsicht und Gefahr Zwischen Cernadoi und dem Pass (auf Belluneser Seite) Fahrverbot nur für Sattelschlepper mit einer Höhe über 3,20 m und einer Länge über 13 m.",
-   "since": "2011-11-06T23:00:00.000Z",
-   "until": "",
-   "id": "bd71f0e2-0840-598f-99fe-10260376a1f0",
-   "version": "1",
-   "km": 0.1
-  },
   "passo giovo": {
    "status": "restricted",
    "text": "Allgemeine Verkehrsbehinderung Baustelle Zwischen Walten und dem Jaufenpass (km 35,500 - km 36,000) Einbahnregelung wegen Sanierung von Mauerwerk.",
@@ -69,33 +42,6 @@
    "id": "c536bf59-ff66-55f4-b4d6-b39c1c1c5cb1",
    "version": "1",
    "km": 1.3
-  },
-  "passo costalunga": {
-   "status": "restricted",
-   "text": "Berg und Passstraße Straßenzustand (Frei/Kettenpflicht) Keine Beschränkungen.",
-   "since": "2023-07-26T22:00:00.000Z",
-   "until": "",
-   "id": "d66192a6-6328-5c70-ad68-a5056e557288",
-   "version": "1",
-   "km": 0.5
-  },
-  "stelvio pass": {
-   "status": "closed",
-   "text": "Berg und Passstraße Sperre und Schließung Ab Kreuzung Drei Brunnen (km 124,300 - km 137,500) WINTERSPERRE. &#xA;",
-   "since": "2024-11-17T23:00:00.000Z",
-   "until": "",
-   "id": "ee8de6df-8383-5a34-aea3-e9a6e22c3d6a",
-   "version": "1",
-   "km": 0.1
-  },
-  "passo campolongo": {
-   "status": "restricted",
-   "text": "Berg und Passstraße Straßenzustand (Frei/Kettenpflicht) Keine Beschränkungen.",
-   "since": "2021-07-15T22:00:00.000Z",
-   "until": "",
-   "id": "fd360b70-9acc-5f31-9572-2bb3853a95af",
-   "version": "1",
-   "km": 0.5
   }
  }
 }
