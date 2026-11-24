@@ -1,17 +1,17 @@
 {
- "build_id": "r89",
+ "build_id": "r90",
  "advertising": "Google AdSense (ca-pub-2870312071451207), loaded only after consent given in Google's certified consent message; no ride or location data is passed to it",
  "neutralised_host_references": 0,
  "generated": "last, after every build step (tools/final-release-manifest.mjs)",
- "file_count": 52089,
- "total_bytes": 856163228,
+ "file_count": 52129,
+ "total_bytes": 859003075,
  "base_runtime_build_id": "2026.45-r47",
  "seo_implementation": "r51-seo-1.0.0",
  "seo_package_sha256": "9179e3acbb03200c7d4e2fa86098c0e0d39f9caa85fa667a4948afdd91907940",
  "files_in": "release-manifest.json.gz",
  "note": "Full file list with hashes is in release-manifest.json.gz (kept under the 10 MB per-file rule); the two manifest files are not in the list.",
  "release_date": "2026-11-24",
- "sw_cache": "curvescout-app-r89-20261124",
- "source_parent_commit": "e8d95fb10b",
- "build_date": "2026-11-24T12:37:35.074Z"
+ "sw_cache": "curvescout-app-r90-20261124",
+ "source_parent_commit": "6fd4c4a722",
+ "build_date": "2026-11-24T16:16:27.274Z"
 }
