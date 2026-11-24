@@ -1,0 +1,6 @@
+11:06:56 rides in the catalogue: 9145
+11:06:56 reading the Geofabrik region index
+11:09:56 network coverage: 1373 squares without road files, 170 regions hold land in them, 170 still to do
+11:09:56 network coverage franche-comte 47_5
+11:10:57 network: 20807 ways, 178241 points
+11:10:57 network (main roads): 1 squares written
