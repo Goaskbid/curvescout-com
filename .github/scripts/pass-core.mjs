@@ -35,6 +35,11 @@ function cycleOnly(r) {
   if (!shut.length) return false;
   return shut.every(x => CYC.test(x) && !ROADW.test(x.replace(CYC, ' ')));
 }
+/* r89 S1: the feed's category heading, explicit "no restrictions" statements, and heavy-vehicle-only scopes */
+const HEADING = /\(?\b(frei|befahrbar|transitabile|percorribile|libera|libero)\s*\/\s*(kettenpflicht|schneekettenpflicht|catene|obbligo di catene)\b\)?/gi;
+const CLEAR = /\b(keine\s+(beschr(ä|ae)nkung|einschr(ä|ae)nkung|behinderung|kettenpflicht)\w*|nessuna\s+(limitazione|restrizione|limitazioni|restrizioni)|nessun\s+obbligo|no\s+restrictions?|senza\s+limitazioni)\b/i;
+const HEAVY = /(?:^|[^a-zäöü])(sattelschlepper\w*|sattelz(ü|ue)g\w*|lkw|lastwagen|lastkraftwagen\w*|schwerverkehr|schwerfahrzeug\w*|mezzi pesanti|autocarr\w*|autoarticolat\w*|veicoli pesanti|heavy goods vehicles?|hgvs?|trucks?|(ü|ue)ber\s+\d+([.,]\d+)?\s*t\b|oltre\s+\d+([.,]\d+)?\s*t\b|>\s*\d+([.,]\d+)?\s*t\b)/i;
+const LIGHT = /(?:^|[^a-zäöü])(alle fahrzeuge(?!\s+(ü|ue)ber)|alle kfz(?!\s+(ü|ue)ber)|tutti i veicoli(?!\s+(oltre|superiori|di massa))|all vehicles(?!\s+(over|above))|pkw|motorr(ä|ae)d\w*|motocicl\w*|motorcycles?|autovetture)\b/i;
 export function match(recs, passes, now = Date.now()) {
   const res = {};
   for (const r of recs) {
@@ -50,7 +55,9 @@ export function match(recs, passes, now = Date.now()) {
     const neg = NEG.test(r.all || '') || NEG.test(r.text || '');
     const mg = String(r.mgmt || '');
     const closed = /roadClosed|carriagewayClosures|closedPermanentlyForTheWinter/i.test(mg) || (!neg && /\b(gesperrt|chiuso|chiusa|closed)\b/i.test(r.all || ''));
-    const restr = closed || /snowChains|winterEquipment|singleAlternateLineTraffic|laneClosures/i.test(mg) || (!neg && /\b(kettenpflicht|schneeketten|catene|winter tyres|winterreifen)\b/i.test(r.all || ''));
+    /* r89 S1 */ const body = String(r.all || '').replace(HEADING, ' '), clear = CLEAR.test(r.all || '') || CLEAR.test(r.text || '');
+    if (HEAVY.test(r.all || '') && !LIGHT.test(r.all || '')) continue;   /* only heavy vehicles: not a motorcycle restriction */
+    const restr = closed || /snowChains|winterEquipment|singleAlternateLineTraffic|laneClosures/i.test(mg) || (!neg && !clear && /\b(kettenpflicht|schneeketten|catene|winter tyres|winterreifen)\b/i.test(body));
     if (!restr) continue;
     for (const p of passes) {
       const d = r.pts.length ? Math.min(...r.pts.map(q => hav(q, p.at))) : Infinity;
