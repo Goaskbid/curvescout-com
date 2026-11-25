@@ -1,160 +1,300 @@
-03:21:27 rides in the catalogue: 9145
-03:21:27 reading the Geofabrik region index
-03:21:32 network coverage provence-alpes-cote-d-azur 42_5 42_6 43_4 43_5 43_6 44_4 44_5
-03:26:18 network coverage failed provence-alpes-cote-d-azur URI malformed
-03:26:18 network coverage bourgogne 46_3 46_4 47_3 47_4 47_5 48_3
-03:28:20 network coverage failed bourgogne URI malformed
-03:28:20 network coverage saarland 49_6 49_7
-03:28:57 network coverage failed saarland URI malformed
-03:28:57 network coverage rheinland-pfalz 49_6 49_7 50_7
-03:32:17 network coverage failed rheinland-pfalz URI malformed
-03:32:17 network coverage languedoc-roussillon 43_2 43_3 43_4 44_3 44_4
-03:35:26 network coverage failed languedoc-roussillon URI malformed
-03:35:26 network coverage hessen 51_8 51_9 51_10
-03:38:52 network coverage failed hessen URI malformed
-03:38:52 network coverage centro 40_11 41_10 41_11 42_9 43_14
-03:42:19 network coverage failed centro URI malformed
-03:42:19 network coverage ile-de-france 48_1 48_2 48_3 49_1 49_2
-03:46:59 network coverage failed ile-de-france URI malformed
-03:46:59 network coverage koeln-regbez 50_7 51_6
-03:48:58 network coverage failed koeln-regbez URI malformed
-03:48:58 network coverage slovenia 45_14 45_15
-03:51:26 network coverage failed slovenia URI malformed
-03:51:26 network coverage midi-pyrenees 43_-1 43_0 43_1 43_2 43_3 44_1 44_2 44_3
-03:54:16 network coverage failed midi-pyrenees URI malformed
-03:54:16 network coverage arnsberg-regbez 51_7 51_8
-03:55:40 network coverage failed arnsberg-regbez URI malformed
-03:55:40 network coverage thueringen 51_10 51_11
-03:56:47 network coverage failed thueringen URI malformed
-03:56:47 network coverage duesseldorf-regbez 51_6 51_7
-03:59:53 network coverage failed duesseldorf-regbez URI malformed
-03:59:53 network coverage muenster-regbez 51_6 51_7 51_8 52_7
-04:00:59 network coverage failed muenster-regbez URI malformed
-04:00:59 network coverage aquitaine 43_-2 43_-1 44_-2 44_-1 44_0 44_1 45_-2 45_-1 45_0 45_1
-04:03:35 network coverage failed aquitaine URI malformed
-04:03:35 network coverage haute-normandie 48_0 48_1 49_0 49_1
-04:04:33 network coverage failed haute-normandie URI malformed
-04:04:33 network coverage detmold-regbez 51_8 51_9 52_8
-04:05:49 network coverage failed detmold-regbez URI malformed
-04:05:49 network coverage croatia 42_16 42_17 42_18 43_14 43_15 43_16 43_17 44_13 44_14 44_15 44_16 45_14 45_15 45_16 45_17 45_18 45_19 46_17
-04:07:39 network coverage failed croatia URI malformed
-04:07:39 network coverage cataluna 40_1 40_2
-04:09:59 network coverage failed cataluna URI malformed
-04:09:59 network coverage sachsen 50_13 50_14 51_12 51_13 51_14
-04:14:51 network coverage failed sachsen URI malformed
-04:14:51 network coverage gelderland 51_6 52_5 52_6
-04:16:16 network coverage failed gelderland URI malformed
-04:16:16 network coverage pays-de-la-loire 46_-3 46_-2 46_-1 47_-3 47_-2 47_-1 47_0 48_-1 48_0
-04:19:09 network coverage failed pays-de-la-loire URI malformed
-04:19:09 network coverage sachsen-anhalt 51_10 51_11 51_12 52_11 52_12
-04:20:21 network coverage failed sachsen-anhalt URI malformed
-04:20:21 network coverage zuid-holland 52_3 52_4
-04:21:45 network coverage failed zuid-holland URI malformed
-04:21:45 network coverage basse-normandie 48_-2 48_-1 48_0 49_-2 49_-1 49_0
-04:22:46 network coverage failed basse-normandie URI malformed
-04:22:47 network coverage flevoland 52_5
-04:22:58 network coverage failed flevoland URI malformed
-04:22:58 network coverage niedersachsen 51_9 51_10 52_6 52_7 52_8 52_9 52_10 53_6 53_7 53_8 53_9 53_10 53_11 54_7
-04:26:45 network coverage failed niedersachsen URI malformed
-04:26:45 network coverage drenthe 52_6 53_6
-04:27:17 network coverage failed drenthe URI malformed
-04:27:17 network coverage noord-holland 52_4 52_5 53_4
-04:28:46 network coverage failed noord-holland URI malformed
-04:28:46 network coverage kent 51_0 51_1
-04:29:01 network coverage failed kent URI malformed
-04:29:01 network coverage east-sussex 50_0
-04:29:14 network coverage failed east-sussex URI malformed
-04:29:14 network coverage brandenburg 51_13 51_14 52_12 52_13 52_14 53_11 53_12 53_13 53_14
-04:30:07 network coverage failed brandenburg URI malformed
-04:30:07 network coverage friesland 52_5 53_5 53_6
-04:30:25 network coverage failed friesland URI malformed
-04:30:25 network coverage navarra 42_-3 43_-2
-04:30:48 network coverage failed navarra URI malformed
-04:30:48 network coverage west-sussex 50_-1 51_-1
-04:31:14 network coverage failed west-sussex URI malformed
-04:31:14 network coverage hamburg 53_9 53_10
-04:31:43 network coverage failed hamburg URI malformed
-04:31:43 network coverage greater-london 51_-1 51_0
-04:32:57 network coverage failed greater-london URI malformed
-04:32:57 network coverage surrey 51_-1
-04:33:10 network coverage failed surrey URI malformed
-04:33:10 network coverage sud 41_18
-04:34:51 network coverage failed sud URI malformed
-04:34:51 network coverage isole 35_11 35_13 36_13 37_11 38_7 38_10 38_11 39_7 39_10 39_11 39_12 39_13 39_14 40_7 40_10 40_11 41_7 41_10
-04:36:26 network coverage failed isole URI malformed
-04:36:26 network coverage hungary 45_17 45_18 46_17 46_18 46_19 46_20 46_21 47_18 47_19 47_20 47_21 47_22 48_19 48_20 48_21 48_22
-04:40:42 network coverage failed hungary URI malformed
-04:40:42 network coverage hampshire 50_-2 51_-2 51_-1
-04:41:23 network coverage failed hampshire URI malformed
-04:41:23 network coverage bretagne 47_-6 47_-5 47_-4 47_-3 47_-2 48_-6 48_-5 48_-4 48_-3 48_-2 49_-4 49_-3
-04:42:21 network coverage failed bretagne URI malformed
-04:42:21 network coverage schleswig-holstein 53_9 53_10 54_7 54_8 54_9 54_10 54_11
-04:43:30 network coverage failed schleswig-holstein URI malformed
-04:43:30 network coverage norfolk 52_0 52_1 53_0 53_1
-04:43:40 network coverage failed norfolk URI malformed
-04:43:40 network coverage cambridgeshire 52_-1 52_0
-04:43:48 network coverage failed cambridgeshire URI malformed
-04:43:48 network coverage slovakia 47_18 48_18 48_19 48_20 48_21 48_22 49_18 49_19 49_20 49_21 49_22
-04:46:08 network coverage failed slovakia URI malformed
-04:46:08 network coverage mecklenburg-vorpommern 53_10 53_11 53_12 53_13 53_14 54_11 54_12 54_13 54_14
-04:47:16 network coverage failed mecklenburg-vorpommern URI malformed
-04:47:16 network coverage dorset 50_-3 50_-2
-04:47:25 network coverage failed dorset URI malformed
-04:47:25 network coverage valencia 38_-1 38_0 39_0 39_1 40_1
-04:48:33 network coverage failed valencia URI malformed
-04:48:33 network coverage oxfordshire 51_-2
-04:48:48 network coverage failed oxfordshire URI malformed
-04:48:48 network coverage slaskie 49_18 49_19 50_18 50_19
-04:49:10 network coverage failed slaskie URI malformed
-04:49:10 network coverage northamptonshire 52_-2 52_-1
-04:49:23 network coverage failed northamptonshire URI malformed
-04:49:23 network coverage gloucestershire 51_-3 51_-2
-04:49:42 network coverage failed gloucestershire URI malformed
-04:49:42 network coverage somerset 50_-3 51_-4 51_-3
-04:50:06 network coverage failed somerset URI malformed
-04:50:06 network coverage zachodniopomorskie 52_14 52_15 53_14 53_15 53_16 54_14 54_15 54_16
-04:50:48 network coverage failed zachodniopomorskie URI malformed
-04:50:48 network coverage west-midlands 52_-3 52_-2
-04:51:13 network coverage failed west-midlands URI malformed
-04:51:13 network coverage lodzkie 51_18 51_19 51_20 52_19
-04:51:31 network coverage failed lodzkie URI malformed
-04:51:31 network coverage derbyshire 52_-2 53_-2
-04:51:40 network coverage failed derbyshire URI malformed
-04:51:40 network coverage shropshire 52_-4 52_-3
-04:51:47 network coverage failed shropshire URI malformed
-04:51:47 network coverage castilla-la-mancha 38_-5 38_-4 38_-3 38_-2 39_-6 39_-5 39_-4 39_-3 40_-5 40_-4 40_-3 41_-4
-04:52:34 network coverage failed castilla-la-mancha URI malformed
-04:52:34 network coverage kujawsko-pomorskie 52_17 52_18 52_19 53_17 53_18 53_19
-04:52:55 network coverage failed kujawsko-pomorskie URI malformed
-04:52:55 network coverage west-yorkshire 53_-2
-04:53:23 network coverage failed west-yorkshire URI malformed
-04:53:23 network coverage cheshire 53_-3
-04:53:31 network coverage failed cheshire URI malformed
-04:53:31 network coverage denmark 54_9 54_10 54_11 54_12 54_13 54_14 54_15 55_7 55_8 55_9 55_10 55_11 55_12 55_14 55_15 56_7 56_8 56_9 56_10 56_11 56_12 57_7 57_8 57_9 57_10 57_11
-04:58:05 network coverage failed denmark URI malformed
-04:58:05 network coverage wales 51_-6 51_-5 51_-4 51_-3 52_-6 52_-5 52_-4 53_-6 53_-5 53_-4
-04:59:10 network coverage failed wales URI malformed
-04:59:10 network coverage mazowieckie 51_20 51_21 52_19 52_20 52_21 52_22 53_19 53_20 53_21
-05:01:46 network coverage failed mazowieckie URI malformed
-05:01:46 network coverage lubelskie 50_21 50_22 50_23 51_21 51_22 51_23 52_23
-05:02:15 network coverage failed lubelskie URI malformed
-05:02:15 network coverage warminsko-mazurskie 53_19 53_20 53_21 53_22
-05:02:58 network coverage failed warminsko-mazurskie URI malformed
-05:02:58 network coverage romania 43_22 43_23 43_24 43_25 43_28 44_21 44_22 44_23 44_24 44_25 44_26 44_27 44_28 44_29 45_20 45_21 45_22 45_23 45_24 45_25 45_26 45_27 45_28 45_29 46_20 46_21 46_22 46_23 46_24 46_25 46_26 46_27 46_28 47_21 47_22 47_23 47_24 47_25 47_26 47_27 48_26
-05:04:17 network coverage failed romania URI malformed
-05:04:17 network coverage sorlandet 57_6 57_7 57_8 58_6 58_7 58_8 58_9 59_7
-05:05:00 network coverage failed sorlandet URI malformed
-05:05:00 network coverage greece 35_22 35_23 35_24 35_25 35_26 35_27 35_28 36_20 36_21 36_22 36_23 36_24 36_25 36_26 36_27 36_28 36_29 37_20 37_21 37_22 37_23 37_24 37_25 37_26 37_27 38_19 38_20 38_21 38_22 38_23 38_24 38_25 38_26 39_19 39_20 39_21 39_22 39_23 39_24 39_25 39_26 40_20 40_21 40_22 40_23 40_24 40_25 40_26 41_22 41_23 41_24 41_25 41_26
-05:08:24 network coverage failed greece URI malformed
-05:08:24 network coverage ireland-and-northern-ireland 49_-9 50_-11 50_-10 50_-9 50_-8 50_-7 51_-11 51_-10 51_-9 51_-8 51_-7 51_-6 52_-11 52_-10 52_-9 52_-8 52_-7 52_-6 53_-11 53_-10 53_-9 53_-8 53_-7 53_-6 54_-11 54_-10 54_-9 54_-8 54_-7 54_-6 55_-11 55_-10 55_-9 55_-8 55_-7 56_-11 56_-10
-05:11:17 network coverage failed ireland-and-northern-ireland URI malformed
-05:11:17 network coverage ostlandet 58_9 58_10 59_7 59_8 59_9 59_10 59_11 60_7 60_8 60_9 60_10 60_11 60_12 61_7 61_8 61_9 61_10 61_11 61_12 62_7 62_8 62_9 62_10 62_11 62_12
-05:15:05 network coverage failed ostlandet URI malformed
-05:15:05 network coverage vestlandet 57_4 57_5 58_4 58_5 58_6 59_3 59_4 59_5 59_6 59_7 60_3 60_4 60_5 60_6 60_7 61_2 61_3 61_4 61_5 61_6 61_7 61_8 62_2 62_3 62_4 62_5 62_6 62_7 62_8 62_9 63_3 63_4 63_5 63_6 63_7 63_8 64_4 64_5 64_6 64_7
-05:17:24 network coverage failed vestlandet URI malformed
-05:17:24 network coverage scotland 54_-6 54_-5 55_-9 55_-8 55_-7 55_-6 55_-5 55_-2 56_-11 56_-10 56_-9 56_-8 56_-7 56_-6 56_-5 56_-4 56_-3 56_-2 56_-1 57_-11 57_-10 57_-9 57_-8 57_-7 57_-6 57_-5 57_-4 57_-3 57_-2 57_-1 58_-11 58_-10 58_-9 58_-8 58_-7 58_-6 58_-5 58_-4 58_-3 58_-2 58_-1 59_-9 59_-8 59_-7 59_-6 59_-5 59_-4 59_-3 59_-2 59_-1 59_0 60_-6 60_-5 60_-4 60_-3 60_-2 60_-1 60_0
-05:20:22 network coverage failed scotland URI malformed
-05:20:22 network coverage algeria 35_-3 35_-2 35_-1 35_0 35_1 35_2 35_3 35_4 35_5 35_6 35_7 35_8 36_-3 36_-2 36_-1 36_0 36_1 36_2 36_3 36_4 36_5 36_6 36_7 36_8 37_3 37_4 37_5 37_6 37_7 37_8
-05:20:52 network coverage failed algeria URI malformed
-05:20:52 network coverage portugal 35_-11 35_-10 36_-11 36_-10 36_-9 36_-8 37_-11 37_-10 37_-9 37_-8 38_-11 38_-10 38_-9 38_-8 39_-11 39_-10 39_-9 39_-8 40_-11 40_-10 40_-9 40_-8 40_-7 41_-11 41_-10 41_-9 41_-8 41_-7
-05:24:11 network coverage failed portugal URI malformed
+06:18:32 saved on disk - committed and pushed with the next 2-hourly push
+06:18:32 == 28/208 alberta+us/montana 4 rides
+06:18:34 downloading alberta 336 MB
+06:18:57 downloading us/montana 97 MB
+06:19:04 merging alberta+us/montana
+06:19:16 osrm-extract
+06:20:07 osrm-partition
+06:20:23 osrm-customize
+06:20:33 alberta+us/montana done: 0 roads, 4 refused · catalogue now 1092 roads
+06:20:34 saved on disk - committed and pushed with the next 2-hourly push
+06:20:34 saved on disk - committed and pushed with the next 2-hourly push
+06:20:34 == 29/208 castilla-y-leon+la-rioja 4 rides
+06:20:36 downloading castilla-y-leon 171 MB
+06:20:48 downloading la-rioja 14 MB
+06:20:52 merging castilla-y-leon+la-rioja
+06:20:57 osrm-extract
+06:21:23 osrm-partition
+06:21:27 osrm-customize
+06:21:31 castilla-y-leon+la-rioja done: 1 roads, 3 refused · catalogue now 1093 roads
+06:21:31 saved on disk - committed and pushed with the next 2-hourly push
+06:21:31 saved on disk - committed and pushed with the next 2-hourly push
+06:21:31 == 30/208 gelderland+utrecht 4 rides
+06:21:33 downloading gelderland 187 MB
+06:21:47 downloading utrecht 95 MB
+06:21:59 merging gelderland+utrecht
+06:22:08 osrm-extract
+06:22:29 osrm-partition
+06:22:33 osrm-customize
+06:22:36 gelderland+utrecht done: 2 roads, 2 refused · catalogue now 1095 roads
+06:22:36 saved on disk - committed and pushed with the next 2-hourly push
+06:22:36 saved on disk - committed and pushed with the next 2-hourly push
+06:22:36 == 31/208 latvia+lithuania 4 rides
+06:22:38 downloading latvia 135 MB
+06:22:48 downloading lithuania 214 MB
+06:23:10 merging latvia+lithuania
+06:23:21 osrm-extract
+06:24:04 osrm-partition
+06:24:16 osrm-customize
+06:24:22 latvia+lithuania done: 2 roads, 2 refused · catalogue now 1097 roads
+06:24:22 saved on disk - committed and pushed with the next 2-hourly push
+06:24:22 saved on disk - committed and pushed with the next 2-hourly push
+06:24:22 == 32/208 israel-and-palestine+jordan 4 rides
+06:24:24 downloading israel-and-palestine 116 MB
+06:24:33 downloading jordan 30 MB
+06:24:37 merging israel-and-palestine+jordan
+06:24:41 osrm-extract
+06:25:09 osrm-partition
+06:25:18 osrm-customize
+06:25:24 israel-and-palestine+jordan done: 0 roads, 4 refused · catalogue now 1097 roads
+06:25:25 saved on disk - committed and pushed with the next 2-hourly push
+06:25:25 saved on disk - committed and pushed with the next 2-hourly push
+06:25:25 == 33/208 durham+tyne-and-wear 4 rides
+06:25:27 downloading durham 23 MB
+06:25:30 downloading tyne-and-wear 19 MB
+06:25:33 merging durham+tyne-and-wear
+06:25:34 osrm-extract
+06:25:41 osrm-partition
+06:25:42 osrm-customize
+06:25:45 durham+tyne-and-wear done: 3 roads, 1 refused · catalogue now 1100 roads
+06:25:45 saved on disk - committed and pushed with the next 2-hourly push
+06:25:45 saved on disk - committed and pushed with the next 2-hourly push
+06:25:45 == 34/208 argentina+uruguay 4 rides
+06:25:47 downloading argentina 416 MB
+06:26:48 downloading uruguay 54 MB
+06:26:53 merging argentina+uruguay
+06:27:07 osrm-extract
+06:28:42 osrm-partition
+06:29:36 osrm-customize
+06:30:14 argentina+uruguay done: 0 roads, 4 refused · catalogue now 1100 roads
+06:30:15 saved on disk - committed and pushed with the next 2-hourly push
+06:30:15 saved on disk - committed and pushed with the next 2-hourly push
+06:30:15 == 35/208 denmark+mecklenburg-vorpommern 4 rides
+06:30:18 downloading denmark 475 MB
+06:31:00 downloading mecklenburg-vorpommern 123 MB
+06:31:12 merging denmark+mecklenburg-vorpommern
+06:31:29 osrm-extract
+06:32:38 osrm-partition
+06:33:03 osrm-customize
+06:33:12 denmark+mecklenburg-vorpommern done: 0 roads, 4 refused · catalogue now 1100 roads
+06:33:12 saved on disk - committed and pushed with the next 2-hourly push
+06:33:12 saved on disk - committed and pushed with the next 2-hourly push
+06:33:12 == 36/208 albania+kosovo 4 rides
+06:33:14 downloading albania 52 MB
+06:33:19 downloading kosovo 29 MB
+06:33:23 merging albania+kosovo
+06:33:25 osrm-extract
+06:33:40 osrm-partition
+06:33:43 osrm-customize
+06:33:46 albania+kosovo done: 0 roads, 4 refused · catalogue now 1100 roads
+06:33:47 saved on disk - committed and pushed with the next 2-hourly push
+06:33:47 saved on disk - committed and pushed with the next 2-hourly push
+06:33:47 == 37/208 merseyside+wales 4 rides
+06:33:49 downloading merseyside 24 MB
+06:33:53 downloading wales 145 MB
+06:34:03 merging merseyside+wales
+06:34:08 osrm-extract
+06:34:31 osrm-partition
+06:34:37 osrm-customize
+06:34:41 merseyside+wales done: 0 roads, 4 refused · catalogue now 1100 roads
+06:34:41 saved on disk - committed and pushed with the next 2-hourly push
+06:34:41 saved on disk - committed and pushed with the next 2-hourly push
+06:34:41 == 38/208 malopolskie+podkarpackie 4 rides
+06:34:43 downloading malopolskie 195 MB
+06:34:57 downloading podkarpackie 149 MB
+06:35:07 merging malopolskie+podkarpackie
+06:35:17 osrm-extract
+06:35:58 osrm-partition
+06:36:09 osrm-customize
+06:36:14 malopolskie+podkarpackie done: 2 roads, 2 refused · catalogue now 1102 roads
+06:36:14 saved on disk - committed and pushed with the next 2-hourly push
+06:36:15 saved on disk - committed and pushed with the next 2-hourly push
+06:36:15 == 39/208 oberbayern+tuebingen-regbez 4 rides
+06:36:17 downloading oberbayern 249 MB
+06:36:33 downloading tuebingen-regbez 123 MB
+06:36:42 merging oberbayern+tuebingen-regbez
+06:36:53 osrm-extract
+06:37:37 osrm-partition
+06:37:49 osrm-customize
+06:37:55 oberbayern+tuebingen-regbez done: 0 roads, 4 refused · catalogue now 1102 roads
+06:37:56 saved on disk - committed and pushed with the next 2-hourly push
+06:37:56 saved on disk - committed and pushed with the next 2-hourly push
+06:37:56 == 40/208 norcal+socal 3 rides
+06:37:57 norcal is 627 MB - its rides go to its sub-regions
+06:37:57 saved on disk - committed and pushed with the next 2-hourly push
+06:37:57 == 41/209 lesotho+south-africa 3 rides
+06:37:59 downloading lesotho 122 MB
+06:38:09 downloading south-africa 405 MB
+06:38:36 merging lesotho+south-africa
+06:38:52 osrm-extract
+06:40:49 osrm-partition
+06:41:45 osrm-customize
+06:42:06 lesotho+south-africa done: 0 roads, 3 refused · catalogue now 1102 roads
+06:42:07 saved on disk - committed and pushed with the next 2-hourly push
+06:42:07 saved on disk - committed and pushed with the next 2-hourly push
+06:42:07 == 42/209 bourgogne+franche-comte 3 rides
+06:42:09 downloading bourgogne 192 MB
+06:42:22 downloading franche-comte 119 MB
+06:42:31 merging bourgogne+franche-comte
+06:42:41 osrm-extract
+06:43:14 osrm-partition
+06:43:21 osrm-customize
+06:43:25 bourgogne+franche-comte done: 2 roads, 1 refused · catalogue now 1104 roads
+06:43:26 saved on disk - committed and pushed with the next 2-hourly push
+06:43:26 saved on disk - committed and pushed with the next 2-hourly push
+06:43:26 == 43/209 fujian+jiangxi 3 rides
+06:43:28 downloading fujian 41 MB
+06:43:32 downloading jiangxi 48 MB
+06:43:37 merging fujian+jiangxi
+06:43:39 osrm-extract
+06:44:01 osrm-partition
+06:44:08 osrm-customize
+06:44:13 fujian+jiangxi done: 0 roads, 3 refused · catalogue now 1104 roads
+06:44:14 saved on disk - committed and pushed with the next 2-hourly push
+06:44:14 saved on disk - committed and pushed with the next 2-hourly push
+06:44:14 == 44/209 montenegro+serbia 3 rides
+06:44:16 downloading montenegro 33 MB
+06:44:19 downloading serbia 232 MB
+06:44:38 merging montenegro+serbia
+06:44:46 osrm-extract
+06:45:24 osrm-partition
+06:45:31 osrm-customize
+06:45:35 montenegro+serbia done: 0 roads, 3 refused · catalogue now 1104 roads
+06:45:35 saved on disk - committed and pushed with the next 2-hourly push
+06:45:36 saved on disk - committed and pushed with the next 2-hourly push
+06:45:36 == 45/209 jihomoravsky+zlinsky 3 rides
+06:45:38 downloading jihomoravsky 88 MB
+06:45:45 downloading zlinsky 51 MB
+06:45:54 merging jihomoravsky+zlinsky
+06:45:59 osrm-extract
+06:46:09 osrm-partition
+06:46:11 osrm-customize
+06:46:13 jihomoravsky+zlinsky done: 3 roads, 0 refused · catalogue now 1107 roads
+06:46:13 saved on disk - committed and pushed with the next 2-hourly push
+06:46:13 saved on disk - committed and pushed with the next 2-hourly push
+06:46:13 == 46/209 congo-democratic-republic+rwanda 3 rides
+06:46:15 downloading congo-democratic-republic 397 MB
+06:46:42 downloading rwanda 66 MB
+06:46:48 merging congo-democratic-republic+rwanda
+06:47:03 osrm-extract
+06:48:03 osrm-partition
+06:48:12 osrm-customize
+06:48:22 congo-democratic-republic+rwanda done: 0 roads, 3 refused · catalogue now 1107 roads
+06:48:22 saved on disk - committed and pushed with the next 2-hourly push
+06:48:23 saved on disk - committed and pushed with the next 2-hourly push
+06:48:23 == 47/209 kosovo+macedonia 3 rides
+06:48:25 downloading kosovo 29 MB
+06:48:28 downloading macedonia 29 MB
+06:48:31 merging kosovo+macedonia
+06:48:33 osrm-extract
+06:48:43 osrm-partition
+06:48:45 osrm-customize
+06:48:48 kosovo+macedonia done: 0 roads, 3 refused · catalogue now 1107 roads
+06:48:48 saved on disk - committed and pushed with the next 2-hourly push
+06:48:48 saved on disk - committed and pushed with the next 2-hourly push
+06:48:48 == 48/209 niederbayern+oberpfalz 3 rides
+06:48:51 downloading niederbayern 91 MB
+06:48:58 downloading oberpfalz 82 MB
+06:49:05 merging niederbayern+oberpfalz
+06:49:10 osrm-extract
+06:49:31 osrm-partition
+06:49:35 osrm-customize
+06:49:39 niederbayern+oberpfalz done: 3 roads, 0 refused · catalogue now 1110 roads
+06:49:40 saved on disk - committed and pushed with the next 2-hourly push
+06:49:40 saved on disk - committed and pushed with the next 2-hourly push
+06:49:40 == 49/209 kazakhstan+uzbekistan 3 rides
+06:49:42 downloading kazakhstan 216 MB
+06:49:57 downloading uzbekistan 120 MB
+06:50:08 merging kazakhstan+uzbekistan
+06:50:17 osrm-extract
+06:51:20 osrm-partition
+06:51:44 osrm-customize
+06:51:58 kazakhstan+uzbekistan done: 0 roads, 3 refused · catalogue now 1110 roads
+06:51:58 saved on disk - committed and pushed with the next 2-hourly push
+06:51:59 saved on disk - committed and pushed with the next 2-hourly push
+06:51:59 == 50/209 romania+serbia 3 rides
+06:52:00 downloading romania 319 MB
+06:52:22 downloading serbia 232 MB
+06:52:38 merging romania+serbia
+06:52:54 osrm-extract
+06:54:18 osrm-partition
+06:54:38 osrm-customize
+06:54:47 romania+serbia done: 0 roads, 3 refused · catalogue now 1110 roads
+06:54:47 saved on disk - committed and pushed with the next 2-hourly push
+06:54:47 saved on disk - committed and pushed with the next 2-hourly push
+06:54:47 == 51/209 niedersachsen+thueringen 3 rides
+06:54:49 downloading niedersachsen 487 MB
+06:55:22 downloading thueringen 153 MB
+06:55:33 merging niedersachsen+thueringen
+06:55:52 osrm-extract
+06:57:06 osrm-partition
+06:57:31 osrm-customize
+06:57:40 niedersachsen+thueringen done: 0 roads, 3 refused · catalogue now 1110 roads
+06:57:41 saved on disk - committed and pushed with the next 2-hourly push
+06:57:41 saved on disk - committed and pushed with the next 2-hourly push
+06:57:41 == 52/209 thueringen+unterfranken 3 rides
+06:57:43 downloading thueringen 153 MB
+06:57:54 downloading unterfranken 100 MB
+06:58:04 merging thueringen+unterfranken
+06:58:11 osrm-extract
+06:58:38 osrm-partition
+06:58:43 osrm-customize
+06:58:46 thueringen+unterfranken done: 3 roads, 0 refused · catalogue now 1113 roads
+06:58:46 saved on disk - committed and pushed with the next 2-hourly push
+06:58:47 saved on disk - committed and pushed with the next 2-hourly push
+06:58:47 == 53/209 niedersachsen+sachsen-anhalt 3 rides
+06:58:49 niedersachsen+sachsen-anhalt together are too large for this machine - left to the live router
+06:58:49 saved on disk - committed and pushed with the next 2-hourly push
+06:58:49 == 54/209 iran+iraq 3 rides
+06:58:51 downloading iran 219 MB
+06:59:06 downloading iraq 88 MB
+06:59:15 merging iran+iraq
+06:59:23 osrm-extract
+07:01:13 osrm-partition
+07:02:29 osrm-customize
+07:02:55 iran+iraq done: 0 roads, 3 refused · catalogue now 1113 roads
+07:02:56 saved on disk - committed and pushed with the next 2-hourly push
+07:02:56 saved on disk - committed and pushed with the next 2-hourly push
+07:02:56 == 55/209 ostlandet+vestlandet 2 rides
+07:02:58 ostlandet+vestlandet together are too large for this machine - left to the live router
+07:02:59 saved on disk - committed and pushed with the next 2-hourly push
+07:02:59 == 56/209 flevoland+friesland 2 rides
+07:03:01 downloading flevoland 35 MB
+07:03:05 downloading friesland 85 MB
+07:03:12 merging flevoland+friesland
+07:03:15 osrm-extract
+07:03:25 osrm-partition
+07:03:26 osrm-customize
+07:03:28 flevoland+friesland done: 0 roads, 2 refused · catalogue now 1113 roads
+07:03:28 saved on disk - committed and pushed with the next 2-hourly push
+07:03:29 saved on disk - committed and pushed with the next 2-hourly push
+07:03:29 == 57/209 anhui+henan 2 rides
+07:03:31 downloading anhui 42 MB
+07:03:35 downloading henan 49 MB
+07:03:41 merging anhui+henan
+07:03:44 osrm-extract
+07:04:10 osrm-partition
+07:04:25 osrm-customize
+07:04:36 anhui+henan done: 1 roads, 1 refused · catalogue now 1114 roads
+07:04:36 saved on disk - committed and pushed with the next 2-hourly push
+07:04:37 saved on disk - committed and pushed with the next 2-hourly push
+07:04:37 == 58/209 gelderland+noord-holland 2 rides
+07:04:38 downloading gelderland 187 MB
+07:04:57 downloading noord-holland 182 MB
+07:05:10 merging gelderland+noord-holland
+07:05:21 osrm-extract
+07:05:50 osrm-partition
+07:05:54 osrm-customize
+07:05:57 gelderland+noord-holland done: 0 roads, 2 refused · catalogue now 1114 roads
+07:05:58 saved on disk - committed and pushed with the next 2-hourly push
+07:05:58 saved on disk - committed and pushed with the next 2-hourly push
+07:05:58 == 59/209 drenthe+groningen 2 rides
+07:06:00 downloading drenthe 61 MB
+07:06:05 downloading groningen 54 MB
+07:06:14 merging drenthe+groningen
+07:06:18 osrm-extract
+07:06:27 osrm-partition
+07:06:28 osrm-customize
+07:06:31 drenthe+groningen done: 0 roads, 2 refused · catalogue now 1114 roads
+07:06:31 saved on disk - committed and pushed with the next 2-hourly push
+07:06:31 time limit near - the next run carries on with aragon+valencia
