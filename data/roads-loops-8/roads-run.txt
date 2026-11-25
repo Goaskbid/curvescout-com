@@ -1,8 +1,3 @@
-12:24:54 saved on disk - committed and pushed with the next 2-hourly push
-12:24:54 saved on disk - committed and pushed with the next 2-hourly push
-12:24:54 == 44/67 karlsruhe-regbez+mittelfranken+stuttgart-regbez 2 rides
-12:24:57 downloading karlsruhe-regbez 148 MB
-12:25:23 downloading mittelfranken 92 MB
 12:25:30 downloading stuttgart-regbez 203 MB
 12:26:13 merging karlsruhe-regbez+mittelfranken+stuttgart-regbez
 12:26:27 osrm-extract
@@ -298,3 +293,8 @@
 14:44:15 saved on disk - committed and pushed with the next 2-hourly push
 14:44:16 downloading italy 2151 MB
 15:06:25 == italy: 189 rides in 8 boxes
+15:19:56 italy second pass: 71 new roads, 118 refused · catalogue now 3307 roads
+15:20:00 downloading alps 2232 MB
+15:37:21 == alps: 162 rides in 6 boxes
+15:41:17 alps second pass: 14 new roads, 8 refused · catalogue now 3321 roads
+15:41:17 saved on disk - committed and pushed with the next 2-hourly push
