@@ -1,2 +1,72 @@
 15:42:00 rides in the catalogue: 9145
 15:42:00 reading the Geofabrik region index
+15:42:08 network coverage INCOMPLETE - the rides follow {"regionsWanted":170,"untouched":0,"squaresCovered":362,"complete":false,"done":89,"empty":2,"retry":0,"failed":79,"capped":0}
+15:42:08 6 router builds planned (0 single regions, 6 border crossings), 22 rides not yet done, 3 rides fit no region
+15:42:08 hessen+rheinland-pfalz+unterfranken left to the second pass (too large together)
+15:42:08 hungary+malopolskie+slovakia left to the second pass (too large together)
+15:42:08 hessen+karlsruhe-regbez+rheinland-pfalz left to the second pass (too large together)
+15:42:08 niedersachsen+sachsen-anhalt+thueringen left to the second pass (too large together)
+15:42:08 hessen+niedersachsen+thueringen left to the second pass (too large together)
+15:42:08 malopolskie+slaskie+slovakia left to the second pass (too large together)
+15:42:08 second pass: 3120 rides without a stored road - routed in small boxes cut from their region
+15:42:09 downloading alps 2232 MB
+15:53:36 == alps: 140 rides in 4 boxes
+16:03:24 alps second pass: 39 new roads, 101 refused · catalogue now 3360 roads
+16:03:25 saved on disk - committed and pushed with the next 2-hourly push
+16:03:25 downloading isole 207 MB
+16:04:57 == isole: 119 rides in 2 boxes
+16:06:28 isole second pass: 0 new roads, 119 refused · catalogue now 3360 roads
+16:06:28 saved on disk - committed and pushed with the next 2-hourly push
+16:06:29 downloading centro 370 MB
+16:09:31 == centro: 113 rides in 3 boxes
+16:13:37 centro second pass: 0 new roads, 113 refused · catalogue now 3360 roads
+16:13:38 saved on disk - committed and pushed with the next 2-hourly push
+16:13:38 downloading england 1638 MB
+16:21:35 == england: 109 rides in 5 boxes
+16:40:14 england second pass: 23 new roads, 86 refused · catalogue now 3383 roads
+16:40:14 saved on disk - committed and pushed with the next 2-hourly push
+16:40:14 downloading hessen 332 MB
+16:41:52 == hessen: 101 rides in 1 boxes
+16:43:05 hessen second pass: 0 new roads, 101 refused · catalogue now 3383 roads
+16:43:05 saved on disk - committed and pushed with the next 2-hourly push
+16:43:06 downloading sudeste 824 MB
+16:45:49 == sudeste: 88 rides in 4 boxes
+16:50:05 sudeste second pass: 7 new roads, 81 refused · catalogue now 3390 roads
+16:50:05 saved on disk - committed and pushed with the next 2-hourly push
+16:50:06 downloading ukraine 845 MB
+16:53:42 == ukraine: 74 rides in 4 boxes
+16:56:55 ukraine second pass: 1 new roads, 73 refused · catalogue now 3391 roads
+16:56:55 saved on disk - committed and pushed with the next 2-hourly push
+16:56:55 downloading bayern 819 MB
+17:00:53 == bayern: 72 rides in 2 boxes
+17:04:37 bayern second pass: 1 new roads, 71 refused · catalogue now 3392 roads
+17:04:37 saved on disk - committed and pushed with the next 2-hourly push
+17:04:38 downloading romania 319 MB
+17:06:18 downloading ukraine 845 MB
+17:12:23 == romania+ukraine: 70 rides in 2 boxes
+17:14:18 romania+ukraine second pass: 10 new roads, 60 refused · catalogue now 3402 roads
+17:14:19 saved on disk - committed and pushed with the next 2-hourly push
+17:14:19 downloading north-korea 89 MB
+17:14:58 downloading south-korea 279 MB
+17:16:53 == north-korea+south-korea: 65 rides in 1 boxes
+17:18:08 north-korea+south-korea second pass: 0 new roads, 65 refused · catalogue now 3402 roads
+17:18:08 saved on disk - committed and pushed with the next 2-hourly push
+17:18:08 downloading netherlands 1348 MB
+17:26:45 == netherlands: 64 rides in 2 boxes
+17:33:05 netherlands second pass: 9 new roads, 55 refused · catalogue now 3411 roads
+17:33:05 saved on disk - committed and pushed with the next 2-hourly push
+17:33:06 downloading sud 405 MB
+17:34:16 == sud: 60 rides in 3 boxes
+17:37:16 sud second pass: 0 new roads, 60 refused · catalogue now 3411 roads
+17:37:16 saved on disk - committed and pushed with the next 2-hourly push
+17:37:16 downloading israel-and-palestine 116 MB
+17:38:07 downloading lebanon 50 MB
+17:38:31 == israel-and-palestine+lebanon: 60 rides in 1 boxes
+17:39:26 israel-and-palestine+lebanon second pass: 0 new roads, 60 refused · catalogue now 3411 roads
+17:39:26 saved on disk - committed and pushed with the next 2-hourly push
+17:39:27 downloading peru 246 MB
+17:40:51 == peru: 60 rides in 2 boxes
+17:41:31 peru second pass: 0 new roads, 60 refused · catalogue now 3411 roads
+17:41:31 saved on disk - committed and pushed with the next 2-hourly push
+17:41:32 downloading nord-pas-de-calais 231 MB
+17:42:53 == nord-pas-de-calais: 56 rides in 1 boxes
