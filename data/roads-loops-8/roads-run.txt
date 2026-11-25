@@ -1,5 +1,300 @@
-22:46:23 rides in the catalogue: 9145
-22:46:23 reading the Geofabrik region index
-22:46:28 network coverage: qualifying on auvergne 44_2 44_3 45_2 45_3 45_4 46_2 46_3
-22:46:50 network (coverage): 7 squares written, 0 capped, 9 ways refused (access/class/direction), 1984 turn restrictions kept, 23 via-way restrictions not encoded
-22:46:52 network coverage: qualified on auvergne
+23:31:32 network coverage retry zuid-holland URI malformed
+23:31:32 network coverage basse-normandie 48_-2 48_-1 48_0 49_-2 49_-1 49_0
+23:32:19 network coverage retry basse-normandie URI malformed
+23:32:19 network coverage flevoland 52_5
+23:32:31 network coverage retry flevoland URI malformed
+23:32:31 network coverage jihomoravsky 49_16 49_17
+23:32:51 network (coverage): 2 squares written, 0 capped, 22 ways refused (access/class/direction), 1101 turn restrictions kept, 60 via-way restrictions not encoded
+23:32:51 saved on disk - committed and pushed with the next 2-hourly push
+23:32:51 network coverage niedersachsen 51_9 51_10 52_6 52_7 52_8 52_9 52_10 53_6 53_7 53_8 53_9 53_10 53_11 54_7
+23:35:30 network coverage retry niedersachsen URI malformed
+23:35:30 network coverage liberecky 50_14 50_15
+23:35:47 network (coverage): 2 squares written, 0 capped, 0 ways refused (access/class/direction), 373 turn restrictions kept, 10 via-way restrictions not encoded
+23:35:47 saved on disk - committed and pushed with the next 2-hourly push
+23:35:47 network coverage pardubicky 49_16 50_16
+23:36:06 network (coverage): 2 squares written, 0 capped, 24 ways refused (access/class/direction), 792 turn restrictions kept, 91 via-way restrictions not encoded
+23:36:06 saved on disk - committed and pushed with the next 2-hourly push
+23:36:06 network coverage drenthe 52_6 53_6
+23:36:29 network coverage retry drenthe URI malformed
+23:36:29 network coverage kralovehradecky 50_15 50_16
+23:36:50 network (coverage): 2 squares written, 0 capped, 61 ways refused (access/class/direction), 418 turn restrictions kept, 10 via-way restrictions not encoded
+23:36:50 saved on disk - committed and pushed with the next 2-hourly push
+23:36:50 network coverage bosnia-herzegovina 42_18 43_16 43_17 43_18 43_19 44_15 44_16 44_17 44_18 44_19 45_15 45_16 45_17
+23:37:22 network (coverage): 13 squares written, 0 capped, 114 ways refused (access/class/direction), 811 turn restrictions kept, 21 via-way restrictions not encoded
+23:37:23 saved on disk - committed and pushed with the next 2-hourly push
+23:37:23 network coverage noord-holland 52_4 52_5 53_4
+23:37:48 network coverage retry noord-holland URI malformed
+23:37:48 network coverage kent 51_0 51_1
+23:37:57 network coverage retry kent URI malformed
+23:37:57 network coverage east-sussex 50_0
+23:38:07 network coverage retry east-sussex URI malformed
+23:38:07 network coverage groningen 53_6 53_7
+23:38:15 network (coverage): 2 squares written, 0 capped, 2 ways refused (access/class/direction), 627 turn restrictions kept, 26 via-way restrictions not encoded
+23:38:15 saved on disk - committed and pushed with the next 2-hourly push
+23:38:15 network coverage brandenburg 51_13 51_14 52_12 52_13 52_14 53_11 53_12 53_13 53_14
+23:38:58 network coverage retry brandenburg URI malformed
+23:38:58 network coverage friesland 52_5 53_5 53_6
+23:39:29 network coverage retry friesland URI malformed
+23:39:29 network coverage navarra 42_-3 43_-2
+23:39:35 network coverage retry navarra URI malformed
+23:39:35 network coverage zlinsky 49_17 49_18
+23:39:44 network (coverage): 2 squares written, 0 capped, 5 ways refused (access/class/direction), 694 turn restrictions kept, 13 via-way restrictions not encoded
+23:39:45 saved on disk - committed and pushed with the next 2-hourly push
+23:39:45 network coverage islas-baleares 38_0 38_1 38_2 38_3 39_0 39_1 39_2 39_3 39_4 40_2 40_3 40_4
+23:39:52 network (coverage): 7 squares written, 0 capped, 0 ways refused (access/class/direction), 1629 turn restrictions kept, 5 via-way restrictions not encoded
+23:39:53 saved on disk - committed and pushed with the next 2-hourly push
+23:39:53 network coverage olomoucky 49_16 49_17 50_16 50_17
+23:40:02 network (coverage): 4 squares written, 0 capped, 6 ways refused (access/class/direction), 396 turn restrictions kept, 63 via-way restrictions not encoded
+23:40:02 saved on disk - committed and pushed with the next 2-hourly push
+23:40:02 network coverage dolnoslaskie 50_15 50_16 50_17 51_15 51_16 51_17
+23:40:27 network (coverage): 6 squares written, 0 capped, 47 ways refused (access/class/direction), 1948 turn restrictions kept, 215 via-way restrictions not encoded
+23:40:28 saved on disk - committed and pushed with the next 2-hourly push
+23:40:28 network coverage west-sussex 50_-1 51_-1
+23:40:37 network coverage retry west-sussex URI malformed
+23:40:37 network coverage essex 51_0 51_1
+23:40:54 network (coverage): 2 squares written, 0 capped, 5 ways refused (access/class/direction), 450 turn restrictions kept, 43 via-way restrictions not encoded
+23:40:54 saved on disk - committed and pushed with the next 2-hourly push
+23:40:54 network coverage hamburg 53_9 53_10
+23:41:03 network coverage retry hamburg URI malformed
+23:41:03 network coverage greater-london 51_-1 51_0
+23:41:21 network coverage retry greater-london URI malformed
+23:41:21 network coverage surrey 51_-1
+23:41:36 network coverage retry surrey URI malformed
+23:41:36 network coverage suffolk 52_0 52_1
+23:41:44 network (coverage): 2 squares written, 0 capped, 0 ways refused (access/class/direction), 209 turn restrictions kept, 17 via-way restrictions not encoded
+23:41:44 saved on disk - committed and pushed with the next 2-hourly push
+23:41:44 network coverage pais-vasco 42_-3 43_-4 43_-3 43_-2
+23:42:06 network (coverage): 4 squares written, 0 capped, 8 ways refused (access/class/direction), 3443 turn restrictions kept, 63 via-way restrictions not encoded
+23:42:07 saved on disk - committed and pushed with the next 2-hourly push
+23:42:07 network coverage sud 41_18
+23:44:10 network coverage retry sud URI malformed
+23:44:10 network coverage moravskoslezky 49_17 49_18 50_17
+23:44:34 network (coverage): 3 squares written, 0 capped, 1 ways refused (access/class/direction), 863 turn restrictions kept, 62 via-way restrictions not encoded
+23:44:35 saved on disk - committed and pushed with the next 2-hourly push
+23:44:35 network coverage isole 35_11 35_13 36_13 37_11 38_7 38_10 38_11 39_7 39_10 39_11 39_12 39_13 39_14 40_7 40_10 40_11 41_7 41_10
+23:45:21 network coverage retry isole URI malformed
+23:45:21 network coverage lubuskie 51_14 51_15 51_16 52_14 52_15
+23:45:43 network (coverage): 5 squares written, 0 capped, 14 ways refused (access/class/direction), 612 turn restrictions kept, 54 via-way restrictions not encoded
+23:45:44 saved on disk - committed and pushed with the next 2-hourly push
+23:45:44 network coverage hungary 45_17 45_18 46_17 46_18 46_19 46_20 46_21 47_18 47_19 47_20 47_21 47_22 48_19 48_20 48_21 48_22
+23:46:56 network coverage retry hungary URI malformed
+23:46:56 network coverage la-rioja 42_-3
+23:47:03 network (coverage): 1 squares written, 0 capped, 4 ways refused (access/class/direction), 876 turn restrictions kept, 7 via-way restrictions not encoded
+23:47:03 saved on disk - committed and pushed with the next 2-hourly push
+23:47:03 network coverage hertfordshire 51_-1 51_0
+23:47:11 network (coverage): 2 squares written, 0 capped, 11 ways refused (access/class/direction), 301 turn restrictions kept, 27 via-way restrictions not encoded
+23:47:11 saved on disk - committed and pushed with the next 2-hourly push
+23:47:11 network coverage opolskie 50_17 50_18
+23:47:24 network (coverage): 2 squares written, 0 capped, 5 ways refused (access/class/direction), 658 turn restrictions kept, 55 via-way restrictions not encoded
+23:47:24 saved on disk - committed and pushed with the next 2-hourly push
+23:47:24 network coverage hampshire 50_-2 51_-2 51_-1
+23:47:35 network coverage retry hampshire URI malformed
+23:47:35 network coverage guernsey-jersey 49_-4 49_-3 49_-2
+23:47:38 network (coverage): 1 squares written, 0 capped, 1 ways refused (access/class/direction), 37 turn restrictions kept, 4 via-way restrictions not encoded
+23:47:38 saved on disk - committed and pushed with the next 2-hourly push
+23:47:38 network coverage bretagne 47_-6 47_-5 47_-4 47_-3 47_-2 48_-6 48_-5 48_-4 48_-3 48_-2 49_-4 49_-3
+23:48:35 network coverage retry bretagne URI malformed
+23:48:35 network coverage schleswig-holstein 53_9 53_10 54_7 54_8 54_9 54_10 54_11
+23:49:15 network coverage retry schleswig-holstein URI malformed
+23:49:15 network coverage berkshire 51_-2 51_-1
+23:49:21 network (coverage): 2 squares written, 0 capped, 21 ways refused (access/class/direction), 381 turn restrictions kept, 49 via-way restrictions not encoded
+23:49:21 saved on disk - committed and pushed with the next 2-hourly push
+23:49:21 network coverage norfolk 52_0 52_1 53_0 53_1
+23:49:35 network coverage retry norfolk URI malformed
+23:49:35 network coverage bedfordshire 51_-1 52_-1
+23:49:41 network (coverage): 2 squares written, 0 capped, 7 ways refused (access/class/direction), 119 turn restrictions kept, 8 via-way restrictions not encoded
+23:49:42 saved on disk - committed and pushed with the next 2-hourly push
+23:49:42 network coverage cambridgeshire 52_-1 52_0
+23:49:51 network coverage retry cambridgeshire URI malformed
+23:49:51 network coverage buckinghamshire 51_-1
+23:49:59 network (coverage): 1 squares written, 0 capped, 4 ways refused (access/class/direction), 198 turn restrictions kept, 57 via-way restrictions not encoded
+23:49:59 saved on disk - committed and pushed with the next 2-hourly push
+23:49:59 network coverage montenegro 41_18 41_19 42_18 42_19 42_20 43_18 43_19
+23:50:12 network (coverage): 6 squares written, 0 capped, 19 ways refused (access/class/direction), 283 turn restrictions kept, 36 via-way restrictions not encoded
+23:50:13 saved on disk - committed and pushed with the next 2-hourly push
+23:50:13 network coverage slovakia 47_18 48_18 48_19 48_20 48_21 48_22 49_18 49_19 49_20 49_21 49_22
+23:51:08 network coverage retry slovakia URI malformed
+23:51:08 network coverage mecklenburg-vorpommern 53_10 53_11 53_12 53_13 53_14 54_11 54_12 54_13 54_14
+23:51:42 network coverage retry mecklenburg-vorpommern URI malformed
+23:51:42 network coverage dorset 50_-3 50_-2
+23:51:53 network coverage retry dorset URI malformed
+23:51:53 network coverage valencia 38_-1 38_0 39_0 39_1 40_1
+23:52:29 network coverage retry valencia URI malformed
+23:52:29 network coverage oxfordshire 51_-2
+23:52:36 network coverage retry oxfordshire URI malformed
+23:52:36 network coverage wiltshire 51_-3 51_-2
+23:52:48 network (coverage): 2 squares written, 0 capped, 4 ways refused (access/class/direction), 662 turn restrictions kept, 102 via-way restrictions not encoded
+23:52:48 saved on disk - committed and pushed with the next 2-hourly push
+23:52:48 network coverage slaskie 49_18 49_19 50_18 50_19
+23:53:33 network coverage retry slaskie URI malformed
+23:53:33 network coverage cantabria 43_-5 43_-4
+23:53:44 network (coverage): 2 squares written, 0 capped, 1 ways refused (access/class/direction), 1402 turn restrictions kept, 61 via-way restrictions not encoded
+23:53:45 saved on disk - committed and pushed with the next 2-hourly push
+23:53:45 network coverage northamptonshire 52_-2 52_-1
+23:53:52 network coverage retry northamptonshire URI malformed
+23:53:52 network coverage gloucestershire 51_-3 51_-2
+23:54:05 network coverage retry gloucestershire URI malformed
+23:54:05 network coverage wielkopolskie 51_16 51_17 51_18 52_15 52_16 52_17 52_18 53_16 53_17
+23:54:26 network (coverage): 9 squares written, 0 capped, 28 ways refused (access/class/direction), 1968 turn restrictions kept, 233 via-way restrictions not encoded
+23:54:26 saved on disk - committed and pushed with the next 2-hourly push
+23:54:26 network coverage lincolnshire 52_-1 52_0 53_-1 53_0
+23:54:42 network (coverage): 4 squares written, 0 capped, 5 ways refused (access/class/direction), 300 turn restrictions kept, 89 via-way restrictions not encoded
+23:54:42 saved on disk - committed and pushed with the next 2-hourly push
+23:54:42 network coverage warwickshire 52_-2
+23:54:48 network (coverage): 1 squares written, 0 capped, 4 ways refused (access/class/direction), 201 turn restrictions kept, 22 via-way restrictions not encoded
+23:54:48 saved on disk - committed and pushed with the next 2-hourly push
+23:54:48 network coverage serbia 42_21 42_22 43_19 43_20 43_21 43_22 44_19 44_20 44_21 44_22 45_19 45_20 45_21
+23:55:18 network (coverage): 13 squares written, 0 capped, 276 ways refused (access/class/direction), 3832 turn restrictions kept, 110 via-way restrictions not encoded
+23:55:19 saved on disk - committed and pushed with the next 2-hourly push
+23:55:19 network coverage leicestershire 52_-2 52_-1
+23:55:28 network (coverage): 2 squares written, 0 capped, 8 ways refused (access/class/direction), 261 turn restrictions kept, 92 via-way restrictions not encoded
+23:55:29 saved on disk - committed and pushed with the next 2-hourly push
+23:55:29 network coverage somerset 50_-3 51_-4 51_-3
+23:55:47 network coverage retry somerset URI malformed
+23:55:47 network coverage malopolskie 49_19 49_20 49_21 50_19 50_20
+23:56:48 network (coverage): 5 squares written, 0 capped, 86 ways refused (access/class/direction), 1423 turn restrictions kept, 217 via-way restrictions not encoded
+23:56:48 saved on disk - committed and pushed with the next 2-hourly push
+23:56:48 network coverage zachodniopomorskie 52_14 52_15 53_14 53_15 53_16 54_14 54_15 54_16
+23:57:01 network coverage retry zachodniopomorskie URI malformed
+23:57:01 network coverage west-midlands 52_-3 52_-2
+23:57:17 network coverage retry west-midlands URI malformed
+23:57:17 network coverage worcestershire 52_-3
+23:57:22 network (coverage): 1 squares written, 0 capped, 9 ways refused (access/class/direction), 74 turn restrictions kept, 6 via-way restrictions not encoded
+23:57:22 saved on disk - committed and pushed with the next 2-hourly push
+23:57:22 network coverage devon 50_-5 50_-4 51_-5 51_-4
+23:57:36 network (coverage): 4 squares written, 0 capped, 14 ways refused (access/class/direction), 610 turn restrictions kept, 78 via-way restrictions not encoded
+23:57:36 saved on disk - committed and pushed with the next 2-hourly push
+23:57:36 network coverage nottinghamshire 52_-2 53_-2 53_-1
+23:57:43 network (coverage): 3 squares written, 0 capped, 3 ways refused (access/class/direction), 589 turn restrictions kept, 93 via-way restrictions not encoded
+23:57:44 saved on disk - committed and pushed with the next 2-hourly push
+23:57:44 network coverage kosovo 42_20 42_21 43_20
+23:57:54 network (coverage): 3 squares written, 0 capped, 2 ways refused (access/class/direction), 140 turn restrictions kept, 46 via-way restrictions not encoded
+23:57:54 saved on disk - committed and pushed with the next 2-hourly push
+23:57:54 network coverage herefordshire 52_-3
+23:57:58 network (coverage): 1 squares written, 0 capped, 4 ways refused (access/class/direction), 29 turn restrictions kept, 4 via-way restrictions not encoded
+23:57:59 saved on disk - committed and pushed with the next 2-hourly push
+23:57:59 network coverage albania 39_20 40_19 40_20 41_19 41_20 42_19 42_20
+23:58:08 network (coverage): 7 squares written, 0 capped, 4 ways refused (access/class/direction), 437 turn restrictions kept, 4 via-way restrictions not encoded
+23:58:08 saved on disk - committed and pushed with the next 2-hourly push
+23:58:08 network coverage castilla-y-leon 40_-7 40_-6 40_-5 41_-7 41_-6 41_-5 41_-4 42_-7 42_-6 42_-5 42_-4 43_-5
+23:58:31 network (coverage): 12 squares written, 0 capped, 28 ways refused (access/class/direction), 14444 turn restrictions kept, 170 via-way restrictions not encoded
+23:58:32 saved on disk - committed and pushed with the next 2-hourly push
+23:58:32 network coverage lodzkie 51_18 51_19 51_20 52_19
+23:59:11 network coverage retry lodzkie URI malformed
+23:59:11 network coverage derbyshire 52_-2 53_-2
+23:59:25 network coverage retry derbyshire URI malformed
+23:59:25 network coverage staffordshire 52_-3 52_-2 53_-3 53_-2
+23:59:37 network (coverage): 4 squares written, 0 capped, 14 ways refused (access/class/direction), 195 turn restrictions kept, 39 via-way restrictions not encoded
+23:59:37 saved on disk - committed and pushed with the next 2-hourly push
+23:59:37 network coverage east-yorkshire-with-hull 53_-1 53_0 54_-1
+23:59:42 network (coverage): 3 squares written, 0 capped, 5 ways refused (access/class/direction), 81 turn restrictions kept, 11 via-way restrictions not encoded
+23:59:42 saved on disk - committed and pushed with the next 2-hourly push
+23:59:42 network coverage madrid 40_-5 40_-4
+00:00:12 network (coverage): 2 squares written, 0 capped, 61 ways refused (access/class/direction), 5395 turn restrictions kept, 53 via-way restrictions not encoded
+00:00:13 saved on disk - committed and pushed with the next 2-hourly push
+00:00:13 network coverage south-yorkshire 53_-2
+00:00:30 network (coverage): 1 squares written, 0 capped, 18 ways refused (access/class/direction), 696 turn restrictions kept, 69 via-way restrictions not encoded
+00:00:30 saved on disk - committed and pushed with the next 2-hourly push
+00:00:30 network coverage asturias 43_-7 43_-6 43_-5
+00:00:44 network (coverage): 3 squares written, 0 capped, 3 ways refused (access/class/direction), 2696 turn restrictions kept, 28 via-way restrictions not encoded
+00:00:45 saved on disk - committed and pushed with the next 2-hourly push
+00:00:45 network coverage shropshire 52_-4 52_-3
+00:00:57 network coverage retry shropshire URI malformed
+00:00:57 network coverage castilla-la-mancha 38_-5 38_-4 38_-3 38_-2 39_-6 39_-5 39_-4 39_-3 40_-5 40_-4 40_-3 41_-4
+00:01:50 network coverage retry castilla-la-mancha URI malformed
+00:01:50 network coverage swietokrzyskie 50_19 50_20 50_21 51_20
+00:02:34 network (coverage): 4 squares written, 0 capped, 34 ways refused (access/class/direction), 622 turn restrictions kept, 91 via-way restrictions not encoded
+00:02:35 saved on disk - committed and pushed with the next 2-hourly push
+00:02:35 network coverage kujawsko-pomorskie 52_17 52_18 52_19 53_17 53_18 53_19
+00:03:09 network coverage retry kujawsko-pomorskie URI malformed
+00:03:09 network coverage west-yorkshire 53_-2
+00:03:28 network coverage retry west-yorkshire URI malformed
+00:03:28 network coverage cheshire 53_-3
+00:03:42 network coverage retry cheshire URI malformed
+00:03:42 network coverage cornwall 49_-7 49_-6 50_-7 50_-6 50_-5
+00:04:02 network (coverage): 4 squares written, 0 capped, 5 ways refused (access/class/direction), 118 turn restrictions kept, 5 via-way restrictions not encoded
+00:04:03 saved on disk - committed and pushed with the next 2-hourly push
+00:04:03 network coverage murcia 37_-2 37_-1 38_-3 38_-2
+00:04:22 network (coverage): 4 squares written, 0 capped, 4 ways refused (access/class/direction), 2052 turn restrictions kept, 62 via-way restrictions not encoded
+00:04:23 saved on disk - committed and pushed with the next 2-hourly push
+00:04:23 network coverage greater-manchester 53_-3
+00:04:52 network (coverage): 1 squares written, 0 capped, 39 ways refused (access/class/direction), 1685 turn restrictions kept, 339 via-way restrictions not encoded
+00:04:52 saved on disk - committed and pushed with the next 2-hourly push
+00:04:52 network coverage north-yorkshire 53_-2 54_-1
+00:05:11 network (coverage): 2 squares written, 0 capped, 12 ways refused (access/class/direction), 417 turn restrictions kept, 40 via-way restrictions not encoded
+00:05:12 saved on disk - committed and pushed with the next 2-hourly push
+00:05:12 network coverage denmark 54_9 54_10 54_11 54_12 54_13 54_14 54_15 55_7 55_8 55_9 55_10 55_11 55_12 55_14 55_15 56_7 56_8 56_9 56_10 56_11 56_12 57_7 57_8 57_9 57_10 57_11
+00:09:59 network coverage retry denmark URI malformed
+00:09:59 network coverage macedonia 41_20 41_21 41_22 42_21 42_22
+00:10:14 network (coverage): 5 squares written, 0 capped, 52 ways refused (access/class/direction), 2583 turn restrictions kept, 42 via-way restrictions not encoded
+00:10:14 saved on disk - committed and pushed with the next 2-hourly push
+00:10:14 network coverage merseyside 53_-4
+00:10:31 network (coverage): 1 squares written, 0 capped, 11 ways refused (access/class/direction), 515 turn restrictions kept, 77 via-way restrictions not encoded
+00:10:32 saved on disk - committed and pushed with the next 2-hourly push
+00:10:32 network coverage podkarpackie 49_21 49_22 50_21 50_22 50_23
+00:12:11 network (coverage): 5 squares written, 0 capped, 144 ways refused (access/class/direction), 1692 turn restrictions kept, 77 via-way restrictions not encoded
+00:12:11 saved on disk - committed and pushed with the next 2-hourly push
+00:12:11 network coverage lancashire 53_-3
+00:12:20 network (coverage): 1 squares written, 0 capped, 15 ways refused (access/class/direction), 483 turn restrictions kept, 56 via-way restrictions not encoded
+00:12:21 saved on disk - committed and pushed with the next 2-hourly push
+00:12:21 network coverage wales 51_-6 51_-5 51_-4 51_-3 52_-6 52_-5 52_-4 53_-6 53_-5 53_-4
+00:12:44 network coverage retry wales URI malformed
+00:12:44 network coverage pomorskie 53_17 53_18 53_19 54_16 54_17 54_18
+00:13:03 network (coverage): 6 squares written, 0 capped, 106 ways refused (access/class/direction), 1455 turn restrictions kept, 114 via-way restrictions not encoded
+00:13:03 saved on disk - committed and pushed with the next 2-hourly push
+00:13:03 network coverage malta 35_14
+00:13:08 network (coverage): 1 squares written, 0 capped, 12 ways refused (access/class/direction), 245 turn restrictions kept, 5 via-way restrictions not encoded
+00:13:08 saved on disk - committed and pushed with the next 2-hourly push
+00:13:08 network coverage mazowieckie 51_20 51_21 52_19 52_20 52_21 52_22 53_19 53_20 53_21
+00:18:59 network coverage retry mazowieckie URI malformed
+00:18:59 network coverage northumberland 55_-2
+00:19:05 network (coverage): 1 squares written, 0 capped, 4 ways refused (access/class/direction), 52 turn restrictions kept, 9 via-way restrictions not encoded
+00:19:05 saved on disk - committed and pushed with the next 2-hourly push
+00:19:05 network coverage lubelskie 50_21 50_22 50_23 51_21 51_22 51_23 52_23
+00:19:55 network coverage retry lubelskie URI malformed
+00:19:55 network coverage galicia 41_-9 42_-10 42_-9 42_-8 43_-10 43_-9 43_-8 43_-7
+00:20:48 network (coverage): 8 squares written, 0 capped, 82 ways refused (access/class/direction), 6893 turn restrictions kept, 29 via-way restrictions not encoded
+00:20:49 saved on disk - committed and pushed with the next 2-hourly push
+00:20:49 network coverage extremadura 38_-8 38_-7 38_-6 39_-8 39_-7 39_-6 40_-7 40_-6
+00:21:26 network (coverage): 8 squares written, 0 capped, 7 ways refused (access/class/direction), 2893 turn restrictions kept, 32 via-way restrictions not encoded
+00:21:26 saved on disk - committed and pushed with the next 2-hourly push
+00:21:26 network coverage warminsko-mazurskie 53_19 53_20 53_21 53_22
+00:21:59 network coverage retry warminsko-mazurskie URI malformed
+00:21:59 network coverage isle-of-man 53_-5 53_-4 54_-5
+00:22:02 network (coverage): 1 squares written, 0 capped, 2 ways refused (access/class/direction), 18 turn restrictions kept, 0 via-way restrictions not encoded
+00:22:03 saved on disk - committed and pushed with the next 2-hourly push
+00:22:03 network coverage tunisia 35_8 35_9 35_10 35_11 36_8 36_9 36_10 37_8 37_9 37_10 37_11
+00:23:28 network (coverage): 10 squares written, 0 capped, 7 ways refused (access/class/direction), 378 turn restrictions kept, 20 via-way restrictions not encoded
+00:23:28 saved on disk - committed and pushed with the next 2-hourly push
+00:23:28 network coverage romania 43_22 43_23 43_24 43_25 43_28 44_21 44_22 44_23 44_24 44_25 44_26 44_27 44_28 44_29 45_20 45_21 45_22 45_23 45_24 45_25 45_26 45_27 45_28 45_29 46_20 46_21 46_22 46_23 46_24 46_25 46_26 46_27 46_28 47_21 47_22 47_23 47_24 47_25 47_26 47_27 48_26
+00:24:10 network coverage retry romania URI malformed
+00:24:10 network coverage andalucia 36_-8 36_-7 36_-6 36_-5 36_-4 36_-3 36_-2 37_-8 37_-7 37_-6 37_-5 37_-4 37_-3 37_-2 38_-7 38_-6 38_-5 38_-4 38_-3
+00:25:09 network (coverage): 18 squares written, 0 capped, 153 ways refused (access/class/direction), 14160 turn restrictions kept, 74 via-way restrictions not encoded
+00:25:10 saved on disk - committed and pushed with the next 2-hourly push
+00:25:10 network coverage sorlandet 57_6 57_7 57_8 58_6 58_7 58_8 58_9 59_7
+00:25:21 network coverage retry sorlandet URI malformed
+00:25:21 network coverage podlaskie 52_22 52_23 53_21 53_22 53_23 54_23
+00:25:32 network (coverage): 6 squares written, 0 capped, 72 ways refused (access/class/direction), 679 turn restrictions kept, 75 via-way restrictions not encoded
+00:25:32 saved on disk - committed and pushed with the next 2-hourly push
+00:25:32 network coverage kaliningrad 55_19
+00:25:57 network (coverage): 0 squares written, 0 capped, 29 ways refused (access/class/direction), 2930 turn restrictions kept, 55 via-way restrictions not encoded
+00:25:57 saved on disk - committed and pushed with the next 2-hourly push
+00:25:57 network coverage bulgaria 41_23 41_24 41_25 41_26 42_22 42_23 42_24 42_25 42_26 42_27 42_28 43_22 43_23 43_24 43_25 43_26 43_27 43_28
+00:26:20 network (coverage): 17 squares written, 0 capped, 57 ways refused (access/class/direction), 8698 turn restrictions kept, 1359 via-way restrictions not encoded
+00:26:20 saved on disk - committed and pushed with the next 2-hourly push
+00:26:21 network coverage greece 35_22 35_23 35_24 35_25 35_26 35_27 35_28 36_20 36_21 36_22 36_23 36_24 36_25 36_26 36_27 36_28 36_29 37_20 37_21 37_22 37_23 37_24 37_25 37_26 37_27 38_19 38_20 38_21 38_22 38_23 38_24 38_25 38_26 39_19 39_20 39_21 39_22 39_23 39_24 39_25 39_26 40_20 40_21 40_22 40_23 40_24 40_25 40_26 41_22 41_23 41_24 41_25 41_26
+00:35:07 network coverage retry greece URI malformed
+00:35:07 network coverage moldova 45_28 46_28 46_29 47_27 47_28 47_29 48_27 48_28
+00:37:15 network (coverage): 8 squares written, 0 capped, 84 ways refused (access/class/direction), 2273 turn restrictions kept, 3 via-way restrictions not encoded
+00:37:15 saved on disk - committed and pushed with the next 2-hourly push
+00:37:15 network coverage lithuania 54_23 54_24 54_25 55_23 55_24 55_25 55_26 56_21 56_22 56_23 56_24 56_25
+00:43:02 network (coverage): 12 squares written, 0 capped, 126 ways refused (access/class/direction), 4808 turn restrictions kept, 36 via-way restrictions not encoded
+00:43:02 saved on disk - committed and pushed with the next 2-hourly push
+00:43:02 network coverage ireland-and-northern-ireland 49_-9 50_-11 50_-10 50_-9 50_-8 50_-7 51_-11 51_-10 51_-9 51_-8 51_-7 51_-6 52_-11 52_-10 52_-9 52_-8 52_-7 52_-6 53_-11 53_-10 53_-9 53_-8 53_-7 53_-6 54_-11 54_-10 54_-9 54_-8 54_-7 54_-6 55_-11 55_-10 55_-9 55_-8 55_-7 56_-11 56_-10
+00:44:20 network coverage retry ireland-and-northern-ireland URI malformed
+00:44:20 network coverage ostlandet 58_9 58_10 59_7 59_8 59_9 59_10 59_11 60_7 60_8 60_9 60_10 60_11 60_12 61_7 61_8 61_9 61_10 61_11 61_12 62_7 62_8 62_9 62_10 62_11 62_12
+00:46:27 network coverage retry ostlandet URI malformed
+00:46:27 network coverage vestlandet 57_4 57_5 58_4 58_5 58_6 59_3 59_4 59_5 59_6 59_7 60_3 60_4 60_5 60_6 60_7 61_2 61_3 61_4 61_5 61_6 61_7 61_8 62_2 62_3 62_4 62_5 62_6 62_7 62_8 62_9 63_3 63_4 63_5 63_6 63_7 63_8 64_4 64_5 64_6 64_7
+00:47:49 network coverage retry vestlandet URI malformed
+00:47:49 network coverage latvia 55_26 55_27 56_19 56_20 56_21 56_22 56_23 56_24 56_25 56_26 57_20 57_21 57_22 57_23 57_24 57_25 57_26
+00:48:15 network (coverage): 15 squares written, 0 capped, 118 ways refused (access/class/direction), 3934 turn restrictions kept, 18 via-way restrictions not encoded
