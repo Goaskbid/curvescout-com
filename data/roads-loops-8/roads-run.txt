@@ -1,2 +1,300 @@
-10:55:15 rides in the catalogue: 9145
-10:55:15 reading the Geofabrik region index
+11:53:41 == 30/67 devon+dorset+somerset 3 rides
+11:53:44 downloading devon 56 MB
+11:53:49 downloading dorset 29 MB
+11:54:02 downloading somerset 48 MB
+11:54:08 merging devon+dorset+somerset
+11:54:12 osrm-extract
+11:54:31 osrm-partition
+11:54:36 osrm-customize
+11:54:40 devon+dorset+somerset done: 2 roads, 1 refused · catalogue now 1513 roads
+11:54:40 saved on disk - committed and pushed with the next 2-hourly push
+11:54:40 saved on disk - committed and pushed with the next 2-hourly push
+11:54:40 == 31/67 cheshire+north-yorkshire+west-yorkshire 3 rides
+11:54:43 downloading cheshire 37 MB
+11:54:58 downloading north-yorkshire 59 MB
+11:55:21 downloading west-yorkshire 52 MB
+11:55:40 merging cheshire+north-yorkshire+west-yorkshire
+11:55:45 osrm-extract
+11:56:07 osrm-partition
+11:56:12 osrm-customize
+11:56:16 cheshire+north-yorkshire+west-yorkshire done: 0 roads, 3 refused · catalogue now 1513 roads
+11:56:16 saved on disk - committed and pushed with the next 2-hourly push
+11:56:16 saved on disk - committed and pushed with the next 2-hourly push
+11:56:16 == 32/67 hessen+karlsruhe-regbez+rheinland-pfalz 3 rides
+11:56:20 hessen+karlsruhe-regbez+rheinland-pfalz together are too large for this machine - left to the live router
+11:56:20 saved on disk - committed and pushed with the next 2-hourly push
+11:56:20 == 33/67 niedersachsen+sachsen-anhalt+thueringen 3 rides
+11:56:23 niedersachsen+sachsen-anhalt+thueringen together are too large for this machine - left to the live router
+11:56:23 saved on disk - committed and pushed with the next 2-hourly push
+11:56:23 == 34/67 north-yorkshire+northumberland+tyne-and-wear 3 rides
+11:56:26 downloading north-yorkshire 59 MB
+11:56:57 downloading northumberland 25 MB
+11:57:03 downloading tyne-and-wear 19 MB
+11:57:11 merging north-yorkshire+northumberland+tyne-and-wear
+11:57:14 osrm-extract
+11:57:28 osrm-partition
+11:57:31 osrm-customize
+11:57:33 north-yorkshire+northumberland+tyne-and-wear done: 0 roads, 3 refused · catalogue now 1513 roads
+11:57:34 saved on disk - committed and pushed with the next 2-hourly push
+11:57:34 saved on disk - committed and pushed with the next 2-hourly push
+11:57:34 == 35/67 pardubicky+stredocesky+vysocina 3 rides
+11:57:37 downloading pardubicky 53 MB
+11:58:10 downloading stredocesky 174 MB
+11:58:31 downloading vysocina 70 MB
+11:59:11 merging pardubicky+stredocesky+vysocina
+11:59:21 osrm-extract
+11:59:47 osrm-partition
+11:59:51 osrm-customize
+11:59:54 pardubicky+stredocesky+vysocina done: 3 roads, 0 refused · catalogue now 1516 roads
+11:59:55 saved on disk - committed and pushed with the next 2-hourly push
+11:59:55 saved on disk - committed and pushed with the next 2-hourly push
+11:59:55 == 36/67 anhui+jiangsu+shandong 2 rides
+11:59:58 downloading anhui 42 MB
+12:00:27 downloading jiangsu 77 MB
+12:01:18 downloading shandong 69 MB
+12:01:31 merging anhui+jiangsu+shandong
+12:01:36 osrm-extract
+12:02:41 osrm-partition
+12:03:28 osrm-customize
+12:03:55 anhui+jiangsu+shandong done: 2 roads, 0 refused · catalogue now 1518 roads
+12:03:55 saved on disk - committed and pushed with the next 2-hourly push
+12:03:55 saved on disk - committed and pushed with the next 2-hourly push
+12:03:55 == 37/67 karlsruhe-regbez+rheinland-pfalz+unterfranken 2 rides
+12:03:58 downloading karlsruhe-regbez 148 MB
+12:05:42 downloading rheinland-pfalz 264 MB
+12:07:24 downloading unterfranken 100 MB
+12:07:47 merging karlsruhe-regbez+rheinland-pfalz+unterfranken
+12:08:03 osrm-extract
+12:09:01 osrm-partition
+12:09:14 osrm-customize
+12:09:21 karlsruhe-regbez+rheinland-pfalz+unterfranken done: 0 roads, 2 refused · catalogue now 1518 roads
+12:09:21 saved on disk - committed and pushed with the next 2-hourly push
+12:09:21 saved on disk - committed and pushed with the next 2-hourly push
+12:09:21 == 38/67 praha+sachsen+ustecky 2 rides
+12:09:24 downloading praha 43 MB
+12:09:58 downloading sachsen 258 MB
+12:10:56 downloading ustecky 107 MB
+12:12:16 merging praha+sachsen+ustecky
+12:12:28 osrm-extract
+12:13:14 osrm-partition
+12:13:25 osrm-customize
+12:13:31 praha+sachsen+ustecky done: 0 roads, 2 refused · catalogue now 1518 roads
+12:13:31 saved on disk - committed and pushed with the next 2-hourly push
+12:13:31 saved on disk - committed and pushed with the next 2-hourly push
+12:13:31 == 39/67 dorset+oxfordshire+wiltshire 2 rides
+12:13:34 downloading dorset 29 MB
+12:13:49 downloading oxfordshire 27 MB
+12:13:56 downloading wiltshire 33 MB
+12:14:47 merging dorset+oxfordshire+wiltshire
+12:14:50 osrm-extract
+12:15:04 osrm-partition
+12:15:07 osrm-customize
+12:15:10 dorset+oxfordshire+wiltshire done: 0 roads, 2 refused · catalogue now 1518 roads
+12:15:11 saved on disk - committed and pushed with the next 2-hourly push
+12:15:11 saved on disk - committed and pushed with the next 2-hourly push
+12:15:11 == 40/67 devon+dorset+wiltshire 2 rides
+12:15:14 downloading devon 56 MB
+12:15:24 downloading dorset 29 MB
+12:15:37 downloading wiltshire 33 MB
+12:15:48 merging devon+dorset+wiltshire
+12:15:52 osrm-extract
+12:16:09 osrm-partition
+12:16:14 osrm-customize
+12:16:17 devon+dorset+wiltshire done: 0 roads, 2 refused · catalogue now 1518 roads
+12:16:17 saved on disk - committed and pushed with the next 2-hourly push
+12:16:18 saved on disk - committed and pushed with the next 2-hourly push
+12:16:18 == 41/67 karlovarsky+oberfranken+sachsen 2 rides
+12:16:20 downloading karlovarsky 29 MB
+12:16:44 downloading oberfranken 91 MB
+12:17:43 downloading sachsen 258 MB
+12:18:53 merging karlovarsky+oberfranken+sachsen
+12:19:04 osrm-extract
+12:19:49 osrm-partition
+12:20:00 osrm-customize
+12:20:06 karlovarsky+oberfranken+sachsen done: 2 roads, 0 refused · catalogue now 1520 roads
+12:20:06 saved on disk - committed and pushed with the next 2-hourly push
+12:20:07 saved on disk - committed and pushed with the next 2-hourly push
+12:20:07 == 42/67 hamburg+mecklenburg-vorpommern+schleswig-holstein 2 rides
+12:20:09 downloading hamburg 52 MB
+12:20:42 downloading mecklenburg-vorpommern 123 MB
+12:21:13 downloading schleswig-holstein 152 MB
+12:21:45 merging hamburg+mecklenburg-vorpommern+schleswig-holstein
+12:21:55 osrm-extract
+12:22:32 osrm-partition
+12:22:43 osrm-customize
+12:22:48 hamburg+mecklenburg-vorpommern+schleswig-holstein done: 2 roads, 0 refused · catalogue now 1522 roads
+12:22:48 saved on disk - committed and pushed with the next 2-hourly push
+12:22:48 saved on disk - committed and pushed with the next 2-hourly push
+12:22:48 == 43/67 cameroon+central-african-republic+congo-brazzaville 2 rides
+12:22:51 downloading cameroon 214 MB
+12:23:30 downloading central-african-republic 95 MB
+12:23:38 downloading congo-brazzaville 31 MB
+12:23:46 merging cameroon+central-african-republic+congo-brazzaville
+12:23:57 osrm-extract
+12:24:41 osrm-partition
+12:24:47 osrm-customize
+12:24:53 cameroon+central-african-republic+congo-brazzaville done: 0 roads, 2 refused · catalogue now 1522 roads
+12:24:54 saved on disk - committed and pushed with the next 2-hourly push
+12:24:54 saved on disk - committed and pushed with the next 2-hourly push
+12:24:54 == 44/67 karlsruhe-regbez+mittelfranken+stuttgart-regbez 2 rides
+12:24:57 downloading karlsruhe-regbez 148 MB
+12:25:23 downloading mittelfranken 92 MB
+12:25:30 downloading stuttgart-regbez 203 MB
+12:26:13 merging karlsruhe-regbez+mittelfranken+stuttgart-regbez
+12:26:27 osrm-extract
+12:27:21 osrm-partition
+12:27:37 osrm-customize
+12:27:43 karlsruhe-regbez+mittelfranken+stuttgart-regbez done: 2 roads, 0 refused · catalogue now 1524 roads
+12:27:43 saved on disk - committed and pushed with the next 2-hourly push
+12:27:43 saved on disk - committed and pushed with the next 2-hourly push
+12:27:43 == 45/67 jilin+liaoning+north-korea 1 rides
+12:27:47 downloading jilin 27 MB
+12:27:54 downloading liaoning 27 MB
+12:28:01 downloading north-korea 89 MB
+12:28:15 merging jilin+liaoning+north-korea
+12:28:19 osrm-extract
+12:28:52 osrm-partition
+12:29:04 osrm-customize
+12:29:10 jilin+liaoning+north-korea done: 0 roads, 1 refused · catalogue now 1524 roads
+12:29:11 saved on disk - committed and pushed with the next 2-hourly push
+12:29:11 saved on disk - committed and pushed with the next 2-hourly push
+12:29:11 == 46/67 oxfordshire+somerset+wiltshire 1 rides
+12:29:14 downloading oxfordshire 27 MB
+12:29:22 downloading somerset 48 MB
+12:29:34 downloading wiltshire 33 MB
+12:29:42 merging oxfordshire+somerset+wiltshire
+12:29:45 osrm-extract
+12:30:03 osrm-partition
+12:30:08 osrm-customize
+12:30:12 oxfordshire+somerset+wiltshire done: 0 roads, 1 refused · catalogue now 1524 roads
+12:30:12 saved on disk - committed and pushed with the next 2-hourly push
+12:30:12 saved on disk - committed and pushed with the next 2-hourly push
+12:30:12 == 47/67 karlsruhe-regbez+rheinland-pfalz+stuttgart-regbez 1 rides
+12:30:15 downloading karlsruhe-regbez 148 MB
+12:30:48 downloading rheinland-pfalz 264 MB
+12:31:47 downloading stuttgart-regbez 203 MB
+12:32:13 merging karlsruhe-regbez+rheinland-pfalz+stuttgart-regbez
+12:32:32 osrm-extract
+12:33:45 osrm-partition
+12:34:08 osrm-customize
+12:34:15 karlsruhe-regbez+rheinland-pfalz+stuttgart-regbez done: 0 roads, 1 refused · catalogue now 1524 roads
+12:34:16 saved on disk - committed and pushed with the next 2-hourly push
+12:34:16 saved on disk - committed and pushed with the next 2-hourly push
+12:34:16 == 48/67 cheshire+derbyshire+merseyside 1 rides
+12:34:19 downloading cheshire 37 MB
+12:34:30 downloading derbyshire 42 MB
+12:34:43 downloading merseyside 24 MB
+12:34:51 merging cheshire+derbyshire+merseyside
+12:34:55 osrm-extract
+12:35:11 osrm-partition
+12:35:15 osrm-customize
+12:35:18 cheshire+derbyshire+merseyside done: 1 roads, 0 refused · catalogue now 1525 roads
+12:35:18 saved on disk - committed and pushed with the next 2-hourly push
+12:35:19 saved on disk - committed and pushed with the next 2-hourly push
+12:35:19 == 49/67 cheshire+merseyside+west-yorkshire 1 rides
+12:35:22 downloading cheshire 37 MB
+12:35:36 downloading merseyside 24 MB
+12:35:49 downloading west-yorkshire 52 MB
+12:36:17 merging cheshire+merseyside+west-yorkshire
+12:36:20 osrm-extract
+12:36:39 osrm-partition
+12:36:44 osrm-customize
+12:36:48 cheshire+merseyside+west-yorkshire done: 0 roads, 1 refused · catalogue now 1525 roads
+12:36:48 saved on disk - committed and pushed with the next 2-hourly push
+12:36:49 saved on disk - committed and pushed with the next 2-hourly push
+12:36:49 == 50/67 andorra+cataluna+midi-pyrenees 1 rides
+12:36:52 downloading andorra 3 MB
+12:36:54 downloading cataluna 262 MB
+12:38:22 downloading midi-pyrenees 348 MB
+12:40:10 merging andorra+cataluna+midi-pyrenees
+12:40:29 osrm-extract
+12:41:53 osrm-partition
+12:42:16 osrm-customize
+12:42:24 andorra+cataluna+midi-pyrenees done: 0 roads, 1 refused · catalogue now 1525 roads
+12:42:24 saved on disk - committed and pushed with the next 2-hourly push
+12:42:24 saved on disk - committed and pushed with the next 2-hourly push
+12:42:24 == 51/67 malopolskie+moravskoslezky+slaskie 1 rides
+12:42:27 downloading malopolskie 195 MB
+12:44:00 downloading moravskoslezky 77 MB
+12:44:06 downloading slaskie 178 MB
+12:45:04 merging malopolskie+moravskoslezky+slaskie
+12:45:18 osrm-extract
+12:46:10 osrm-partition
+12:46:25 osrm-customize
+12:46:32 malopolskie+moravskoslezky+slaskie done: 1 roads, 0 refused · catalogue now 1526 roads
+12:46:32 saved on disk - committed and pushed with the next 2-hourly push
+12:46:32 saved on disk - committed and pushed with the next 2-hourly push
+12:46:32 == 52/67 luxembourg+rheinland-pfalz+saarland 1 rides
+12:46:35 downloading luxembourg 46 MB
+12:46:42 downloading rheinland-pfalz 264 MB
+12:47:01 downloading saarland 53 MB
+12:47:09 merging luxembourg+rheinland-pfalz+saarland
+12:47:20 osrm-extract
+12:48:03 osrm-partition
+12:48:13 osrm-customize
+12:48:18 luxembourg+rheinland-pfalz+saarland done: 1 roads, 0 refused · catalogue now 1527 roads
+12:48:18 saved on disk - committed and pushed with the next 2-hourly push
+12:48:18 saved on disk - committed and pushed with the next 2-hourly push
+12:48:18 == 53/67 cheshire+greater-manchester+west-yorkshire 1 rides
+12:48:21 downloading cheshire 37 MB
+12:48:29 downloading greater-manchester 50 MB
+12:48:45 downloading west-yorkshire 52 MB
+12:49:03 merging cheshire+greater-manchester+west-yorkshire
+12:49:08 osrm-extract
+12:49:32 osrm-partition
+12:49:39 osrm-customize
+12:49:44 cheshire+greater-manchester+west-yorkshire done: 1 roads, 0 refused · catalogue now 1528 roads
+12:49:44 saved on disk - committed and pushed with the next 2-hourly push
+12:49:45 saved on disk - committed and pushed with the next 2-hourly push
+12:49:45 == 54/67 derbyshire+shropshire+west-midlands 1 rides
+12:49:47 downloading derbyshire 42 MB
+12:50:07 downloading shropshire 24 MB
+12:50:13 downloading west-midlands 57 MB
+12:50:27 merging derbyshire+shropshire+west-midlands
+12:50:31 osrm-extract
+12:50:48 osrm-partition
+12:50:51 osrm-customize
+12:50:55 derbyshire+shropshire+west-midlands done: 0 roads, 1 refused · catalogue now 1528 roads
+12:50:55 saved on disk - committed and pushed with the next 2-hourly push
+12:50:55 saved on disk - committed and pushed with the next 2-hourly push
+12:50:55 == 55/67 devon+somerset+wales 1 rides
+12:50:58 downloading devon 56 MB
+12:51:13 downloading somerset 48 MB
+12:51:24 downloading wales 145 MB
+12:51:51 merging devon+somerset+wales
+12:51:59 osrm-extract
+12:52:35 osrm-partition
+12:52:43 osrm-customize
+12:52:49 devon+somerset+wales done: 0 roads, 1 refused · catalogue now 1528 roads
+12:52:49 saved on disk - committed and pushed with the next 2-hourly push
+12:52:49 saved on disk - committed and pushed with the next 2-hourly push
+12:52:49 == 56/67 bristol+somerset+wales 1 rides
+12:52:52 downloading bristol 13 MB
+12:52:58 downloading somerset 48 MB
+12:53:15 downloading wales 145 MB
+12:54:05 merging bristol+somerset+wales
+12:54:12 osrm-extract
+12:54:41 osrm-partition
+12:54:47 osrm-customize
+12:54:51 bristol+somerset+wales done: 0 roads, 1 refused · catalogue now 1528 roads
+12:54:52 saved on disk - committed and pushed with the next 2-hourly push
+12:54:52 saved on disk - committed and pushed with the next 2-hourly push
+12:54:52 == 57/67 cheshire+derbyshire+west-yorkshire 1 rides
+12:54:55 downloading cheshire 37 MB
+12:55:02 downloading derbyshire 42 MB
+12:55:09 downloading west-yorkshire 52 MB
+12:55:19 merging cheshire+derbyshire+west-yorkshire
+12:55:23 osrm-extract
+12:55:42 osrm-partition
+12:55:47 osrm-customize
+12:55:51 cheshire+derbyshire+west-yorkshire done: 1 roads, 0 refused · catalogue now 1529 roads
+12:55:51 saved on disk - committed and pushed with the next 2-hourly push
+12:55:51 saved on disk - committed and pushed with the next 2-hourly push
+12:55:51 == 58/67 detmold-regbez+hessen+thueringen 1 rides
+12:55:54 downloading detmold-regbez 131 MB
+12:56:13 downloading hessen 332 MB
+12:58:33 downloading thueringen 153 MB
+12:58:51 merging detmold-regbez+hessen+thueringen
+12:59:10 osrm-extract
+13:00:21 osrm-partition
+13:00:40 osrm-customize
