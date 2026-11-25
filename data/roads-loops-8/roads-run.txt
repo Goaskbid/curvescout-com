@@ -184,3 +184,37 @@
 19:42:41 saved on disk - committed and pushed with the next 2-hourly push
 19:42:42 downloading rhone-alpes 509 MB
 19:44:09 == rhone-alpes: 23 rides in 2 boxes
+19:47:05 rhone-alpes second pass: 8 new roads, 15 refused · catalogue now 3615 roads
+19:47:08 downloading australia 932 MB
+19:49:49 == australia: 23 rides in 1 boxes
+19:50:41 australia second pass: 0 new roads, 23 refused · catalogue now 3615 roads
+19:50:41 saved on disk - committed and pushed with the next 2-hourly push
+19:50:42 downloading volga-fed-district 743 MB
+19:55:54 == volga-fed-district: 23 rides in 1 boxes
+19:56:31 volga-fed-district second pass: 9 new roads, 14 refused · catalogue now 3624 roads
+19:56:32 saved on disk - committed and pushed with the next 2-hourly push
+19:56:32 downloading turkey 624 MB
+19:57:13 == turkey: 22 rides in 6 boxes
+20:01:06 turkey second pass: 7 new roads, 15 refused · catalogue now 3631 roads
+20:01:06 saved on disk - committed and pushed with the next 2-hourly push
+20:01:07 downloading mongolia 60 MB
+20:01:24 downloading siberian-fed-district 564 MB
+20:02:37 == mongolia+siberian-fed-district: 22 rides in 4 boxes
+20:04:18 mongolia+siberian-fed-district second pass: 0 new roads, 22 refused · catalogue now 3631 roads
+20:04:18 saved on disk - committed and pushed with the next 2-hourly push
+20:04:19 downloading berlin 96 MB
+20:04:27 downloading brandenburg 284 MB
+20:05:43 downloading mecklenburg-vorpommern 123 MB
+20:06:14 == berlin+brandenburg+mecklenburg-vorpommern: 22 rides in 1 boxes
+20:07:27 berlin+brandenburg+mecklenburg-vorpommern second pass: 0 new roads, 22 refused · catalogue now 3631 roads
+20:07:27 saved on disk - committed and pushed with the next 2-hourly push
+20:07:28 downloading franche-comte 119 MB
+20:07:42 downloading switzerland 526 MB
+20:09:06 == franche-comte+switzerland: 22 rides in 1 boxes
+20:11:05 franche-comte+switzerland second pass: 16 new roads, 6 refused · catalogue now 3647 roads
+20:11:06 saved on disk - committed and pushed with the next 2-hourly push
+20:11:06 downloading mongolia 60 MB
+20:11:35 == mongolia: 19 rides in 5 boxes
+20:12:01 mongolia second pass: 0 new roads, 19 refused · catalogue now 3647 roads
+20:12:01 saved on disk - committed and pushed with the next 2-hourly push
+20:12:01 time limit near - the next run carries on with philippines
