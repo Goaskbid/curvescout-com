@@ -1,45 +1,3 @@
-20:12:57 rides in the catalogue: 9145
-20:12:57 reading the Geofabrik region index
-20:13:28 network coverage INCOMPLETE - the rides follow {"regionsWanted":170,"untouched":0,"squaresCovered":362,"complete":false,"done":89,"empty":2,"retry":0,"failed":79,"capped":0}
-20:13:28 0 router builds planned (0 single regions, 0 border crossings), 0 rides not yet done, 0 rides fit no region
-20:13:28 second pass: 903 rides without a stored road - routed in small boxes cut from their region
-20:13:29 downloading philippines 586 MB
-20:15:11 == philippines: 19 rides in 1 boxes
-20:15:50 philippines second pass: 4 new roads, 15 refused · catalogue now 3651 roads
-20:15:50 saved on disk - committed and pushed with the next 2-hourly push
-20:15:50 downloading karlsruhe-regbez 148 MB
-20:16:14 downloading stuttgart-regbez 203 MB
-20:17:01 downloading unterfranken 100 MB
-20:18:10 == karlsruhe-regbez+stuttgart-regbez+unterfranken: 19 rides in 1 boxes
-20:19:55 karlsruhe-regbez+stuttgart-regbez+unterfranken second pass: 0 new roads, 19 refused · catalogue now 3651 roads
-20:19:55 saved on disk - committed and pushed with the next 2-hourly push
-20:19:56 downloading austria 779 MB
-20:22:06 downloading niederbayern 91 MB
-20:23:04 == austria+niederbayern: 19 rides in 1 boxes
-20:24:59 austria+niederbayern second pass: 13 new roads, 6 refused · catalogue now 3664 roads
-20:24:59 saved on disk - committed and pushed with the next 2-hourly push
-20:25:00 downloading duesseldorf-regbez 208 MB
-20:25:36 downloading gelderland 187 MB
-20:26:06 downloading utrecht 95 MB
-20:26:53 == duesseldorf-regbez+gelderland+utrecht: 19 rides in 1 boxes
-20:28:35 duesseldorf-regbez+gelderland+utrecht second pass: 0 new roads, 19 refused · catalogue now 3664 roads
-20:28:35 saved on disk - committed and pushed with the next 2-hourly push
-20:28:36 downloading switzerland 526 MB
-20:29:55 downloading tuebingen-regbez 123 MB
-20:31:15 == switzerland+tuebingen-regbez: 18 rides in 1 boxes
-20:33:27 switzerland+tuebingen-regbez second pass: 0 new roads, 18 refused · catalogue now 3664 roads
-20:33:27 saved on disk - committed and pushed with the next 2-hourly push
-20:33:27 downloading japan 2461 MB
-20:46:44 == japan: 17 rides in 3 boxes
-20:59:41 japan second pass: 13 new roads, 4 refused · catalogue now 3677 roads
-20:59:41 saved on disk - committed and pushed with the next 2-hourly push
-20:59:42 downloading great-britain 2104 MB
-21:03:01 == great-britain: 16 rides in 3 boxes
-21:11:14 great-britain second pass: 11 new roads, 5 refused · catalogue now 3688 roads
-21:11:15 saved on disk - committed and pushed with the next 2-hourly push
-21:11:15 downloading senegal-and-gambia 101 MB
-21:11:36 == senegal-and-gambia: 16 rides in 2 boxes
-21:11:59 senegal-and-gambia second pass: 0 new roads, 16 refused · catalogue now 3688 roads
 21:11:59 saved on disk - committed and pushed with the next 2-hourly push
 21:11:59 downloading central-fed-district 846 MB
 21:14:14 == central-fed-district: 16 rides in 1 boxes
@@ -284,3 +242,59 @@
 00:14:00 downloading karlsruhe-regbez 148 MB
 00:14:09 downloading unterfranken 100 MB
 00:16:01 == hessen+karlsruhe-regbez+unterfranken: 6 rides in 1 boxes
+00:17:36 hessen+karlsruhe-regbez+unterfranken second pass: 0 new roads, 6 refused · catalogue now 3757 roads
+00:17:40 downloading us-west 3280 MB
+00:22:28 == us-west: 5 rides in 1 boxes
+00:24:18 us-west second pass: 0 new roads, 5 refused · catalogue now 3757 roads
+00:24:18 saved on disk - committed and pushed with the next 2-hourly push
+00:24:18 downloading provence-alpes-cote-d-azur 374 MB
+00:24:45 downloading rhone-alpes 509 MB
+00:26:03 == provence-alpes-cote-d-azur+rhone-alpes: 5 rides in 1 boxes
+00:27:06 provence-alpes-cote-d-azur+rhone-alpes second pass: 5 new roads, 0 refused · catalogue now 3762 roads
+00:27:06 saved on disk - committed and pushed with the next 2-hourly push
+00:27:07 downloading vietnam 318 MB
+00:28:31 == vietnam: 5 rides in 1 boxes
+00:29:52 vietnam second pass: 0 new roads, 5 refused · catalogue now 3762 roads
+00:29:52 saved on disk - committed and pushed with the next 2-hourly push
+00:29:53 downloading tasmania 52 MB
+00:30:01 == tasmania: 5 rides in 1 boxes
+00:30:14 tasmania second pass: 0 new roads, 5 refused · catalogue now 3762 roads
+00:30:14 saved on disk - committed and pushed with the next 2-hourly push
+00:30:15 downloading bulgaria 170 MB
+00:30:27 == bulgaria: 5 rides in 1 boxes
+00:30:42 bulgaria second pass: 0 new roads, 5 refused · catalogue now 3762 roads
+00:30:42 saved on disk - committed and pushed with the next 2-hourly push
+00:30:43 downloading new-south-wales 259 MB
+00:31:08 == new-south-wales: 5 rides in 1 boxes
+00:31:22 new-south-wales second pass: 0 new roads, 5 refused · catalogue now 3762 roads
+00:31:22 saved on disk - committed and pushed with the next 2-hourly push
+00:31:23 downloading bosnia-herzegovina 155 MB
+00:31:49 downloading montenegro 33 MB
+00:31:56 downloading serbia 232 MB
+00:32:43 == bosnia-herzegovina+montenegro+serbia: 5 rides in 1 boxes
+00:33:19 bosnia-herzegovina+montenegro+serbia second pass: 0 new roads, 5 refused · catalogue now 3762 roads
+00:33:19 saved on disk - committed and pushed with the next 2-hourly push
+00:33:20 downloading alsace 126 MB
+00:33:40 downloading franche-comte 119 MB
+00:33:58 downloading lorraine 164 MB
+00:34:42 == alsace+franche-comte+lorraine: 5 rides in 1 boxes
+00:36:11 alsace+franche-comte+lorraine second pass: 0 new roads, 5 refused · catalogue now 3762 roads
+00:36:11 saved on disk - committed and pushed with the next 2-hourly push
+00:36:12 downloading austria 779 MB
+00:37:03 downloading jihocesky 93 MB
+00:37:14 downloading niederbayern 91 MB
+00:38:11 == austria+jihocesky+niederbayern: 5 rides in 1 boxes
+00:39:37 austria+jihocesky+niederbayern second pass: 3 new roads, 2 refused · catalogue now 3765 roads
+00:39:37 saved on disk - committed and pushed with the next 2-hourly push
+00:39:38 downloading albania 52 MB
+00:39:45 downloading macedonia 29 MB
+00:39:55 == albania+macedonia: 5 rides in 1 boxes
+00:40:18 albania+macedonia second pass: 0 new roads, 5 refused · catalogue now 3765 roads
+00:40:19 saved on disk - committed and pushed with the next 2-hourly push
+00:40:19 downloading belgium 667 MB
+00:41:44 downloading nord-pas-de-calais 231 MB
+00:42:00 downloading picardie 128 MB
+00:42:58 == belgium+nord-pas-de-calais+picardie: 5 rides in 1 boxes
+00:45:21 belgium+nord-pas-de-calais+picardie second pass: 5 new roads, 0 refused · catalogue now 3770 roads
+00:45:22 saved on disk - committed and pushed with the next 2-hourly push
+00:45:22 time limit near - the next run carries on with hungary+malopolskie+slovakia
