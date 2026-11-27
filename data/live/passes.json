@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-26T21:55:08.750Z",
+ "updated": "2026-11-27T09:03:56.057Z",
  "feed": "ok",
  "providers": 1,
  "providersFailed": 0,
- "records": 137,
- "checked": "2026-11-26T21:55Z",
+ "records": 115,
+ "checked": "2026-11-27T09:03Z",
  "validFor": "6h",
  "sources": [
   {
@@ -24,24 +24,5 @@
    ]
   }
  ],
- "passes": {
-  "passo gardena": {
-   "status": "restricted",
-   "text": "Allgemeine Verkehrsbehinderung Baustelle Zwischen Waidbruck und Pontives (km 4,300 - km 4,600) Einbahnregelung wegen Arbeiten.",
-   "since": "2026-11-22T23:00:00.000Z",
-   "until": "2026-11-27T00:00:00.000Z",
-   "id": "058d5c85-5ddc-5f38-9a8a-9962fd42a229",
-   "version": "1",
-   "km": 17.9
-  },
-  "passo giovo": {
-   "status": "restricted",
-   "text": "Allgemeine Verkehrsbehinderung Baustelle Zwischen Walten und dem Jaufenpass (km 35,500 - km 36,000) Einbahnregelung wegen Sanierung von Mauerwerk.",
-   "since": "2026-10-30T23:00:00.000Z",
-   "until": "2026-11-27T00:00:00.000Z",
-   "id": "c536bf59-ff66-55f4-b4d6-b39c1c1c5cb1",
-   "version": "1",
-   "km": 1.3
-  }
- }
+ "passes": {}
 }
