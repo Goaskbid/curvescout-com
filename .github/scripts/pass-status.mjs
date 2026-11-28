@@ -28,5 +28,6 @@ async function main() {
   const passes = JSON.parse(fs.readFileSync('data/passes.json', 'utf8')).passes || [];
   writeState(await collect(passes));
   if (!DRY) { try { console.log('status page', JSON.stringify(renderAndStage('.'))); } catch (e) { console.log('status page skipped:', String(e && e.message || e).slice(0, 160)); } }
+  if (!DRY) { try { (await import('./roads-watchdog.mjs')).watch(); } catch (e) { console.log('road-job watchdog not loaded:', String(e && e.message || e).slice(0, 120)); } }   /* r91 */
 }
 if (import.meta.url === 'file://' + process.argv[1]) main();

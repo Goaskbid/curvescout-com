@@ -4,6 +4,8 @@
  "bestRides": 1172,
  "placeWriteups": 11599,
  "definition": "A ride record is one planned ride with its stops and its road measured on OpenStreetMap data. Several records can share roads, so this is not a count of unique roads.",
- "generated": "2026-11-18",
- "release": "r63"
+ "generated": "2026-11-28",
+ "release": "r91",
+ "rideRecordsStored": 31493,
+ "reconciliation": "The planner lists 22,781 rides. The ride store holds 31,493 records because copies of the same route are merged in the planner but their records are kept, so older links still open. Every count on the site uses the 22,781."
 }

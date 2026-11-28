@@ -38,6 +38,16 @@ function cycleOnly(r) {
 /* r89 S1: the feed's category heading, explicit "no restrictions" statements, and heavy-vehicle-only scopes */
 const HEADING = /\(?\b(frei|befahrbar|transitabile|percorribile|libera|libero)\s*\/\s*(kettenpflicht|schneekettenpflicht|catene|obbligo di catene)\b\)?/gi;
 const CLEAR = /\b(keine\s+(beschr(ä|ae)nkung|einschr(ä|ae)nkung|behinderung|kettenpflicht)\w*|nessuna\s+(limitazione|restrizione|limitazioni|restrizioni)|nessun\s+obbligo|no\s+restrictions?|senza\s+limitazioni)\b/i;
+/* r91 S1 (audit r90): "Road closed to all motor traffic. Trucks must turn at the previous junction." - the truck sentence
+   is advice to diverted vehicles, not the scope of the closure. Heavy-vehicle-only means: every sentence that closes or
+   restricts names heavy vehicles, and none of them names general traffic. */
+function heavyOnly(r) {
+  const txt = String(r.text || r.all || '').replace(/\s+/g, ' '), sents = txt.split(/(?<=[.!?;])\s+(?=[A-ZÄÖÜÀ-Ý])|\n+/);
+  const op = sents.filter(x => SHUT.test(x) || /\b(fahrverbot|divieto|transit ban|durchfahrtsverbot)\b/i.test(x));
+  if (!op.length) return HEAVY.test(txt) && !LIGHT.test(txt) && !GENERAL.test(txt);
+  return op.every(x => HEAVY.test(x) && !LIGHT.test(x) && !GENERAL.test(x));
+}
+const GENERAL = /(all (motor )?traffic|all motor vehicles(?!\s+(over|above))|gesamten verkehr|jeglichen verkehr|f(ü|ue)r alle verkehrsteilnehmer|chius[ao] al traffico(?!\s+(dei|per i) (mezzi|veicoli) pesanti)|vollsperrung|closed to (all )?traffic|totalmente chius)/i;
 const HEAVY = /(?:^|[^a-zäöü])(sattelschlepper\w*|sattelz(ü|ue)g\w*|lkw|lastwagen|lastkraftwagen\w*|schwerverkehr|schwerfahrzeug\w*|mezzi pesanti|autocarr\w*|autoarticolat\w*|veicoli pesanti|heavy goods vehicles?|hgvs?|trucks?|(ü|ue)ber\s+\d+([.,]\d+)?\s*t\b|oltre\s+\d+([.,]\d+)?\s*t\b|>\s*\d+([.,]\d+)?\s*t\b)/i;
 const LIGHT = /(?:^|[^a-zäöü])(alle fahrzeuge(?!\s+(ü|ue)ber)|alle kfz(?!\s+(ü|ue)ber)|tutti i veicoli(?!\s+(oltre|superiori|di massa))|all vehicles(?!\s+(over|above))|pkw|motorr(ä|ae)d\w*|motocicl\w*|motorcycles?|autovetture)\b/i;
 export function match(recs, passes, now = Date.now()) {
@@ -56,7 +66,7 @@ export function match(recs, passes, now = Date.now()) {
     const mg = String(r.mgmt || '');
     const closed = /roadClosed|carriagewayClosures|closedPermanentlyForTheWinter/i.test(mg) || (!neg && /\b(gesperrt|chiuso|chiusa|closed)\b/i.test(r.all || ''));
     /* r89 S1 */ const body = String(r.all || '').replace(HEADING, ' '), clear = CLEAR.test(r.all || '') || CLEAR.test(r.text || '');
-    if (HEAVY.test(r.all || '') && !LIGHT.test(r.all || '')) continue;   /* only heavy vehicles: not a motorcycle restriction */
+    if (heavyOnly(r)) continue;   /* r91 S1: only heavy vehicles - judged on the sentences that close or restrict, not on diversion advice */
     const restr = closed || /snowChains|winterEquipment|singleAlternateLineTraffic|laneClosures/i.test(mg) || (!neg && !clear && /\b(kettenpflicht|schneeketten|catene|winter tyres|winterreifen)\b/i.test(body));
     if (!restr) continue;
     for (const p of passes) {
