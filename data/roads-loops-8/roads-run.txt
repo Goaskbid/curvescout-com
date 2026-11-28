@@ -140,3 +140,6 @@
 20:52:29 network (coverage): 3 squares written, 3 capped, 44 ways refused (access/class/direction), 3888 turn restrictions kept, 67 via-way restrictions not encoded
 20:52:29 saved on disk - committed and pushed with the next 2-hourly push
 20:52:29 network coverage: size cap reached - the remaining regions are recorded as capped (not covered)
+20:52:35 network coverage INCOMPLETE - the rides follow {"regionsWanted":170,"untouched":0,"squaresCovered":445,"complete":false,"done":129,"empty":6,"retry":0,"failed":0,"capped":35}
+20:52:35 0 router builds planned (0 single regions, 0 border crossings), 0 rides not yet done, 0 rides fit no region
+20:52:35 second pass: 0 rides without a stored road - routed in small boxes cut from their region
