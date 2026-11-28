@@ -4,3 +4,139 @@
 20:34:15 network coverage: 79 regions reopened (r90 false-empty pilots and the OPL decoding failure)
 20:34:16 network coverage provence-alpes-cote-d-azur 42_5 42_6 43_4 43_5 43_6 44_4 44_5
 20:35:06 network (coverage): 5 squares written, 0 capped, 41 ways refused (access/class/direction), 2793 turn restrictions kept, 50 via-way restrictions not encoded
+20:35:10 network coverage bourgogne 46_3 46_4 47_3 47_4 47_5 48_3
+20:35:42 network (coverage): 6 squares written, 0 capped, 8 ways refused (access/class/direction), 1718 turn restrictions kept, 50 via-way restrictions not encoded
+20:35:43 saved on disk - committed and pushed with the next 2-hourly push
+20:35:43 network coverage saarland 49_6 49_7
+20:35:50 network (coverage): 2 squares written, 0 capped, 4 ways refused (access/class/direction), 1078 turn restrictions kept, 16 via-way restrictions not encoded
+20:35:50 saved on disk - committed and pushed with the next 2-hourly push
+20:35:50 network coverage rheinland-pfalz 49_6 49_7 50_7
+20:36:19 network (coverage): 3 squares written, 0 capped, 104 ways refused (access/class/direction), 8973 turn restrictions kept, 325 via-way restrictions not encoded
+20:36:20 saved on disk - committed and pushed with the next 2-hourly push
+20:36:20 network coverage languedoc-roussillon 43_2 43_3 43_4 44_3 44_4
+20:36:48 network (coverage): 5 squares written, 0 capped, 14 ways refused (access/class/direction), 2492 turn restrictions kept, 21 via-way restrictions not encoded
+20:36:49 saved on disk - committed and pushed with the next 2-hourly push
+20:36:49 network coverage hessen 51_8 51_9 51_10
+20:37:26 network (coverage): 3 squares written, 0 capped, 95 ways refused (access/class/direction), 10146 turn restrictions kept, 269 via-way restrictions not encoded
+20:37:26 saved on disk - committed and pushed with the next 2-hourly push
+20:37:26 network coverage centro 40_11 41_10 41_11 42_9 43_14
+20:38:05 network (coverage): 0 squares written, 0 capped, 240 ways refused (access/class/direction), 22965 turn restrictions kept, 742 via-way restrictions not encoded
+20:38:05 saved on disk - committed and pushed with the next 2-hourly push
+20:38:05 network coverage ile-de-france 48_1 48_2 48_3 49_1 49_2
+20:38:45 network (coverage): 5 squares written, 0 capped, 192 ways refused (access/class/direction), 7088 turn restrictions kept, 172 via-way restrictions not encoded
+20:38:46 saved on disk - committed and pushed with the next 2-hourly push
+20:38:46 network coverage koeln-regbez 50_7 51_6
+20:39:09 network (coverage): 2 squares written, 0 capped, 72 ways refused (access/class/direction), 5782 turn restrictions kept, 98 via-way restrictions not encoded
+20:39:09 saved on disk - committed and pushed with the next 2-hourly push
+20:39:09 network coverage slovenia 45_14 45_15
+20:39:43 network (coverage): 2 squares written, 0 capped, 26 ways refused (access/class/direction), 2087 turn restrictions kept, 77 via-way restrictions not encoded
+20:39:43 saved on disk - committed and pushed with the next 2-hourly push
+20:39:43 network coverage midi-pyrenees 43_-1 43_0 43_1 43_2 43_3 44_1 44_2 44_3
+20:40:22 network (coverage): 8 squares written, 0 capped, 16 ways refused (access/class/direction), 2814 turn restrictions kept, 32 via-way restrictions not encoded
+20:40:23 saved on disk - committed and pushed with the next 2-hourly push
+20:40:23 network coverage arnsberg-regbez 51_7 51_8
+20:40:54 network (coverage): 2 squares written, 0 capped, 17 ways refused (access/class/direction), 3892 turn restrictions kept, 129 via-way restrictions not encoded
+20:40:54 saved on disk - committed and pushed with the next 2-hourly push
+20:40:54 network coverage thueringen 51_10 51_11
+20:41:10 network (coverage): 2 squares written, 0 capped, 17 ways refused (access/class/direction), 3021 turn restrictions kept, 52 via-way restrictions not encoded
+20:41:10 saved on disk - committed and pushed with the next 2-hourly push
+20:41:10 network coverage duesseldorf-regbez 51_6 51_7
+20:41:31 network (coverage): 2 squares written, 0 capped, 51 ways refused (access/class/direction), 5960 turn restrictions kept, 202 via-way restrictions not encoded
+20:41:32 saved on disk - committed and pushed with the next 2-hourly push
+20:41:32 network coverage muenster-regbez 51_6 51_7 51_8 52_7
+20:41:48 network (coverage): 4 squares written, 0 capped, 43 ways refused (access/class/direction), 2290 turn restrictions kept, 35 via-way restrictions not encoded
+20:41:48 saved on disk - committed and pushed with the next 2-hourly push
+20:41:48 network coverage aquitaine 43_-2 43_-1 44_-2 44_-1 44_0 44_1 45_-2 45_-1 45_0 45_1
+20:42:24 network (coverage): 10 squares written, 0 capped, 8 ways refused (access/class/direction), 4010 turn restrictions kept, 30 via-way restrictions not encoded
+20:42:25 saved on disk - committed and pushed with the next 2-hourly push
+20:42:25 network coverage haute-normandie 48_0 48_1 49_0 49_1
+20:42:38 network (coverage): 4 squares written, 0 capped, 1 ways refused (access/class/direction), 1963 turn restrictions kept, 32 via-way restrictions not encoded
+20:42:39 saved on disk - committed and pushed with the next 2-hourly push
+20:42:39 network coverage detmold-regbez 51_8 51_9 52_8
+20:42:53 network (coverage): 3 squares written, 0 capped, 7 ways refused (access/class/direction), 2065 turn restrictions kept, 73 via-way restrictions not encoded
+20:42:54 saved on disk - committed and pushed with the next 2-hourly push
+20:42:54 network coverage croatia 42_16 42_17 42_18 43_14 43_15 43_16 43_17 44_13 44_14 44_15 44_16 45_14 45_15 45_16 45_17 45_18 45_19 46_17
+20:43:22 network (coverage): 17 squares written, 0 capped, 155 ways refused (access/class/direction), 3634 turn restrictions kept, 42 via-way restrictions not encoded
+20:43:23 saved on disk - committed and pushed with the next 2-hourly push
+20:43:23 network coverage cataluna 40_1 40_2
+20:43:49 network (coverage): 0 squares written, 0 capped, 36 ways refused (access/class/direction), 13845 turn restrictions kept, 173 via-way restrictions not encoded
+20:43:49 saved on disk - committed and pushed with the next 2-hourly push
+20:43:49 network coverage sachsen 50_13 50_14 51_12 51_13 51_14
+20:44:23 network (coverage): 5 squares written, 0 capped, 52 ways refused (access/class/direction), 4653 turn restrictions kept, 125 via-way restrictions not encoded
+20:44:23 saved on disk - committed and pushed with the next 2-hourly push
+20:44:23 network coverage gelderland 51_6 52_5 52_6
+20:44:44 network (coverage): 3 squares written, 0 capped, 5 ways refused (access/class/direction), 1793 turn restrictions kept, 106 via-way restrictions not encoded
+20:44:45 saved on disk - committed and pushed with the next 2-hourly push
+20:44:45 network coverage pays-de-la-loire 46_-3 46_-2 46_-1 47_-3 47_-2 47_-1 47_0 48_-1 48_0
+20:45:19 network (coverage): 9 squares written, 0 capped, 16 ways refused (access/class/direction), 7251 turn restrictions kept, 286 via-way restrictions not encoded
+20:45:19 saved on disk - committed and pushed with the next 2-hourly push
+20:45:19 network coverage sachsen-anhalt 51_10 51_11 51_12 52_11 52_12
+20:45:43 network (coverage): 5 squares written, 0 capped, 59 ways refused (access/class/direction), 2834 turn restrictions kept, 55 via-way restrictions not encoded
+20:45:44 saved on disk - committed and pushed with the next 2-hourly push
+20:45:44 network coverage zuid-holland 52_3 52_4
+20:46:06 network (coverage): 1 squares written, 0 capped, 17 ways refused (access/class/direction), 2441 turn restrictions kept, 149 via-way restrictions not encoded
+20:46:06 saved on disk - committed and pushed with the next 2-hourly push
+20:46:06 network coverage basse-normandie 48_-2 48_-1 48_0 49_-2 49_-1 49_0
+20:46:21 network (coverage): 6 squares written, 0 capped, 2 ways refused (access/class/direction), 2763 turn restrictions kept, 33 via-way restrictions not encoded
+20:46:22 saved on disk - committed and pushed with the next 2-hourly push
+20:46:22 network coverage flevoland 52_5
+20:46:27 network (coverage): 1 squares written, 0 capped, 25 ways refused (access/class/direction), 673 turn restrictions kept, 15 via-way restrictions not encoded
+20:46:28 saved on disk - committed and pushed with the next 2-hourly push
+20:46:28 network coverage niedersachsen 51_9 51_10 52_6 52_7 52_8 52_9 52_10 53_6 53_7 53_8 53_9 53_10 53_11 54_7
+20:47:15 network (coverage): 12 squares written, 0 capped, 90 ways refused (access/class/direction), 10945 turn restrictions kept, 169 via-way restrictions not encoded
+20:47:15 saved on disk - committed and pushed with the next 2-hourly push
+20:47:15 network coverage drenthe 52_6 53_6
+20:47:23 network (coverage): 2 squares written, 0 capped, 7 ways refused (access/class/direction), 561 turn restrictions kept, 13 via-way restrictions not encoded
+20:47:23 saved on disk - committed and pushed with the next 2-hourly push
+20:47:23 network coverage noord-holland 52_4 52_5 53_4
+20:47:42 network (coverage): 3 squares written, 0 capped, 82 ways refused (access/class/direction), 1555 turn restrictions kept, 121 via-way restrictions not encoded
+20:47:43 saved on disk - committed and pushed with the next 2-hourly push
+20:47:43 network coverage kent 51_0 51_1
+20:47:50 network (coverage): 2 squares written, 0 capped, 21 ways refused (access/class/direction), 724 turn restrictions kept, 65 via-way restrictions not encoded
+20:47:50 saved on disk - committed and pushed with the next 2-hourly push
+20:47:50 network coverage east-sussex 50_0
+20:47:54 network (coverage): 1 squares written, 0 capped, 5 ways refused (access/class/direction), 203 turn restrictions kept, 14 via-way restrictions not encoded
+20:47:55 saved on disk - committed and pushed with the next 2-hourly push
+20:47:55 network coverage brandenburg 51_13 51_14 52_12 52_13 52_14 53_11 53_12 53_13 53_14
+20:48:37 network (coverage): 9 squares written, 0 capped, 62 ways refused (access/class/direction), 2709 turn restrictions kept, 119 via-way restrictions not encoded
+20:48:37 saved on disk - committed and pushed with the next 2-hourly push
+20:48:37 network coverage friesland 52_5 53_5 53_6
+20:48:47 network (coverage): 3 squares written, 0 capped, 29 ways refused (access/class/direction), 826 turn restrictions kept, 27 via-way restrictions not encoded
+20:48:47 saved on disk - committed and pushed with the next 2-hourly push
+20:48:47 network coverage navarra 42_-3 43_-2
+20:48:53 network (coverage): 2 squares written, 0 capped, 0 ways refused (access/class/direction), 970 turn restrictions kept, 14 via-way restrictions not encoded
+20:48:53 saved on disk - committed and pushed with the next 2-hourly push
+20:48:53 network coverage west-sussex 50_-1 51_-1
+20:49:02 network (coverage): 2 squares written, 0 capped, 7 ways refused (access/class/direction), 282 turn restrictions kept, 44 via-way restrictions not encoded
+20:49:03 saved on disk - committed and pushed with the next 2-hourly push
+20:49:03 network coverage hamburg 53_9 53_10
+20:49:12 network (coverage): 2 squares written, 0 capped, 68 ways refused (access/class/direction), 3132 turn restrictions kept, 273 via-way restrictions not encoded
+20:49:12 saved on disk - committed and pushed with the next 2-hourly push
+20:49:12 network coverage greater-london 51_-1 51_0
+20:49:27 network (coverage): 2 squares written, 0 capped, 184 ways refused (access/class/direction), 3549 turn restrictions kept, 566 via-way restrictions not encoded
+20:49:27 saved on disk - committed and pushed with the next 2-hourly push
+20:49:27 network coverage surrey 51_-1
+20:49:34 network (coverage): 1 squares written, 0 capped, 18 ways refused (access/class/direction), 450 turn restrictions kept, 49 via-way restrictions not encoded
+20:49:35 saved on disk - committed and pushed with the next 2-hourly push
+20:49:35 network coverage sud 41_18
+20:50:14 network (coverage): 0 squares written, 0 capped, 165 ways refused (access/class/direction), 24809 turn restrictions kept, 1149 via-way restrictions not encoded
+20:50:14 saved on disk - committed and pushed with the next 2-hourly push
+20:50:14 network coverage isole 35_11 35_13 36_13 37_11 38_7 38_10 38_11 39_7 39_10 39_11 39_12 39_13 39_14 40_7 40_10 40_11 41_7 41_10
+20:50:34 network (coverage): 0 squares written, 0 capped, 137 ways refused (access/class/direction), 12058 turn restrictions kept, 166 via-way restrictions not encoded
+20:50:35 saved on disk - committed and pushed with the next 2-hourly push
+20:50:35 network coverage hungary 45_17 45_18 46_17 46_18 46_19 46_20 46_21 47_18 47_19 47_20 47_21 47_22 48_19 48_20 48_21 48_22
+20:51:06 network (coverage): 16 squares written, 0 capped, 69 ways refused (access/class/direction), 13526 turn restrictions kept, 232 via-way restrictions not encoded
+20:51:07 saved on disk - committed and pushed with the next 2-hourly push
+20:51:07 network coverage hampshire 50_-2 51_-2 51_-1
+20:51:16 network (coverage): 3 squares written, 0 capped, 14 ways refused (access/class/direction), 708 turn restrictions kept, 37 via-way restrictions not encoded
+20:51:17 saved on disk - committed and pushed with the next 2-hourly push
+20:51:17 network coverage bretagne 47_-6 47_-5 47_-4 47_-3 47_-2 48_-6 48_-5 48_-4 48_-3 48_-2 49_-4 49_-3
+20:52:00 network (coverage): 8 squares written, 0 capped, 14 ways refused (access/class/direction), 5577 turn restrictions kept, 69 via-way restrictions not encoded
+20:52:01 saved on disk - committed and pushed with the next 2-hourly push
+20:52:01 network coverage schleswig-holstein 53_9 53_10 54_7 54_8 54_9 54_10 54_11
+20:52:29 network: size cap (295.0 MB) - 53_9 left out
+20:52:29 network: size cap (295.0 MB) - 54_10 left out
+20:52:29 network: size cap (295.0 MB) - 54_8 left out
+20:52:29 network (coverage): 3 squares written, 3 capped, 44 ways refused (access/class/direction), 3888 turn restrictions kept, 67 via-way restrictions not encoded
+20:52:29 saved on disk - committed and pushed with the next 2-hourly push
+20:52:29 network coverage: size cap reached - the remaining regions are recorded as capped (not covered)
